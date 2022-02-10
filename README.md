@@ -1,7 +1,7 @@
 # 프로젝트 소개
 
 ## LOGO
-![Free_Sample_By_Wix_복사본-removebg-preview](https://user-images.githubusercontent.com/91672778/153380183-4ea00b38-bede-46dd-88f3-9186361abc25.png)
+![roadgram copy](https://user-images.githubusercontent.com/91880235/153423554-dede6f01-78c0-43a7-8527-18fbb69f4929.png)
 ## About
 
 ### 여러분의 하루를 사진과 함께 공유할 수 있습니다.
@@ -14,3 +14,4 @@
 
 ## Architecture
 ![Roadgram](https://user-images.githubusercontent.com/91672778/153403957-65473c22-adc7-456f-9fb1-4b02ff4740d2.png)
+![roadgram](https://user-images.githubusercontent.com/91880235/153423246-38737d29-6971-4c1f-b1b1-bf79e3ada5d5.png)
