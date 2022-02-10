@@ -12,3 +12,5 @@
 
 - 자신이 팔로우 한 유저들의 글을 모아 볼 수 있습니다.
 
+## Architecture
+![Roadgram](https://user-images.githubusercontent.com/91672778/153403957-65473c22-adc7-456f-9fb1-4b02ff4740d2.png)
