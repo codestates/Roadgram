@@ -2,15 +2,15 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/Roadgram/server
+    destination: /home/ubuntu/Roadgram
 
 hooks:
   ApplicationStop:
-    - location: scripts/stop.sh
+    - location: server/scripts/stop.sh
       runas: root
   AfterInstall:
-    - location: scripts/initialize.sh
+    - location: server/scripts/initialize.sh
       runas: root
   ApplicationStart:
-    - location: scripts/start.sh
+    - location: server/scripts/start.sh
       runas: root
