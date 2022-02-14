@@ -4,11 +4,7 @@ import { AppModule } from './app.module';
 require('dotenv').config();
 
 async function bootstrap() {
-  const httpsOptions = {
-    key: readFileSync(process.env.KEY),
-    cert: readFileSync(process.env.CERT)
-  }
-  const app = await NestFactory.create(AppModule,{httpsOptions});
+  const app = await NestFactory.create(AppModule);
   await app.listen(process.env.SERVER_PORT);
 }
 bootstrap();
