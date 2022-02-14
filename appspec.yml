@@ -6,11 +6,11 @@ files:
 
 hooks:
   ApplicationStop:
-    - location: /home/ubuntu/Roadgram/scripts/stop.sh
+    - location: scripts/stop.sh
       runas: root
   AfterInstall:
-    - location: /home/ubuntu/Roadgram/scripts/initialize.sh
+    - location: scripts/initialize.sh
       runas: root
   ApplicationStart:
-    - location: /home/ubuntu/Roadgram/scripts/start.sh
+    - location: scripts/start.sh
       runas: root
