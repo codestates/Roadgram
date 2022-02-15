@@ -1,6 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Comment } from '../entities/comment.entity';
-import { CreateCommentDto, ModifyCommentDto } from '../dto/comments.dto';
+import { CreateCommentDto, ModifyCommentDto } from '../dto/comment.dto';
 
 @EntityRepository(Comment)
 export class CommentRepository extends Repository<Comment> {
@@ -21,7 +21,7 @@ export class CommentRepository extends Repository<Comment> {
   async modifyComment(modifyCommentDto: ModifyCommentDto): Promise<Comment> {
     const { commentId, comment } = modifyCommentDto;
 
-    this.update({ id: commentId }, { comment });
+    await this.update({ id: commentId }, { comment });
 
     const newContent = await this.findOne(
       { id: commentId },
