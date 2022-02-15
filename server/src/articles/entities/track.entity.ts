@@ -6,7 +6,7 @@ export class Track {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Article, (Article) => Article.id, { onDelete: 'CASCADE' })
+    @ManyToOne(() => Article, (article) => article.road, {onDelete: 'CASCADE' })
     @JoinColumn({ name: 'article_id' })
     article: Article;
 

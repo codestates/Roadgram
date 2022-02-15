@@ -22,20 +22,24 @@ export class User {
   @Column()
   nickname: string;
 
-  @Column({ nullable: true })
+
+  @Column({ nullable: true, default: null })
   password: string;
+
 
   @Column({ default: '' })
   status_message: string;
 
-  @Column()
-  profile_image: string;
 
-  @Column()
-  total_following: number;
+    @Column({ default: '' })
+    profile_image: string;
 
-  @Column()
-  total_follower: number;
+    @Column({ default: 0 })
+    total_following: number;
+
+    @Column({ default: 0 })
+    total_follower: number;
+
 
   @Column()
   login_method: number;

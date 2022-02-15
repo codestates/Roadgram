@@ -6,10 +6,10 @@ export class Tag {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({unique: true})
     tag_name: string;
 
-    @OneToMany(() => ArticleToTag, (ArticleToTag) => ArticleToTag.tag_id, { cascade: true })
+    @OneToMany(() => ArticleToTag, (articleToTag) => articleToTag.tag_id, { cascade: true })
     @JoinColumn()
-    articleIds: ArticleToTag[];
+    tags: ArticleToTag[];
 }
