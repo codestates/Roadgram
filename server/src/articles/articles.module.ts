@@ -6,10 +6,12 @@ import { ArticlesService } from './articles.service';
 import { TagRepository } from './repositories/tag.repository';
 import { TrackRepository } from './repositories/track.repository';
 import { ArticleToTagRepository } from './repositories/article_tag.repository';
+import { UserRepository } from 'src/users/repositories/user.repository';
+import { FollowRepository } from 'src/follow/repositories/follow.repository';
 
 @Module({
   controllers: [ArticlesController],
   providers: [ArticlesService],
-  imports: [TypeOrmModule.forFeature([ArticleRepository, TagRepository, TrackRepository, ArticleToTagRepository])]
+  imports: [TypeOrmModule.forFeature([ArticleRepository, TagRepository, TrackRepository, ArticleToTagRepository, UserRepository, FollowRepository])]
 })
 export class ArticlesModule { }

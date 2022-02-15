@@ -7,16 +7,17 @@ export class ArticleToTag {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Article, (Article) => Article.id, { onDelete: "CASCADE" })
+    @ManyToOne(() => Article, (article) => article.tags, {onDelete: "CASCADE" })
     @JoinColumn({ name: "article_id" })
     article: Article;
 
     @Column()
     article_id: number;
 
-    @ManyToOne(() => Tag, (Tag) => Tag.id, { onDelete: "CASCADE" })
+    @ManyToOne(() => Tag, (tag) => tag.tags, {onDelete: "CASCADE" })
     @JoinColumn({ name: "tag_id" })
     tag: Tag;
+    
 
     @Column()
     tag_id: number;

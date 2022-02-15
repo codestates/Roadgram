@@ -17,13 +17,13 @@ export class Article {
     @Column()
     user_id: number;
 
-    @Column()
+    @Column({default: 0})
     total_like: number;
 
-    @Column()
+    @Column({default: 0})
     total_comment: number;
 
-    @Column()
+    @Column({default: ""})
     content: string;
 
     @Column()
@@ -35,19 +35,19 @@ export class Article {
     @UpdateDateColumn({ type: "timestamp" })
     updated_at: Date;
 
-    @OneToMany(() => Track, (Track) => Track.article_id, { cascade: true })
+    @OneToMany(() => Track, (track) => track.article, { cascade: true })
     @JoinColumn()
-    tracks: Track[];
+    road: Track[];
 
-    @OneToMany(() => Comment, (Comment) => Comment.article_id, { cascade: true })
+    @OneToMany(() => Comment, (comment) => comment.article, { cascade: true })
     @JoinColumn()
     comments?: Comment[];
 
-    @OneToMany(() => Like, (Like) => Like.article_id, { cascade: true })
+    @OneToMany(() => Like, (like) => like.article, { cascade: true })
     @JoinColumn()
     likes: Like[];
 
-    @OneToMany(() => ArticleToTag, (ArticleToTag) => ArticleToTag.article_id, { cascade: true })
+    @OneToMany(() => ArticleToTag, (articleToTag) => articleToTag.article, { cascade: true })
     @JoinColumn()
-    tagIds: ArticleToTag[];
+    tags: ArticleToTag[];
 }
