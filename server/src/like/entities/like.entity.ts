@@ -2,7 +2,7 @@ import { Article } from "src/articles/entities/article.entity";
 import { User } from "src/users/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity("Like")
+@Entity("Likes")
 export class Like {
     @PrimaryGeneratedColumn()
     id: number;
