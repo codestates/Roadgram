@@ -9,7 +9,7 @@ export class Comment {
     @Column()
     comment: string;
 
-    @ManyToOne(() => Article, (Article) => Article.id, { onDelete: 'CASCADE' })
+    @ManyToOne(() => Article, (article) => article.comments, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'article_id' })
     article: Article;
 
