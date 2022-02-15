@@ -1,5 +1,5 @@
 import { Comment } from "src/comments/entities/comment.entity";
-import { Like } from "src/like/entities/like.entity";
+import { Likes } from "src/likes/entities/likes.entity";
 import { User } from "src/users/entities/user.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ArticleToTag } from "./article_tag.entity";
@@ -43,9 +43,9 @@ export class Article {
     @JoinColumn()
     comments?: Comment[];
 
-    @OneToMany(() => Like, (like) => like.article, { cascade: true })
+    @OneToMany(() => Likes, (likes) => likes.article, { cascade: true })
     @JoinColumn()
-    likes: Like[];
+    likes: Likes[];
 
     @OneToMany(() => ArticleToTag, (articleToTag) => articleToTag.article, { cascade: true })
     @JoinColumn()
