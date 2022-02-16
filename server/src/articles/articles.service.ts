@@ -27,7 +27,7 @@ export class ArticlesService {
   ) {}
   
   async getMain(id: number, loginmethod: number, page: number, pageSize: number): Promise<object>{
-    const getFollowing = await this.followRepository.getFollowing(id);
+    const getFollowing = await this.followRepository.getFollowingUser(id);
 
     console.log("getFollowing", getFollowing);
     if(!getFollowing) {
