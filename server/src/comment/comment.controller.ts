@@ -1,4 +1,4 @@
-import { Headers, Body, Controller, Post, Patch, Delete } from '@nestjs/common';
+import { Headers, Body, Controller, Post, Patch, Delete, HttpCode } from '@nestjs/common';
 import { CommentsService } from './comment.service';
 import { Comment } from './entities/comment.entity';
 import { CreateCommentDto, ModifyCommentDto } from './dto/comment.dto';
@@ -8,23 +8,27 @@ export class CommentsController {
   constructor(private commentsService: CommentsService) {}
 
   @Post()
+  @HttpCode(201)
   createComment(
     //@Headers('authorization')
     @Body() createCommentDto: CreateCommentDto,
-  ): Promise<Comment> {
+  ): object {
     return this.commentsService.createComment(createCommentDto);
   }
 
   @Patch()
-  modifyComment(@Body() modifyCommentDto: ModifyCommentDto): Promise<Comment> {
+  @HttpCode(200)
+  modifyComment(@Body() modifyCommentDto: ModifyCommentDto): Promise<object> {
     return this.commentsService.modifyComment(modifyCommentDto);
   }
 
   @Delete()
+  @HttpCode(200)
   deleteComment(
     @Body('loginMethod') loginMethod: number,
     @Body('commentId') commentId: number,
-  ): Promise<string> {
-    return this.commentsService.deleteComment(commentId);
+    @Body('articleId') articleId: number
+  ): Promise<object> {
+    return this.commentsService.deleteComment(commentId, articleId);
   }
 }

@@ -7,28 +7,18 @@ export class CommentRepository extends Repository<Comment> {
   async createComment(createCommentDto: CreateCommentDto): Promise<Comment> {
     const { userId, articleId, comment } = createCommentDto;
 
-    const content = this.create({
+    const newComment = this.create({
       user_id: userId,
       article_id: articleId,
       comment,
     });
+    this.save(newComment);
 
-    await this.save(content);
-
-    return content;
+    return newComment;
   }
 
-  async modifyComment(modifyCommentDto: ModifyCommentDto): Promise<Comment> {
+  async modifyComment(modifyCommentDto: ModifyCommentDto): Promise<object> {
     const { commentId, comment } = modifyCommentDto;
-
-    await this.update({ id: commentId }, { comment });
-
-    const newContent = await this.findOne(
-      { id: commentId },
-      { relations: ['user'] },
-    );
-    return newContent;
+    return this.update({ id: commentId }, { comment });
   }
 }
-
-// relations 테이블의 특정 필드 값만 되돌려주는 장치 필요
