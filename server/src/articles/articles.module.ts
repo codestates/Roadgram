@@ -12,6 +12,14 @@ import { FollowRepository } from 'src/follow/repositories/follow.repository';
 @Module({
   controllers: [ArticlesController],
   providers: [ArticlesService],
-  imports: [TypeOrmModule.forFeature([ArticleRepository, TagRepository, TrackRepository, ArticleToTagRepository, UserRepository, FollowRepository])]
+  imports: [
+    TypeOrmModule.forFeature(
+    [ArticleRepository, 
+      TagRepository, 
+      TrackRepository, 
+      ArticleToTagRepository, 
+      UserRepository, 
+      FollowRepository
+    ])]
 })
 export class ArticlesModule { }

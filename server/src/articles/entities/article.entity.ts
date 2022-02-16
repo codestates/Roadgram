@@ -14,14 +14,14 @@ export class Article {
     @JoinColumn({ name: 'user_id' })
     user: User;
 
-    @Column()
-    user_id: number;
+    @Column({name: "user_id"})
+    userId: number;
 
-    @Column({default: 0})
-    total_like: number;
+    @Column({default: 0, name: "total_like"})
+    totalLike: number;
 
-    @Column({default: 0})
-    total_comment: number;
+    @Column({default: 0, name: "total_comment"})
+    totalComment: number;
 
     @Column({default: ""})
     content: string;
@@ -29,11 +29,11 @@ export class Article {
     @Column()
     thumbnail: string;
 
-    @CreateDateColumn({ type: "timestamp" })
-    created_at: Date;
+    @CreateDateColumn({ type: "timestamp", name: "created_at" })
+    createdAt: Date;
 
-    @UpdateDateColumn({ type: "timestamp" })
-    updated_at: Date;
+    @UpdateDateColumn({ type: "timestamp", name: "updated_at" })
+    updatedAt: Date;
 
     @OneToMany(() => Track, (track) => track.article, { cascade: true })
     @JoinColumn()
@@ -47,7 +47,7 @@ export class Article {
     //@JoinColumn()
     likes: Likes[];
 
-    @OneToMany(() => ArticleToTag, (articleToTag) => articleToTag.article, { cascade: true })
+    @OneToMany(() => ArticleToTag, (articleToTag) => articleToTag.article, { eager: true,cascade: true })
     @JoinColumn()
     tags: ArticleToTag[];
 }

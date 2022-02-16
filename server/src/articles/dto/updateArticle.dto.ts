@@ -7,7 +7,7 @@ export class UpdateArticleDto {
 
   @IsNotEmpty()
   @IsNumber()
-  userId: number;
+  user: number;
 
   @IsNotEmpty()
   @IsNumber()

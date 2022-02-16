@@ -11,12 +11,7 @@ require('dotenv').config();
   imports: [
     TypeOrmModule.forFeature([UserRepository]),
     JwtModule.register({ secret: process.env.JWT_SECRET }),
-    HttpModule.registerAsync({
-      useFactory: ()=>({
-        timeout: 5000,
-        maxRedirects: 5
-      })
-    })
+    HttpModule
   ],
   controllers: [UsersController],
   providers: [UsersService]

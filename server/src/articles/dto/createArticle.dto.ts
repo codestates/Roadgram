@@ -3,7 +3,7 @@ import { IsArray, IsNotEmpty, IsNumber, IsString } from "class-validator";
 export class CreateArticleDto {
   @IsNotEmpty()
   @IsNumber()
-  userId: number;
+  user: number;
   
   @IsNotEmpty()
   @IsArray()

@@ -26,19 +26,23 @@ export class ArticlesService {
     private followRepository: FollowRepository
   ) {}
   
-  async getMain(id: number, loginmethod: number): Promise<object> {
+  async getMain(id: number, loginmethod: number, page: number, pageSize: number): Promise<object>{
     const getFollowing = await this.followRepository.getFollowing(id);
 
     console.log("getFollowing", getFollowing);
-    if(!getFollowing || getFollowing.length === 0) {
+    if(!getFollowing) {
       throw new UnauthorizedException('permisson denied');
-    } 
+    } else if(getFollowing.length === 0) {
+      throw new NotFoundException("Not have a following list");
+    }
 
-    const getMain = await this.articleRepository.getMain(getFollowing);
+    const getMain = await this.articleRepository.getMain(getFollowing, page, pageSize);
     console.log("getMain", getMain);
-    if(!getMain || Object.keys(getMain).length === 0) {
+    if(!getMain) {
       throw new UnauthorizedException('permisson denied');
-    } 
+    } else if(Object.keys(getMain).length === 0) {
+      throw new NotFoundException("Not exist an extra articles");
+    }
     
     return {
       data: {
@@ -47,12 +51,33 @@ export class ArticlesService {
       message: 'ok'
     }
   }
+
+  async findOrCreateTags(user: number, articleId: number, tag: []): Promise<any>{
+    const beforeTagCount = tag.length;
+
+    for(const eachTag of tag) {
+      const { tagName, order }= eachTag;
+      console.log("tagName ===", tagName);
+      const isTagExist = await this.tagRepository.findTagName(tagName);
+      // 태그가 없으면 만들어주기
+      if(!isTagExist || isTagExist.length === 0) {
+        const createTagResult = await this.tagRepository.createTag(tagName);
+        const tagId = createTagResult.id;
+        await this.articleToTagRepository.connectArticleTag(articleId, tagId, order, tagName);
+      // 태그가 있다면 기존 태그 조회해서 만들어주기
+      } else {
+        const tagId = isTagExist[0].id;
+        await this.articleToTagRepository.connectArticleTag(articleId, tagId, order, tagName);
+      }
+    }
+    const afterTagCount = await this.articleToTagRepository.countTag(articleId);
+
+    return beforeTagCount === afterTagCount
+  }
   
   async getResponseData(userId, articleId): Promise<object> {
     const userInfo = await this.userRepository.getUserInfo(userId);
-    console.log("userInfo", userInfo);
     const articleInfo = await this.articleRepository.getArticleInfo(articleId);
-    console.log("articleInfo", articleInfo);
     return {
       data: {
         userInfo:{
@@ -61,10 +86,11 @@ export class ArticlesService {
           profileImage: userInfo.profile_image
         },
         articleInfo: {
-          totalLike: articleInfo.total_like,
-          totalComment: articleInfo.total_comment,
+          totalLike: articleInfo.totalLike,
+          totalComment: articleInfo.totalComment,
           content: articleInfo.content,
           road: articleInfo.road,
+          tag: articleInfo.tags,
           comment: articleInfo.comments,
         }  
     },
@@ -72,45 +98,37 @@ export class ArticlesService {
     }
   }
 
+  async getRecent(page: number, pageSize: number): Promise<object>{
+    const getRecent = await this.articleRepository.getRecent(page, pageSize);
+    return getRecent
+  }
+
   async createArticle(createArticleDto: CreateArticleDto): Promise<any> {
-    const { userId, road, tag, content, thumbnail } = createArticleDto;
-    console.log("createArticleDto", createArticleDto);
+    const { user, road, tag, content, thumbnail } = createArticleDto;
     // article 메인 테이블 삽입 요청
     try {
-      const articleResult = await this.articleRepository.createArticle(userId, content, thumbnail);
+      const articleResult = await this.articleRepository.createArticle(user, content, thumbnail);
       if(!articleResult) {
-        throw new NotAcceptableException("");
+        throw new UnauthorizedException("permisson denied");
       } else {
         const articleId = articleResult.id;
+        // track 경로 삽입 요청
         await this.trackRepository.createTrack(road, articleId);
-        tag.forEach(async (eachTag) => {
-          const {tagname, order}= eachTag;
-          const isTagExist = await this.tagRepository.findTagName(tagname);
-          // 태그가 없으면 만들어주기
-          if(!isTagExist || isTagExist.length === 0) {
-            const createTagResult = await this.tagRepository.createTag(tagname);
-            const tagId = createTagResult.id;
-            const createArticleTagResult = await this.articleToTagRepository.connectArticleTag(articleId, tagId, order);
-            if(createArticleTagResult) {
-              return this.getResponseData(userId, articleId);
-            }
-          // 태그가 있다면 기존 태그 조회해서 만들어주기
-          } else {
-            const tagId = isTagExist[0].id;
-            // console.log("tagId", tagId);
-            const createArticleTagResult = await this.articleToTagRepository.connectArticleTag(articleId,tagId , order);
-            if(createArticleTagResult) {
-              return this.getResponseData(userId, articleId);
-            }
-          }
-        })
-    }
-  } catch (err) {
-      throw err;
+        // tag 삽입 요청
+        const tagResult = await this.findOrCreateTags(user, articleId, tag);
+        if(tagResult) {
+          return await this.getResponseData(user, articleId);
+        } else {
+          throw new UnauthorizedException("permisson denied");
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      throw new UnauthorizedException("permisson denied");
     }
   }
 
-  async getArticleDetail(id: number): Promise<object>{
+  async getArticleDetail(id: number, user: number): Promise<object>{
     const result = await this.articleRepository.getArticleDetail(id)
     if(!result) {
       throw new NotFoundException('Not found');
@@ -124,33 +142,10 @@ export class ArticlesService {
     } 
   }
 
-  async findOrCreateTags(updateArticleDto: UpdateArticleDto) {
-    const {userId, articleId, tag} = updateArticleDto;
-    
-    tag.forEach(async (eachTag) => {
-      const { tagname, order }= eachTag;
-      const isTagExist = await this.tagRepository.findTagName(tagname);
-      // 태그가 없으면 만들어주기
-      if(!isTagExist || isTagExist.length === 0) {
-        const createTagResult = await this.tagRepository.createTag(tagname);
-        const tagId = createTagResult.id;
-        const createArticleTagResult = await this.articleToTagRepository.connectArticleTag(articleId, tagId, order);
-        if(createArticleTagResult) {
-          return this.getResponseData(userId, articleId);
-        }
-      // 태그가 있다면 기존 태그 조회해서 만들어주기
-      } else {
-        const tagId = isTagExist[0].id;
-        const createArticleTagResult = await this.articleToTagRepository.connectArticleTag(articleId,tagId , order);
-        if(createArticleTagResult) {
-          return this.getResponseData(userId, articleId);
-        }
-      }
-    })
-  }
+  
 
   async updateArticle(updateArticleDto: UpdateArticleDto): Promise<any>{
-    const {userId, articleId, content, tag} = updateArticleDto;
+    const {user, articleId, content, tag} = updateArticleDto;
 
     if(content) {
       const result = await this.articleRepository.updateContent(updateArticleDto);  
@@ -163,11 +158,15 @@ export class ArticlesService {
       // 기존에 있던 태그 전부 삭제
       const deletion = await this.articleToTagRepository.deleteTags(articleId);
       // tag를 찾거나 만들어주는 로직으로 Go
-      const result = await this.findOrCreateTags(updateArticleDto);
+      const result = await this.findOrCreateTags(user, articleId, tag);
+      if(result) {
+        return await this.getResponseData(user, articleId);
+      }
+
     }
   }
 
-  async deleteArticle(id: number, loginmethod: number) {
+  async deleteArticle(id: number, user: number, loginmethod: number) {
     const result = await this.articleRepository.deleteArticle(id);
     return result;
   }

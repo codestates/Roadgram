@@ -34,6 +34,7 @@
     "dotenv": "^16.0.0",
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
+    "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",

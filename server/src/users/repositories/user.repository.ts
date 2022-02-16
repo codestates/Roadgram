@@ -8,10 +8,10 @@ import { UpdateUserDto } from "../dto/updateUser.dto";
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
 
-  async getUserInfo(userId: number) {
-    const userInfo = await this.find({id: userId});
-    return userInfo[0];
-  }
+    async getUserInfo(userId: number) {
+        const userInfo = await this.find({ id: userId });
+        return userInfo[0];
+    }
 
     async createUser(createUserDto: CreateUserDto) {
         const { email, password, nickname } = createUserDto;
@@ -36,7 +36,7 @@ export class UserRepository extends Repository<User> {
     }
 
     async updateUser(userData: UpdateUserDto) {
-        const user: User = await this.findOne({ id: userData.id, login_method: userData.loginMethod });
+        const user: User = await this.findOne({ id: userData.user, login_method: userData.loginMethod });
 
         if (!user) {
             throw new BadRequestException('bad request');
@@ -55,11 +55,11 @@ export class UserRepository extends Repository<User> {
         if (userData.statusMessage) user.status_message = userData.statusMessage;
 
         this.save(user);
-        return { 
-            data:{
-                userInfo:{
-                    statusMessage:user.status_message,
-                    profileImage:user.profile_image
+        return {
+            data: {
+                userInfo: {
+                    statusMessage: user.status_message,
+                    profileImage: user.profile_image
                 }
             },
             message: 'change succeed'
@@ -68,5 +68,17 @@ export class UserRepository extends Repository<User> {
 
     getCommentWriterInfo(userId: number): Promise<object> {
         return this.findOne({where: {id: userId}, select: ["id", "nickname", "profile_image"]});
+
+    async putRefreshToken(id: number, refreshToken: string) {
+        const user = await this.findOne({ id:id });
+        user.refresh_token = refreshToken;
+        this.save(user);
+    }
+
+    async deleteRefreshToken(id: number) {
+        const user = await this.findOne({ id:id });
+        user.refresh_token = null;
+        this.save(user);
+
     }
 }
