@@ -11,16 +11,18 @@ export class ArticleToTag {
     @JoinColumn({ name: "article_id" })
     article: Article;
 
-    @Column()
-    article_id: number;
+    @Column({name: "article_id"})
+    articleId: number;
 
     @ManyToOne(() => Tag, (tag) => tag.tags, {onDelete: "CASCADE" })
     @JoinColumn({ name: "tag_id" })
     tag: Tag;
-    
 
-    @Column()
-    tag_id: number;
+    @Column({name: "tag_id"})
+    tagId: number;
+
+    @Column({name: "tag_name"})
+    tagName: number;
 
     @Column()
     order: number;

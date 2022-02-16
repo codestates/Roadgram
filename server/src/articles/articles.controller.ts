@@ -8,39 +8,49 @@ export class ArticlesController {
   constructor(private articlesService: ArticlesService) {}
   
   @Get()
-  @HttpCode(200)
   getMain(
-    @Query('id', ParseIntPipe) id: number, 
-    @Query('loginmethod', ParseIntPipe) loginmethod: number
+    @Query('user', ParseIntPipe) user: number, 
+    @Query('loginmethod', ParseIntPipe) loginmethod: number,
+    @Query('page', ParseIntPipe) page: number,
+    @Query('pageSize', ParseIntPipe) pageSize: number
   ): Promise<object> {
-    return this.articlesService.getMain(id, loginmethod);
+    return this.articlesService.getMain(user, loginmethod, page, pageSize);
+  }
+
+  @Get('/recent')
+  getRecent(
+    @Query('page', ParseIntPipe) page: number,
+    @Query('pageSize', ParseIntPipe) pageSize: number
+  ): Promise<object>{
+    return this.articlesService.getRecent(page, pageSize);
   }
 
   @Get('/detail')
-  @HttpCode(200)
-  getDetail(@Query('id', ParseIntPipe) id: number): Promise<object>{
-    return this.articlesService.getArticleDetail(id);
+  getDetail(
+    @Query('id', ParseIntPipe) id: number,
+    @Query('user', ParseIntPipe) user: number): Promise<object>{
+    return this.articlesService.getArticleDetail(id, user);
   }
 
   @Post()
-  @HttpCode(201)
-  createArticle(@Body() createArticleDto: CreateArticleDto): Promise<object> {
-    return this.articlesService.createArticle(createArticleDto);
+  createArticle(@Body() createArticleDto: CreateArticleDto): Promise<any>{
+    const result = this.articlesService.createArticle(createArticleDto);
+    console.log("result=========", result);
+    return result
   }
 
   @Patch()
-  @HttpCode(200)
   updateArticle(@Body() updateArticleDto: UpdateArticleDto): Promise<object> {
     return this.articlesService.updateArticle(updateArticleDto)
   }
 
   @Delete()
-  @HttpCode(200)
   deleteArticle(
     @Query('id', ParseIntPipe) id: number, 
+    @Query('user', ParseIntPipe) user: number,
     @Query('loginmethod', ParseIntPipe) loginmethod: number
   ): Promise<object> {
-    return this.articlesService.deleteArticle(id, loginmethod);
+    return this.articlesService.deleteArticle(id, user, loginmethod);
   }
 
   
