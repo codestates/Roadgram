@@ -68,7 +68,8 @@ export class UserRepository extends Repository<User> {
 
     getCommentWriterInfo(userId: number): Promise<object> {
         return this.findOne({where: {id: userId}, select: ["id", "nickname", "profile_image"]});
-
+    }
+    
     async putRefreshToken(id: number, refreshToken: string) {
         const user = await this.findOne({ id:id });
         user.refresh_token = refreshToken;
