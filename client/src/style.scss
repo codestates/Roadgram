@@ -55,14 +55,14 @@ html {
 }
 
 .searchBar::placeholder {
-  font-size: 1.3vmin;
+  font-size: 1.5vh;
 }
 
 .searchIcon {
   position: absolute;
   height: 1.8vmin;
-  left: 18.5vmin;
-  top: 0.8vmin;
+  left: 18vmin;
+  top: 0.7vmin;
 }
 
 .sideMenu {
@@ -73,5 +73,5 @@ html {
 }
 
 .login-button {
-  font-size: 0.9vw;
+  font-size: 2vmin;
 }
