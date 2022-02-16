@@ -19,30 +19,29 @@ export class User {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   nickname: string;
-
 
   @Column({ nullable: true, default: null })
   password: string;
 
-
   @Column({ default: '' })
   status_message: string;
 
+  @Column({ default: '' })
+  profile_image: string;
 
-    @Column({ default: '' })
-    profile_image: string;
+  @Column({ default: 0 })
+  total_following: number;
 
-    @Column({ default: 0 })
-    total_following: number;
-
-    @Column({ default: 0 })
-    total_follower: number;
-
+  @Column({ default: 0 })
+  total_follower: number;
 
   @Column()
   login_method: number;
+
+  @Column({ default: null, nullable: true })
+  refresh_token: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
