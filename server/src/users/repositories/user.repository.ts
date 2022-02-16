@@ -65,4 +65,8 @@ export class UserRepository extends Repository<User> {
             message: 'change succeed'
         }
     }
+
+    getCommentWriterInfo(userId: number): Promise<object> {
+        return this.findOne({where: {id: userId}, select: ["id", "nickname", "profile_image"]});
+    }
 }
