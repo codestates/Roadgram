@@ -7,9 +7,9 @@ export class Tag {
     id: number;
 
     @Column({unique: true, name: "tag_name"})
-    tagName: string;
+    tag_name: string;
 
-    @OneToMany(() => ArticleToTag, (articleToTag) => articleToTag.tagId, { cascade: true })
+    @OneToMany(() => ArticleToTag, (articleToTag) => articleToTag.tag_id, { cascade: true })
     @JoinColumn()
     tags: ArticleToTag[];
 }

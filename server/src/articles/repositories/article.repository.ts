@@ -45,7 +45,7 @@ export class ArticleRepository extends Repository<Article> {
   }
   
   async createArticle(userId: number, content: string, thumbnail: string) {
-    const result = await this.save({userId, content, thumbnail});
+    const result = await this.save({user_id: userId, content, thumbnail});
     return result
   }
 
@@ -93,7 +93,7 @@ export class ArticleRepository extends Repository<Article> {
   }
     
   async getMypageArticle(id: number): Promise<object|void>{
-    const mypageArticle = await this.find({where: {userId: id},  relations: ["tags"]});
+    const mypageArticle = await this.find({where: {user_id: id},  relations: ["tags"]});
     return mypageArticle;
   }
 }
