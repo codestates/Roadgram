@@ -15,13 +15,13 @@ export class Article {
     user: User;
 
     @Column({name: "user_id"})
-    userId: number;
+    user_id: number;
 
     @Column({default: 0, name: "total_like"})
-    totalLike: number;
+    total_like: number;
 
     @Column({default: 0, name: "total_comment"})
-    totalComment: number;
+    total_comment: number;
 
     @Column({default: ""})
     content: string;

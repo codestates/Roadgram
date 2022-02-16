@@ -56,18 +56,18 @@ export class ArticlesService {
     const beforeTagCount = tag.length;
 
     for(const eachTag of tag) {
-      const { tagName, order }= eachTag;
-      console.log("tagName ===", tagName);
-      const isTagExist = await this.tagRepository.findTagName(tagName);
+      const { tagname, order }= eachTag;
+      console.log("tagName ===", tagname);
+      const isTagExist = await this.tagRepository.findTagName(tagname);
       // 태그가 없으면 만들어주기
       if(!isTagExist || isTagExist.length === 0) {
-        const createTagResult = await this.tagRepository.createTag(tagName);
+        const createTagResult = await this.tagRepository.createTag(tagname);
         const tagId = createTagResult.id;
-        await this.articleToTagRepository.connectArticleTag(articleId, tagId, order, tagName);
+        await this.articleToTagRepository.connectArticleTag(articleId, tagId, order, tagname);
       // 태그가 있다면 기존 태그 조회해서 만들어주기
       } else {
         const tagId = isTagExist[0].id;
-        await this.articleToTagRepository.connectArticleTag(articleId, tagId, order, tagName);
+        await this.articleToTagRepository.connectArticleTag(articleId, tagId, order, tagname);
       }
     }
     const afterTagCount = await this.articleToTagRepository.countTag(articleId);
@@ -86,8 +86,8 @@ export class ArticlesService {
           profileImage: userInfo.profile_image
         },
         articleInfo: {
-          totalLike: articleInfo.totalLike,
-          totalComment: articleInfo.totalComment,
+          totalLike: articleInfo.total_like,
+          totalComment: articleInfo.total_comment,
           content: articleInfo.content,
           road: articleInfo.road,
           tag: articleInfo.tags,
