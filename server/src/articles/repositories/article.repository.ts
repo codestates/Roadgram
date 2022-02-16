@@ -90,7 +90,8 @@ export class ArticleRepository extends Repository<Article> {
   commentDecrement(articleId: number) {
     this.decrement({id: articleId}, "total_comment", 1);
     return this.findOne({where: {id: articleId}, select: ["id", "total_comment"]});
-
+  }
+    
   async getMypageArticle(id: number): Promise<object|void>{
     const mypageArticle = await this.find({where: {userId: id},  relations: ["tags"]});
     return mypageArticle;
