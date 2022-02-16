@@ -10,11 +10,11 @@ export class Track {
     @JoinColumn({ name: 'article_id' })
     article: Article;
 
-    @Column()
-    article_id: number;
+    @Column({name: "article_id"})
+    articleId: number;
 
-    @Column({ nullable: true })
-    image_src: string;
+    @Column({ nullable: true, name: "image_src" })
+    imageSrc: string;
 
     @Column()
     location: string;

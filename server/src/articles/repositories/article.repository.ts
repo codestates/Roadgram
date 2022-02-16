@@ -1,32 +1,41 @@
 import { NotFoundException } from "@nestjs/common";
+import { Follow } from "src/follow/entities/follow.entity";
 import { EntityRepository, Repository } from "typeorm";
 import { UpdateArticleDto } from "../dto/updateArticle.dto";
 import { Article } from "../entities/article.entity";
+
 
 @EntityRepository(Article)
 export class ArticleRepository extends Repository<Article> {
 
 
-  async getMain(following): Promise<object>{
+  async getMain(following: Follow[], page: number, pageSize: number): Promise<object>{
+    let limit: number = pageSize;
+    let offset: number = (page - 1) * pageSize;
     const followingId = following.map((each) => each.following_id);
     const articles = await this.createQueryBuilder("article")
-    .where("article.user_id IN (:...user_id)", { user_id: followingId })
+    .where("article.user_id IN (:...user_id)", { user_id: followingId})
     .leftJoinAndSelect("article.tags", "tags")
     .orderBy("article.created_at")
+    .take(limit)
+    .skip(offset)
     .getMany();
     
     return articles;
-    // for(const el of following) {
-    //   const userId = el.following_id;
-    //   const result = await this.find({where: {user_id: userId}, relations: ["articleToTags"]});  
-    //   console.log("article:::::", result);
-    //   if(result.length !== 0) {
-    //     article.push(result[0]);
-    //   }
-    // }
+  }
 
-    // console.log("return 전 내용::::", article);
-    // return article;
+  async getRecent(page, pageSize): Promise<object> {
+    let limit: number = pageSize;
+    let offset: number = (page - 1) * pageSize;
+
+    const articles = await this.createQueryBuilder("article")
+    .leftJoinAndSelect("article.tags", "tags")
+    .orderBy("article.created_at")
+    .take(limit) // limit 
+    .skip(offset) // offset
+    .getMany();
+
+    return articles;
   }
 
   async getArticleDetail(id): Promise<Article[]>{
@@ -36,12 +45,12 @@ export class ArticleRepository extends Repository<Article> {
   }
   
   async createArticle(userId: number, content: string, thumbnail: string) {
-    const result = await this.save({user_id: userId, content, thumbnail});
+    const result = await this.save({userId, content, thumbnail});
     return result
   }
 
   async getArticleInfo(articleId: number) {
-    const articleInfo = await this.find({where: {id: articleId},  relations: ["tracks", "comments"]});
+    const articleInfo = await this.find({where: {id: articleId},  relations: ["road", "tags", "comments"]});
     return articleInfo[0];
   }
 
@@ -63,4 +72,8 @@ export class ArticleRepository extends Repository<Article> {
     }
   }
 
+  async getMypageArticle(id: number): Promise<object|void>{
+    const mypageArticle = await this.find({where: {userId: id},  relations: ["tags"]});
+    return mypageArticle;
+  }
 }
