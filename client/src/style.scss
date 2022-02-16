@@ -1,0 +1,77 @@
+@charset "UTF-8";
+
+$navigator-color: rgb(188, 232, 238);
+$main-color: rgb(240, 249, 251);
+$startmenu-color: rgb(143, 151, 238);
+$footer-color: rgb(188, 232, 238);
+
+html {
+  font-size: 62.5%;
+}
+
+/*--------Navigator--------*/
+.box {
+  background-color: $navigator-color;
+  // border: 2pt solid green;
+  width: 100%;
+  height: 8vmin;
+  display: flex;
+  box-sizing: border-box;
+}
+
+.box div {
+  // border: 1px solid blue;
+}
+
+.structure {
+  // border: 1px solid red;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-box {
+  display: flex;
+}
+
+.logo {
+  width: 13vmin;
+  height: 5.5vmin;
+}
+
+.inputDiv {
+  position: relative;
+  display: flex;
+}
+
+.searchBar {
+  width: 19vmin;
+  height: 3vmin;
+  margin-right: 2vmin;
+  border-radius: 1rem;
+  border: 0px;
+  padding-left: 2vmin;
+}
+
+.searchBar::placeholder {
+  font-size: 1.3vmin;
+}
+
+.searchIcon {
+  position: absolute;
+  height: 1.8vmin;
+  left: 18.5vmin;
+  top: 0.8vmin;
+}
+
+.sideMenu {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding-right: 2.2vmin;
+}
+
+.login-button {
+  font-size: 0.9vw;
+}
