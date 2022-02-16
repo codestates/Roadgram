@@ -20,7 +20,7 @@ export class Likes {
   @Column()
   user_id: number;
 
-  @ManyToOne(() => Article, (Article) => Article.id, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Article, (article) => article.likes, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'article_id' })
   article: Article;
 
