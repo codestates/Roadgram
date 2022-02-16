@@ -44,7 +44,7 @@ export class Article {
     comments?: Comment[];
 
     @OneToMany(() => Likes, (likes) => likes.article, { cascade: true })
-    @JoinColumn()
+    //@JoinColumn()
     likes: Likes[];
 
     @OneToMany(() => ArticleToTag, (articleToTag) => articleToTag.article, { eager: true,cascade: true })

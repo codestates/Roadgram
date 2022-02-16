@@ -26,10 +26,7 @@ export class Comment {
   @Column()
   article_id: number;
 
-  @ManyToOne(() => User, (user) => user.id, {
-    onDelete: 'CASCADE',
-    eager: true,
-  })
+  @ManyToOne(() => User, (user) => user.id, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 

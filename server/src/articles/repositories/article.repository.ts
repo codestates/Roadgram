@@ -72,6 +72,25 @@ export class ArticleRepository extends Repository<Article> {
     }
   }
 
+  async likeIncrement(articleId: number) {
+    await this.increment({id: articleId}, "total_like", 1);
+    return await this.findOne({where: {id: articleId}, select: ["total_like"]});
+  }
+
+  async likeDecrement(articleId: number) {
+    await this.decrement({id: articleId}, "total_like", 1);
+    return await this.findOne({where: {id: articleId}, select: ["total_like"]});
+  }
+  
+  commentIncrement(articleId: number) {
+    this.increment({id: articleId}, "total_comment", 1);
+    return this.findOne({where: {id: articleId}, select: ["id", "total_comment"]});
+  }
+
+  commentDecrement(articleId: number) {
+    this.decrement({id: articleId}, "total_comment", 1);
+    return this.findOne({where: {id: articleId}, select: ["id", "total_comment"]});
+
   async getMypageArticle(id: number): Promise<object|void>{
     const mypageArticle = await this.find({where: {userId: id},  relations: ["tags"]});
     return mypageArticle;

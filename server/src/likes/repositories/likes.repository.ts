@@ -4,26 +4,30 @@ import { Likes } from '../entities/likes.entity';
 
 @EntityRepository(Likes)
 export class LikesRepository extends Repository<Likes> {
-  //   async likeUnlike(likesDto: LikesDto): Promise<Likes> {
-  //     const { userId, articleId } = likesDto;
-  //     const likeOrNot = await this.findOne({
-  //       user_id: userId,
-  //       article_id: articleId,
-  //     });
-  //     console.log(likeOrNot);
-  //     if (likeOrNot === undefined) {
-  //       const liked = this.create({
-  //         user_id: userId,
-  //         article_id: articleId,
-  //       });
-  //       await this.save(liked);
-  //       return liked;
-  //     } else {
-  //       const unliked = this.delete({
-  //         user_id: userId,
-  //         article_id: articleId,
-  //       });
-  //       return;
-  //     }
-  //   }
+    async likeOrNot(likesDto: LikesDto) {
+      const { userId, articleId } = likesDto;
+      return await this.findOne({
+        user_id: userId,
+        article_id: articleId,
+      });
+    };
+
+    async likeArticle(likesDto: LikesDto): Promise<string> {
+      const { userId, articleId } = likesDto;
+      const newLike = this.create({
+        user_id: userId,
+        article_id: articleId
+      });
+      await this.save(newLike);
+      return 'like success';
+    };
+
+    async unlikeArticle(likesDto: LikesDto): Promise<string> {
+      const { userId, articleId } = likesDto;
+      this.delete({
+        user_id: userId,
+        article_id: articleId,
+      });
+      return 'like cancelled';
+      }
 }
