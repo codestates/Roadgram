@@ -29,10 +29,15 @@ export class FollowRepository extends Repository<Follow> {
       following_id: followingUserId
     });
     return 'unfollow success';
-    }
+  }
 
-  async getFollowingUser(id: number): Promise<Follow[]> {
-    const following = await this.find({ select: [ "following" ], where: { follower_id: id }});
-    return following;
+  async getFollowedIds(id: number): Promise<number[]> {
+    const followed = await this.find({ select: [ "follower_id" ], where: { following_id: id }});
+    return followed.map((each) => each.follower_id);
+  }
+
+  async getFollowingIds(id: number): Promise<number[]> {
+    const following = await this.find({ select: [ "following_id" ], where: { follower_id: id }});
+    return following.map((each) => each.following_id);
   }
 }
