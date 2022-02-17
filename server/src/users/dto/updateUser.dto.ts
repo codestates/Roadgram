@@ -1,21 +1,25 @@
-import { IsNumber, IsString } from "class-validator";
+import { IsNumber, IsOptional, IsString } from "class-validator";
 
 export class UpdateUserDto {
     @IsNumber()
-    user:number;
+    user: number;
 
     @IsString()
-    statusMessage?:string;
+    @IsOptional()
+    statusMessage?: string;
 
     @IsString()
-    profileImage?:string;
+    @IsOptional()
+    profileImage?: string;
 
     @IsString()
-    password?:string;
+    @IsOptional()
+    password?: string;
 
     @IsString()
-    nickname?:string;
+    @IsOptional()
+    nickname?: string;
 
     @IsNumber()
-    loginMethod:number;
+    loginMethod: number;
 }

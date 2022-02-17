@@ -26,6 +26,7 @@ export class UserRepository extends Repository<User> {
             throw new InternalServerErrorException();
         }
     }
+
     async deleteUser(id: number) {
         try {
             await this.delete({ id })
@@ -67,19 +68,18 @@ export class UserRepository extends Repository<User> {
     }
 
     getCommentWriterInfo(userId: number): Promise<object> {
-        return this.findOne({where: {id: userId}, select: ["id", "nickname", "profile_image"]});
+        return this.findOne({ where: { id: userId }, select: ["id", "nickname", "profile_image"] });
     }
-    
+
     async putRefreshToken(id: number, refreshToken: string) {
-        const user = await this.findOne({ id:id });
+        const user = await this.findOne({ id: id });
         user.refresh_token = refreshToken;
         this.save(user);
     }
 
     async deleteRefreshToken(id: number) {
-        const user = await this.findOne({ id:id });
+        const user = await this.findOne({ id: id });
         user.refresh_token = null;
         this.save(user);
-
     }
 }
