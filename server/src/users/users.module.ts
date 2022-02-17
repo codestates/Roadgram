@@ -4,14 +4,13 @@ import { UsersController } from './users.controller';
 import { UserRepository } from './repositories/user.repository';
 import { UsersService } from './users.service';
 import { JwtModule } from '@nestjs/jwt';
-import { HttpModule } from '@nestjs/axios';
+import { ArticleRepository } from 'src/articles/repositories/article.repository';
 require('dotenv').config();
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserRepository]),
-    JwtModule.register({ secret: process.env.JWT_SECRET }),
-    HttpModule
+    TypeOrmModule.forFeature([UserRepository, ArticleRepository]),
+    JwtModule.register({ secret: process.env.JWT_SECRET })
   ],
   controllers: [UsersController],
   providers: [UsersService]

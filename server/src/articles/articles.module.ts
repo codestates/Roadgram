@@ -8,6 +8,9 @@ import { TrackRepository } from './repositories/track.repository';
 import { ArticleToTagRepository } from './repositories/article_tag.repository';
 import { UserRepository } from 'src/users/repositories/user.repository';
 import { FollowRepository } from 'src/follow/repositories/follow.repository';
+import { UsersService } from 'src/users/users.service';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   controllers: [ArticlesController],
@@ -20,6 +23,7 @@ import { FollowRepository } from 'src/follow/repositories/follow.repository';
       ArticleToTagRepository, 
       UserRepository, 
       FollowRepository
-    ])]
+    ]),
+  ]
 })
 export class ArticlesModule { }

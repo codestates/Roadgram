@@ -26,10 +26,9 @@ export class ArticlesService {
     private followRepository: FollowRepository
   ) {}
   
-  async getMain(id: number, loginmethod: number, page: number, pageSize: number): Promise<object>{
-    const getFollowing = await this.followRepository.getFollowingUser(id);
-
-    console.log("getFollowing", getFollowing);
+  async getMain(user: number, page: number, pageSize: number): Promise<object>{
+    const getFollowing = await this.followRepository.getFollowingIds(user);
+    console.log("getFollowing========", getFollowing);
     if(!getFollowing) {
       throw new UnauthorizedException('permisson denied');
     } else if(getFollowing.length === 0) {
@@ -57,7 +56,6 @@ export class ArticlesService {
 
     for(const eachTag of tag) {
       const { tagname, order }= eachTag;
-      console.log("tagName ===", tagname);
       const isTagExist = await this.tagRepository.findTagName(tagname);
       // 태그가 없으면 만들어주기
       if(!isTagExist || isTagExist.length === 0) {
@@ -148,15 +146,17 @@ export class ArticlesService {
     const {user, articleId, content, tag} = updateArticleDto;
 
     if(content) {
-      const result = await this.articleRepository.updateContent(updateArticleDto);  
-      if(result.affected === 0) {
-        throw new BadRequestException();
+      const isOwner = await this.articleRepository.isOwner(user, articleId)
+      if(isOwner) {
+        const result = await this.articleRepository.updateContent(updateArticleDto);  
+        if(!result) {
+          throw new BadRequestException();
+        }
       }
     }
-
     if(tag) {
       // 기존에 있던 태그 전부 삭제
-      const deletion = await this.articleToTagRepository.deleteTags(articleId);
+      await this.articleToTagRepository.deleteTags(articleId);
       // tag를 찾거나 만들어주는 로직으로 Go
       const result = await this.findOrCreateTags(user, articleId, tag);
       if(result) {
@@ -167,7 +167,7 @@ export class ArticlesService {
   }
 
   async deleteArticle(id: number, user: number, loginmethod: number) {
-    const result = await this.articleRepository.deleteArticle(id);
+    const result = await this.articleRepository.deleteArticle(id, user);
     return result;
   }
 }

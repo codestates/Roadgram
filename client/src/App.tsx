@@ -1,16 +1,14 @@
-import React from 'react';
-import Footer from 'components/Footer';
-import Navigator from './components/Navigator';
-// import "./App.css";
+import React from 'react'
+import Footer from './components/Footer'
+import Navigator from './components/Navigator'
 
 function App() {
   return (
     <div>
       <Navigator />
-      <div>Test</div>
       <Footer />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -17,10 +17,10 @@ export class Article {
     @Column({name: "user_id"})
     user_id: number;
 
-    @Column({default: 0, name: "total_like"})
+    @Column({default: 0})
     total_like: number;
 
-    @Column({default: 0, name: "total_comment"})
+    @Column({default: 0})
     total_comment: number;
 
     @Column({default: ""})
@@ -29,11 +29,11 @@ export class Article {
     @Column()
     thumbnail: string;
 
-    @CreateDateColumn({ type: "timestamp", name: "created_at" })
-    createdAt: Date;
+    @CreateDateColumn({ type: "timestamp"})
+    created_at: Date;
 
-    @UpdateDateColumn({ type: "timestamp", name: "updated_at" })
-    updatedAt: Date;
+    @UpdateDateColumn({ type: "timestamp"})
+    updated_at: Date;
 
     @OneToMany(() => Track, (track) => track.article, { cascade: true })
     @JoinColumn()
@@ -44,7 +44,7 @@ export class Article {
     comments?: Comment[];
 
     @OneToMany(() => Likes, (likes) => likes.article, { cascade: true })
-    //@JoinColumn()
+    @JoinColumn()
     likes: Likes[];
 
     @OneToMany(() => ArticleToTag, (articleToTag) => articleToTag.article, { eager: true,cascade: true })
