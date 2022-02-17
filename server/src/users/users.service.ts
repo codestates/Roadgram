@@ -1,14 +1,14 @@
-import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException, Response, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LoginDto } from './dto/login.dto';
 import { UserRepository } from './repositories/user.repository';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/createUser.dto';
-import { HttpService } from '@nestjs/axios';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import axios from 'axios';
 import { ArticleRepository } from 'src/articles/repositories/article.repository';
+import { AuthDto } from './dto/auth.dto';
 require('dotenv').config();
 
 @Injectable()
@@ -18,8 +18,7 @@ export class UsersService {
         private userRepository: UserRepository,
         @InjectRepository(ArticleRepository)
         private articleRepository: ArticleRepository,
-        private jwtService: JwtService,
-        private httpService: HttpService,
+        private jwtService: JwtService
     ) { }
 
     async checkEmail(email: string) {
@@ -73,7 +72,7 @@ export class UsersService {
 
     async logout(id: number) {
         this.userRepository.deleteRefreshToken(id);
-        return { message: 'logout succeed' }
+        return { message: 'logout succeed' };
     }
 
     signup(createUserDto: CreateUserDto) {
@@ -91,96 +90,121 @@ export class UsersService {
         else return this.userRepository.updateUser(userData);
     }
 
-    async validateToken(accessToken: string, id: number, loginMethod: number) {
-        const userInfo = await this.userRepository.findOne({ id: id, login_method: loginMethod });
+    async validateToken(authDto: AuthDto) {
+        const { id, loginMethod, accessToken } = authDto;
+        const userInfo = await this.userRepository.findOne({ id });
         if (!userInfo) throw new BadRequestException('bad request');
         if (loginMethod === 0) {
             try {
-                await this.jwtService.verifyAsync(accessToken);
-                return true;
+                const tokenInfo = await this.jwtService.verifyAsync(accessToken);
+                return tokenInfo.email === userInfo.email;
+            } catch {
+                throw new UnauthorizedException('request new access token');
+            }
+        }
+        else if (loginMethod === 1) {
+            try {
+                const userInfoKakao = await axios.get('https://kapi.kakao.com/v2/user/me',
+                    { headers: { 'Authorization': `Bearer ${accessToken}` } }
+                );
+                return userInfoKakao.data.kakao_account.email === userInfo.email;
             } catch {
                 throw new UnauthorizedException('request new access token');
             }
         }
     }
 
-    async getRefreshToken(id: number, loginMethod: number, refreshToken: string) {
-        const userInfo = await this.userRepository.findOne({ id, login_method: loginMethod });
-        if (!userInfo) throw new BadRequestException('bad request');
+    async refreshAccessToken(authDto: AuthDto) {
+        const { id, loginMethod, refreshToken } = authDto;
+        const userInfo = await this.userRepository.findOne({ id });
+        if (!userInfo) {
+            throw new BadRequestException('bad request');
+        }
+        if (userInfo.refresh_token !== refreshToken) {
+            throw new ForbiddenException('invalid token');
+        }
         if (loginMethod === 0) {
-            if (refreshToken === userInfo.refresh_token) {
+            try {
+                await this.jwtService.verifyAsync(refreshToken);
                 const accessToken = this.jwtService.sign({ email: userInfo.email }, { expiresIn: '1h' });
                 return {
                     data: { accessToken },
                     message: 'new access token'
                 }
-            }
-            else {
+            } catch {
                 this.userRepository.deleteRefreshToken(id);
-                throw new UnauthorizedException('invaild token');
+                throw new UnauthorizedException('refresh token expired');
             }
         }
+        else if (loginMethod === 1) {
+            try {
+                const tokenRequest = await axios.post(`https://kauth.kakao.com/oauth/token?grant_type=refresh_token&client_id=${process.env.CLIENT_ID}&refresh_token=${refreshToken}`,
+                    { headers: { 'Content-Type': "application/x-www-form-urlencoded" } }
+                );
+                return {
+                    data: { accessToken: tokenRequest.data.access_token },
+                    message: 'new access token'
+                }
+            } catch {
+                this.userRepository.deleteRefreshToken(id);
+                throw new UnauthorizedException('refresh token expired');
+            }
+        }
+
     }
 
     async getTokenKakao(code: string) {
-        const tokenRequest = await axios.post(`https://kauth.kakao.com/oauth/token`,
-            {
-                grant_type: "authorization_code",
-                client_id: process.env.CLIENT_ID,
-                redirect_uri: "http://localhost:3000",
-                code: code
-            },
-            {
-                headers: { 'Content-Type': "application/x-www-form-urlencoded" },
-            }
-        );
-        const userInfoKakao = await axios.post('kapi.kakao.com',
-            {
-                property_keys: `["kakao_account.email"]`
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${tokenRequest.data.access_token}`,
-                    'Content-Type': "application/x-www-form-urlencoded"
+        try {
+            const tokenRequest = await axios.post(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.CLIENT_ID}&redirect_uri=http://localhost:3000&code=${code}`,
+                { headers: { 'Content-Type': "application/x-www-form-urlencoded" } }
+            );
+            const userInfoKakao = await axios.get('https://kapi.kakao.com/v2/user/me',
+                {
+                    headers: {
+                        'Authorization': `Bearer ${tokenRequest.data.access_token}`
+                    }
+                }
+            );
+            const userInfo = await this.userRepository.findOne({ email: userInfoKakao.data.kakao_account.email });
+            if (!userInfo) {
+                const user = {
+                    email: userInfoKakao.data.kakao_account.email,
+                    nickname: null,
+                    password: null,
+                    login_method: 1,
+                    refresh_token: tokenRequest.data.refresh_token
+                }
+                const createdUserInfo = await this.userRepository.save(user);
+                return {
+                    data: {
+                        accessToken: tokenRequest.data.access_token,
+                        refreshToken: tokenRequest.data.refresh_token,
+                        userInfo: {
+                            userId: createdUserInfo.id,
+                            nickname: createdUserInfo.nickname,
+                            loginMethod: 1
+                        }
+                    },
+                    message: 'signup successfully'
                 }
             }
-        )
-        const userInfo=await this.userRepository.findOne({email:userInfoKakao.data.kakao_account.email});
-        if(!userInfo){
-            const user={
-                email:userInfoKakao.data.email,
-                nickname:null,
-                password:null,
-                login_method:1,
-                refresh_token:tokenRequest.data.refresh_token
+            else {
+                await this.userRepository.putRefreshToken(userInfo.id, tokenRequest.data.refresh_token);
+                return {
+                    data: {
+                        accessToken: tokenRequest.data.access_token,
+                        refreshToken: tokenRequest.data.refresh_token,
+                        userInfo: {
+                            userId: userInfo.id,
+                            nickname: userInfo.nickname,
+                            loginMethod: 1
+                        }
+                    },
+                    message: 'login successfully'
+                }
             }
-            const createdUserInfo=this.userRepository.create(user);
-            return {
-                data:{
-                    accessToken:tokenRequest.data.access_token,
-                    refreshToken:tokenRequest.data.refresh_token,
-                    userInfo:{
-                        userId:createdUserInfo.id,
-                        nickname:createdUserInfo.nickname,
-                        loginMethod:1
-                    }
-                },
-                message:'signup successfully'
-            }
-        }
-        else{
-            return {
-                data:{
-                    accessToken:tokenRequest.data.access_token,
-                    refreshToken:tokenRequest.data.refresh_token,
-                    userInfo:{
-                        userId:userInfo.id,
-                        nickname:userInfo.nickname,
-                        loginMethod:1
-                    }
-                },
-                message:'login successfully'
-            }
+        } catch {
+            throw new UnauthorizedException('permission denied');
         }
     }
     async getMypage(id: number): Promise<object> {
