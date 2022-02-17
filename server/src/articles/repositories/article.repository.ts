@@ -12,6 +12,7 @@ export class ArticleRepository extends Repository<Article> {
     let limit: number = pageSize;
     let offset: number = (page - 1) * pageSize;
     // const followingId = following.map((each) => each.following_id);
+
     const articles = await this.createQueryBuilder("article")
     .where("article.user_id IN (:...user_id)", { user_id: following})
     .leftJoinAndSelect("article.tags", "tags")
@@ -81,26 +82,26 @@ export class ArticleRepository extends Repository<Article> {
       }
   }
 
-  async likeIncrement(articleId: number) {
+  async likeIncrement(articleId: number): Promise<object> {
     await this.increment({id: articleId}, "total_like", 1);
     return await this.findOne(articleId, {select: ["total_like"]});
   }
 
-  async likeDecrement(articleId: number) {
+  async likeDecrement(articleId: number): Promise<object> {
     await this.decrement({id: articleId}, "total_like", 1);
     return await this.findOne(articleId, {select: ["total_like"]});
   }
   
-  commentIncrement(articleId: number) {
-    this.increment({id: articleId}, "total_comment", 1);
-    return this.findOne({where: {id: articleId}, select: ["id", "total_comment"]});
+  async commentIncrement(articleId: number): Promise<object> {
+    await this.increment({id: articleId}, "total_comment", 1);
+    return await this.findOne(articleId, {select: ["id", "total_comment"]});
   }
 
-  commentDecrement(articleId: number) {
-    this.decrement({id: articleId}, "total_comment", 1);
-    return this.findOne({where: {id: articleId}, select: ["id", "total_comment"]});
+  async commentDecrement(articleId: number): Promise<object> {
+    await this.decrement({id: articleId}, "total_comment", 1);
+    return await this.findOne(articleId, {select: ["id", "total_comment"]});
   }
-    
+ 
   async getMypageArticle(id: number): Promise<object|[]>{
     const mypageArticle = await this.find({where: {user_id: id},  relations: ["tags"]});
     return mypageArticle;

@@ -4,6 +4,7 @@ import { User } from "../entities/user.entity";
 import * as bcrypt from 'bcrypt'
 import { BadRequestException, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { UpdateUserDto } from "../dto/updateUser.dto";
+import { FollowDto } from 'src/follow/dto/follow.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -82,5 +83,28 @@ export class UserRepository extends Repository<User> {
         const user = await this.findOne({ id: id });
         user.refresh_token = null;
         this.save(user);
+    }
+
+    async followIncrement(followDto: FollowDto): Promise<object> {
+        const { user, followingUserId } = followDto;
+        await this.increment({id: followingUserId}, "total_follower", 1);
+        await this.increment({id: user}, "total_following", 1);
+        return await this.findOne({where: {id: followingUserId}, select: ["id", "total_follower"]});
+    }
+
+    async followDecrement(followDto: FollowDto): Promise<object> {
+        const { user, followingUserId } = followDto;
+        await this.decrement({id: followingUserId}, "total_follower", 1);
+        await this.decrement({id: user}, "total_following", 1);
+        return await this.findOne({where: {id: followingUserId}, select: ["id", "total_follower"]});
+    }
+
+    async getProfileList(userIds: number[]): Promise<object[]> {
+        const profileList = [];
+        for (const id of userIds) {
+            const user = await this.findOne(id, { select: ["id", "nickname", "profile_image"] });
+            profileList.push(user);
+        }
+        return profileList;
     }
 }

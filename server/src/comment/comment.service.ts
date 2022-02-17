@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Comment } from './entities/comment.entity';
 import { CommentRepository } from './repositories/comment.repository';
 import { CreateCommentDto, ModifyCommentDto } from './dto/comment.dto';
 import { ArticleRepository } from 'src/articles/repositories/article.repository';
@@ -18,15 +17,15 @@ export class CommentsService {
   ) {}
 
   async createComment(createCommentDto: CreateCommentDto): Promise<object> {
-    const { userId, articleId, comment } = createCommentDto;
+    const { user, articleId, comment } = createCommentDto;
     const newComment = await this.commentRepository.createComment(createCommentDto);
-    const articleCommentInfo = await this.articleRepository.commentIncrement(articleId);
-    const writerInfo = await this.userRepository.getCommentWriterInfo(userId);
+    const articleInfo = await this.articleRepository.commentIncrement(articleId);
+    const writerInfo = await this.userRepository.getCommentWriterInfo(user);
 
     return {
       data: { 
         newComment, 
-        articleCommentInfo, 
+        articleInfo, 
         writerInfo
       },
       message: 'comment created'
@@ -46,10 +45,9 @@ export class CommentsService {
     if (result.affected === 0) {
       throw new NotFoundException(`permission denied`);
     } else {
-      const articleCommentInfo = await this.articleRepository.commentDecrement(articleId);
-      console.log(articleCommentInfo);
+      const articleInfo = await this.articleRepository.commentDecrement(articleId);
       return {
-        data: { articleCommentInfo },
+        data: { articleInfo },
         message: 'comment deleted'
       }
     }
