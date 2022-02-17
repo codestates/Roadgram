@@ -5,10 +5,10 @@ import { CreateCommentDto, ModifyCommentDto } from '../dto/comment.dto';
 @EntityRepository(Comment)
 export class CommentRepository extends Repository<Comment> {
   async createComment(createCommentDto: CreateCommentDto): Promise<Comment> {
-    const { userId, articleId, comment } = createCommentDto;
+    const { user, articleId, comment } = createCommentDto;
 
     const newComment = this.create({
-      user_id: userId,
+      user_id: user,
       article_id: articleId,
       comment,
     });

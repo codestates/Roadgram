@@ -7,7 +7,7 @@ export class CreateCommentDto {
 
   @IsNotEmpty()
   @IsNumber()
-  userId: number;
+  user: number;
 
   @IsNotEmpty()
   @IsNumber()
