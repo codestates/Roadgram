@@ -8,8 +8,9 @@ import { UpdateUserDto } from "../dto/updateUser.dto";
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
 
-    async getUserInfo(userId: number) {
+    async getUserInfo(userId: number): Promise<User|any> {
         const userInfo = await this.find({ id: userId });
+        console.log("userInfo", userInfo[0])
         return userInfo[0];
     }
 

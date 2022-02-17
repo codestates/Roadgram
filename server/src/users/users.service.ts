@@ -8,6 +8,7 @@ import { CreateUserDto } from './dto/createUser.dto';
 import { HttpService } from '@nestjs/axios';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import axios from 'axios';
+import { ArticleRepository } from 'src/articles/repositories/article.repository';
 require('dotenv').config();
 
 @Injectable()
@@ -15,6 +16,8 @@ export class UsersService {
     constructor(
         @InjectRepository(UserRepository)
         private userRepository: UserRepository,
+        @InjectRepository(ArticleRepository)
+        private articleRepository: ArticleRepository,
         private jwtService: JwtService,
         private httpService: HttpService,
     ) { }
@@ -178,6 +181,20 @@ export class UsersService {
                 },
                 message:'login successfully'
             }
+        }
+    }
+    async getMypage(id: number): Promise<object> {
+        const userInfo = await this.userRepository.getUserInfo(id);
+        if(!userInfo || Object.keys(userInfo).length === 0) {
+            throw new NotFoundException("No Content")
+        }
+        const mypageArticle = await this.articleRepository.getMypageArticle(id);
+        return {
+            data: {
+                userInfo,
+                article: mypageArticle
+            },
+            message: "ok"
         }
     }
 }

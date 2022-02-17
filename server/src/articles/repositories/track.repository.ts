@@ -6,7 +6,7 @@ export class TrackRepository extends Repository<Track>{
   createTrack(road: [], articleId: number) {
     road.forEach(async (each) => {
       const {order, imageSrc, location} = each;
-      await this.save({order, imageSrc, location, articleId});
+      await this.save({order, image_src: imageSrc, location, article_id: articleId});
     })
   }
 }
