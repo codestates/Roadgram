@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import axios from 'axios';
+import { ArticleRepository } from 'src/articles/repositories/article.repository';
 import { AuthDto } from './dto/auth.dto';
 require('dotenv').config();
 
@@ -15,6 +16,8 @@ export class UsersService {
     constructor(
         @InjectRepository(UserRepository)
         private userRepository: UserRepository,
+        @InjectRepository(ArticleRepository)
+        private articleRepository: ArticleRepository,
         private jwtService: JwtService
     ) { }
 
@@ -202,6 +205,20 @@ export class UsersService {
             }
         } catch {
             throw new UnauthorizedException('permission denied');
+        }
+    }
+    async getMypage(id: number): Promise<object> {
+        const userInfo = await this.userRepository.getUserInfo(id);
+        if(!userInfo || Object.keys(userInfo).length === 0) {
+            throw new NotFoundException("No Content")
+        }
+        const mypageArticle = await this.articleRepository.getMypageArticle(id);
+        return {
+            data: {
+                userInfo,
+                article: mypageArticle
+            },
+            message: "ok"
         }
     }
 }

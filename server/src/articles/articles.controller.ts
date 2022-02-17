@@ -1,20 +1,21 @@
-import { Body, Controller, Delete, Get, HttpCode, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, ParseIntPipe, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/createArticle.dto';
 import { UpdateArticleDto } from './dto/updateArticle.dto';
 
 @Controller('articles')
 export class ArticlesController {
-  constructor(private articlesService: ArticlesService) {}
+  constructor(
+    private articlesService: ArticlesService,
+  ){}
   
   @Get()
   getMain(
     @Query('user', ParseIntPipe) user: number, 
-    @Query('loginmethod', ParseIntPipe) loginmethod: number,
     @Query('page', ParseIntPipe) page: number,
     @Query('pageSize', ParseIntPipe) pageSize: number
   ): Promise<object> {
-    return this.articlesService.getMain(user, loginmethod, page, pageSize);
+    return this.articlesService.getMain(user, page, pageSize);
   }
 
   @Get('/recent')
@@ -33,9 +34,8 @@ export class ArticlesController {
   }
 
   @Post()
-  createArticle(@Body() createArticleDto: CreateArticleDto): Promise<any>{
+  createArticle(@Body() createArticleDto: CreateArticleDto): any{
     const result = this.articlesService.createArticle(createArticleDto);
-    console.log("result=========", result);
     return result
   }
 

@@ -47,8 +47,8 @@ export class UsersController {
     }
 
     @Get('/userinfo')
-    getUserInfo() {
-        return 'abc'
+    getUserInfo(@Query('id') id: number): Promise<object> {
+        return this.usersService.getMypage(id);
     }
 
     @Patch('/profile')
