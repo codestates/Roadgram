@@ -7,7 +7,7 @@ export class LikesDto {
 
   @IsNotEmpty()
   @IsNumber()
-  userId: number;
+  user: number;
 
   @IsNotEmpty()
   @IsNumber()
