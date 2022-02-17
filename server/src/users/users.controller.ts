@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Headers, HttpCode, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Headers, HttpCode, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { CreateUserDto } from './dto/createUser.dto';
 import { LoginDto } from './dto/login.dto';
@@ -53,22 +53,25 @@ export class UsersController {
 
     @Patch('/profile')
     @UseGuards(AuthGuard)
+    @HttpCode(200)
     modifyProfile(@Body() userData: UpdateUserDto) {
         return this.usersService.modifyUser(userData);
     }
 
     @Delete('/withdrawal')
     @UseGuards(AuthGuard)
+    @HttpCode(200)
     deleteUser(@Query('user') id: string) {
         return this.usersService.deleteUser(+id);
     }
 
     @Get('/auth')
-    requestRefreshToken(
+    @HttpCode(200)
+    refreshAccessToken(
         @Query('user') id: string,
         @Query('loginmethod') loginMethod: string,
         @Headers('authorization') refreshToken: string
-        ) {
-        return this.usersService.getRefreshToken(+id, +loginMethod, refreshToken);
+    ) {
+        return this.usersService.refreshAccessToken({ id: +id, loginMethod: +loginMethod, refreshToken });
     }
 }
