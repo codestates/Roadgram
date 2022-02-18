@@ -10,11 +10,14 @@ import { UserRepository } from 'src/users/repositories/user.repository';
 import { FollowRepository } from 'src/follow/repositories/follow.repository';
 import { UsersService } from 'src/users/users.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { HttpModule } from '@nestjs/axios';
+import { CommentRepository } from 'src/comments/repositories/comments.repository';
 
 @Module({
   controllers: [ArticlesController],
-  providers: [ArticlesService],
+  providers: [
+    ArticlesService,
+    UsersService
+  ],
   imports: [
     TypeOrmModule.forFeature(
     [ArticleRepository, 
@@ -22,8 +25,10 @@ import { HttpModule } from '@nestjs/axios';
       TrackRepository, 
       ArticleToTagRepository, 
       UserRepository, 
-      FollowRepository
+      FollowRepository,
+      CommentRepository
     ]),
+    JwtModule.register({ secret: process.env.JWT_SECRET })
   ]
 })
 export class ArticlesModule { }

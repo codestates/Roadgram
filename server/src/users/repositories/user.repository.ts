@@ -11,7 +11,6 @@ export class UserRepository extends Repository<User> {
 
     async getUserInfo(userId: number): Promise<User | any> {
         const userInfo = await this.find({ id: userId });
-        console.log("userInfo", userInfo[0])
         return userInfo[0];
     }
 
@@ -97,5 +96,10 @@ export class UserRepository extends Repository<User> {
             profileList.push(user);
         }
         return profileList;
+    }
+
+    async getUsername(id: number): Promise<object|any> {
+        const result =  await this.find({where: {id}, select: ["nickname"]})
+        return result[0].nickname
     }
 }

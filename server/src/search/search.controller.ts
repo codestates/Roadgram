@@ -5,7 +5,10 @@ import { SearchService } from './search.service';
 export class SearchController {
   constructor(private searchService: SearchService){}
   @Get()
-  searchArticle(@Query('tag') tag: string) {
-    return this.searchService.searchArticle(tag);
+  searchArticle(
+    @Query('tag') tag: string,
+    @Query('page') page: number
+    ) {
+    return this.searchService.searchArticle(tag, page);
   }
 }

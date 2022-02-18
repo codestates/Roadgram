@@ -7,12 +7,19 @@ import { ArticleRepository } from 'src/articles/repositories/article.repository'
 import { UsersService } from 'src/users/users.service';
 import { UserRepository } from 'src/users/repositories/user.repository';
 import { JwtModule } from '@nestjs/jwt';
+import { ArticleToTagRepository } from 'src/articles/repositories/article_tag.repository';
+import { TagRepository } from 'src/articles/repositories/tag.repository';
 
 @Module({
   providers: [LikesService, UsersService],
   controllers: [LikesController],
   imports: [
-    TypeOrmModule.forFeature([LikesRepository, ArticleRepository, UserRepository]),
+    TypeOrmModule.forFeature([
+      LikesRepository, 
+      ArticleRepository, 
+      UserRepository,
+      ArticleToTagRepository,
+      TagRepository]),
     JwtModule.register({ secret: process.env.JWT_SECRET })
   ],
 })

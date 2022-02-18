@@ -18,4 +18,9 @@ export class CommentRepository extends Repository<Comments> {
 
     return commentInfo;
   }
+
+  async getComments(articleId: number): Promise<Comments|undefined> {
+    const result = await this.find({articleId});
+    return result[0]
+  }
 }

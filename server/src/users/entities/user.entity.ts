@@ -46,7 +46,7 @@ export class User {
   @CreateDateColumn({ type: 'timestamp', name: "created_at" })
   createdAt: Date;
 
-  @OneToMany(() => Article, (Article) => Article.user_id, { cascade: true })
+  @OneToMany(() => Article, (Article) => Article.userId, { cascade: true })
   @JoinColumn()
   article?: Article[];
 

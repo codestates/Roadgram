@@ -3,7 +3,7 @@ import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-valid
 export class UpdateArticleDto {
   @IsNotEmpty()  
   @IsNumber()
-  loginmethod: number;
+  loginMethod: number;
 
   @IsNotEmpty()
   @IsNumber()
