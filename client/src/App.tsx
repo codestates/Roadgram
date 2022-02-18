@@ -1,13 +1,12 @@
-import React from "react";
+import React from 'react'
+import Navigator from './components/Navigator'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>This is test!</p>
-      </header>
+    <div>
+      <Navigator />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
