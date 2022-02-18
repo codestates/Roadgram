@@ -11,7 +11,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity('User')
+@Entity('Users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,26 +25,26 @@ export class User {
   @Column({ nullable: true, default: null })
   password: string;
 
-  @Column({ default: '' })
-  status_message: string;
+  @Column({ default: '', name: "status_message" })
+  statusMessage: string;
 
-  @Column({ default: '' })
-  profile_image: string;
+  @Column({ default: '', name: "profile_image" })
+  profileImage: string;
 
-  @Column({ default: 0 })
-  total_following: number;
+  @Column({ default: 0, name: "total_following" })
+  totalFollowing: number;
 
-  @Column({ default: 0 })
-  total_follower: number;
+  @Column({ default: 0, name: "totalFollower" })
+  totalFollower: number;
 
-  @Column()
-  login_method: number;
+  @Column({ name: "login_method" })
+  loginMethod: number;
 
-  @Column({ default: null, nullable: true })
-  refresh_token: string;
+  @Column({ default: null, nullable: true, name: "refresh_token" })
+  refreshToken: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  created_at: Date;
+  @CreateDateColumn({ type: 'timestamp', name: "created_at" })
+  createdAt: Date;
 
   @OneToMany(() => Article, (Article) => Article.user_id, { cascade: true })
   @JoinColumn()
