@@ -7,6 +7,7 @@ import { CommentsModule } from './comments/comments.module';
 import { LikesModule } from './likes/likes.module';
 import { FollowModule } from './follow/follow.module';
 import { typeORMConfig } from 'config/typeorm.config';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -18,5 +19,6 @@ import { typeORMConfig } from 'config/typeorm.config';
     LikesModule,
     FollowModule
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

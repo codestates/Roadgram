@@ -9,6 +9,7 @@ import { UpdateUserDto } from './dto/updateUser.dto';
 import axios from 'axios';
 import { ArticleRepository } from 'src/articles/repositories/article.repository';
 import { AuthDto } from './dto/auth.dto';
+import { User } from './entities/user.entity';
 require('dotenv').config();
 
 @Injectable()
@@ -22,10 +23,7 @@ export class UsersService {
     ) { }
 
     async checkEmail(email: string) {
-        if (!email) {
-            throw new BadRequestException('Bad request')
-        }
-        const isValid = await this.userRepository.findOne({ email: email });
+        const isValid = await this.userRepository.findOne({ email });
         if (isValid) {
             throw new ConflictException('not available')
         }
@@ -33,10 +31,7 @@ export class UsersService {
     }
 
     async checkNickname(nickname: string) {
-        if (!nickname) {
-            throw new BadRequestException('Bad request')
-        }
-        const isValid = await this.userRepository.findOne({ nickname: nickname });
+        const isValid = await this.userRepository.findOne({ nickname });
         if (isValid) {
             throw new ConflictException('not available')
         }
@@ -45,24 +40,23 @@ export class UsersService {
 
     async login(loginDto: LoginDto) {
         const userInfo = await this.userRepository.findOne({
-            login_method: 0,
+            loginMethod: 0,
             email: loginDto.email
         })
-
         if (!userInfo || !await bcrypt.compare(loginDto.password, userInfo.password)) {
             throw new NotFoundException('login fail')
         }
         else {
-            const accessToken = this.jwtService.sign({ email: userInfo.email }, { expiresIn: '1h' });
-            const refreshToken = this.jwtService.sign({ email: userInfo.email }, { expiresIn: '12h' });
+            const accessToken = this.jwtService.sign({ email: loginDto.email }, { expiresIn: '1h' });
+            const refreshToken = this.jwtService.sign({ email: loginDto.email }, { expiresIn: '12h' });
             this.userRepository.putRefreshToken(userInfo.id, refreshToken);
             return {
                 data: {
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
+                    accessToken,
+                    refreshToken,
                     userInfo: {
-                        userId: userInfo.id,
-                        nickName: userInfo.nickname
+                        id: userInfo.id,
+                        nickname: userInfo.nickname
                     }
                 },
                 message: 'login ok'
@@ -116,11 +110,11 @@ export class UsersService {
 
     async refreshAccessToken(authDto: AuthDto) {
         const { id, loginMethod, refreshToken } = authDto;
-        const userInfo = await this.userRepository.findOne({ id });
+        const userInfo = await this.userRepository.findOne({ id, loginMethod });
         if (!userInfo) {
             throw new BadRequestException('bad request');
         }
-        if (userInfo.refresh_token !== refreshToken) {
+        if (userInfo.refreshToken !== refreshToken) {
             throw new ForbiddenException('invalid token');
         }
         if (loginMethod === 0) {
@@ -159,28 +153,24 @@ export class UsersService {
                 { headers: { 'Content-Type': "application/x-www-form-urlencoded" } }
             );
             const userInfoKakao = await axios.get('https://kapi.kakao.com/v2/user/me',
-                {
-                    headers: {
-                        'Authorization': `Bearer ${tokenRequest.data.access_token}`
-                    }
-                }
+                { headers: { 'Authorization': `Bearer ${tokenRequest.data.access_token}` } }
             );
             const userInfo = await this.userRepository.findOne({ email: userInfoKakao.data.kakao_account.email });
             if (!userInfo) {
-                const user = {
+                const user: User = this.userRepository.create({
                     email: userInfoKakao.data.kakao_account.email,
                     nickname: null,
                     password: null,
-                    login_method: 1,
-                    refresh_token: tokenRequest.data.refresh_token
-                }
+                    loginMethod: 1,
+                    refreshToken: tokenRequest.data.refresh_token
+                })
                 const createdUserInfo = await this.userRepository.save(user);
                 return {
                     data: {
                         accessToken: tokenRequest.data.access_token,
                         refreshToken: tokenRequest.data.refresh_token,
                         userInfo: {
-                            userId: createdUserInfo.id,
+                            id: createdUserInfo.id,
                             nickname: createdUserInfo.nickname,
                             loginMethod: 1
                         }
@@ -207,9 +197,10 @@ export class UsersService {
             throw new UnauthorizedException('permission denied');
         }
     }
+
     async getMypage(id: number): Promise<object> {
         const userInfo = await this.userRepository.getUserInfo(id);
-        if(!userInfo || Object.keys(userInfo).length === 0) {
+        if (!userInfo || Object.keys(userInfo).length === 0) {
             throw new NotFoundException("No Content")
         }
         const mypageArticle = await this.articleRepository.getMypageArticle(id);
