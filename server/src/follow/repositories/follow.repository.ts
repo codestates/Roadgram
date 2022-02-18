@@ -7,37 +7,37 @@ export class FollowRepository extends Repository<Follow> {
   async followedOrNot(followDto: FollowDto) {
     const { user, followingUserId } = followDto;
     return await this.findOne({
-      follower_id: user,
-      following_id: followingUserId
+      followerId: user,
+      followingId: followingUserId
     });
   }
 
   async follow(followDto: FollowDto): Promise<string> {
     const { user, followingUserId } = followDto;
     const newFollow = this.create({
-      follower_id: user,
-      following_id: followingUserId
+      followerId: user,
+      followingId: followingUserId
     });
     await this.save(newFollow);
-    return 'follow success';
+    return 'followed this user';
   };
 
   async unfollow(followDto: FollowDto): Promise<string> {
     const { user, followingUserId } = followDto;
     this.delete({
-      follower_id: user,
-      following_id: followingUserId
+      followerId: user,
+      followingId: followingUserId
     });
-    return 'unfollow success';
+    return 'unfollowed this user';
   }
 
   async getFollowedIds(id: number): Promise<number[]> {
-    const followed = await this.find({ select: [ "follower_id" ], where: { following_id: id }});
-    return followed.map((each) => each.follower_id);
+    const followed = await this.find({ select: [ "followerId" ], where: { followingId: id }});
+    return followed.map((each) => each.followerId);
   }
 
   async getFollowingIds(id: number): Promise<number[]> {
-    const following = await this.find({ select: [ "following_id" ], where: { follower_id: id }});
-    return following.map((each) => each.following_id);
+    const following = await this.find({ select: [ "followingId" ], where: { followerId: id }});
+    return following.map((each) => each.followingId);
   }
 }

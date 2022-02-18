@@ -84,8 +84,8 @@ export class ArticlesService {
           profileImage: userInfo.profile_image
         },
         articleInfo: {
-          totalLike: articleInfo.total_like,
-          totalComment: articleInfo.total_comment,
+          totalLike: articleInfo.totalLike,
+          totalComment: articleInfo.totalComment,
           content: articleInfo.content,
           road: articleInfo.road,
           tag: articleInfo.tags,

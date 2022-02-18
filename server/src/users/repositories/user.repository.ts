@@ -78,16 +78,16 @@ export class UserRepository extends Repository<User> {
 
     async followIncrement(followDto: FollowDto): Promise<object> {
         const { user, followingUserId } = followDto;
-        await this.increment({ id: followingUserId }, "total_follower", 1);
-        await this.increment({ id: user }, "total_following", 1);
-        return await this.findOne({ where: { id: followingUserId }, select: ["id", "totalFollower"] });
+        await this.increment({id: followingUserId}, "totalFollower", 1);
+        await this.increment({id: user}, "totalFollowing", 1);
+        return await this.findOne({where: {id: followingUserId}, select: ["id", "totalFollower"]});
     }
 
     async followDecrement(followDto: FollowDto): Promise<object> {
         const { user, followingUserId } = followDto;
-        await this.decrement({ id: followingUserId }, "total_follower", 1);
-        await this.decrement({ id: user }, "total_following", 1);
-        return await this.findOne({ where: { id: followingUserId }, select: ["id", "totalFollower"] });
+        await this.decrement({id: followingUserId}, "totalFollower", 1);
+        await this.decrement({id: user}, "totalFollowing", 1);
+        return await this.findOne({where: {id: followingUserId}, select: ["id", "totalFollower"]});
     }
 
     async getProfileList(userIds: number[]): Promise<object[]> {
