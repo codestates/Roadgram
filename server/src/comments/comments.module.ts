@@ -1,26 +1,25 @@
 import { Module } from '@nestjs/common';
-import { LikesService } from './likes.service';
-import { LikesController } from './likes.controller';
+import { CommentsService } from './comments.service';
+import { CommentsController } from './comments.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LikesRepository } from './repositories/likes.repository';
+import { CommentRepository } from './repositories/comments.repository';
 import { ArticleRepository } from 'src/articles/repositories/article.repository';
-import { UsersService } from 'src/users/users.service';
 import { UserRepository } from 'src/users/repositories/user.repository';
+import { UsersService } from 'src/users/users.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ArticleToTagRepository } from 'src/articles/repositories/article_tag.repository';
 import { TagRepository } from 'src/articles/repositories/tag.repository';
 
 @Module({
-  providers: [LikesService, UsersService],
-  controllers: [LikesController],
+  providers: [CommentsService, UsersService],
+  controllers: [CommentsController],
   imports: [
     TypeOrmModule.forFeature([
-      LikesRepository, 
+      CommentRepository, 
       ArticleRepository, 
-      UserRepository,
+      UserRepository, 
       ArticleToTagRepository,
       TagRepository]),
-    JwtModule.register({ secret: process.env.JWT_SECRET })
-  ],
+    JwtModule.register({ secret: process.env.JWT_SECRET })]
 })
-export class LikesModule {}
+export class CommentsModule {}

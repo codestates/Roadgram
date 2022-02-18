@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable,InternalServerErrorException,NotAcceptableException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CommentRepository } from 'src/comment/repositories/comment.repository';
+import { CommentRepository } from 'src/comments/repositories/comments.repository';
 import { FollowRepository } from 'src/follow/repositories/follow.repository';
 import { UserRepository } from 'src/users/repositories/user.repository';
 import { CreateArticleDto } from './dto/createArticle.dto';

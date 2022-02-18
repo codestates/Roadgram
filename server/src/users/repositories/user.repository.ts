@@ -2,14 +2,14 @@ import { EntityRepository, Repository } from "typeorm";
 import { CreateUserDto } from "../dto/createUser.dto";
 import { User } from "../entities/user.entity";
 import * as bcrypt from 'bcrypt'
-import { BadRequestException, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { UpdateUserDto } from "../dto/updateUser.dto";
 import { FollowDto } from 'src/follow/dto/follow.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
 
-    async getUserInfo(userId: number): Promise<User|any> {
+    async getUserInfo(userId: number): Promise<User | any> {
         const userInfo = await this.find({ id: userId });
         return userInfo[0];
     }
@@ -19,21 +19,16 @@ export class UserRepository extends Repository<User> {
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
         const user = this.create({ email, password: hashedPassword, nickname, loginMethod: 0 });
-
-        try {
-            await this.save(user);
-            return { message: "signup succeed" }
-        } catch {
-            throw new InternalServerErrorException();
-        }
+        await this.save(user);
+        return { message: "signup succeed" }
     }
 
     async deleteUser(id: number) {
         try {
             await this.delete({ id })
-            return { message: 'withdrawal succeed' }
+            return { message: 'withdrawal succeed' };
         } catch {
-            throw new NotFoundException('not found')
+            throw new NotFoundException('not found');
         }
     }
 
@@ -73,15 +68,11 @@ export class UserRepository extends Repository<User> {
     }
 
     async putRefreshToken(id: number, refreshToken: string) {
-        const user = await this.findOne({ id: id });
-        user.refreshToken = refreshToken;
-        this.save(user);
+        this.update({id},{refreshToken})
     }
 
     async deleteRefreshToken(id: number) {
-        const user = await this.findOne({ id: id });
-        user.refreshToken = null;
-        this.save(user);
+        this.update({id},{refreshToken:null})
     }
 
     async followIncrement(followDto: FollowDto): Promise<object> {
@@ -93,8 +84,8 @@ export class UserRepository extends Repository<User> {
 
     async followDecrement(followDto: FollowDto): Promise<object> {
         const { user, followingUserId } = followDto;
-        await this.decrement({id: followingUserId}, "total_follower", 1);
-        await this.decrement({id: user}, "total_following", 1);
+        await this.decrement({id: followingUserId}, "totalFollower", 1);
+        await this.decrement({id: user}, "totalFollowing", 1);
         return await this.findOne({where: {id: followingUserId}, select: ["id", "totalFollower"]});
     }
 

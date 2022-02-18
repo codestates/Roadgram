@@ -10,7 +10,7 @@ import { UserRepository } from 'src/users/repositories/user.repository';
 import { FollowRepository } from 'src/follow/repositories/follow.repository';
 import { UsersService } from 'src/users/users.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { CommentRepository } from 'src/comment/repositories/comment.repository';
+import { CommentRepository } from 'src/comments/repositories/comments.repository';
 
 @Module({
   controllers: [ArticlesController],

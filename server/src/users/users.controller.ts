@@ -11,38 +11,38 @@ export class UsersController {
 
     @Post('/login')
     @HttpCode(200)
-    async login(@Body() loginDto: LoginDto) {
+    async login(@Body() loginDto: LoginDto): Promise<object> {
         return this.usersService.login(loginDto);
     }
 
     @Post('/logout')
     @UseGuards(AuthGuard)
     @HttpCode(200)
-    logout(@Body('user') id: number) {
+    logout(@Body('user') id: number): Promise<object> {
         return this.usersService.logout(id);
     }
 
     @Post('/signup')
     @HttpCode(201)
-    signup(@Body() createUserDto: CreateUserDto) {
+    signup(@Body() createUserDto: CreateUserDto): Promise<object> {
         return this.usersService.signup(createUserDto)
     }
 
     @Post('/emailcheck')
     @HttpCode(200)
-    checkEmail(@Body('email') email: string) {
+    checkEmail(@Body('email') email: string): Promise<object> {
         return this.usersService.checkEmail(email)
     }
 
     @Post('/nicknamecheck')
     @HttpCode(200)
-    checkNickname(@Body('nickName') nickname: string) {
+    checkNickname(@Body('nickname') nickname: string): Promise<object> {
         return this.usersService.checkNickname(nickname);
     }
 
     @Post('/login/kakao')
     @HttpCode(200)
-    getToken(@Body('code') code: string) {
+    getToken(@Body('code') code: string): Promise<object> {
         return this.usersService.getTokenKakao(code);
     }
 
@@ -57,14 +57,14 @@ export class UsersController {
     @Patch('/profile')
     @UseGuards(AuthGuard)
     @HttpCode(200)
-    modifyProfile(@Body() userData: UpdateUserDto) {
+    modifyProfile(@Body() userData: UpdateUserDto): Promise<object> {
         return this.usersService.modifyUser(userData);
     }
 
     @Delete('/withdrawal')
     @UseGuards(AuthGuard)
     @HttpCode(200)
-    deleteUser(@Query('user') id: string) {
+    deleteUser(@Query('user') id: string): Promise<object> {
         return this.usersService.deleteUser(+id);
     }
 
@@ -72,9 +72,9 @@ export class UsersController {
     @HttpCode(200)
     refreshAccessToken(
         @Query('user') id: string,
-        @Query('loginmethod') loginMethod: string,
+        @Query('loginMethod') loginMethod: string,
         @Headers('authorization') refreshToken: string
-    ) {
+    ): Promise<object> {
         return this.usersService.refreshAccessToken({ id: +id, loginMethod: +loginMethod, refreshToken });
     }
 }

@@ -1,32 +1,36 @@
-import { Headers, Body, Controller, Post, Patch, Delete, HttpCode } from '@nestjs/common';
-import { CommentsService } from './comment.service';
-import { CreateCommentDto, ModifyCommentDto } from './dto/comment.dto';
+import { Body, Controller, Post, Patch, Delete, HttpCode, Query, UseGuards, ParseIntPipe } from '@nestjs/common';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { CommentsService } from './comments.service';
+import { CreateCommentDto, ModifyCommentDto } from './dto/comments.dto';
 
 @Controller('comments')
 export class CommentsController {
   constructor(private commentsService: CommentsService) {}
 
   @Post()
+  @UseGuards(AuthGuard)
   @HttpCode(201)
   createComment(
-    //@Headers('authorization')
     @Body() createCommentDto: CreateCommentDto,
   ): object {
     return this.commentsService.createComment(createCommentDto);
   }
 
   @Patch()
+  @UseGuards(AuthGuard)
   @HttpCode(200)
   modifyComment(@Body() modifyCommentDto: ModifyCommentDto): Promise<object> {
     return this.commentsService.modifyComment(modifyCommentDto);
   }
 
   @Delete()
+  @UseGuards(AuthGuard)
   @HttpCode(200)
   deleteComment(
-    @Body('loginMethod') loginMethod: number,
-    @Body('commentId') commentId: number,
-    @Body('articleId') articleId: number
+    @Query('loginMethod', ParseIntPipe) loginMethod: number,
+    @Query('commentId', ParseIntPipe) commentId: number,
+    @Query('articleId', ParseIntPipe) articleId: number,
+    @Query('user', ParseIntPipe) user: number
   ): Promise<object> {
     return this.commentsService.deleteComment(commentId, articleId);
   }

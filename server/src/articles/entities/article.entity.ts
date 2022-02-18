@@ -1,4 +1,4 @@
-import { Comment } from "src/comment/entities/comment.entity";
+import { Comments } from "src/comments/entities/comments.entity";
 import { Likes } from "src/likes/entities/likes.entity";
 import { User } from "src/users/entities/user.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
@@ -7,6 +7,9 @@ import { Track } from "./track.entity";
 
 @Entity('Article')
 export class Article {
+    map(arg0: (el: any) => any): number[] | PromiseLike<number[]> {
+      throw new Error('Method not implemented.');
+    }
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -39,9 +42,9 @@ export class Article {
     @JoinColumn()
     road: Track[];
 
-    @OneToMany(() => Comment, (comment) => comment.article, { cascade: true })
+    @OneToMany(() => Comments, (comment) => comment.article, { cascade: true })
     @JoinColumn()
-    comments?: Comment[];
+    comments?: Comments[];
 
     @OneToMany(() => Likes, (likes) => likes.article, { cascade: true })
     @JoinColumn()

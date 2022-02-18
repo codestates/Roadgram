@@ -1,7 +1,7 @@
 import { Article } from 'src/articles/entities/article.entity';
 import { Follow } from 'src/follow/entities/follow.entity';
 import { Likes } from 'src/likes/entities/likes.entity';
-import { Comment } from 'src/comment/entities/comment.entity';
+import { Comments } from 'src/comments/entities/comments.entity';
 import {
   Column,
   CreateDateColumn,
@@ -11,7 +11,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity('User')
+@Entity('Users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -28,16 +28,16 @@ export class User {
   @Column({ default: '', name: "status_message" })
   statusMessage: string;
 
-  @Column({ default: '', name: "profile_image" })
+  @Column({ default: '', name: 'profile_image' })
   profileImage: string;
 
-  @Column({ default: 0, name: "total_following"})
+  @Column({ default: 0, name: 'total_following' })
   totalFollowing: number;
 
-  @Column({ default: 0, name: "total_follwer" })
+  @Column({ default: 0, name: 'total_follower' })
   totalFollower: number;
 
-  @Column({name: "login_method"})
+  @Column({ name: "login_method" })
   loginMethod: number;
 
   @Column({ default: null, nullable: true, name: "refresh_token" })
@@ -50,19 +50,19 @@ export class User {
   @JoinColumn()
   article?: Article[];
 
-  @OneToMany(() => Follow, (Follow) => Follow.follower_id, { cascade: true })
+  @OneToMany(() => Follow, (Follow) => Follow.followerId, { cascade: true })
   @JoinColumn()
   follower?: Follow[];
 
-  @OneToMany(() => Follow, (Follow) => Follow.following_id, { cascade: true })
+  @OneToMany(() => Follow, (Follow) => Follow.followingId, { cascade: true })
   @JoinColumn()
   following?: Follow[];
 
-  @OneToMany(() => Likes, (Likes) => Likes.user_id, { cascade: true })
+  @OneToMany(() => Likes, (Likes) => Likes.userId, { cascade: true })
   @JoinColumn()
   likes: Likes[];
 
-  @OneToMany(() => Comment, (Comment) => Comment.userId, { cascade: true })
+  @OneToMany(() => Comments, (Comment) => Comment.user, { cascade: true })
   @JoinColumn()
   comments?: Comment[];
 }

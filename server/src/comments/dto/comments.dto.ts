@@ -25,6 +25,10 @@ export class ModifyCommentDto {
 
   @IsNotEmpty()
   @IsNumber()
+  user: number;
+
+  @IsNotEmpty()
+  @IsNumber()
   commentId: number;
 
   @IsNotEmpty()

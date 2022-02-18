@@ -11,8 +11,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('Comment')
-export class Comment {
+@Entity('Comments')
+export class Comments {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -23,19 +23,19 @@ export class Comment {
   @JoinColumn({ name: 'article_id' })
   article: Article;
 
-  @Column({name: "article_id"})
+  @Column({ name: 'article_id' })
   articleId: number;
 
-  @ManyToOne(() => User, (user) => user.id, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.comments, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({name: "user_id"})
+  @Column({ name: 'user_id' })
   userId: number;
 
-  @CreateDateColumn({ type: 'timestamp', name: "created_at" })
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp', name: "updated_at" })
+  @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 }
