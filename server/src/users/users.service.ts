@@ -9,6 +9,8 @@ import { UpdateUserDto } from './dto/updateUser.dto';
 import axios from 'axios';
 import { ArticleRepository } from 'src/articles/repositories/article.repository';
 import { AuthDto } from './dto/auth.dto';
+import { ArticleToTagRepository } from 'src/articles/repositories/article_tag.repository';
+import { TagRepository } from 'src/articles/repositories/tag.repository';
 require('dotenv').config();
 
 @Injectable()
@@ -18,6 +20,10 @@ export class UsersService {
         private userRepository: UserRepository,
         @InjectRepository(ArticleRepository)
         private articleRepository: ArticleRepository,
+        @InjectRepository(ArticleToTagRepository)
+        private articleToTagRepository: ArticleToTagRepository,
+        @InjectRepository(TagRepository)
+        private tagRepository: TagRepository,
         private jwtService: JwtService
     ) { }
 
@@ -45,7 +51,7 @@ export class UsersService {
 
     async login(loginDto: LoginDto) {
         const userInfo = await this.userRepository.findOne({
-            login_method: 0,
+            loginMethod: 0,
             email: loginDto.email
         })
 
@@ -91,13 +97,17 @@ export class UsersService {
     }
 
     async validateToken(authDto: AuthDto) {
+        console.log("validateToken 시작!!!!!");
         const { id, loginMethod, accessToken } = authDto;
+        console.log("authDto", authDto);
         const userInfo = await this.userRepository.findOne({ id });
         if (!userInfo) throw new BadRequestException('bad request');
         if (loginMethod === 0) {
             try {
                 const tokenInfo = await this.jwtService.verifyAsync(accessToken);
+                console.log("tokenInfo", tokenInfo);
                 return tokenInfo.email === userInfo.email;
+                
             } catch {
                 throw new UnauthorizedException('request new access token');
             }
@@ -120,7 +130,7 @@ export class UsersService {
         if (!userInfo) {
             throw new BadRequestException('bad request');
         }
-        if (userInfo.refresh_token !== refreshToken) {
+        if (userInfo.refreshToken !== refreshToken) {
             throw new ForbiddenException('invalid token');
         }
         if (loginMethod === 0) {
@@ -207,18 +217,56 @@ export class UsersService {
             throw new UnauthorizedException('permission denied');
         }
     }
-    async getMypage(id: number): Promise<object> {
-        const userInfo = await this.userRepository.getUserInfo(id);
-        if(!userInfo || Object.keys(userInfo).length === 0) {
+    async getMypage(user: number, page: number): Promise<object> {
+        try {
+            let limit: number = 9;
+            let offset: number = (page - 1) * 9;
+            const userInfo = await this.userRepository.getUserInfo(user);
+            const articles = await this.articleRepository.getArticleInfo(user, limit, offset);
+            console.log("usersInfo ===", userInfo);
+            console.log("articles ===", articles);
+            
+            // // 각 게시물에 태그 이름(배열) 추가
+            let newArticles = [];
+            for(const article of articles) {
+                const tagIds: object = await this.articleToTagRepository.getTagIds(article.id);
+                const tagNames: string[] = await this.tagRepository.getTagNameWithIds(tagIds);
+                article.tags = tagNames;
+        
+                interface articleObject {
+                    id: string,
+                    thumbnail: string,
+                    nickname: string
+                    totalLike: number,
+                    totalComment: number,
+                    tags: string[]
+                }
+                let creation: articleObject = {
+                    id: article.id,
+                    thumbnail: article.thumbnail,
+                    nickname: userInfo.nickname,
+                    totalLike: article.totalLike,
+                    totalComment: article.totalComment,
+                    tags: article.tags
+                };
+                newArticles.push(creation);
+            }
+            return {
+                data: {
+                    userInfo: {
+                        id: userInfo.id,
+                        email: userInfo.email,
+                        nickname: userInfo.nickname,
+                        statusMessage: userInfo.statusMessage,
+                        profileImage: userInfo.profileImage
+                    },
+                    articles: newArticles
+                },
+                message: "ok"
+            }
+        } catch (err) {
+            console.error(err);
             throw new NotFoundException("No Content")
-        }
-        const mypageArticle = await this.articleRepository.getMypageArticle(id);
-        return {
-            data: {
-                userInfo,
-                article: mypageArticle
-            },
-            message: "ok"
         }
     }
 }

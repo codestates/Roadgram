@@ -12,14 +12,14 @@ export class ArticleToTag {
     article: Article;
 
     @Column({name: "article_id"})
-    article_id: number;
+    articleId: number;
 
     @ManyToOne(() => Tag, (tag) => tag.tags, {onDelete: "CASCADE" })
     @JoinColumn({ name: "tag_id" })
     tag: Tag;
 
     @Column({name: "tag_id"})
-    tag_id: number;
+    tagId: number;
 
     @Column()
     order: number;

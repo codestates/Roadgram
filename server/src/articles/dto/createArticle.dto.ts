@@ -23,5 +23,5 @@ export class CreateArticleDto {
   
   @IsNotEmpty()
   @IsNumber()
-  loginmethod: number;
+  loginMethod: number;
 }

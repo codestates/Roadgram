@@ -8,8 +8,8 @@ export class CommentRepository extends Repository<Comment> {
     const { user, articleId, comment } = createCommentDto;
 
     const newComment = this.create({
-      user_id: user,
-      article_id: articleId,
+      userId: user,
+      articleId: articleId,
       comment,
     });
     this.save(newComment);
@@ -20,5 +20,10 @@ export class CommentRepository extends Repository<Comment> {
   async modifyComment(modifyCommentDto: ModifyCommentDto): Promise<object> {
     const { commentId, comment } = modifyCommentDto;
     return this.update({ id: commentId }, { comment });
+  }
+
+  async getComments(articleId: number): Promise<Comment|undefined> {
+    const result = await this.find({articleId});
+    return result[0]
   }
 }

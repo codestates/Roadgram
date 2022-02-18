@@ -23,19 +23,19 @@ export class Comment {
   @JoinColumn({ name: 'article_id' })
   article: Article;
 
-  @Column()
-  article_id: number;
+  @Column({name: "article_id"})
+  articleId: number;
 
   @ManyToOne(() => User, (user) => user.id, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column()
-  user_id: number;
+  @Column({name: "user_id"})
+  userId: number;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  created_at: Date;
+  @CreateDateColumn({ type: 'timestamp', name: "created_at" })
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
-  updated_at: Date;
+  @UpdateDateColumn({ type: 'timestamp', name: "updated_at" })
+  updatedAt: Date;
 }

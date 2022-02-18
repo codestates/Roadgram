@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
   private validateToken(req: any) {
     const accessToken: string = req.headers.authorization;
     const id: number = +(req.body.user || req.query.user);
-    const loginMethod: number = req.body.loginMethod === 0 || req.body.loginMethod ? req.body.loginMethod : +req.query.loginmethod;
+    const loginMethod: number = req.body.loginMethod === 0 || req.body.loginMethod ? req.body.loginMethod : +req.query.loginMethod;
     const authDto: AuthDto = { id, loginMethod, accessToken }
     return this.usersService.validateToken(authDto);
   }
