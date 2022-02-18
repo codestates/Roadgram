@@ -17,13 +17,13 @@ export class Likes {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column()
-  user_id: number;
+  @Column({ name: 'user_id' })
+  userId: number;
 
   @ManyToOne(() => Article, (article) => article.likes, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'article_id' })
   article: Article;
 
-  @Column()
-  article_id: number;
+  @Column({ name: 'article_id' })
+  articleId: number;
 }

@@ -53,7 +53,7 @@ export class UserRepository extends Repository<User> {
 
         if (userData.nickname) user.nickname = userData.nickname;
 
-        if (userData.profileImage) user.profile_image = userData.profileImage;
+        if (userData.profileImage) user.profileImage = userData.profileImage;
 
         if (userData.statusMessage) user.status_message = userData.statusMessage;
 
@@ -62,7 +62,7 @@ export class UserRepository extends Repository<User> {
             data: {
                 userInfo: {
                     statusMessage: user.status_message,
-                    profileImage: user.profile_image
+                    profileImage: user.profileImage
                 }
             },
             message: 'change succeed'
@@ -70,7 +70,7 @@ export class UserRepository extends Repository<User> {
     }
 
     getCommentWriterInfo(userId: number): Promise<object> {
-        return this.findOne({ where: { id: userId }, select: ["id", "nickname", "profile_image"] });
+        return this.findOne({ where: { id: userId }, select: ["id", "nickname", "profileImage"] });
     }
 
     async putRefreshToken(id: number, refreshToken: string) {
@@ -87,22 +87,22 @@ export class UserRepository extends Repository<User> {
 
     async followIncrement(followDto: FollowDto): Promise<object> {
         const { user, followingUserId } = followDto;
-        await this.increment({id: followingUserId}, "total_follower", 1);
-        await this.increment({id: user}, "total_following", 1);
-        return await this.findOne({where: {id: followingUserId}, select: ["id", "total_follower"]});
+        await this.increment({id: followingUserId}, "totalFollower", 1);
+        await this.increment({id: user}, "totalFollowing", 1);
+        return await this.findOne({where: {id: followingUserId}, select: ["id", "totalFollower"]});
     }
 
     async followDecrement(followDto: FollowDto): Promise<object> {
         const { user, followingUserId } = followDto;
-        await this.decrement({id: followingUserId}, "total_follower", 1);
-        await this.decrement({id: user}, "total_following", 1);
-        return await this.findOne({where: {id: followingUserId}, select: ["id", "total_follower"]});
+        await this.decrement({id: followingUserId}, "totalFollower", 1);
+        await this.decrement({id: user}, "totalFollowing", 1);
+        return await this.findOne({where: {id: followingUserId}, select: ["id", "totalFollower"]});
     }
 
     async getProfileList(userIds: number[]): Promise<object[]> {
         const profileList = [];
         for (const id of userIds) {
-            const user = await this.findOne(id, { select: ["id", "nickname", "profile_image"] });
+            const user = await this.findOne(id, { select: ["id", "nickname", "profileImage"] });
             profileList.push(user);
         }
         return profileList;

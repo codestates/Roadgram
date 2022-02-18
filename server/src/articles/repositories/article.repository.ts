@@ -82,26 +82,30 @@ export class ArticleRepository extends Repository<Article> {
       }
   }
 
-  async likeIncrement(articleId: number): Promise<object> {
-    await this.increment({id: articleId}, "total_like", 1);
-    return await this.findOne(articleId, {select: ["total_like"]});
+  async likeIncrement(articleId: number): Promise<number> {
+    await this.increment({id: articleId}, "totalLike", 1);
+    const articleInfo = await this.findOne(articleId, {select: ["totalLike"]});
+    return articleInfo.totalLike;
   }
 
-  async likeDecrement(articleId: number): Promise<object> {
-    await this.decrement({id: articleId}, "total_like", 1);
-    return await this.findOne(articleId, {select: ["total_like"]});
+  async likeDecrement(articleId: number): Promise<number> {
+    await this.decrement({id: articleId}, "totalLike", 1);
+    const articleInfo = await this.findOne(articleId, {select: ["totalLike"]});
+    return articleInfo.totalLike;
   }
   
-  async commentIncrement(articleId: number): Promise<object> {
-    await this.increment({id: articleId}, "total_comment", 1);
-    return await this.findOne(articleId, {select: ["id", "total_comment"]});
+  async commentIncrement(articleId: number): Promise<number> {
+    await this.increment({id: articleId}, "totalComment", 1);
+    const articleInfo = await this.findOne(articleId, {select: ["totalComment"]});
+    return articleInfo.totalComment;
   }
 
-  async commentDecrement(articleId: number): Promise<object> {
-    await this.decrement({id: articleId}, "total_comment", 1);
-    return await this.findOne(articleId, {select: ["id", "total_comment"]});
+  async commentDecrement(articleId: number): Promise<number> {
+    await this.decrement({id: articleId}, "totalComment", 1);
+    const articleInfo = await this.findOne(articleId, {select: ["totalComment"]});
+    return articleInfo.totalComment;
   }
- 
+
   async getMypageArticle(id: number): Promise<object|[]>{
     const mypageArticle = await this.find({where: {user_id: id},  relations: ["tags"]});
     return mypageArticle;

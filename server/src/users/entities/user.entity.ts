@@ -1,7 +1,7 @@
 import { Article } from 'src/articles/entities/article.entity';
 import { Follow } from 'src/follow/entities/follow.entity';
 import { Likes } from 'src/likes/entities/likes.entity';
-import { Comment } from 'src/comment/entities/comment.entity';
+import { Comments } from 'src/comments/entities/comments.entity';
 import {
   Column,
   CreateDateColumn,
@@ -28,14 +28,14 @@ export class User {
   @Column({ default: '' })
   status_message: string;
 
-  @Column({ default: '' })
-  profile_image: string;
+  @Column({ default: '', name: 'profile_image' })
+  profileImage: string;
 
-  @Column({ default: 0 })
-  total_following: number;
+  @Column({ default: 0, name: 'total_following' })
+  totalFollowing: number;
 
-  @Column({ default: 0 })
-  total_follower: number;
+  @Column({ default: 0, name: 'total_follower' })
+  totalFollower: number;
 
   @Column()
   login_method: number;
@@ -50,19 +50,19 @@ export class User {
   @JoinColumn()
   article?: Article[];
 
-  @OneToMany(() => Follow, (Follow) => Follow.follower_id, { cascade: true })
+  @OneToMany(() => Follow, (Follow) => Follow.followerId, { cascade: true })
   @JoinColumn()
   follower?: Follow[];
 
-  @OneToMany(() => Follow, (Follow) => Follow.following_id, { cascade: true })
+  @OneToMany(() => Follow, (Follow) => Follow.followingId, { cascade: true })
   @JoinColumn()
   following?: Follow[];
 
-  @OneToMany(() => Likes, (Likes) => Likes.user_id, { cascade: true })
+  @OneToMany(() => Likes, (Likes) => Likes.userId, { cascade: true })
   @JoinColumn()
   likes: Likes[];
 
-  @OneToMany(() => Comment, (Comment) => Comment.user_id, { cascade: true })
+  @OneToMany(() => Comments, (Comment) => Comment.user, { cascade: true })
   @JoinColumn()
   comments?: Comment[];
 }
