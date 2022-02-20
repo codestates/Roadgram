@@ -254,7 +254,9 @@ export class UsersService {
                         email: userInfo.email,
                         nickname: userInfo.nickname,
                         statusMessage: userInfo.statusMessage,
-                        profileImage: userInfo.profileImage
+                        profileImage: userInfo.profileImage,
+                        totalFollower: userInfo.totalFollower,
+                        totalFollowing: userInfo.totalFollowing
                     },
                     articles: newArticles
                 },
