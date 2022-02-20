@@ -14,8 +14,7 @@ export class UserRepository extends Repository<User> {
         return userInfo[0];
     }
 
-    async createUser(createUserDto: CreateUserDto) {
-        const { email, password, nickname } = createUserDto;
+    async createUser({ email, password, nickname }: CreateUserDto) {
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
         const user = this.create({ email, password: hashedPassword, nickname, loginMethod: 0 });
@@ -28,29 +27,23 @@ export class UserRepository extends Repository<User> {
             await this.delete({ id })
             return { message: 'withdrawal succeed' };
         } catch {
-            throw new NotFoundException('not found');
+            throw new NotFoundException('cannot find user by id');
         }
     }
 
     async updateUser(userData: UpdateUserDto) {
         const user: User = await this.findOne({ id: userData.user, loginMethod: userData.loginMethod });
-
         if (!user) {
-            throw new BadRequestException('bad request');
+            throw new NotFoundException('cannot find user by id');
         }
-
         if (userData.password) {
             const salt = await bcrypt.genSalt();
             const hashedPassword = await bcrypt.hash(userData.password, salt);
             user.password = hashedPassword;
         }
-
         if (userData.nickname) user.nickname = userData.nickname;
-
         if (userData.profileImage) user.profileImage = userData.profileImage;
-
         if (userData.statusMessage) user.statusMessage = userData.statusMessage;
-
         this.save(user);
         return {
             data: {
