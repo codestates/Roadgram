@@ -1,7 +1,7 @@
 import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LoginDto } from './dto/login.dto';
+import { EmailDto, IdDto, KakaoLoginDto, LoginDto, NicknameDto, QueryDto } from './dto/login.dto';
 import { UserRepository } from './repositories/user.repository';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/createUser.dto';
@@ -28,20 +28,20 @@ export class UsersService {
         private jwtService: JwtService
     ) { }
 
-    async checkEmail(email: string) {
+    async checkEmail({ email }: EmailDto) {
         const isValid = await this.userRepository.findOne({ email });
         if (isValid) {
             throw new ConflictException('not available')
         }
-        else return { message: 'availabe' }
+        else return { message: 'available' }
     }
 
-    async checkNickname(nickname: string) {
+    async checkNickname({ nickname }: NicknameDto) {
         const isValid = await this.userRepository.findOne({ nickname });
         if (isValid) {
             throw new ConflictException('not available')
         }
-        else return { message: 'availabe' }
+        else return { message: 'available' }
     }
 
     async login(loginDto: LoginDto) {
@@ -70,17 +70,23 @@ export class UsersService {
         }
     }
 
-    async logout(id: number) {
-        this.userRepository.deleteRefreshToken(id);
-        return { message: 'logout succeed' };
+    async logout(idDto: IdDto) {
+        const id = idDto.user;
+        try {
+            this.userRepository.deleteRefreshToken(id);
+            return { message: 'logout succeed' };
+        } catch {
+            throw new NotFoundException("cannot find user")
+        }
+
     }
 
     signup(createUserDto: CreateUserDto) {
         return this.userRepository.createUser(createUserDto);
     }
 
-    deleteUser(id: number) {
-        return this.userRepository.deleteUser(id);
+    deleteUser(idDto: QueryDto) {
+        return this.userRepository.deleteUser(+idDto.user);
     }
 
     modifyUser(userData: UpdateUserDto) {
@@ -94,14 +100,14 @@ export class UsersService {
         console.log("validateToken 시작!!!!!");
         const { id, loginMethod, accessToken } = authDto;
         console.log("authDto", authDto);
-        const userInfo = await this.userRepository.findOne({ id });
-        if (!userInfo) throw new BadRequestException('bad request');
+        const userInfo = await this.userRepository.findOne({ id, loginMethod });
+        if (!userInfo) throw new NotFoundException('cannnot find user');
         if (loginMethod === 0) {
             try {
                 const tokenInfo = await this.jwtService.verifyAsync(accessToken);
                 console.log("tokenInfo", tokenInfo);
                 return tokenInfo.email === userInfo.email;
-                
+
             } catch {
                 throw new UnauthorizedException('request new access token');
             }
@@ -118,11 +124,10 @@ export class UsersService {
         }
     }
 
-    async refreshAccessToken(authDto: AuthDto) {
-        const { id, loginMethod, refreshToken } = authDto;
+    async refreshAccessToken({ id, loginMethod, refreshToken }: AuthDto) {
         const userInfo = await this.userRepository.findOne({ id, loginMethod });
         if (!userInfo) {
-            throw new BadRequestException('bad request');
+            throw new NotFoundException('cannot find user');
         }
         if (userInfo.refreshToken !== refreshToken) {
             throw new ForbiddenException('invalid token');
@@ -157,9 +162,9 @@ export class UsersService {
 
     }
 
-    async getTokenKakao(code: string) {
+    async getTokenKakao({ code }: KakaoLoginDto) {
         try {
-            const tokenRequest = await axios.post(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.CLIENT_ID}&redirect_uri=http://localhost:3000&code=${code}`,
+            const tokenRequest = await axios.post(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}&code=${code}`,
                 { headers: { 'Content-Type': "application/x-www-form-urlencoded" } }
             );
             const userInfoKakao = await axios.get('https://kapi.kakao.com/v2/user/me',
@@ -216,14 +221,14 @@ export class UsersService {
             const articles = await this.articleRepository.getArticleInfo(user, limit, offset);
             console.log("usersInfo ===", userInfo);
             console.log("articles ===", articles);
-            
+
             // // 각 게시물에 태그 이름(배열) 추가
             let newArticles = [];
-            for(const article of articles) {
+            for (const article of articles) {
                 const tagIds: object = await this.articleToTagRepository.getTagIds(article.id);
                 const tagNames: string[] = await this.tagRepository.getTagNameWithIds(tagIds);
                 article.tags = tagNames;
-        
+
                 interface articleObject {
                     id: string,
                     thumbnail: string,
