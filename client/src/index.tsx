@@ -50,12 +50,12 @@ export interface RootState {
 /* persist store 세팅 (새로고침, 종료해도 지속될 store) */
 export const persistor = persistStore(store)
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root'),
-)
+// ReactDOM.render(
+//   <React.StrictMode>
+//     <App />
+//   </React.StrictMode>,
+//   document.getElementById('root'),
+// )
 
 ReactDOM.render(
   <Provider store={store}>
