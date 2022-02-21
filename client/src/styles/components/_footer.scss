@@ -1,0 +1,47 @@
+.footer-container {
+  background-color: $navigator-color;
+  width: 100%;
+  height: 10vh;
+  display: flex;
+}
+
+.footer-box {
+  width: 100%;
+  // border: 2pt solid green;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-box div {
+  //   border: 1px solid blue;
+}
+
+.profile-boxes {
+  display: flex;
+  justify-content: center;
+}
+
+.profile-box {
+  display: flex;
+  align-items: center;
+  padding-left: 3vmin;
+  padding-right: 3vmin;
+}
+
+.githubIcon {
+  width: 4vmin;
+  height: 4vmin;
+  margin-right: 0.7vmin;
+}
+
+.githubLink {
+  color: inherit;
+}
+
+.profile {
+  font-size: 1.3vmin;
+  font-weight: bold;
+  text-align: center;
+}
