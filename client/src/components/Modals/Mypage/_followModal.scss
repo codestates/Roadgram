@@ -1,0 +1,52 @@
+.follow-center-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.follow-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.follow-box {
+  position: absolute;
+  background-color: rgb(146, 183, 204);
+  width: 400px;
+  height: 200px;
+  padding: 30px;
+  border-radius: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.close-button {
+  float: right;
+  color: rgb(83, 81, 70);
+}
+
+.follow-title {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.follows {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
