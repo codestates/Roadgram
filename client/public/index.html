@@ -12,6 +12,11 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
     <title>React App</title>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+      Kakao.init("7f2bd1e7743322d2fdd2e6ea42053a4a");
+      console.log(Kakao.isInitialized())
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
