@@ -18,7 +18,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config -r ./config -n typeorm.config.ts",
+    "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed -r ./config -n typeorm.config.ts",
+    "schema:drop": "ts-node ./node_modules/typeorm/cli.js schema:drop -f ./config/typeorm.config.ts",
+    "schema:sync": "ts-node ./node_modules/typeorm/cli.js schema:sync -f ./config/typeorm.config.ts"
   },
   "dependencies": {
     "@nestjs/axios": "^0.0.5",
@@ -39,7 +43,8 @@
     "request-promise": "^4.2.6",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.2.41"
+    "typeorm": "^0.2.41",
+    "typeorm-seeding": "^1.6.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",

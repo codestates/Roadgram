@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Headers, HttpCode, ParseIntPipe, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Headers, HttpCode, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { CreateUserDto } from './dto/createUser.dto';
 import { EmailDto, IdDto, KakaoLoginDto, LoginDto, NicknameDto, QueryDto, TokenDto } from './dto/login.dto';
@@ -74,6 +74,6 @@ export class UsersController {
         @Query() queryDto: QueryDto,
         @Headers() tokenDto: TokenDto
     ): Promise<object> {
-        return this.usersService.refreshAccessToken({ id: +queryDto.user, loginMethod: +queryDto.loginMethod, refreshToken: tokenDto.authroization });
+        return this.usersService.refreshAccessToken({ id: queryDto.user, loginMethod: queryDto.loginMethod, refreshToken: tokenDto.authroization });
     }
 }

@@ -1,8 +1,10 @@
-import { Article } from 'src/articles/entities/article.entity';
-import { Follow } from 'src/follow/entities/follow.entity';
-import { Likes } from 'src/likes/entities/likes.entity';
-import { Comments } from 'src/comments/entities/comments.entity';
+import { Article } from '../../articles/entities/article.entity';
+import { Follow } from '../../follow/entities/follow.entity';
+import { Likes } from '../../likes/entities/likes.entity';
+import { Comments } from '../../comments/entities/comments.entity';
+import * as bcrypt from 'bcrypt';
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -65,4 +67,12 @@ export class User {
   @OneToMany(() => Comments, (Comment) => Comment.user, { cascade: true })
   @JoinColumn()
   comments?: Comment[];
+
+  @BeforeInsert()
+  async hashPassword(password: string) {
+    if(this.loginMethod===0){
+      const salt = await bcrypt.genSalt();
+      this.password = await bcrypt.hash(this.password || password, salt);
+    }
+  }
 }
