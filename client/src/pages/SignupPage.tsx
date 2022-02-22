@@ -21,6 +21,7 @@ function SignupPage() {
   const [isSamePassword, setIsSamePassword] = useState(true);
 
   useEffect(() => {
+    console.log("sign up")
     if (isInitialMount.current) {
       isInitialMount.current = false;
     } else {
