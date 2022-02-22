@@ -1,0 +1,88 @@
+.signup_whole_div{ 
+  width: 100vw;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  span {
+    width: 500px;
+    color: red;
+  }
+
+  h3 {
+    align-self: center;
+    margin-right: 300px;
+  }
+}
+
+.signup_main_div{ 
+  width: 30%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  border: 2px double black;
+}
+
+.signup_logo_img{ 
+  width: 200px;
+  height: 120px;
+}
+
+.signup_nickname_div{
+  display: flex;
+  flex-direction: column;
+}
+
+.signup_password_div{
+  display: flex;
+  flex-direction: column;
+}
+
+.signup_passwordcheck_div{
+  display: flex;
+  flex-direction: column;
+}
+
+.signup_email_div{
+  display: flex;
+  flex-direction: column;
+}
+
+.signup_nickname_input{ 
+  width: 350px;
+  height: 40px;
+}
+.signup_nickname_button{ 
+  width: 100px;
+  height: 40px;
+}
+.signup_email_input{ 
+  width: 350px;
+  height: 100%;
+}
+.signup_email_button{ 
+  width: 100px;
+  height: 40px;
+}
+
+.signup_password_input{ 
+  width: 450px;
+  height: 40px;
+}
+.signup_passwordcheck_input{ 
+  width: 450px;
+  height: 40px;
+}
+.signup_signup_button{ 
+  width: 300px;
+  height: 60px;
+}
+
+
+// button {
+//   font-size: 16px;
+//   background-color: #BCE8EE;
+//   border: 1px solid #80effe;
+// }

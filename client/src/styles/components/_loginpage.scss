@@ -1,0 +1,84 @@
+.login_whole_div {
+  display: flex;
+  width: 100vw;
+  height: 80vh;
+  justify-content: center;
+}
+
+.login_main_div {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid black;
+  align-items: center;
+  align-self: center;
+  justify-self: center;
+  input {
+    margin: 10px 20px;
+  }
+  button {
+    margin: 20px;
+  }
+}
+
+.login_logo_img {
+  justify-items: flex-end;
+  align-items: center;
+  width: 200px;
+  height: 120px;
+  margin-top: 30px;
+}
+
+.login_input_div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.login_email_input {
+  width: 450px;
+  height: 40px;
+}
+
+.login_password_input {
+  width: 450px;
+  height: 40px;
+}
+
+.login_login_button {
+  background-color: rgb(123, 179, 247);
+  color: white;
+  border: none;
+  font-size: 20px;
+  width: 450px;
+  height: 60px;
+}
+
+.login_kakao_button {
+  width: 450px;
+  height: 60px;
+}
+
+.login_side_div {
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  height: 70px;
+  * {
+    border: 1px solid black;
+    background-color: white;
+    width: 100%;
+    height: 50%;
+  }
+  margin-bottom: 30px;
+}
+
+// .login_findpassword_button {
+//   border: 1px solid black;
+//   background-color: oldlace;
+//   width: 50%;
+//   height: 50%;
+// }
+// .login_signup_button {
+
+// }

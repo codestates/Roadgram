@@ -1,6 +1,8 @@
 /* Library import */
-import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios'
 
 /* Component import */
 import Navigator from './components/Navigator'
@@ -16,8 +18,11 @@ import SettingRoutePage from './pages/SettingRoutePage'
 import CreatePostPage from './pages/CreatePostPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
+import { login } from './store/AuthSlice';
+
 
 function App() {
+
   return (
     <div>
       <Navigator />
