@@ -33,10 +33,10 @@ export class IdDto {
 
 export class QueryDto {
     @IsNotEmpty()
-    user: string;
+    user: number;
 
     @IsNotEmpty()
-    loginMethod: string;
+    loginMethod: number;
 }
 
 export class KakaoLoginDto {

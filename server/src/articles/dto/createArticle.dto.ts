@@ -1,10 +1,10 @@
-import { IsArray, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsNumber, isObject, IsObject, IsString } from "class-validator";
 
 export class CreateArticleDto {
   @IsNotEmpty()
   @IsNumber()
   user: number;
-  
+
   @IsNotEmpty()
   @IsArray()
   road: [];
@@ -14,13 +14,13 @@ export class CreateArticleDto {
   tag: [];
 
   @IsNotEmpty()
-  @IsString() 
+  @IsString()
   content: string;
 
   @IsNotEmpty()
-  @IsString() 
+  @IsString()
   thumbnail: string;
-  
+
   @IsNotEmpty()
   @IsNumber()
   loginMethod: number;

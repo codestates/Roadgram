@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, HttpCode, ParseIntPipe, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, ParseIntPipe, Patch, Post, Query, UseGuards, ValidationPipe } from '@nestjs/common';
+import { ValidationTypes } from 'class-validator';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/createArticle.dto';
@@ -8,12 +9,12 @@ import { UpdateArticleDto } from './dto/updateArticle.dto';
 export class ArticlesController {
   constructor(
     private articlesService: ArticlesService,
-  ){}
-  
+  ) { }
+
   @Get()
   @UseGuards(AuthGuard)
   getMain(
-    @Query('user', ParseIntPipe) user: number, 
+    @Query('user', ParseIntPipe) user: number,
     @Query('page', ParseIntPipe) page: number
   ): Promise<object> {
     return this.articlesService.getMain(user, page);
@@ -22,7 +23,7 @@ export class ArticlesController {
   @Get('/recent')
   getRecent(
     @Query('page', ParseIntPipe) page: number
-  ): Promise<object>{
+  ): Promise<object> {
     return this.articlesService.getRecent(page);
   }
 
@@ -35,7 +36,7 @@ export class ArticlesController {
 
   @Post()
   @UseGuards(AuthGuard)
-  createArticle(@Body() createArticleDto: CreateArticleDto): any{
+  createArticle(@Body() createArticleDto: CreateArticleDto): any {
     const result = this.articlesService.createArticle(createArticleDto);
     return result
   }
@@ -49,11 +50,10 @@ export class ArticlesController {
   @Delete()
   @UseGuards(AuthGuard)
   deleteArticle(
-    @Query('id', ParseIntPipe) id: number, 
-    @Query('user', ParseIntPipe) user: number,
+    @Query('id', ParseIntPipe) id: number
   ): Promise<object> {
-    return this.articlesService.deleteArticle(id, user);
+    return this.articlesService.deleteArticle(id);
   }
 
-  
+
 }

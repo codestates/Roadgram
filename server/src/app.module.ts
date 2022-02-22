@@ -6,7 +6,7 @@ import { SearchModule } from './search/search.module';
 import { CommentsModule } from './comments/comments.module';
 import { LikesModule } from './likes/likes.module';
 import { FollowModule } from './follow/follow.module';
-import { typeORMConfig } from 'config/typeorm.config';
+import typeORMConfig from 'config/typeorm.config';
 import { AppController } from './app.controller';
 
 @Module({
@@ -21,4 +21,4 @@ import { AppController } from './app.controller';
   ],
   controllers: [AppController],
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,6 +1,6 @@
-import { Comments } from "src/comments/entities/comments.entity";
-import { Likes } from "src/likes/entities/likes.entity";
-import { User } from "src/users/entities/user.entity";
+import { Comments } from "../../comments/entities/comments.entity";
+import { Likes } from "../../likes/entities/likes.entity";
+import { User } from "../../users/entities/user.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ArticleToTag } from "./article_tag.entity";
 import { Track } from "./track.entity";

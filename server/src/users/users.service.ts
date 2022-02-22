@@ -1,7 +1,7 @@
 import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EmailDto, IdDto, KakaoLoginDto, LoginDto, NicknameDto, QueryDto } from './dto/login.dto';
+import { EmailDto, IdDto, KakaoLoginDto, LoginDto, NicknameDto } from './dto/login.dto';
 import { UserRepository } from './repositories/user.repository';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/createUser.dto';
@@ -85,8 +85,8 @@ export class UsersService {
         return this.userRepository.createUser(createUserDto);
     }
 
-    deleteUser(idDto: QueryDto) {
-        return this.userRepository.deleteUser(+idDto.user);
+    deleteUser(idDto: IdDto) {
+        return this.userRepository.deleteUser(idDto.user);
     }
 
     modifyUser(userData: UpdateUserDto) {
@@ -200,7 +200,7 @@ export class UsersService {
                         accessToken: tokenRequest.data.access_token,
                         refreshToken: tokenRequest.data.refresh_token,
                         userInfo: {
-                            userId: userInfo.id,
+                            id: userInfo.id,
                             nickname: userInfo.nickname,
                             loginMethod: 1
                         }
