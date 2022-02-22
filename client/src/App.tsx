@@ -1,8 +1,6 @@
 /* Library import */
-import React, { useEffect } from 'react'
+import React from 'react'
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import axios from 'axios'
 
 /* Component import */
 import Navigator from './components/Navigator'
@@ -18,7 +16,6 @@ import SettingRoutePage from './pages/SettingRoutePage'
 import CreatePostPage from './pages/CreatePostPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
-import { login } from './store/AuthSlice';
 
 
 function App() {
@@ -36,7 +33,7 @@ function App() {
           <Route path="/settingroute/*" element={<SettingRoutePage />} />
           <Route path="/createpost/*" element={<CreatePostPage />} />
           <Route path="/logins/*" element={<LoginPage />} />
-          <Route path="/signup/*" element={<SignupPage />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Routes>
       </BrowserRouter>
       <Footer />

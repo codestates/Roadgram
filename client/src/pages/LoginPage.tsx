@@ -17,6 +17,7 @@ function LoginPage() {
     email: '',
     password: '',
   })
+
   const kakao = (window as any).Kakao;
   // SDK는 한 번만 초기화해야 한다.
   // 중복되는 초기화를 막기 위해 isInitialized()로 SDK 초기화 여부를 판단한다.
@@ -44,8 +45,7 @@ function LoginPage() {
         /* reponse 변수에 /users/login 서버 응답결과를 담는다 */
       await axios.post(
         `${process.env.REACT_APP_API_URL}/users/login`,
-        { email, password },
-        { withCredentials: true })
+        { email, password })
         .then((res) => {
           /* 서버의 응답결과에 유저정보가 담겨있으면 로그인 성공 */
           dispatch(login(res.data.data))

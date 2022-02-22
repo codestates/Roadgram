@@ -5,7 +5,9 @@ import { persistor } from '../index'
 /* State Type 설정 */
 
 export interface auth {
-  isLogin: boolean
+  isLogin: boolean,
+  accessToken?: string,
+  refreshToken?: string
   userInfo: {
     id?: number
     nickname?: string
@@ -16,8 +18,6 @@ export interface auth {
     totalFollower?: number
     totalFollowing?: number
     loginMethod?: number
-    accessToken?: string
-    refreshToken?: string
   },
 }
 /* State 초기값 설정 */
@@ -31,11 +31,12 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     /* Action 설정 */
-    login: (state: auth,  action: PayloadAction<object>) => {
-      console.log("payload ====" , action.payload);
-      state.userInfo = action.payload
-      // state.accessToken = action.payload
-      state.isLogin = true
+    login: (state: auth,  action: PayloadAction<auth>) => {
+      const {accessToken, refreshToken, userInfo} = action.payload;
+      state.userInfo = userInfo;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
+      state.isLogin = true;
     },
     logout: (state: auth) => {
       state.isLogin = false
