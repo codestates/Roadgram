@@ -22,44 +22,48 @@ export class FollowService {
       return {
         data: followResult,
         message: result
-      }
+      };
     } else {
       const result = await this.followRepository.unfollow(followDto);
       const unfollowResult = await this.userRepository.followDecrement(followDto);
       return {
         data: unfollowResult,
         message: result
-      }
-    }
-  }
+      };
+    };
+  };
 
-  async getFollowerList(user: number): Promise<object> {
+  async getFollowerList(user: number, page: number): Promise<object> {
     const followerIds = await this.followRepository.getFollowedIds(user);
     if (!followerIds) {
       throw new UnauthorizedException('permisson denied');
     } else if (followerIds.length === 0) {
       throw new NotFoundException("No followers yet");
     } else {
-      const followers = await this.userRepository.getProfileList(followerIds);
+      let limit: number = 10;
+      let offset: number = (page - 1) * 10;
+      const followers = await this.userRepository.getProfileList(followerIds, limit, offset);
       return {
         data: followers,
         message: "follower list"
-      }
-    }
-  }
+      };
+    };
+  };
 
-  async getFollowingList(user: number): Promise<object> {
+  async getFollowingList(user: number, page: number): Promise<object> {
     const followingIds = await this.followRepository.getFollowingIds(user);
     if (!followingIds) {
       throw new UnauthorizedException('permisson denied');
     } else if (followingIds.length === 0) {
-      throw new NotFoundException("No followings yet");
+      throw new NotFoundException('No followings yet');
     } else {
-      const followings = await this.userRepository.getProfileList(followingIds);
+      let limit: number = 10;
+      let offset: number = (page - 1) * 10;
+      const followings = await this.userRepository.getProfileList(followingIds, limit, offset);
       return {
         data: followings,
         message: "following list"
-      }
-    }
-  }
-}
+      };
+    };
+  };
+};
