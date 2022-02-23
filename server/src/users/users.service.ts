@@ -137,7 +137,7 @@ export class UsersService {
         if (loginMethod === 0) {
             try {
                 await this.jwtService.verifyAsync(refreshToken);
-                const accessToken = this.jwtService.sign({ email: userInfo.email }, { expiresIn: '1h' });
+                const accessToken = this.jwtService.sign({ email: userInfo.email }, { expiresIn: '12h' });
                 return {
                     data: { accessToken },
                     message: 'new access token'
