@@ -15,12 +15,24 @@ import { logout } from '../store/AuthSlice'
 
 function Navigator() {
   const [usericonClick, setUsericonCLick] = useState(false)
-  const { isLogin } = useSelector((state: RootState) => state.auth)
+  const { isLogin, userInfo } = useSelector((state: RootState) => state.auth)
   const dispatch = useDispatch()
 
   const logoutHandler = () => {
     dispatch(logout())
   }
+
+  const linkToMypage = async () => {
+    const {id} = userInfo;
+    const page = 1;
+    await axios
+    .get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=${page}`)
+    .then((res) => {
+      dispatch(update(res.data.data)); // userInfo 정보 update
+    })
+    .catch(console.log);
+  }
+
   return (
     <div id="navigator-container">
       <div className="structure" />
@@ -57,8 +69,8 @@ function Navigator() {
       )}
       {usericonClick ? (
         <div className="hiddenMenu">
-          <Link to="/mypage" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>
-            <div className="mypageMenu">마이페이지</div>
+          <Link to="/userinfo" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>
+            <li onKeyDown={linkToMypage} onClick={linkToMypage} className="mypageMenu">마이페이지</li>
           </Link>
           <Link to="/main" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }} onClick={logoutHandler}>
             <div className="logoutMenu">로그아웃</div>
