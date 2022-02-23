@@ -1,29 +1,29 @@
-import axios from 'axios';
+import axios from 'axios'
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { RootState } from '../../..';
-import { getFollower } from '../../../store/FollowSlice';
-// import { followings } from '../../../store/FollowSlice';
-import { followingModal } from '../../../store/ModalSlice';
-import { update } from '../../../store/UserInfoSlice';
-import './_followModal.scss';
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { RootState } from '../../..'
+import { getFollower } from '../../../store/FollowSlice'
+// import { followings } from '../../../store/FollowSlice'
+import { followingModal } from '../../../store/ModalSlice'
+import { update } from '../../../store/UserInfoSlice'
+import './_followModal.scss'
 
 
 function FollowingModal () {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { isFollowingModal } = useSelector((state: RootState) => state.modal);
-  const { followingList } = useSelector((state: RootState) => state.follow);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { isFollowingModal } = useSelector((state: RootState) => state.modal)
+  const { followingList } = useSelector((state: RootState) => state.follow)
   // const { id, nickname, profileImage } = useSelector((state: RootState) => state.follow)
-  const { userInfo, accessToken } = useSelector((state: RootState) => state.auth);
-  // const observerRef = useRef();
+  const { userInfo, accessToken } = useSelector((state: RootState) => state.auth)
+  // const observerRef = useRef()
 
   const closeModal = () => {
-    dispatch(followingModal(!isFollowingModal));
+    dispatch(followingModal(!isFollowingModal))
   };
   
-  // const [target, setTarget] = useState(null);
+  // const [target, setTarget] = useState(null)
 
   // // IntersectionObserver 생성
   // const options = {
