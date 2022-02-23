@@ -1,9 +1,23 @@
 @charset "UTF-8";
 /* css 변수 선언 */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  // -webkit-text-size-adjust: auto;
+}
+
+html {
+  font-size: 10px;
+}
+
 $navigator-color: rgb(188, 232, 238);
 $main-color: rgb(240, 249, 251);
 $startmenu-color: rgb(143, 151, 238);
 $footer-color: rgb(188, 232, 238);
 
+@import './styles/Mixins/responsive';
 @import './styles/components/footer';
 @import './styles/components/navigator';
+@import './styles/pages/landingPage';

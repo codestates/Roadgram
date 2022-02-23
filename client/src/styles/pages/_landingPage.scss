@@ -1,0 +1,250 @@
+#landingContainer {
+  background-color: $main-color;
+  width: 100%;
+  height: 100%;
+  @include mobile-only {
+  }
+  @include md {
+  }
+  @include lg {
+  }
+
+  .introBox {
+    // border: 1px solid green;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    @include mobile-only {
+      padding-left: 2.5rem;
+      margin-bottom: 1rem;
+      width: 100%;
+      height: 10rem;
+    }
+    @include md {
+      padding-left: 10rem;
+      margin-bottom: 10rem;
+      width: 100%;
+      height: 20rem;
+    }
+    @include lg {
+      padding-left: 40rem;
+      margin-bottom: 10rem;
+      width: 100%;
+      height: 20rem;
+    }
+
+    .line1 {
+      @include mobile-only {
+        font-size: 0.9rem;
+        color: gray;
+      }
+      @include md {
+        font-size: 1.8rem;
+        color: gray;
+      }
+      @include lg {
+        font-size: 1.8rem;
+        color: gray;
+      }
+    }
+    .line2 {
+      @include mobile-only {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+      @include md {
+        font-size: 5rem;
+        font-weight: bold;
+      }
+      @include lg {
+        font-size: 5rem;
+        font-weight: bold;
+      }
+    }
+    .line3 {
+      @include mobile-only {
+        font-size: 0.8rem;
+        padding-bottom: 0.2rem;
+      }
+      @include md {
+        font-size: 1.6rem;
+        padding-bottom: 1rem;
+      }
+      @include lg {
+        font-size: 1.6rem;
+        padding-bottom: 1rem;
+      }
+    }
+    .line4 {
+      @include mobile-only {
+        font-size: 0.8rem;
+      }
+      @include md {
+        font-size: 1.6rem;
+      }
+      @include lg {
+        font-size: 1.6rem;
+      }
+    }
+  }
+  .featureBox {
+    border: 1px solid green;
+    width: 100%;
+    background-color: $main-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2.5rem 0rem 2.5rem 0rem;
+    @include mobile-only {
+      height: 20rem;
+    }
+    @include md {
+      height: 60rem;
+    }
+    @include lg {
+      height: 90rem;
+    }
+
+    .textBox {
+      //   border: 1px solid blue;
+      width: 50%;
+      height: 50%;
+      color: rgb(81, 81, 81);
+      display: flex;
+      flex-direction: column;
+      justify-content: left;
+      align-items: flex-end;
+      @include mobile-only {
+        margin: 0 0 5rem 3rem;
+      }
+      @include md {
+        margin: 0 10rem 0rem 0rem;
+      }
+      @include lg {
+        margin: 0 12.5rem 0 0;
+      }
+      .title {
+        font-weight: bold;
+        color: black;
+
+        @include mobile-only {
+          font-size: 1rem;
+          margin-bottom: 0.3rem;
+        }
+        @include md {
+          font-size: 3.3rem;
+          margin-bottom: 1rem;
+        }
+        @include lg {
+          font-size: 3.3rem;
+          margin-bottom: 1rem;
+        }
+      }
+      .content {
+        @include mobile-only {
+          font-size: 0.7rem;
+        }
+        @include md {
+          font-size: 2rem;
+        }
+        @include lg {
+          font-size: 2rem;
+        }
+      }
+    }
+    .imageBox {
+      width: 50%;
+      height: 50%;
+      //   border: 1px solid blue;
+      display: flex;
+      @include mobile-only {
+      }
+      @include md {
+      }
+      @include lg {
+        margin-left: 12.5rem;
+      }
+      .landingImage {
+        border-radius: 2rem;
+        @include mobile-only {
+          width: 12rem;
+          height: 9rem;
+        }
+        @include md {
+          width: 35rem;
+          height: 25rem;
+        }
+        @include lg {
+          width: 55rem;
+          height: 40rem;
+        }
+      }
+    }
+  }
+  .startBox {
+    // border: 1px solid green;
+    width: 100%;
+    background-color: rgb(142, 151, 238);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2.5rem 0rem 2.5rem 0rem;
+    @include mobile-only {
+      height: 12rem;
+    }
+    @include md {
+      height: 40rem;
+    }
+    @include lg {
+      height: 60rem;
+    }
+    .startText {
+      color: white;
+      font-weight: bold;
+      @include mobile-only {
+        font-size: 1.2rem;
+      }
+      @include md {
+        font-size: 3rem;
+      }
+      @include lg {
+        font-size: 4rem;
+      }
+    }
+    .startButton {
+      background-color: rgb(123, 15, 145);
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 1rem;
+      -webkit-transition-duration: 0.4s;
+      transition-duration: 0.4s;
+      cursor: pointer;
+      @include mobile-only {
+        width: 7rem;
+        height: 2rem;
+        margin-top: 1rem;
+        font-size: 1rem;
+      }
+      @include md {
+        width: 14rem;
+        height: 4rem;
+        margin-top: 3rem;
+        font-size: 1.8rem;
+      }
+      @include lg {
+        width: 18rem;
+        height: 5rem;
+        margin-top: 6rem;
+        font-size: 2.4rem;
+      }
+    }
+
+    .startButton:hover {
+      background-color: rgb(47, 46, 46);
+    }
+  }
+}

@@ -1,65 +1,145 @@
-.box {
+#navigator-container {
   background-color: $navigator-color;
-  // border: 2pt solid green;
+  // border: 1pt solid green;
   width: 100%;
-  height: 8vmin;
   display: flex;
-  box-sizing: border-box;
-}
-
-.box div {
-  // border: 1px solid blue;
-}
-
-.structure {
-  // border: 1px solid red;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo-box {
-  display: flex;
-}
-
-.logo {
-  width: 13vmin;
-  height: 5.5vmin;
-}
-
-.inputDiv {
   position: relative;
-  display: flex;
-}
+  @include mobile-only() {
+    height: 5rem;
+  }
+  @include md {
+    height: 8rem;
+  }
+  @include lg {
+    height: 10rem;
+  }
+  .hiddenMenu {
+    // border: 1px solid green;
+    width: 12rem;
+    position: absolute;
+    right: 0rem;
+    top: 10rem;
+    background-color: rgb(163, 232, 235);
+    font-size: 2rem;
+    font-weight: bold;
+    color: rgb(80, 80, 80);
+  }
 
-.searchBar {
-  width: 19vmin;
-  height: 3vmin;
-  margin-right: 2vmin;
-  border-radius: 1rem;
-  border: 0px;
-  padding-left: 2vmin;
-}
+  .structure {
+    // border: 1px solid red;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-.searchBar::placeholder {
-  font-size: 1.5vh;
-}
+    .logo {
+      // border: 1px solid purple;
+      display: flex;
+      @include mobile-only {
+        width: 7rem;
+        height: 3.5rem;
+      }
+      @include md {
+        width: 13rem;
+        height: 6rem;
+      }
+      @include lg {
+        width: 15rem;
+        height: 7rem;
+      }
+    }
+  }
 
-.searchIcon {
-  position: absolute;
-  height: 1.8vmin;
-  left: 18vmin;
-  top: 0.7vmin;
-}
+  .sideMenu {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-right: 1rem;
 
-.sideMenu {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  padding-right: 2.2vmin;
-}
+    .inputDiv {
+      position: relative;
+      display: flex;
+    }
 
-.login-button {
-  font-size: 2vmin;
+    .searchBar {
+      border: 0;
+      @include mobile-only {
+        width: 5rem;
+        height: 1rem;
+        margin-right: 0.5rem;
+        border-radius: 1rem;
+        padding-left: 0.5rem;
+      }
+      @include md {
+        width: 20rem;
+        height: 3rem;
+        margin-right: 1.3rem;
+        border-radius: 2rem;
+        padding-left: 2rem;
+      }
+      @include lg {
+        width: 20rem;
+        height: 3rem;
+        margin-right: 2rem;
+        border-radius: 2rem;
+        padding-left: 2rem;
+      }
+    }
+
+    .searchBar::placeholder {
+      @include mobile-only() {
+        font-size: 0rem;
+      }
+      @include md {
+        font-size: 1.5rem;
+      }
+      @include lg {
+        font-size: 1.6rem;
+      }
+    }
+
+    .searchIcon {
+      position: absolute;
+      @include mobile-only {
+        height: 0.5rem;
+        left: 4.2rem;
+        top: 0.25rem;
+      }
+      @include md {
+        height: 2rem;
+        left: 17rem;
+        top: 0.5rem;
+      }
+      @include lg {
+        height: 2rem;
+        left: 17rem;
+        top: 0.5rem;
+      }
+    }
+
+    .login-button {
+      color: black;
+      cursor: pointer;
+      @include mobile-only {
+        font-size: 1rem;
+      }
+      @include md {
+        font-size: 1.5rem;
+      }
+      @include lg {
+        font-size: 2rem;
+      }
+    }
+
+    .pencilIcon {
+      height: 3vmin;
+      padding-right: 2vmin;
+    }
+
+    .userIcon {
+      height: 3vmin;
+      color: rgb(80, 78, 78);
+      cursor: pointer;
+    }
+  }
 }

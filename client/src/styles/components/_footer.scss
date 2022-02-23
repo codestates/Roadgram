@@ -1,47 +1,93 @@
-.footer-container {
+#footer-container {
+  // border: 1px solid blue;
   background-color: $navigator-color;
   width: 100%;
-  height: 10vh;
-  display: flex;
-}
-
-.footer-box {
-  width: 100%;
-  // border: 2pt solid green;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.footer-box div {
-  //   border: 1px solid blue;
-}
-
-.profile-boxes {
   display: flex;
   justify-content: center;
-}
-
-.profile-box {
-  display: flex;
   align-items: center;
-  padding-left: 3vmin;
-  padding-right: 3vmin;
-}
+  flex-direction: column;
+  position: relative;
+  @include mobile-only {
+    height: 6rem;
+  }
+  @include md {
+    height: 9rem;
+  }
+  @include lg {
+    height: 9rem;
+  }
 
-.githubIcon {
-  width: 4vmin;
-  height: 4vmin;
-  margin-right: 0.7vmin;
-}
+  .profile-boxes {
+    // border: 1px solid blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-.githubLink {
-  color: inherit;
-}
+    .profile-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-left: 3rem;
+      padding-right: 3rem;
+      @include mobile-only {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
 
-.profile {
-  font-size: 1.3vmin;
-  font-weight: bold;
-  text-align: center;
+      .githubLink {
+        color: inherit;
+
+        .githubIcon {
+          @include mobile-only() {
+            width: 1.8rem;
+            height: 1.8rem;
+            margin-right: 0.5rem;
+          }
+          @include md {
+            width: 4rem;
+            height: 4rem;
+            margin-right: 1rem;
+          }
+          @include lg {
+            width: 4rem;
+            height: 4rem;
+            margin-right: 1rem;
+          }
+        }
+      }
+
+      .profile {
+        font-weight: bold;
+        text-align: center;
+        @include mobile-only {
+          font-size: 0.7rem;
+        }
+        @include md {
+          font-size: 1.5rem;
+        }
+        @include lg {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+
+  .copyright {
+    position: absolute;
+    @include mobile-only {
+      font-size: 0.7rem;
+      right: 0.7rem;
+      bottom: 0.5rem;
+    }
+    @include md {
+      font-size: 1.5rem;
+      right: 2rem;
+      bottom: 1rem;
+    }
+    @include lg {
+      font-size: 1.5rem;
+      right: 2rem;
+      bottom: 1rem;
+    }
+  }
 }
