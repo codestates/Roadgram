@@ -1,15 +1,18 @@
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../..';
 import { getFollower } from '../../../store/FollowSlice';
 // import { followings } from '../../../store/FollowSlice';
 import { followingModal } from '../../../store/ModalSlice';
+import { update } from '../../../store/UserInfoSlice';
 import './_followModal.scss';
 
 
 function FollowingModal () {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { isFollowingModal } = useSelector((state: RootState) => state.modal);
   const { followingList } = useSelector((state: RootState) => state.follow);
   // const { id, nickname, profileImage } = useSelector((state: RootState) => state.follow)
@@ -62,24 +65,41 @@ function FollowingModal () {
   //   return () => observer && observer.disconnect();
   // }, [target]);
 
+  async function moveToUserPage(id: any) {
+    closeModal();
+    const page = 1;
+    await axios
+    .get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=${page}`)
+    .then((res) => {
+      dispatch(update(res.data.data)); // userInfo 정보 update
+      navigate('/userinfo');
+    })
+    .catch(console.log);
+  }
+
   return (
     <div className="follow-center-wrap">
-      <div className="follow-background">
         <div className="follow-box">
-          <button className="close-button" type="button" onClick={closeModal}>&times;</button>
-          <div className="follow-title">팔로잉</div>
-          <div id="follows" className="follows">
+          <div className="follow-background">
+            <span className="follow-title">팔로잉</span>
+            <button className="close-button" type="button" onClick={closeModal}>&times;</button>
+          </div>
+          <hr/>
+          <div className="follows">
           {followingList?.map((each) => {
             return (
-              <div className="follow_profile_div" key={each.id}>
-                <img alt="profile_image" src={each.profileImage} className="follow_profile_image"/>
-                <span className="follow_nickname">{each.nickname}</span>
-              </div>
-            )})
-          }
-          {/* <div ref={setTarget} /> */}
-          </div>
-
+            <li 
+              className="follow_profile_list" 
+              key={each.id} 
+              onClick={()=> {moveToUserPage(each.id)}} 
+              onKeyDown={()=> {moveToUserPage(each.id)}}
+            >
+              <img alt="profile_image" src={each.profileImage} className="follow_profile_image"/>
+              <span>{each.nickname}</span>
+            </li>
+            )
+          })
+        }
         </div>
       </div>
     </div>

@@ -6,10 +6,12 @@ import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { update } from '../store/UserInfoSlice'
+import { resetUserInfo, update } from '../store/UserInfoSlice'
 import logo from '../images/logo.png'
 import { RootState } from '../index'
 import { logout } from '../store/AuthSlice'
+import { resetFollow } from '../store/FollowSlice'
+import { resetModal } from '../store/ModalSlice'
 
 function Navigator() {
   const [usericonClick, setUsericonCLick] = useState(false)
@@ -21,7 +23,7 @@ function Navigator() {
       await axios.post(
         `${process.env.REACT_APP_API_URL}/users/logout`,
         {
-          loginMethod: 0,
+          loginMethod: userInfo.loginMethod,
           user: userInfo.id
         },
         {
@@ -30,6 +32,9 @@ function Navigator() {
           }
         }).then(() => {
           dispatch(logout());
+          dispatch(resetFollow());
+          dispatch(resetModal());
+          dispatch(resetUserInfo());
         })
     } catch {
       console.log('logout error');
@@ -46,7 +51,10 @@ function Navigator() {
     })
     .catch(console.log);
   }
-
+  
+  const changeWord = (e: any) => {
+    console.log(e.target.value);
+  }
   return (
     <div id="navigator-container">
       <div className="structure" />
@@ -58,7 +66,7 @@ function Navigator() {
       {isLogin ? (
         <div className="structure sideMenu">
           <div className="inputDiv">
-            <input className="searchBar" type="search" placeholder="검색어를 입력하세요." />
+            <input className="searchBar" type="search" placeholder="검색어를 입력하세요." onChange={changeWord}/>
             <FontAwesomeIcon icon={faMagnifyingGlass} className="searchIcon" />
           </div>
           <div>

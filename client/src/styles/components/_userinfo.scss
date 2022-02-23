@@ -72,11 +72,10 @@
   }
 
   li {
-    &:hover {
-      cursor: pointer;
-    }
-    border: 1px solid black;
     list-style: none;
+  }
+  .owner {
+    cursor: pointer;
   }
 }
 .userinfo_status_div {
