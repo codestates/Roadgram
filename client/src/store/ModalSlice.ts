@@ -1,12 +1,18 @@
 /* Store import */
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 /* State Type 설정 */
-export interface modal {
-  isModal: boolean
+export interface modals {
+  isFollowingModal: boolean
+  isFollowerModal: boolean
+  isLogoutModal: boolean
+  isWithdrawalModal: boolean
 }
 
-const initialState: modal = {
-  isModal: false
+const initialState: modals = {
+  isFollowingModal: false,
+  isFollowerModal: false,
+  isLogoutModal: false,
+  isWithdrawalModal: false
 }
 
 const modalSlice = createSlice({
@@ -14,14 +20,20 @@ const modalSlice = createSlice({
   initialState,
   reducers: {
     /* Action 설정 */
-    openModal: (state: modal) => {
-      state.isModal = true;
+    followingModal: (state: modals, { payload }: PayloadAction<boolean>) => {
+      state.isFollowingModal = payload;
     },
-    closeModal: (state: modal) => {
-      state.isModal = false;
+    followerModal: (state: modals, { payload }: PayloadAction<boolean>) => {
+      state.isFollowerModal = payload;
+    },
+    logoutModal: (state: modals, { payload }: PayloadAction<boolean>) => {
+      state.isLogoutModal = payload;
+    },
+    withdrawalModal: (state: modals, { payload }: PayloadAction<boolean>) => {
+      state.isWithdrawalModal = payload;
     }
   },
 })
 
-export const { openModal, closeModal } = modalSlice.actions
-export default modalSlice.reducer
+export const { followingModal, followerModal, logoutModal, withdrawalModal } = modalSlice.actions;
+export default modalSlice.reducer;

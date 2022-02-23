@@ -1,13 +1,19 @@
 import axios from 'axios';
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../..';
 import { logout } from '../../store/AuthSlice';
-import { closeModal } from '../../store/ModalSlice';
+import { withdrawalModal } from '../../store/ModalSlice';
 import WithdrawalDoneModal from './Mypage/WithdrawalDoneModal';
 import './_withdrawalModal.scss';
 
 function WithdrawalModal() {
   const dispatch = useDispatch();
+  const { isWithdrawalModal } = useSelector((state: RootState) => state.modal);
+
+  const closeModal = () => {
+    dispatch(withdrawalModal(!isWithdrawalModal));
+  }
 
   const handleDeleteUser = async () => {
     try {
@@ -27,7 +33,7 @@ function WithdrawalModal() {
 
   return (
     <div className="withdrawal-center-wrap">
-      <div className="withdrawal-background">
+      <div className="withdrawal-background" onClick={closeModal}>
         <div className="withdrawal-box">
           <div className="withdrawal-msg">정말 탈퇴하시겠습니까?</div>
           <button className="yesorno" type="button" onClick={handleDeleteUser}>네</button>
