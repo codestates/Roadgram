@@ -18,9 +18,10 @@ import LogoutModal from './Modals/LogoutModal'
 function Navigator() {
   const [usericonClick, setUsericonCLick] = useState(false)
   const { isLogin, userInfo } = useSelector((state: RootState) => state.auth)
-  const dispatch = useDispatch()
   const { isLogoutModal } = useSelector((state: RootState) => state.modal);
-
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  
   const openLogoutModal = () => {
     dispatch(logoutModal(!isLogoutModal));
   };
@@ -35,7 +36,10 @@ function Navigator() {
     })
     .catch(console.log);
   }
-
+  
+  const changeWord = (e: any) => {
+    console.log(e.target.value);
+  }
   return (
     <div id="navigator-container">
       <div className="structure" />
@@ -47,7 +51,7 @@ function Navigator() {
       {isLogin ? (
         <div className="structure sideMenu">
           <div className="inputDiv">
-            <input className="searchBar" type="search" placeholder="검색어를 입력하세요." />
+            <input className="searchBar" type="search" placeholder="검색어를 입력하세요." onChange={changeWord}/>
             <FontAwesomeIcon icon={faMagnifyingGlass} className="searchIcon" />
           </div>
           <div>

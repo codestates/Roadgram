@@ -31,8 +31,9 @@ const followSlice = createSlice({
     getFollower: (state: followInfo,  {payload}: PayloadAction<[]>) => {
       state.followerList = payload;
     },
+    resetFollow: () => initialState
   },
 })
 
-export const { getFollowing, getFollower } = followSlice.actions
+export const { getFollowing, getFollower, resetFollow } = followSlice.actions
 export default followSlice.reducer

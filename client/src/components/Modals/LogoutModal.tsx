@@ -6,7 +6,9 @@ import { logout } from '../../store/AuthSlice';
 import auth from '../../store/AuthSlice';
 import './_logoutModal.scss';
 import { RootState } from '../..';
-import { logoutModal } from '../../store/ModalSlice';
+import { logoutModal, resetModal } from '../../store/ModalSlice';
+import { resetFollow } from '../../store/FollowSlice';
+import { resetUserInfo } from '../../store/UserInfoSlice';
 
 function LogoutModal() {
   const dispatch = useDispatch();
@@ -22,7 +24,7 @@ function LogoutModal() {
       await axios.post(
         `http://localhost:5000/users/logout`,
         {
-          loginMethod: 0,
+          loginMethod: userInfo.loginMethod,
           user: userInfo.id
         },
         {
@@ -31,7 +33,10 @@ function LogoutModal() {
           }
         });
         dispatch(logout());
-        dispatch(logoutModal(!isLogoutModal));
+        dispatch(resetFollow());
+        dispatch(resetModal());
+        dispatch(resetUserInfo());
+        // dispatch(logoutModal(!isLogoutModal));
         navigate('/main');
     } catch {
       console.log('logout error');

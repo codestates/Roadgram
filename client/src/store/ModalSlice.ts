@@ -31,9 +31,10 @@ const modalSlice = createSlice({
     },
     withdrawalModal: (state: modals, { payload }: PayloadAction<boolean>) => {
       state.isWithdrawalModal = payload;
-    }
+    },
+    resetModal: () => initialState
   },
 })
 
-export const { followingModal, followerModal, logoutModal, withdrawalModal } = modalSlice.actions;
+export const { followingModal, followerModal, logoutModal, withdrawalModal, resetModal } = modalSlice.actions;
 export default modalSlice.reducer;
