@@ -10,7 +10,7 @@ import { logoutModal } from '../../store/ModalSlice';
 function LogoutModal() {
   const dispatch = useDispatch();
   const { isLogoutModal } = useSelector((state: RootState) => state.modal);
-
+  const { isLogin, userInfo, accessToken } = useSelector((state: RootState) => state.auth);
   const closeModal = () => {
     dispatch(logoutModal(!isLogoutModal));
   }
@@ -21,11 +21,11 @@ function LogoutModal() {
         `http://localhost:5000/users/logout`,
         {
           loginMethod: 0,
-          user: 2
+          user: userInfo.id
         },
         {
           headers: {
-            authorization: ''
+            authorization: `${accessToken}`
           }
         });
         dispatch(logout());
