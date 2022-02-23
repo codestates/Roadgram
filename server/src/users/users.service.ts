@@ -12,6 +12,7 @@ import { AuthDto } from './dto/auth.dto';
 import { ArticleToTagRepository } from 'src/articles/repositories/article_tag.repository';
 import { TagRepository } from 'src/articles/repositories/tag.repository';
 import { User } from './entities/user.entity';
+import { FollowRepository } from 'src/follow/repositories/follow.repository';
 require('dotenv').config();
 
 @Injectable()
@@ -25,6 +26,8 @@ export class UsersService {
         private articleToTagRepository: ArticleToTagRepository,
         @InjectRepository(TagRepository)
         private tagRepository: TagRepository,
+        @InjectRepository(FollowRepository)
+        private followRepository: FollowRepository,
         private jwtService: JwtService
     ) { }
 
@@ -220,11 +223,12 @@ export class UsersService {
         }
     }
 
-    async getMypage(user: number, page: number): Promise<object> {
+    async getMypage(user: number, page: number, authUser?: number): Promise<object> {
         try {
             let limit: number = 9;
             let offset: number = (page - 1) * 9;
             const userInfo = await this.userRepository.getUserInfo(user);
+            const followedOrNot = await this.followRepository.followedOrNot(authUser, user);
             const articles = await this.articleRepository.getArticleInfo(user, limit, offset);
 
             // // 각 게시물에 태그 이름(배열) 추가
@@ -261,7 +265,8 @@ export class UsersService {
                         statusMessage: userInfo.statusMessage,
                         profileImage: userInfo.profileImage,
                         totalFollower: userInfo.totalFollower,
-                        totalFollowing: userInfo.totalFollowing
+                        totalFollowing: userInfo.totalFollowing,
+                        followedOrNot: followedOrNot
                     },
                     articles: newArticles
                 },

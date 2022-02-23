@@ -4,8 +4,7 @@ import { Follow } from "../entities/follow.entity";
 
 @EntityRepository(Follow)
 export class FollowRepository extends Repository<Follow> {
-  async followedOrNot(followDto: FollowDto) {
-    const { user, followingUserId } = followDto;
+  async followedOrNot(user, followingUserId) {
     return await this.findOne({
       followerId: user,
       followingId: followingUserId
