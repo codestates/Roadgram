@@ -9,7 +9,7 @@ import Footer from './components/Footer'
 /* Page import */
 import LandingPage from './pages/LandingPage'
 import MainPage from './pages/MainPage'
-import Mypage from './pages/Mypage'
+import UserInfo from './pages/UserInfo'
 import EditProfilePage from './pages/EditProfilePage'
 import PostDetailsPage from './pages/PostDetailsPage'
 import SettingRoutePage from './pages/SettingRoutePage'
@@ -19,24 +19,23 @@ import SignupPage from './pages/SignupPage'
 
 
 function App() {
-
   return (
     <div>
-      <Navigator />
       <BrowserRouter>
+      <Navigator />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/main/*" element={<MainPage />} />
-          <Route path="/mypage/*" element={<Mypage />} />
+          <Route path="/userInfo/*" element={<UserInfo />} />
           <Route path="/editprofile/*" element={<EditProfilePage />} />
           <Route path="/postdetails/*" element={<PostDetailsPage />} />
           <Route path="/settingroute/*" element={<SettingRoutePage />} />
           <Route path="/createpost/*" element={<CreatePostPage />} />
           <Route path="/logins/*" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/signup/*" element={<SignupPage />} />
         </Routes>
-      </BrowserRouter>
       <Footer />
+      </BrowserRouter>
     </div>
   )
 }

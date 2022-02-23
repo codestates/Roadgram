@@ -1,0 +1,82 @@
+.userinfo_whole_div {
+  display: flex;
+  width: 100vw;
+  height: 15vh;
+}
+.userinfo_image_div {
+  width: 40%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 100px;
+
+    div {
+      width: 150px;
+      height: 150px;
+      border-radius: 100%;
+      border: 1px solid lightgray;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: bisque;
+      button {
+        border: 1px solid rosybrown;
+        background-color: white;
+        font-weight: 600;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+}
+
+.userinfo_image_img {
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
+  border: 1px solid lightgray;
+}
+
+.userinfo_profile_div {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  button:hover {
+    cursor: pointer;
+  }
+}
+
+.userinfo_nickname_div {
+  margin: 10px;
+  span {
+    display: inline-block;
+    font-size: 25px;
+    font-weight: 600;
+  }
+
+  button {
+    margin: 0;
+    margin-left: 15px;
+    width: 100px;
+    height: 30px;
+    border: 1px solid lightgray;
+  }
+}
+.userinfo_inform_div {
+  display: flex;
+  div {
+    margin: 10px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  span {
+    margin: 5px;
+    font-weight: 600;
+  }
+}
+.userinfo_status_div {
+  margin: 10px;
+}
+    
