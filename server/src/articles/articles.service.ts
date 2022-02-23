@@ -1,4 +1,12 @@
-import { BadGatewayException, BadRequestException, ForbiddenException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadGatewayException,
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommentRepository } from 'src/comments/repositories/comments.repository';
 import { FollowRepository } from 'src/follow/repositories/follow.repository';
@@ -28,46 +36,55 @@ export class ArticlesService {
     @InjectRepository(FollowRepository)
     private followRepository: FollowRepository,
     @InjectRepository(CommentRepository)
-    private commentRepository: CommentRepository
-  ) { }
+    private commentRepository: CommentRepository,
+  ) {}
 
   async getMain(user: number, page: number): Promise<object> {
-
     const getFollowing = await this.followRepository.getFollowingIds(user);
 
     if (!getFollowing) {
       throw new UnauthorizedException('permisson denied');
     } else if (getFollowing.length === 0) {
-      throw new NotFoundException("Not have a following list");
+      throw new NotFoundException('Not have a following list');
     }
     console.log(`following 하는 유저의 ID값은 ${getFollowing}입니다.`);
-    const newArticles = []
+    const newArticles = [];
     try {
       let limit: number = 9;
       let offset: number = (page - 1) * 9;
-      const articles = await this.articleRepository.getArticleInfo(getFollowing, limit, offset);
+      const articles = await this.articleRepository.getArticleInfo(
+        getFollowing,
+        limit,
+        offset,
+      );
 
-      console.log(`가져온 게시물 정보는 ${articles}입니다.`)
+      console.log(`가져온 게시물 정보는 ${articles}입니다.`);
       // 각 게시물에 태그 이름(배열) 추가
       for (const article of articles) {
-        const userId: number = await this.articleRepository.getUserId(article.id);
-        console.log("userId", userId);
+        const userId: number = await this.articleRepository.getUserId(
+          article.id,
+        );
+        console.log('userId', userId);
         const writer: string = await this.userRepository.getUsername(userId);
-        console.log("writer", writer);
-        const tagIds: object = await this.articleToTagRepository.getTagIds(article.id);
-        console.log("tagIds", tagIds);
-        const tagNames: string[] = await this.tagRepository.getTagNameWithIds(tagIds);
-        console.log("tagNames", tagNames);
+        console.log('writer', writer);
+        const tagIds: object = await this.articleToTagRepository.getTagIds(
+          article.id,
+        );
+        console.log('tagIds', tagIds);
+        const tagNames: string[] = await this.tagRepository.getTagNameWithIds(
+          tagIds,
+        );
+        console.log('tagNames', tagNames);
         article.tags = tagNames;
 
         // API 문서에 양식에 맞게 네이밍
         interface articleObject {
-          id: string,
-          thumbnail: string,
-          nickname: string
-          totalLike: number,
-          totalComment: number,
-          tags: string[]
+          id: string;
+          thumbnail: string;
+          nickname: string;
+          totalLike: number;
+          totalComment: number;
+          tags: string[];
         }
         let creation: articleObject = {
           id: article.id,
@@ -75,24 +92,27 @@ export class ArticlesService {
           nickname: writer,
           totalLike: article.totalLike,
           totalComment: article.totalComment,
-          tags: article.tags
+          tags: article.tags,
         };
         newArticles.push(creation);
       }
       return {
         data: {
-          articles: newArticles
+          articles: newArticles,
         },
-        message: 'ok'
-      }
+        message: 'ok',
+      };
     } catch (err) {
       console.log(err);
       throw new InternalServerErrorException('err');
     }
   }
 
-
-  async findOrCreateTags(user: number, articleId: number, tag: []): Promise<string[]> {
+  async findOrCreateTags(
+    user: number,
+    articleId: number,
+    tag: [],
+  ): Promise<string[]> {
     // for (const eachTag of tag) {
     //   const { tagName, order } = eachTag;
     //   const isTagExist = await this.tagRepository.findTagName(tagName);
@@ -117,11 +137,16 @@ export class ArticlesService {
             const newTag: Tag = this.tagRepository.create({ tagName });
             tagInfo = await this.tagRepository.save(newTag);
           }
-          const newArticleTag: ArticleToTag = this.articleToTagRepository.create({ tagId: tagInfo.id, order, articleId })
+          const newArticleTag: ArticleToTag =
+            this.articleToTagRepository.create({
+              tagId: tagInfo.id,
+              order,
+              articleId,
+            });
           await this.articleToTagRepository.save(newArticleTag);
           return tagInfo.tagName;
-        })
-      )
+        }),
+      );
     } catch {
       throw new BadGatewayException();
     }
@@ -201,24 +226,32 @@ export class ArticlesService {
   async getRecent(page: number): Promise<object> {
     let limit: number = 9;
     let offset: number = (page - 1) * 9;
-    const articles = await this.articleRepository.getArticleInfo([], limit, offset);
+    const articles = await this.articleRepository.getArticleInfo(
+      [],
+      limit,
+      offset,
+    );
 
     // 각 게시물에 태그 이름(배열) 추가
     let newArticles = [];
     for (const article of articles) {
       const userId: number = await this.articleRepository.getUserId(article.id);
       const writer: string = await this.userRepository.getUsername(userId);
-      const tagIds: object = await this.articleToTagRepository.getTagIds(article.id);
-      const tagNames: string[] = await this.tagRepository.getTagNameWithIds(tagIds);
+      const tagIds: object = await this.articleToTagRepository.getTagIds(
+        article.id,
+      );
+      const tagNames: string[] = await this.tagRepository.getTagNameWithIds(
+        tagIds,
+      );
       article.tags = tagNames;
 
       interface articleObject {
-        id: string,
-        thumbnail: string,
-        nickname: string
-        totalLike: number,
-        totalComment: number,
-        tags: string[]
+        id: string;
+        thumbnail: string;
+        nickname: string;
+        totalLike: number;
+        totalComment: number;
+        tags: string[];
       }
       let creation: articleObject = {
         id: article.id,
@@ -226,26 +259,34 @@ export class ArticlesService {
         nickname: writer,
         totalLike: article.total_like,
         totalComment: article.total_comment,
-        tags: article.tags
+        tags: article.tags,
       };
       newArticles.push(creation);
     }
     return {
       data: {
-        articles: newArticles
+        articles: newArticles,
       },
-      message: 'ok'
-    }
-  } catch(err) {
+      message: 'ok',
+    };
+  }
+  catch(err) {
     console.log(err);
     throw new InternalServerErrorException('err');
   }
 
   async createArticle(createArticleDto: CreateArticleDto): Promise<any> {
     const { user, road, tag, content, thumbnail } = createArticleDto;
-    const userInfo = await this.userRepository.findOne({ where: { id: user }, select: ['id', 'nickname', 'profileImage'] });
-    if (!userInfo) throw new NotFoundException("cannot find user");
-    const articleResult = await this.articleRepository.createArticle(user, content, thumbnail);
+    const userInfo = await this.userRepository.findOne({
+      where: { id: user },
+      select: ['id', 'nickname', 'profileImage'],
+    });
+    if (!userInfo) throw new NotFoundException('cannot find user');
+    const articleResult = await this.articleRepository.createArticle(
+      user,
+      content,
+      thumbnail,
+    );
     const articleId = articleResult.id;
     try {
       const trackList = await this.trackRepository.createTrack(road, articleId);
@@ -259,14 +300,14 @@ export class ArticlesService {
             totalComment: articleResult.totalComment,
             roads: trackList,
             tags: tagList,
-            comments: []
-          }
+            comments: [],
+          },
         },
-        message: 'article created'
-      }
+        message: 'article created',
+      };
     } catch {
       this.articleRepository.deleteArticle(articleId);
-      throw new BadRequestException('bad request')
+      throw new BadRequestException('bad request');
     }
   }
 
@@ -275,7 +316,9 @@ export class ArticlesService {
       const userInfo = await this.userRepository.getUserInfo(user);
       const articleInfo = await this.articleRepository.getArticleDetail(id);
       // // 각 게시물에 태그 이름(배열) 추가
-      const tagIds = await this.articleToTagRepository.getTagIds(articleInfo.id);
+      const tagIds = await this.articleToTagRepository.getTagIds(
+        articleInfo.id,
+      );
       const tagNames = await this.tagRepository.getTagNameWithIds(tagIds);
       const comments = await this.commentRepository.getComments(articleInfo.id);
       const roads = await this.trackRepository.getRoads(articleInfo.id);
@@ -290,22 +333,24 @@ export class ArticlesService {
           totalComment: articleInfo.totalComment,
           tags: tagNames,
           roads,
-          comments: []
-        }
+          comments: [],
+        };
       } else {
         const commentsList = await Promise.all(
           comments.map(async (comment) => {
-            const commentUserInfo = await this.userRepository.getUserInfo(comment.userId);
+            const commentUserInfo = await this.userRepository.getUserInfo(
+              comment.userId,
+            );
             return {
               id: comment.id,
               userId: comment.userId,
               profileImage: commentUserInfo.profileImage,
               nickname: commentUserInfo.nickname,
               comment: comment.comment,
-              createdAt: comment.createdAt
-            }
-          })
-        )
+              createdAt: comment.createdAt,
+            };
+          }),
+        );
         article = {
           id: articleInfo.id,
           thumbnail: articleInfo.thumbnail,
@@ -315,8 +360,8 @@ export class ArticlesService {
           totalComment: articleInfo.totalComment,
           tags: tagNames,
           roads,
-          comments: commentsList
-        }
+          comments: commentsList,
+        };
       }
 
       return {
@@ -324,42 +369,53 @@ export class ArticlesService {
           userInfo: {
             id: userInfo.id,
             nickname: userInfo.nickname,
-            profileImage: userInfo.profileImage
+            profileImage: userInfo.profileImage,
           },
-          articleInfo: article
+          articleInfo: article,
         },
-        message: 'ok'
-      }
+        message: 'ok',
+      };
     } catch (err) {
       console.log(err);
       throw new InternalServerErrorException('err');
     }
   }
 
-
   async updateArticle(updateArticleDto: UpdateArticleDto): Promise<any> {
     const { user, articleId, content, tag } = updateArticleDto;
-    const articleInfo = await this.articleRepository.findOne({ where: { id: articleId }, select: ["id", "content", "totalComment", "totalLike", "userId"] });
+    const articleInfo = await this.articleRepository.findOne({
+      where: { id: articleId },
+      select: ['id', 'content', 'totalComment', 'totalLike', 'userId'],
+    });
     if (!articleInfo) throw new NotFoundException('cannot find article');
-    if (user !== articleInfo.userId) throw new ForbiddenException('permission denied');
+    if (user !== articleInfo.userId)
+      throw new ForbiddenException('permission denied');
     if (content) this.articleRepository.update({ id: articleId }, { content });
-    const userInfo = await this.userRepository.findOne({ where: { id: user }, select: ["id", "nickname", "profileImage"] });
-    const lastTags: Array<any> = await this.articleToTagRepository.find({ where: { articleId }, select: ['tagId', 'order'] });
+    const userInfo = await this.userRepository.findOne({
+      where: { id: user },
+      select: ['id', 'nickname', 'profileImage'],
+    });
+    const lastTags: Array<any> = await this.articleToTagRepository.find({
+      where: { articleId },
+      select: ['tagId', 'order'],
+    });
     const commentsList = await this.commentRepository.getComments(articleId);
     const roads = await this.trackRepository.getRoads(articleId);
     const comments = await Promise.all(
       commentsList.map(async (comment) => {
-        const commentUserInfo = await this.userRepository.getUserInfo(comment.userId);
+        const commentUserInfo = await this.userRepository.getUserInfo(
+          comment.userId,
+        );
         return {
           id: comment.id,
           userId: comment.userId,
           profileImage: commentUserInfo.profileImage,
           nickname: commentUserInfo.nickname,
           comment: comment.comment,
-          createdAt: comment.createdAt
-        }
-      })
-    )
+          createdAt: comment.createdAt,
+        };
+      }),
+    );
     try {
       this.articleToTagRepository.deleteTags(articleId);
       const tags = await this.findOrCreateTags(user, articleId, tag);
@@ -370,18 +426,21 @@ export class ArticlesService {
             ...articleInfo,
             roads,
             tags,
-            comments
-          }
+            comments,
+          },
         },
-        message: "article modified"
-      }
+        message: 'article modified',
+      };
     } catch {
-      this.articleRepository.update({ id: articleId }, { content: articleInfo.content });
+      this.articleRepository.update(
+        { id: articleId },
+        { content: articleInfo.content },
+      );
       this.articleToTagRepository.deleteTags(articleId);
       lastTags.forEach(({ tagId, order }) => {
-        this.articleToTagRepository.save({ tagId, articleId, order })
-      })
-      throw new BadRequestException('bad request')
+        this.articleToTagRepository.save({ tagId, articleId, order });
+      });
+      throw new BadRequestException('bad request');
     }
 
     // if (content) {
