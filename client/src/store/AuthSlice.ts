@@ -23,7 +23,9 @@ export interface auth {
 /* State 초기값 설정 */
 const initialState: auth = {
   isLogin: false,
-  userInfo: {}
+  userInfo: {
+    loginMethod: 0
+  }
 }
 
 const authSlice = createSlice({

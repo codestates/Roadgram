@@ -65,15 +65,18 @@
 }
 .userinfo_inform_div {
   display: flex;
-  div {
-    margin: 10px;
-    &:hover {
-      cursor: pointer;
-    }
-  }
+  
   span {
     margin: 5px;
     font-weight: 600;
+  }
+
+  li {
+    &:hover {
+      cursor: pointer;
+    }
+    border: 1px solid black;
+    list-style: none;
   }
 }
 .userinfo_status_div {

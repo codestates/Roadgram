@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { logout } from '../../store/AuthSlice';
 import auth from '../../store/AuthSlice';
 import './_logoutModal.scss';
@@ -9,6 +10,7 @@ import { logoutModal } from '../../store/ModalSlice';
 
 function LogoutModal() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { isLogoutModal } = useSelector((state: RootState) => state.modal);
   const { isLogin, userInfo, accessToken } = useSelector((state: RootState) => state.auth);
   const closeModal = () => {
@@ -30,7 +32,7 @@ function LogoutModal() {
         });
         dispatch(logout());
         dispatch(logoutModal(!isLogoutModal));
-        window.location.replace('/');
+        navigate('/main');
     } catch {
       console.log('logout error');
       dispatch(logoutModal(!isLogoutModal));
