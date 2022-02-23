@@ -7,6 +7,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10;
 }
 
 .withdrawal-background {
@@ -21,12 +22,12 @@
 }
 
 .withdrawal-box {
-  position: absolute;
-  background-color: rgb(146, 183, 204);
+  position: relative;
+  background-color: #7895f5;
   width: 400px;
   height: 200px;
   padding: 30px;
-  border-radius: 20px;
+  border-radius: 2em;
   justify-content: center;
   align-items: center;
 }
@@ -35,13 +36,24 @@
   flex: 1;
   overflow: hidden;
   display: flex;
+  margin-top: 1em;
+  font-size: 2em;
   justify-content: center;
   align-items: center;
 }
 
 .yesorno {
-  display: block;
-  width: 80px;
-  height: 40px;
-  margin: 0 auto;
+  width: 8em;
+  padding: 0.5em 0.3em;
+  margin-top: 3em;
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: 0.5em;
+  color: black;
+  font-size: 1.5em;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 2em;
+  border: 0.5px solid rgba(255, 255, 255, 0.5);
 }
