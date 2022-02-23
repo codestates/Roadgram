@@ -224,7 +224,7 @@ export class ArticlesService {
         id: article.id,
         thumbnail: article.thumbnail,
         nickname: writer,
-        totalLike: article.totalLlike,
+        totalLike: article.totalLike,
         totalComment: article.totalComment,
         tags: article.tags
       };
