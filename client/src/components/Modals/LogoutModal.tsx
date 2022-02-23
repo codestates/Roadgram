@@ -18,7 +18,7 @@ function LogoutModal() {
       await axios.post(
         `http://localhost:5000/users/logout`,
         {
-          loginMethod: 0,
+          loginMethod: userInfo.loginMethod,
           user: userInfo.id
         },
         {
