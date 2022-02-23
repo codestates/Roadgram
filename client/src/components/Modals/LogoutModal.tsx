@@ -21,7 +21,7 @@ function LogoutModal() {
         `http://localhost:5000/users/logout`,
         {
           loginMethod: 0,
-          user: 11
+          user: 2
         },
         {
           headers: {
@@ -29,14 +29,16 @@ function LogoutModal() {
           }
         });
         dispatch(logout());
+        dispatch(logoutModal(!isLogoutModal));
         window.location.replace('/');
     } catch {
       console.log('logout error');
+      dispatch(logoutModal(!isLogoutModal));
     }
   }
   return (
     <div className="withdrawal-center-wrap">
-      <div className="withdrawal-background" onClick={closeModal}>
+      <div className="withdrawal-background">
         <div className="withdrawal-box">
           <div className="withdrawal-msg">로그아웃하시겠습니까?</div>
           <button className="yesorno" type="button" onClick={handleDeleteUser}>네</button>

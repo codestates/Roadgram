@@ -22,7 +22,6 @@ function FollowingModal () {
   //   dispatch(followings({ id, loginMethod, accessToken }));
   // }
 
-
   return (
     <div className="follow-center-wrap">
       <div className="follow-background">
