@@ -16,11 +16,14 @@ $navigator-color: rgb(188, 232, 238);
 $main-color: rgb(240, 249, 251);
 $startmenu-color: rgb(143, 151, 238);
 $footer-color: rgb(188, 232, 238);
+
 /* 종범 */
 @import './styles/Mixins/responsive';
 @import './styles/components/footer';
 @import './styles/components/navigator';
 @import './styles/pages/landingPage';
+@import './styles/pages/mainPage';
+
 /* 주형 */
 @import './styles/components/loginpage';
 @import './styles/components/signup';

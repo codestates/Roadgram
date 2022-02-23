@@ -16,7 +16,9 @@ import App from './App'
 import authSlice, { auth } from './store/AuthSlice'
 import userInfoSlice, { UserInfo } from './store/UserInfoSlice'
 import modalSlice, { modals } from './store/ModalSlice'
+import articleSlice, { articles } from './store/AticleSlice'
 import followSlice, { followInfo } from './store/FollowSlice'
+
 
 /* persist 선언 */
 const persistConfig = {
@@ -31,6 +33,7 @@ const reducers = combineReducers({
   auth: authSlice,
   userInfo: userInfoSlice,
   modal: modalSlice,
+  articles: articleSlice,
   follow: followSlice
 })
 
@@ -50,9 +53,10 @@ const store = configureStore({
 
 /* RootState Type 세팅 */
 export interface RootState {
-  auth: auth,
-  userInfo: UserInfo,
-  modal: modals,
+  auth: auth
+  userInfo: UserInfo
+  modal: modals
+  articles: articles
   follow: followInfo
 }
 
@@ -62,9 +66,9 @@ export const persistor = persistStore(store)
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-    <PersistGate loading={null} persistor={persistor}>
-      <App />
-    </PersistGate>
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
     </React.StrictMode>
   </Provider>,
   document.getElementById('root'),

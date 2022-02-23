@@ -1,18 +1,29 @@
-import axios from 'axios';
 import React, { useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
+import axios from 'axios'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart, faCommentDots, faC, faTags } from '@fortawesome/free-solid-svg-icons'
+import { RootState } from '..'
+import { getArticleRecent } from '../store/AticleSlice'
+import { useNavigate } from 'react-router-dom'
 import { login } from '../store/AuthSlice';
 
 function MainPage() {
-   /// 여기 작성 부분은 Login시 메인페이지로 변경 예정
-   const dispatch = useDispatch()
-   const navigate = useNavigate()
-   const state = useSelector((state) => state);
-   const isInitialMount = useRef(true);
- 
-   useEffect(() => {
-     if (isInitialMount.current) {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const state = useSelector((state) => state);
+  const isInitialMount = useRef(true);
+  const { isLogin } = useSelector((state: RootState) => state.auth)
+  const { articleRecent } = useSelector((state: RootState) => state.articles)
+
+  const getRecentArticleHandler = async () => {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/articles/recent?page=1`)
+    dispatch(getArticleRecent(response.data.data.articles))
+  }
+
+  useEffect(() => {
+    getRecentArticleHandler()
+    if (isInitialMount.current) {
        isInitialMount.current = false;
        const url = new URL(window.location.href)
        const authorizationCode = url.searchParams.get('code')
@@ -21,10 +32,9 @@ function MainPage() {
        if (authorizationCode) {
            getAccessToken(authorizationCode)
        }
-     } else {
-       console.log("state ===", state);
      }
-   },[state])
+  }, [])
+    
  
    async function getAccessToken(code: string) {
     await axios
@@ -37,7 +47,40 @@ function MainPage() {
     .catch((err) => console.log(err));
   }
 
-  return <div>MainPage</div>
+  return (
+    <div id="mainContainer">
+      {articleRecent.map(article => {
+        return (
+          <div className="postBox" key={article.id}>
+            <img src={article.thumbnail} alt="mainImage" className="mainImage" />
+            <div className="tagBox">
+              {article.tags
+                .map((el: any) => {
+                  return { id: article.tags.indexOf(el), tag: el }
+                })
+                .map((ele: any) => {
+                  return (
+                    <div className="tag" key={ele.id}>
+                      {ele.tag}
+                    </div>
+                  )
+                })}
+            </div>
+            <div className="communityBox">
+              <div className="nickname">{article.nickname}</div>
+              <div className="iconBox">
+                <FontAwesomeIcon className="heartIcon" icon={faHeart} />
+                <div className="like">12</div>
+                <FontAwesomeIcon className="commentIcon" icon={faCommentDots} />
+                <div className="reply">3</div>
+              </div>
+            </div>
+            <div />
+          </div>
+        )
+      })}
+    </div>
+  )
 }
 
 export default MainPage
