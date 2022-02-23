@@ -42,7 +42,8 @@ export class UserRepository extends Repository<User> {
             data: {
                 userInfo: {
                     statusMessage: user.statusMessage,
-                    profileImage: user.profileImage
+                    profileImage: user.profileImage,
+                    nickname: user.nickname
                 }
             },
             message: 'change succeed'

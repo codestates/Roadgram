@@ -10,13 +10,9 @@ export interface auth {
   refreshToken?: string
   userInfo: {
     id?: number
+    email?:string
     nickname?: string
-    email?: string
-    password?: string
-    statusMessage?: string
     profileImage?: string
-    totalFollower?: number
-    totalFollowing?: number
     loginMethod?: number
   },
 }
@@ -33,8 +29,8 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     /* Action 설정 */
-    login: (state: auth,  action: PayloadAction<auth>) => {
-      const {accessToken, refreshToken, userInfo} = action.payload;
+    login: (state: auth, action: PayloadAction<auth>) => {
+      const { accessToken, refreshToken, userInfo } = action.payload;
       state.userInfo = userInfo;
       state.accessToken = accessToken;
       state.refreshToken = refreshToken;
@@ -47,8 +43,15 @@ const authSlice = createSlice({
       
       
     },
+    newAccessToken: (state: auth, action: PayloadAction<auth>) => {
+      state.accessToken = action.payload.accessToken;
+    },
+    updateUserInfo: (state: auth, action: PayloadAction<auth>) => {
+      state.userInfo.profileImage = action.payload.userInfo.profileImage;
+      state.userInfo.nickname = action.payload.userInfo.nickname;
+    }
   },
 })
 
-export const { login, logout } = authSlice.actions
+export const { login, logout, newAccessToken, updateUserInfo } = authSlice.actions
 export default authSlice.reducer

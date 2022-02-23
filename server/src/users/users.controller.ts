@@ -74,6 +74,6 @@ export class UsersController {
         @Query() queryDto: QueryDto,
         @Headers() tokenDto: TokenDto
     ): Promise<object> {
-        return this.usersService.refreshAccessToken({ id: queryDto.user, loginMethod: queryDto.loginMethod, refreshToken: tokenDto.authroization });
+        return this.usersService.refreshAccessToken({ id: +queryDto.user, loginMethod: +queryDto.loginMethod, refreshToken: tokenDto.authorization });
     }
 }

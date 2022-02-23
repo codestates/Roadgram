@@ -6,24 +6,39 @@ import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { update } from '../store/UserInfoSlice'
+import { resetUserInfo, update } from '../store/UserInfoSlice'
 import logo from '../images/logo.png'
 import { RootState } from '../index'
 import { logout } from '../store/AuthSlice'
-import { logoutModal } from '../store/ModalSlice'
-import LogoutModal from './Modals/LogoutModal'
-
-
+import { resetFollow } from '../store/FollowSlice'
+import { resetModal } from '../store/ModalSlice'
 
 function Navigator() {
   const [usericonClick, setUsericonCLick] = useState(false)
-  const { isLogin, userInfo } = useSelector((state: RootState) => state.auth)
-  const { isLogoutModal } = useSelector((state: RootState) => state.modal);
-  const dispatch = useDispatch()
-  const navigate = useNavigate();
-  
-  const openLogoutModal = () => {
-    dispatch(logoutModal(!isLogoutModal));
+  const { isLogin, userInfo, accessToken } = useSelector((state: RootState) => state.auth)
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+        try {
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/users/logout`,
+        {
+          loginMethod: userInfo.loginMethod,
+          user: userInfo.id
+        },
+        {
+          headers: {
+            authorization: `${accessToken}`
+          }
+        }).then(() => {
+          dispatch(logout());
+          dispatch(resetFollow());
+          dispatch(resetModal());
+          dispatch(resetUserInfo());
+        })
+    } catch {
+      console.log('logout error');
+    }
   };
 
   const linkToMypage = async () => {
@@ -79,7 +94,7 @@ function Navigator() {
           <Link to="/userinfo" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>
             <li onKeyDown={linkToMypage} onClick={linkToMypage} className="mypageMenu">마이페이지</li>
           </Link>
-          <Link to="/main" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }} onClick={openLogoutModal}>
+          <Link to="/main" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }} onClick={handleLogout}>
             <div className="logoutMenu">로그아웃</div>
           </Link>
         </div>
@@ -89,7 +104,6 @@ function Navigator() {
           <div className="logoutMenu">로그아웃</div> */}
         </div>
       )}
-      {isLogoutModal ? <LogoutModal /> : null}
     </div>
   )
 }
