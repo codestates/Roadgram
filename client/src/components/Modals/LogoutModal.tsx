@@ -5,12 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../../store/AuthSlice';
 import './_logoutModal.scss';
 import { RootState } from '../..';
-import { logoutModal } from '../../store/ModalSlice';
 
 function LogoutModal() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLogoutModal } = useSelector((state: RootState) => state.modal);
   const { isLogin, userInfo, accessToken } = useSelector((state: RootState) => state.auth);
 
   const handleLogout = async () => {
@@ -18,7 +16,7 @@ function LogoutModal() {
       await axios.post(
         `http://localhost:5000/users/logout`,
         {
-          loginMethod: userInfo.loginMethod,
+          loginMethod: 0,
           user: userInfo.id
         },
         {
@@ -26,20 +24,17 @@ function LogoutModal() {
             authorization: `${accessToken}`
           }
         }).then(() => {
-          dispatch(logoutModal(!isLogoutModal));
+          
           dispatch(logout());
         }).then(() => {
           navigate('/main');
         })
     } catch {
       console.log('logout error');
-      dispatch(logoutModal(!isLogoutModal));
+      
     }
   };
 
-  const cancelLogout = () => {
-    dispatch(logoutModal(!isLogoutModal));
-  };
 
   return (
     <div className="logout-center-wrap">
@@ -47,7 +42,7 @@ function LogoutModal() {
         <div className="logout-box">
           <div className="logout-msg">로그아웃하시겠습니까?</div>
           <button className="yesorno" type="button" onClick={handleLogout}>네</button>
-          <button className="yesorno" type="button" onClick={cancelLogout}>아니오</button>
+          <button className="yesorno" type="button">아니오</button>
         </div>
       </div>
     </div>
