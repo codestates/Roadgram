@@ -48,5 +48,5 @@ export class KakaoLoginDto {
 export class TokenDto {
     @IsString()
     @IsNotEmpty()
-    authroization: string;
+    authorization: string;
 }

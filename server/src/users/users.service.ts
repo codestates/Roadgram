@@ -62,7 +62,9 @@ export class UsersService {
                     refreshToken,
                     userInfo: {
                         id: userInfo.id,
-                        nickname: userInfo.nickname
+                        nickname: userInfo.nickname,
+                        loginMethod: userInfo.loginMethod,
+                        profileImage:userInfo.profileImage
                     }
                 },
                 message: 'login ok'
@@ -202,7 +204,8 @@ export class UsersService {
                         userInfo: {
                             id: userInfo.id,
                             nickname: userInfo.nickname,
-                            loginMethod: 1
+                            loginMethod: 1,
+                            profileImage:userInfo.profileImage
                         }
                     },
                     message: 'login successfully'
