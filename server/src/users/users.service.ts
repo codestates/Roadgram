@@ -53,8 +53,8 @@ export class UsersService {
             throw new NotFoundException('login fail')
         }
         else {
-            const accessToken = this.jwtService.sign({ email: loginDto.email }, { expiresIn: '1h' });
-            const refreshToken = this.jwtService.sign({ email: loginDto.email }, { expiresIn: '12h' });
+            const accessToken = this.jwtService.sign({ email: loginDto.email }, { expiresIn: '12h' });
+            const refreshToken = this.jwtService.sign({ email: loginDto.email }, { expiresIn: '720h' });
             this.userRepository.putRefreshToken(userInfo.id, refreshToken);
             return {
                 data: {
@@ -166,18 +166,22 @@ export class UsersService {
 
     async getTokenKakao({ code }: KakaoLoginDto) {
         try {
+            console.log("code", code);
             const tokenRequest = await axios.post(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}&code=${code}`,
                 { headers: { 'Content-Type': "application/x-www-form-urlencoded" } }
             );
+            console.log("tokenRequest", tokenRequest);
             const userInfoKakao = await axios.get('https://kapi.kakao.com/v2/user/me',
                 { headers: { 'Authorization': `Bearer ${tokenRequest.data.access_token}` } }
             );
+            console.log("userInfoKakao", userInfoKakao);
             const userInfo = await this.userRepository.findOne({ email: userInfoKakao.data.kakao_account.email });
             if (!userInfo) {
                 const user: User = this.userRepository.create({
                     email: userInfoKakao.data.kakao_account.email,
-                    nickname: null,
+                    nickname: userInfoKakao.data.properties.nickname,
                     password: null,
+                    profileImage: userInfoKakao.data.properties.profile_image,
                     loginMethod: 1,
                     refreshToken: tokenRequest.data.refresh_token
                 })
@@ -222,8 +226,6 @@ export class UsersService {
             let offset: number = (page - 1) * 9;
             const userInfo = await this.userRepository.getUserInfo(user);
             const articles = await this.articleRepository.getArticleInfo(user, limit, offset);
-            console.log("usersInfo ===", userInfo);
-            console.log("articles ===", articles);
 
             // // 각 게시물에 태그 이름(배열) 추가
             let newArticles = [];

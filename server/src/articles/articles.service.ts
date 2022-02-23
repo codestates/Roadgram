@@ -224,8 +224,8 @@ export class ArticlesService {
         id: article.id,
         thumbnail: article.thumbnail,
         nickname: writer,
-        totalLike: article.total_like,
-        totalComment: article.total_comment,
+        totalLike: article.totalLlike,
+        totalComment: article.totalComment,
         tags: article.tags
       };
       newArticles.push(creation);
