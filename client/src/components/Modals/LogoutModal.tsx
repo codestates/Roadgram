@@ -3,7 +3,6 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../store/AuthSlice';
-import auth from '../../store/AuthSlice';
 import './_logoutModal.scss';
 import { RootState } from '../..';
 import { logoutModal } from '../../store/ModalSlice';
@@ -13,11 +12,8 @@ function LogoutModal() {
   const navigate = useNavigate();
   const { isLogoutModal } = useSelector((state: RootState) => state.modal);
   const { isLogin, userInfo, accessToken } = useSelector((state: RootState) => state.auth);
-  const closeModal = () => {
-    dispatch(logoutModal(!isLogoutModal));
-  }
 
-  const handleDeleteUser = async () => {
+  const handleLogout = async () => {
     try {
       await axios.post(
         `http://localhost:5000/users/logout`,
@@ -29,22 +25,29 @@ function LogoutModal() {
           headers: {
             authorization: `${accessToken}`
           }
-        });
-        dispatch(logout());
-        dispatch(logoutModal(!isLogoutModal));
-        navigate('/main');
+        }).then(() => {
+          dispatch(logoutModal(!isLogoutModal));
+          dispatch(logout());
+        }).then(() => {
+          navigate('/main');
+        })
     } catch {
       console.log('logout error');
       dispatch(logoutModal(!isLogoutModal));
     }
-  }
+  };
+
+  const cancelLogout = () => {
+    dispatch(logoutModal(!isLogoutModal));
+  };
+
   return (
-    <div className="withdrawal-center-wrap">
-      <div className="withdrawal-background">
-        <div className="withdrawal-box">
-          <div className="withdrawal-msg">로그아웃하시겠습니까?</div>
-          <button className="yesorno" type="button" onClick={handleDeleteUser}>네</button>
-          <button className="yesorno" type="button">아니오</button>
+    <div className="logout-center-wrap">
+      <div className="logout-background">
+        <div className="logout-box">
+          <div className="logout-msg">로그아웃하시겠습니까?</div>
+          <button className="yesorno" type="button" onClick={handleLogout}>네</button>
+          <button className="yesorno" type="button" onClick={cancelLogout}>아니오</button>
         </div>
       </div>
     </div>
