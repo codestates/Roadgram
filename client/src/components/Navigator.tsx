@@ -10,17 +10,21 @@ import { update } from '../store/UserInfoSlice'
 import logo from '../images/logo.png'
 import { RootState } from '../index'
 import { logout } from '../store/AuthSlice'
+import { logoutModal } from '../store/ModalSlice'
+import LogoutModal from './Modals/LogoutModal'
 
 
 
 function Navigator() {
-  const [usericonClick, setUsericonCLick] = useState(false)
-  const { isLogin } = useSelector((state: RootState) => state.auth)
-  const dispatch = useDispatch()
+  const [usericonClick, setUsericonCLick] = useState(false);
+  const { isLogin } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+  const { isLogoutModal } = useSelector((state: RootState) => state.modal);
 
-  const logoutHandler = () => {
-    dispatch(logout())
-  }
+  const openLogoutModal = () => {
+    dispatch(logoutModal(!isLogoutModal));
+  };
+  
   return (
     <div id="navigator-container">
       <div className="structure" />
@@ -57,10 +61,10 @@ function Navigator() {
       )}
       {usericonClick ? (
         <div className="hiddenMenu">
-          <Link to="/mypage" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>
+          <Link to="/userinfo" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>
             <div className="mypageMenu">마이페이지</div>
           </Link>
-          <Link to="/main" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }} onClick={logoutHandler}>
+          <Link to="/main" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }} onClick={openLogoutModal}>
             <div className="logoutMenu">로그아웃</div>
           </Link>
         </div>
@@ -70,6 +74,7 @@ function Navigator() {
           <div className="logoutMenu">로그아웃</div> */}
         </div>
       )}
+      {isLogoutModal ? <LogoutModal /> : null}
     </div>
   )
 }
