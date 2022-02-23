@@ -1,5 +1,5 @@
-import { Article } from 'src/articles/entities/article.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Article } from '../../articles/entities/article.entity';
+import { User } from '../../users/entities/user.entity';
 import {
   Column,
   Entity,
@@ -13,17 +13,17 @@ export class Likes {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (User) => User.id, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (User) => User.likes, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column()
-  user_id: number;
+  @Column({ name: 'user_id' })
+  userId: number;
 
   @ManyToOne(() => Article, (article) => article.likes, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'article_id' })
   article: Article;
 
-  @Column()
-  article_id: number;
+  @Column({ name: 'article_id' })
+  articleId: number;
 }

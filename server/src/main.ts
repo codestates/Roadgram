@@ -5,8 +5,10 @@ import * as cookieParser from 'cookie-parser'
 require('dotenv').config();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  const app = await NestFactory.create(AppModule, {
+    cors: true
+  });
+  
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

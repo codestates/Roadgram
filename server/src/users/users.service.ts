@@ -1,7 +1,7 @@
 import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LoginDto } from './dto/login.dto';
+import { EmailDto, IdDto, KakaoLoginDto, LoginDto, NicknameDto } from './dto/login.dto';
 import { UserRepository } from './repositories/user.repository';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/createUser.dto';
@@ -9,6 +9,9 @@ import { UpdateUserDto } from './dto/updateUser.dto';
 import axios from 'axios';
 import { ArticleRepository } from 'src/articles/repositories/article.repository';
 import { AuthDto } from './dto/auth.dto';
+import { ArticleToTagRepository } from 'src/articles/repositories/article_tag.repository';
+import { TagRepository } from 'src/articles/repositories/tag.repository';
+import { User } from './entities/user.entity';
 require('dotenv').config();
 
 @Injectable()
@@ -18,51 +21,48 @@ export class UsersService {
         private userRepository: UserRepository,
         @InjectRepository(ArticleRepository)
         private articleRepository: ArticleRepository,
+        @InjectRepository(ArticleToTagRepository)
+        private articleToTagRepository: ArticleToTagRepository,
+        @InjectRepository(TagRepository)
+        private tagRepository: TagRepository,
         private jwtService: JwtService
     ) { }
 
-    async checkEmail(email: string) {
-        if (!email) {
-            throw new BadRequestException('Bad request')
-        }
-        const isValid = await this.userRepository.findOne({ email: email });
+    async checkEmail({ email }: EmailDto) {
+        const isValid = await this.userRepository.findOne({ email });
         if (isValid) {
             throw new ConflictException('not available')
         }
-        else return { message: 'availabe' }
+        else return { message: 'available' }
     }
 
-    async checkNickname(nickname: string) {
-        if (!nickname) {
-            throw new BadRequestException('Bad request')
-        }
-        const isValid = await this.userRepository.findOne({ nickname: nickname });
+    async checkNickname({ nickname }: NicknameDto) {
+        const isValid = await this.userRepository.findOne({ nickname });
         if (isValid) {
             throw new ConflictException('not available')
         }
-        else return { message: 'availabe' }
+        else return { message: 'available' }
     }
 
     async login(loginDto: LoginDto) {
         const userInfo = await this.userRepository.findOne({
-            login_method: 0,
+            loginMethod: 0,
             email: loginDto.email
         })
-
         if (!userInfo || !await bcrypt.compare(loginDto.password, userInfo.password)) {
             throw new NotFoundException('login fail')
         }
         else {
-            const accessToken = this.jwtService.sign({ email: userInfo.email }, { expiresIn: '1h' });
-            const refreshToken = this.jwtService.sign({ email: userInfo.email }, { expiresIn: '12h' });
+            const accessToken = this.jwtService.sign({ email: loginDto.email }, { expiresIn: '1h' });
+            const refreshToken = this.jwtService.sign({ email: loginDto.email }, { expiresIn: '12h' });
             this.userRepository.putRefreshToken(userInfo.id, refreshToken);
             return {
                 data: {
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
+                    accessToken,
+                    refreshToken,
                     userInfo: {
-                        userId: userInfo.id,
-                        nickName: userInfo.nickname
+                        id: userInfo.id,
+                        nickname: userInfo.nickname
                     }
                 },
                 message: 'login ok'
@@ -70,17 +70,23 @@ export class UsersService {
         }
     }
 
-    async logout(id: number) {
-        this.userRepository.deleteRefreshToken(id);
-        return { message: 'logout succeed' };
+    async logout(idDto: IdDto) {
+        const id = idDto.user;
+        try {
+            this.userRepository.deleteRefreshToken(id);
+            return { message: 'logout succeed' };
+        } catch {
+            throw new NotFoundException("cannot find user")
+        }
+
     }
 
     signup(createUserDto: CreateUserDto) {
         return this.userRepository.createUser(createUserDto);
     }
 
-    deleteUser(id: number) {
-        return this.userRepository.deleteUser(id);
+    deleteUser(idDto: IdDto) {
+        return this.userRepository.deleteUser(idDto.user);
     }
 
     modifyUser(userData: UpdateUserDto) {
@@ -91,13 +97,17 @@ export class UsersService {
     }
 
     async validateToken(authDto: AuthDto) {
+        console.log("validateToken 시작!!!!!");
         const { id, loginMethod, accessToken } = authDto;
-        const userInfo = await this.userRepository.findOne({ id });
-        if (!userInfo) throw new BadRequestException('bad request');
+        console.log("authDto", authDto);
+        const userInfo = await this.userRepository.findOne({ id, loginMethod });
+        if (!userInfo) throw new NotFoundException('cannnot find user');
         if (loginMethod === 0) {
             try {
                 const tokenInfo = await this.jwtService.verifyAsync(accessToken);
+                console.log("tokenInfo", tokenInfo);
                 return tokenInfo.email === userInfo.email;
+
             } catch {
                 throw new UnauthorizedException('request new access token');
             }
@@ -114,13 +124,12 @@ export class UsersService {
         }
     }
 
-    async refreshAccessToken(authDto: AuthDto) {
-        const { id, loginMethod, refreshToken } = authDto;
-        const userInfo = await this.userRepository.findOne({ id });
+    async refreshAccessToken({ id, loginMethod, refreshToken }: AuthDto) {
+        const userInfo = await this.userRepository.findOne({ id, loginMethod });
         if (!userInfo) {
-            throw new BadRequestException('bad request');
+            throw new NotFoundException('cannot find user');
         }
-        if (userInfo.refresh_token !== refreshToken) {
+        if (userInfo.refreshToken !== refreshToken) {
             throw new ForbiddenException('invalid token');
         }
         if (loginMethod === 0) {
@@ -153,34 +162,30 @@ export class UsersService {
 
     }
 
-    async getTokenKakao(code: string) {
+    async getTokenKakao({ code }: KakaoLoginDto) {
         try {
-            const tokenRequest = await axios.post(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.CLIENT_ID}&redirect_uri=http://localhost:3000&code=${code}`,
+            const tokenRequest = await axios.post(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}&code=${code}`,
                 { headers: { 'Content-Type': "application/x-www-form-urlencoded" } }
             );
             const userInfoKakao = await axios.get('https://kapi.kakao.com/v2/user/me',
-                {
-                    headers: {
-                        'Authorization': `Bearer ${tokenRequest.data.access_token}`
-                    }
-                }
+                { headers: { 'Authorization': `Bearer ${tokenRequest.data.access_token}` } }
             );
             const userInfo = await this.userRepository.findOne({ email: userInfoKakao.data.kakao_account.email });
             if (!userInfo) {
-                const user = {
+                const user: User = this.userRepository.create({
                     email: userInfoKakao.data.kakao_account.email,
                     nickname: null,
                     password: null,
-                    login_method: 1,
-                    refresh_token: tokenRequest.data.refresh_token
-                }
+                    loginMethod: 1,
+                    refreshToken: tokenRequest.data.refresh_token
+                })
                 const createdUserInfo = await this.userRepository.save(user);
                 return {
                     data: {
                         accessToken: tokenRequest.data.access_token,
                         refreshToken: tokenRequest.data.refresh_token,
                         userInfo: {
-                            userId: createdUserInfo.id,
+                            id: createdUserInfo.id,
                             nickname: createdUserInfo.nickname,
                             loginMethod: 1
                         }
@@ -195,7 +200,7 @@ export class UsersService {
                         accessToken: tokenRequest.data.access_token,
                         refreshToken: tokenRequest.data.refresh_token,
                         userInfo: {
-                            userId: userInfo.id,
+                            id: userInfo.id,
                             nickname: userInfo.nickname,
                             loginMethod: 1
                         }
@@ -207,18 +212,59 @@ export class UsersService {
             throw new UnauthorizedException('permission denied');
         }
     }
-    async getMypage(id: number): Promise<object> {
-        const userInfo = await this.userRepository.getUserInfo(id);
-        if(!userInfo || Object.keys(userInfo).length === 0) {
+
+    async getMypage(user: number, page: number): Promise<object> {
+        try {
+            let limit: number = 9;
+            let offset: number = (page - 1) * 9;
+            const userInfo = await this.userRepository.getUserInfo(user);
+            const articles = await this.articleRepository.getArticleInfo(user, limit, offset);
+            console.log("usersInfo ===", userInfo);
+            console.log("articles ===", articles);
+
+            // // 각 게시물에 태그 이름(배열) 추가
+            let newArticles = [];
+            for (const article of articles) {
+                const tagIds: object = await this.articleToTagRepository.getTagIds(article.id);
+                const tagNames: string[] = await this.tagRepository.getTagNameWithIds(tagIds);
+                article.tags = tagNames;
+
+                interface articleObject {
+                    id: string,
+                    thumbnail: string,
+                    nickname: string
+                    totalLike: number,
+                    totalComment: number,
+                    tags: string[]
+                }
+                let creation: articleObject = {
+                    id: article.id,
+                    thumbnail: article.thumbnail,
+                    nickname: userInfo.nickname,
+                    totalLike: article.totalLike,
+                    totalComment: article.totalComment,
+                    tags: article.tags
+                };
+                newArticles.push(creation);
+            }
+            return {
+                data: {
+                    userInfo: {
+                        id: userInfo.id,
+                        email: userInfo.email,
+                        nickname: userInfo.nickname,
+                        statusMessage: userInfo.statusMessage,
+                        profileImage: userInfo.profileImage,
+                        totalFollower: userInfo.totalFollower,
+                        totalFollowing: userInfo.totalFollowing
+                    },
+                    articles: newArticles
+                },
+                message: "ok"
+            }
+        } catch (err) {
+            console.error(err);
             throw new NotFoundException("No Content")
-        }
-        const mypageArticle = await this.articleRepository.getMypageArticle(id);
-        return {
-            data: {
-                userInfo,
-                article: mypageArticle
-            },
-            message: "ok"
         }
     }
 }

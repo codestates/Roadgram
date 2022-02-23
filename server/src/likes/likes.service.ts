@@ -23,7 +23,7 @@ export class LikesService {
       return {
         data: {
           articleId: articleId,
-          totalLike: total_likes
+          totalLikes: total_likes
         },
         message: result
       }
@@ -33,7 +33,7 @@ export class LikesService {
       return {
         data: {
           articleId: articleId,
-          totalLike: total_likes
+          totalLikes: total_likes
         },
         message: result
       }

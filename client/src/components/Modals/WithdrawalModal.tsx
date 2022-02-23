@@ -1,7 +1,47 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../..';
+import { logout } from '../../store/AuthSlice';
+import { withdrawalModal } from '../../store/ModalSlice';
+import WithdrawalDoneModal from './Mypage/WithdrawalDoneModal';
+import './_withdrawalModal.scss';
 
 function WithdrawalModal() {
-  return <div>WithdrawalModal</div>
+  const dispatch = useDispatch();
+  const { isWithdrawalModal } = useSelector((state: RootState) => state.modal);
+
+  const closeModal = () => {
+    dispatch(withdrawalModal(!isWithdrawalModal));
+  }
+
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(logout());
+      await axios.delete(
+        `http://`,
+        {
+          headers: {
+            authorization: ''
+          }
+        });
+        window.location.replace('/');
+    } catch {
+      console.log('withdrawal error');
+    }
+  }
+
+  return (
+    <div className="withdrawal-center-wrap">
+      <div className="withdrawal-background" onClick={closeModal}>
+        <div className="withdrawal-box">
+          <div className="withdrawal-msg">정말 탈퇴하시겠습니까?</div>
+          <button className="yesorno" type="button" onClick={handleDeleteUser}>네</button>
+          <button className="yesorno" type="button">아니오</button>
+        </div>
+      </div>
+    </div>
+  )
 }
 
-export default WithdrawalModal
+export default WithdrawalModal;

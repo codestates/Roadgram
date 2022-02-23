@@ -7,27 +7,27 @@ export class LikesRepository extends Repository<Likes> {
     async likeOrNot(likesDto: LikesDto) {
       const { user, articleId } = likesDto;
       return await this.findOne({
-        user_id: user,
-        article_id: articleId,
+        userId: user,
+        articleId: articleId,
       });
     };
 
     async likeArticle(likesDto: LikesDto): Promise<string> {
       const { user, articleId } = likesDto;
       const newLike = this.create({
-        user_id: user,
-        article_id: articleId
+        userId: user,
+        articleId: articleId
       });
       await this.save(newLike);
-      return 'like success';
+      return 'like this post';
     };
 
     async unlikeArticle(likesDto: LikesDto): Promise<string> {
       const { user, articleId } = likesDto;
       await this.delete({
-        user_id: user,
-        article_id: articleId,
+        userId: user,
+        articleId: articleId,
       });
-      return 'like cancelled';
-      }
+      return 'unlike this post';
+    };
 }

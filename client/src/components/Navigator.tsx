@@ -4,9 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faUser, faPencil } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { update } from '../store/UserInfoSlice'
 import logo from '../images/logo.png'
 import { RootState } from '../index'
 import { logout } from '../store/AuthSlice'
+
+
 
 function Navigator() {
   const [usericonClick, setUsericonCLick] = useState(false)
@@ -16,7 +21,6 @@ function Navigator() {
   const logoutHandler = () => {
     dispatch(logout())
   }
-
   return (
     <div id="navigator-container">
       <div className="structure" />

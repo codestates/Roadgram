@@ -14,6 +14,8 @@ import App from './App'
 
 /* Store import */
 import authSlice, { auth } from './store/AuthSlice'
+import userInfoSlice, { UserInfo } from './store/UserInfoSlice'
+import modalSlice, { modals } from './store/ModalSlice'
 
 /* persist 선언 */
 const persistConfig = {
@@ -26,6 +28,8 @@ const persistConfig = {
 /* reducer가 추가되면, 추가해 주세요. */
 const reducers = combineReducers({
   auth: authSlice,
+  userInfo: userInfoSlice,
+  modal: modalSlice
 })
 
 /* persist reducer 세팅 (persistConfig가 추가된 reducer) */
@@ -44,24 +48,21 @@ const store = configureStore({
 
 /* RootState Type 세팅 */
 export interface RootState {
-  auth: auth
+  auth: auth,
+  userInfo: UserInfo,
+  modal: modals
 }
 
 /* persist store 세팅 (새로고침, 종료해도 지속될 store) */
 export const persistor = persistStore(store)
 
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>,
-//   document.getElementById('root'),
-// )
-
 ReactDOM.render(
   <Provider store={store}>
+    <React.StrictMode>
     <PersistGate loading={null} persistor={persistor}>
       <App />
     </PersistGate>
+    </React.StrictMode>
   </Provider>,
   document.getElementById('root'),
 )

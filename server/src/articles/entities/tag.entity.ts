@@ -1,3 +1,4 @@
+import { IsNotEmpty } from "class-validator";
 import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ArticleToTag } from "./article_tag.entity";
 
@@ -6,10 +7,11 @@ export class Tag {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({unique: true, name: "tag_name"})
-    tag_name: string;
+    @IsNotEmpty()
+    @Column({unique: true, name: "tagName"})
+    tagName: string;
 
-    @OneToMany(() => ArticleToTag, (articleToTag) => articleToTag.tag_id, { cascade: true })
+    @OneToMany(() => ArticleToTag, (articleToTag) => articleToTag.tagId, { cascade: true })
     @JoinColumn()
     tags: ArticleToTag[];
 }

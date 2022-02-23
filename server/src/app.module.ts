@@ -3,10 +3,11 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ArticlesModule } from './articles/articles.module';
 import { SearchModule } from './search/search.module';
-import { CommentsModule } from './comment/comment.module';
+import { CommentsModule } from './comments/comments.module';
 import { LikesModule } from './likes/likes.module';
 import { FollowModule } from './follow/follow.module';
-import { typeORMConfig } from 'config/typeorm.config';
+import typeORMConfig from 'config/typeorm.config';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -18,5 +19,6 @@ import { typeORMConfig } from 'config/typeorm.config';
     LikesModule,
     FollowModule
   ],
+  controllers: [AppController],
 })
-export class AppModule {}
+export class AppModule { }

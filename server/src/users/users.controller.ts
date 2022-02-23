@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Headers, HttpCode, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { CreateUserDto } from './dto/createUser.dto';
-import { LoginDto } from './dto/login.dto';
+import { EmailDto, IdDto, KakaoLoginDto, LoginDto, NicknameDto, QueryDto, TokenDto } from './dto/login.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UsersService } from './users.service';
 
@@ -11,67 +11,69 @@ export class UsersController {
 
     @Post('/login')
     @HttpCode(200)
-    async login(@Body() loginDto: LoginDto) {
+    async login(@Body() loginDto: LoginDto): Promise<object> {
         return this.usersService.login(loginDto);
     }
 
     @Post('/logout')
     @UseGuards(AuthGuard)
     @HttpCode(200)
-    logout(@Body('user') id: number) {
-        return this.usersService.logout(id);
+    logout(@Body() idDto: IdDto): Promise<object> {
+        return this.usersService.logout(idDto);
     }
 
     @Post('/signup')
     @HttpCode(201)
-    signup(@Body() createUserDto: CreateUserDto) {
+    signup(@Body() createUserDto: CreateUserDto): Promise<object> {
         return this.usersService.signup(createUserDto)
     }
 
     @Post('/emailcheck')
     @HttpCode(200)
-    checkEmail(@Body('email') email: string) {
-        return this.usersService.checkEmail(email)
+    checkEmail(@Body() emailDto: EmailDto): Promise<object> {
+        return this.usersService.checkEmail(emailDto)
     }
 
     @Post('/nicknamecheck')
     @HttpCode(200)
-    checkNickname(@Body('nickName') nickname: string) {
-        return this.usersService.checkNickname(nickname);
+    checkNickname(@Body() nicknameDto: NicknameDto): Promise<object> {
+        return this.usersService.checkNickname(nicknameDto);
     }
 
     @Post('/login/kakao')
     @HttpCode(200)
-    getToken(@Body('code') code: string) {
-        return this.usersService.getTokenKakao(code);
+    getToken(@Body() kakaoLoginDto: KakaoLoginDto): Promise<object> {
+        return this.usersService.getTokenKakao(kakaoLoginDto);
     }
 
     @Get('/userinfo')
-    getUserInfo(@Query('id') id: number): Promise<object> {
-        return this.usersService.getMypage(id);
+    getUserInfo(
+        @Query('user') user: number,
+        @Query('page') page: number,
+    ): Promise<object> {
+        return this.usersService.getMypage(user, page);
     }
 
     @Patch('/profile')
     @UseGuards(AuthGuard)
     @HttpCode(200)
-    modifyProfile(@Body() userData: UpdateUserDto) {
+    modifyProfile(@Body() userData: UpdateUserDto): Promise<object> {
         return this.usersService.modifyUser(userData);
     }
 
     @Delete('/withdrawal')
     @UseGuards(AuthGuard)
     @HttpCode(200)
-    deleteUser(@Query('user') id: string) {
-        return this.usersService.deleteUser(+id);
+    deleteUser(@Query() idDto: QueryDto): Promise<object> {
+        return this.usersService.deleteUser(idDto);
     }
 
     @Get('/auth')
     @HttpCode(200)
     refreshAccessToken(
-        @Query('user') id: string,
-        @Query('loginmethod') loginMethod: string,
-        @Headers('authorization') refreshToken: string
-    ) {
-        return this.usersService.refreshAccessToken({ id: +id, loginMethod: +loginMethod, refreshToken });
+        @Query() queryDto: QueryDto,
+        @Headers() tokenDto: TokenDto
+    ): Promise<object> {
+        return this.usersService.refreshAccessToken({ id: queryDto.user, loginMethod: queryDto.loginMethod, refreshToken: tokenDto.authroization });
     }
 }
