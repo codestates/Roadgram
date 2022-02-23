@@ -1,4 +1,4 @@
-.withdrawal-center-wrap {
+.logout-center-wrap {
   position: fixed;
   top: 0;
   left: 0;
@@ -10,7 +10,7 @@
   z-index: 10;
 }
 
-.withdrawal-background {
+.logout-background {
   position: fixed;
   top: 0;
   left: 0;
@@ -21,7 +21,7 @@
   align-items: center;
 }
 
-.withdrawal-box {
+.logout-box {
   position: relative;
   background-color: #7895f5;
   width: 400px;
@@ -32,7 +32,7 @@
   align-items: center;
 }
 
-.withdrawal-msg {
+.logout-msg {
   flex: 1;
   overflow: hidden;
   display: flex;
