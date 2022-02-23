@@ -48,8 +48,12 @@ function LoginPage() {
         { email, password })
         .then((res) => {
           /* 서버의 응답결과에 유저정보가 담겨있으면 로그인 성공 */
-          dispatch(login(res.data.data))
-          navigate('/') // 메인페이지로 이동!
+          /* 테스트 값 */
+          const result = {...res.data.data, loginMethod: 0};
+          dispatch(login(result))
+          // 백업 데이터
+          // dispatch(login(res.data.data)) 
+          navigate('/main') // 메인페이지로 이동!
         }).catch((err) => {
           console.log(err)
           alert("아이디 혹은 비밀번호를 확인 해 주세요.")
@@ -62,7 +66,7 @@ function LoginPage() {
 
   const kakaoHandler = async () => {
     kakao.Auth.authorize({
-      redirectUri: "http://localhost:3000" // 메인페이지로 redirect 예정
+      redirectUri: "http://localhost:3000/main" // 메인페이지로 redirect 예정
     });
   }
 

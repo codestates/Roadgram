@@ -17,6 +17,8 @@ import authSlice, { auth } from './store/AuthSlice'
 import userInfoSlice, { UserInfo } from './store/UserInfoSlice'
 import modalSlice, { modals } from './store/ModalSlice'
 import articleSlice, { articles } from './store/AticleSlice'
+import followSlice, { followInfo } from './store/FollowSlice'
+
 
 /* persist 선언 */
 const persistConfig = {
@@ -32,6 +34,7 @@ const reducers = combineReducers({
   userInfo: userInfoSlice,
   modal: modalSlice,
   articles: articleSlice,
+  follow: followSlice
 })
 
 /* persist reducer 세팅 (persistConfig가 추가된 reducer) */
@@ -54,6 +57,7 @@ export interface RootState {
   userInfo: UserInfo
   modal: modals
   articles: articles
+  follow: followInfo
 }
 
 /* persist store 세팅 (새로고침, 종료해도 지속될 store) */

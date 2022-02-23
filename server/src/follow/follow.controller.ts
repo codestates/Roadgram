@@ -14,25 +14,27 @@ export class FollowController {
     @Body() followDto: FollowDto
   ): Promise<object> {
     return this.followService.followUnfollow(followDto);
-  }
+  };
 
   @Get('/follower')
   @UseGuards(AuthGuard)
   @HttpCode(200)
   getFollowerList( 
     @Query('loginMethod') loginMethod: number,
-    @Query('user') user: number
+    @Query('user') user: number,
+    @Query('page', ParseIntPipe) page: number
   ): Promise<object> {
-    return this.followService.getFollowerList(user);
-  }
+    return this.followService.getFollowerList(user, page);
+  };
 
   @Get('/following')
   @UseGuards(AuthGuard)
   @HttpCode(200)
   getFollowingList(
     @Query('loginMethod', ParseIntPipe) loginMethod: number,
-    @Query('user', ParseIntPipe) user: number
+    @Query('user', ParseIntPipe) user: number,
+    @Query('page', ParseIntPipe) page: number
   ): Promise<object> {
-    return this.followService.getFollowingList(user);
-  }
-}
+    return this.followService.getFollowingList(user, page);
+  };
+};
