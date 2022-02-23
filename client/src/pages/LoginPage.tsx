@@ -1,7 +1,7 @@
 /* Library import */
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import logo from '../images/logo.png'
 import kakaoLogin from '../images/kakao.png'

@@ -2,6 +2,9 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 
+/* CSS import */
+import './App.css'
+
 /* Component import */
 import Navigator from './components/Navigator'
 import Footer from './components/Footer'
@@ -20,9 +23,9 @@ import SignupPage from './pages/SignupPage'
 
 function App() {
   return (
-    <div>
+    <div className="App">
       <BrowserRouter>
-      <Navigator />
+        <Navigator />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/main/*" element={<MainPage />} />
@@ -34,7 +37,6 @@ function App() {
           <Route path="/logins/*" element={<LoginPage />} />
           <Route path="/signup/*" element={<SignupPage />} />
         </Routes>
-      <Footer />
       </BrowserRouter>
     </div>
   )
