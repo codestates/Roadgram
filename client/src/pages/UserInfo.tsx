@@ -2,7 +2,10 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '..';
+import FollowerModal from '../components/Modals/Mypage/FollowerModal';
+import FollowingModal from '../components/Modals/Mypage/FollowingModal';
 import logo from '../images/logo.png'
+import { followerModal, followingModal } from '../store/ModalSlice';
 
 function UserInfo() {
   const dispatch = useDispatch();
@@ -14,6 +17,19 @@ function UserInfo() {
   function moveToEditProfile() {
     alert("프로필 수정 서비스는 제작 중입니다.");
   }
+
+  const { isFollowingModal, isFollowerModal } = useSelector((state: RootState) => state.modal);
+  const openFollowingModal = () => {
+    dispatch(followingModal(!isFollowingModal));
+
+    // 요청문과 상태 업데이트
+  };
+
+  const openFollowerModal = () => {
+    dispatch(followerModal(!isFollowerModal));
+
+    // 요청문과 상태 업데이트
+  };
 
   return (
     <div className="userinfo_whole_div">
@@ -34,17 +50,19 @@ function UserInfo() {
           <div> 게시물
             <span>{articles.length}</span>
           </div>
-          <div> 팔로우
+          <li onClick={openFollowingModal} onKeyDown={openFollowingModal}> 팔로우
             <span>{userInfo.totalFollowing}</span>
-          </div>
-          <div> 팔로워
+          </li>
+          <li onClick={openFollowerModal} onKeyDown={openFollowerModal}> 팔로워
             <span>{userInfo.totalFollower}</span>
-          </div>
+          </li>
         </div>
         <div className="userinfo_status_div">
           <span>{userInfo.statusMessage}</span>
         </div>
       </div>
+      {isFollowingModal ? <FollowingModal /> : null}
+      {isFollowerModal ? <FollowerModal /> : null}
     </div>
     )
 }
