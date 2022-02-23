@@ -1,25 +1,25 @@
-import axios from 'axios';
+import axios from 'axios'
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { RootState } from '../../..';
-import { followerModal } from '../../../store/ModalSlice';
-import { update } from '../../../store/UserInfoSlice';
-import './_followModal.scss';
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { RootState } from '../../..'
+import { followerModal } from '../../../store/ModalSlice'
+import { update } from '../../../store/UserInfoSlice'
+import './_followModal.scss'
 
 
 function FollowerModal () {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { isFollowerModal } = useSelector((state: RootState) => state.modal);
-  const {followerList} = useSelector((state: RootState) => state.follow);
-  const state = useSelector((state: RootState) => state);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { isFollowerModal } = useSelector((state: RootState) => state.modal)
+  const {followerList} = useSelector((state: RootState) => state.follow)
+  const state = useSelector((state: RootState) => state)
   // const { userInfo, accessToken } = useSelector((state: RootState) => state.auth);
   
-  console.log("followerList === ", followerList);
-  console.log("state === ", state);
+  console.log("followerList === ", followerList)
+  console.log("state === ", state)
   const closeModal = () => {
-    dispatch(followerModal(!isFollowerModal));
+    dispatch(followerModal(!isFollowerModal))
   }
 
   async function moveToUserPage(id: any) {
