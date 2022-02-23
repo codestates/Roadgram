@@ -16,9 +16,8 @@ import App from './App'
 import authSlice, { auth } from './store/AuthSlice'
 import userInfoSlice, { UserInfo } from './store/UserInfoSlice'
 import modalSlice, { modals } from './store/ModalSlice'
-import articleSlice, { articles } from './store/AticleSlice'
+import articleSlice, { articles } from './store/ArticleSlice'
 import followSlice, { followInfo } from './store/FollowSlice'
-
 
 /* persist 선언 */
 const persistConfig = {
@@ -34,7 +33,7 @@ const reducers = combineReducers({
   userInfo: userInfoSlice,
   modal: modalSlice,
   articles: articleSlice,
-  follow: followSlice
+  follow: followSlice,
 })
 
 /* persist reducer 세팅 (persistConfig가 추가된 reducer) */
@@ -45,9 +44,10 @@ const store = configureStore({
   reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [PERSIST],
-      },
+      serializableCheck: false,
+      // serializableCheck: {
+      //   ignoredActions: [PERSIST],
+      // },
     }),
 })
 
