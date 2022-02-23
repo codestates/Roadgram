@@ -6,11 +6,13 @@ import { persistor } from '../index'
 /* State Type 설정 */
 export interface articles {
   articleRecent: any[]
+  followArticle: any[]
 }
 
 /* State 초기값 설정 */
 const initialState: articles = {
   articleRecent: [],
+  followArticle: [],
 }
 
 const articleSlice = createSlice({
@@ -21,8 +23,11 @@ const articleSlice = createSlice({
     getArticleRecent: (state: articles, { payload }: PayloadAction<Array<any>>) => {
       state.articleRecent = payload
     },
+    getFollowArticle: (state: articles, { payload }: PayloadAction<Array<any>>) => {
+      state.followArticle = payload
+    },
   },
 })
 
-export const { getArticleRecent } = articleSlice.actions
+export const { getArticleRecent, getFollowArticle } = articleSlice.actions
 export default articleSlice.reducer

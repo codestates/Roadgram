@@ -259,7 +259,7 @@ export class ArticlesService {
         nickname: writer,
         totalLike: article.totalLike,
         totalComment: article.totalComment,
-        tags: article.tags
+        tags: article.tags,
       };
       newArticles.push(creation);
     }

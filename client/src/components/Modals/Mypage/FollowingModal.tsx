@@ -9,8 +9,7 @@ import { followingModal } from '../../../store/ModalSlice'
 import { update } from '../../../store/UserInfoSlice'
 import './_followModal.scss'
 
-
-function FollowingModal () {
+function FollowingModal() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { isFollowingModal } = useSelector((state: RootState) => state.modal)
@@ -21,8 +20,8 @@ function FollowingModal () {
 
   const closeModal = () => {
     dispatch(followingModal(!isFollowingModal))
-  };
-  
+  }
+
   // const [target, setTarget] = useState(null)
 
   // // IntersectionObserver 생성
@@ -43,7 +42,7 @@ function FollowingModal () {
   //     dispatch(getFollower(res.data.data));
   //   })
   //   .catch(console.log);
-    // setFollowingLists((itemLists) => itemLists.concat(Items));
+  // setFollowingLists((itemLists) => itemLists.concat(Items));
   // };
 
   // const onIntersect = async ([entry], observer) => {
@@ -66,44 +65,49 @@ function FollowingModal () {
   // }, [target]);
 
   async function moveToUserPage(id: any) {
-    closeModal();
-    const page = 1;
+    closeModal()
+    const page = 1
     await axios
-    .get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=${page}`)
-    .then((res) => {
-      dispatch(update(res.data.data)); // userInfo 정보 update
-      navigate('/userinfo');
-    })
-    .catch(console.log);
+      .get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=${page}`)
+      .then(res => {
+        dispatch(update(res.data.data)) // userInfo 정보 update
+        navigate('/userinfo')
+      })
+      .catch(console.log)
   }
 
   return (
     <div className="follow-center-wrap">
-        <div className="follow-box">
-          <div className="follow-background">
-            <span className="follow-title">팔로잉</span>
-            <button className="close-button" type="button" onClick={closeModal}>&times;</button>
-          </div>
-          <hr/>
-          <div className="follows">
-          {followingList?.map((each) => {
+      <div className="follow-box">
+        <div className="follow-background">
+          <span className="follow-title">팔로잉</span>
+          <button className="close-button" type="button" onClick={closeModal}>
+            &times;
+          </button>
+        </div>
+        <hr />
+        <div className="follows">
+          {followingList?.map(each => {
             return (
-            <li 
-              className="follow_profile_list" 
-              key={each.id} 
-              onClick={()=> {moveToUserPage(each.id)}} 
-              onKeyDown={()=> {moveToUserPage(each.id)}}
-            >
-              <img alt="profile_image" src={each.profileImage} className="follow_profile_image"/>
-              <span>{each.nickname}</span>
-            </li>
+              <li
+                className="follow_profile_list"
+                key={each.id}
+                onClick={() => {
+                  moveToUserPage(each.id)
+                }}
+                onKeyDown={() => {
+                  moveToUserPage(each.id)
+                }}
+              >
+                <img alt="profile_image" src={each.profileImage} className="follow_profile_image" />
+                <span>{each.nickname}</span>
+              </li>
             )
-          })
-        }
+          })}
         </div>
       </div>
     </div>
   )
 }
 
-export default FollowingModal;
+export default FollowingModal
