@@ -1,5 +1,5 @@
 /* Library import */
-import React, { useEffect, useState } from 'react'
+import React, { createRef, useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -32,29 +32,29 @@ function LoginPage() {
   }
 
   /* login 핸들러 */
-  async function loginHandler() {
+  const loginHandler = async () => {
     const { email, password } = loginInfo
-
+    console.log("email ===", email, "password", password);
     try {
       if (!email) {
-        alert("이메일을 입력 해 주세요")
+        alert("이메일을 입력 해 주세요");
       } else if (!password) {
-        alert("패스워드를 입력 해 주세요")
+        alert("패스워드를 입력 해 주세요");
         return;
       } else {
         /* reponse 변수에 /users/login 서버 응답결과를 담는다 */
-      await axios.post(
-        `${process.env.REACT_APP_API_URL}/users/login`,
-        { email, password })
+        await axios
+        .post(`${process.env.REACT_APP_API_URL}/users/login`,{ email, password })
         .then((res) => {
           /* 서버의 응답결과에 유저정보가 담겨있으면 로그인 성공 */
           /* 테스트 값 */
-          const result = {...res.data.data, loginMethod: 0};
-          dispatch(login(result))
+          // const result = {...res.data.data, loginMethod: 0};
+          // dispatch(login(result))
           // 백업 데이터
-          // dispatch(login(res.data.data)) 
+          dispatch(login(res.data.data));
           navigate('/main') // 메인페이지로 이동!
-        }).catch((err) => {
+        })
+        .catch((err) => {
           console.log(err)
           alert("아이디 혹은 비밀번호를 확인 해 주세요.")
         })
@@ -83,7 +83,7 @@ function LoginPage() {
   }
   return (
     <div className="login_whole_div">
-      <div className="login_main_div">
+      <form className="login_main_div" >
         <img className="login_logo_img" alt="logo" src={logo} />
         <input className="login_email_input" type="text" placeholder="이메일" onChange={handleInputValue('email')} />
         <input className="login_password_input" type="password" placeholder="비밀번호" onChange={handleInputValue('password')} />
@@ -93,7 +93,7 @@ function LoginPage() {
           <button className="login_findpassword_button" type="button" onClick={redirectToFindPassword}>비밀번호 찾기</button>
           <button className="login_signup_button" type="button" onClick={redirectToSignup}>회원가입</button>
         </div>
-      </div>
+      </form>
     </div>
   )
 }

@@ -5,22 +5,43 @@ import { faMagnifyingGlass, faUser, faPencil } from '@fortawesome/free-solid-svg
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
-import { update } from '../store/UserInfoSlice'
+import { resetUserInfo, update } from '../store/UserInfoSlice'
 import logo from '../images/logo.png'
 import { RootState } from '../index'
 import { logout } from '../store/AuthSlice'
-import { logoutModal } from '../store/ModalSlice'
-import LogoutModal from './Modals/LogoutModal'
+import { resetFollow } from '../store/FollowSlice'
+import { resetModal } from '../store/ModalSlice'
 
 function Navigator() {
   const [usericonClick, setUsericonCLick] = useState(false)
-  const { isLogin, userInfo } = useSelector((state: RootState) => state.auth)
+  const { isLogin, userInfo, accessToken } = useSelector((state: RootState) => state.auth)
   const dispatch = useDispatch()
-  const { isLogoutModal } = useSelector((state: RootState) => state.modal)
 
-  const openLogoutModal = () => {
-    setUsericonCLick(!usericonClick)
-    dispatch(logoutModal(!isLogoutModal))
+  const handleLogout = async () => {
+    try {
+      await axios
+        .post(
+          `${process.env.REACT_APP_API_URL}/users/logout`,
+          {
+            loginMethod: userInfo.loginMethod,
+            user: userInfo.id,
+          },
+          {
+            headers: {
+              authorization: `${accessToken}`,
+            },
+          },
+        )
+        .then(() => {
+          dispatch(logout())
+          dispatch(resetFollow())
+          dispatch(resetModal())
+          dispatch(resetUserInfo())
+          setUsericonCLick(!usericonClick)
+        })
+    } catch {
+      console.log('logout error')
+    }
   }
 
   const linkToMypage = async () => {
@@ -35,6 +56,9 @@ function Navigator() {
       .catch(console.log)
   }
 
+  const changeWord = (e: any) => {
+    console.log(e.target.value)
+  }
   return (
     <div id="navigator-container">
       <div className="structure" />
@@ -46,7 +70,7 @@ function Navigator() {
       {isLogin ? (
         <div className="structure sideMenu">
           <div className="inputDiv">
-            <input className="searchBar" type="search" placeholder="검색어를 입력하세요." />
+            <input className="searchBar" type="search" placeholder="검색어를 입력하세요." onChange={changeWord} />
             <FontAwesomeIcon icon={faMagnifyingGlass} className="searchIcon" />
           </div>
           <div>
@@ -76,7 +100,7 @@ function Navigator() {
               마이페이지
             </li>
           </Link>
-          <Link to="/main" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }} onClick={openLogoutModal}>
+          <Link to="/main" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }} onClick={handleLogout}>
             <div className="logoutMenu">로그아웃</div>
           </Link>
         </div>
@@ -86,7 +110,6 @@ function Navigator() {
           <div className="logoutMenu">로그아웃</div> */}
         </div>
       )}
-      {isLogoutModal ? <LogoutModal /> : null}
     </div>
   )
 }

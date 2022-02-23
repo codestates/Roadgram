@@ -50,8 +50,9 @@ export class UsersController {
     getUserInfo(
         @Query('user') user: number,
         @Query('page') page: number,
+        @Query('authUser') authUser: number
     ): Promise<object> {
-        return this.usersService.getMypage(user, page);
+        return this.usersService.getMypage(user, page, authUser);
     }
 
     @Patch('/profile')

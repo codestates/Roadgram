@@ -44,9 +44,10 @@ const userInfoSlice = createSlice({
       const {userInfo, articles} = action.payload;
       state.userInfo = userInfo;
       state.articles = articles;
-    }
+    },
+    resetUserInfo: () => initialState
   },
 })
 
-export const { update } = userInfoSlice.actions
+export const { update, resetUserInfo } = userInfoSlice.actions
 export default userInfoSlice.reducer

@@ -36,11 +36,12 @@ const authSlice = createSlice({
       state.refreshToken = refreshToken;
       state.isLogin = true;
     },
-    logout: (state: auth) => {
-      state.isLogin = false;
-      state.userInfo = {};
+    logout: () => {
+      setTimeout(() => persistor.purge(), 500);
+      return initialState;
       /* 로그아웃시 persistStore의 데이터를 전부 삭제 */
-      setTimeout(() => persistor.purge(), 500)
+      
+      
     },
     newAccessToken: (state: auth, action: PayloadAction<auth>) => {
       state.accessToken = action.payload.accessToken;

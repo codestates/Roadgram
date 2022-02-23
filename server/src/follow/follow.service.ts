@@ -14,7 +14,8 @@ export class FollowService {
   ) {}
 
   async followUnfollow(followDto: FollowDto): Promise<object> {
-    const followedOrNot = await this.followRepository.followedOrNot(followDto);
+    const { user, followingUserId } = followDto;
+    const followedOrNot = await this.followRepository.followedOrNot(user, followingUserId);
 
     if (followedOrNot === undefined) {
       const result = await this.followRepository.follow(followDto);
