@@ -1,7 +1,14 @@
+.userInfo_div {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 90vh;
+}
 .userinfo_whole_div {
   display: flex;
   width: 100vw;
-  height: 15vh;
+  height: 20%;
+  border-bottom: 1px solid lightgray;
 }
 .userinfo_image_div {
   width: 40%;

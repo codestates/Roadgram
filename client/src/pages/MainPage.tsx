@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart, faCommentDots, faC, faTags } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
 import { RootState } from '..'
-import { getArticleRecent, getFollowArticle } from '../store/ArticleSlice'
+import { getMainArticles } from '../store/ArticleSlice'
 import { login } from '../store/AuthSlice'
 
 function MainPage() {
@@ -14,11 +14,11 @@ function MainPage() {
   const state = useSelector(state => state)
   const isInitialMount = useRef(true)
   const { isLogin, accessToken, userInfo } = useSelector((state: RootState) => state.auth)
-  const { articleRecent, followArticle } = useSelector((state: RootState) => state.articles)
+  const { mainArticles } = useSelector((state: RootState) => state.articles)
 
   const getRecentArticleHandler = async () => {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/articles/recent?page=1`)
-    dispatch(getArticleRecent(response.data.data.articles))
+    dispatch(getMainArticles(response.data.data.articles))
   }
 
   const getFollowArticleHandler = async () => {
@@ -30,16 +30,22 @@ function MainPage() {
         },
       },
     )
-    dispatch(getFollowArticle(response.data.data.articles))
+    dispatch(getMainArticles(response.data.data.articles))
   }
 
-  console.log('state ===', state)
+  // console.log('state ===', state)
 
-  useEffect(() => {
-    getRecentArticleHandler()
-    getFollowArticleHandler()
+  useEffect(() => {      
+    
+    if(isLogin) {
+      getFollowArticleHandler()  
+    } else {
+      getRecentArticleHandler()
+    }
+
     if (isInitialMount.current) {
-      isInitialMount.current = false
+      // 로그인 여부에 따라 변경
+
       const url = new URL(window.location.href)
       const authorizationCode = url.searchParams.get('code')
       // authorization server로부터 클라이언트로 리디렉션된 경우, authorization code가 함께 전달됩니다.
@@ -47,6 +53,7 @@ function MainPage() {
       if (authorizationCode) {
         getAccessToken(authorizationCode)
       }
+      isInitialMount.current = false
     }
   }, [])
 
@@ -62,10 +69,8 @@ function MainPage() {
   }
 
   return (
-    <div>
-      {isLogin ? (
-        <div id="mainContainer">
-          {followArticle.map(article => {
+    <div id="mainContainer">
+          {mainArticles.map(article => {
             return (
               <div className="postBox" key={article.id}>
                 <img src={article.thumbnail} alt="mainImage" className="mainImage" />
@@ -96,42 +101,6 @@ function MainPage() {
             )
           })}
         </div>
-      ) : (
-        <div id="mainContainer">
-          {articleRecent.map(article => {
-            return (
-              <div className="postBox" key={article.id}>
-                <img src={article.thumbnail} alt="mainImage" className="mainImage" />
-                <div className="tagBox">
-                  {article.tags
-                    .map((el: any) => {
-                      return { id: article.tags.indexOf(el), tag: el }
-                    })
-                    .map((ele: any) => {
-                      return (
-                        <div className="tag" key={ele.id}>
-                          {ele.tag}
-                        </div>
-                      )
-                    })}
-                </div>
-                <div className="communityBox">
-                  <div className="nickname">{article.nickname}</div>
-                  <div className="iconBox">
-                    <FontAwesomeIcon className="heartIcon" icon={faHeart} />
-                    <div className="like">{article.totalLike}</div>
-                    <FontAwesomeIcon className="commentIcon" icon={faCommentDots} />
-                    <div className="reply">{article.totalComment}</div>
-                  </div>
-                </div>
-                <div />
-              </div>
-            )
-          })}
-        </div>
-      )}
-    </div>
   )
 }
-
 export default MainPage
