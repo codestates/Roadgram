@@ -1,0 +1,119 @@
+.editProfile_whole_div{ 
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    span {
+        width: 100%;
+        color: red;
+        text-align: left;
+    }
+  
+    h3 {
+        width: 100%;
+        text-align: start;
+        font-size: 2rem;
+        padding: 1rem;
+    }
+  }
+  
+  .editProfile_main_div{ 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: row;
+    border: 2px double black;
+    padding: 2rem;
+    width: 100vmin;
+    height: 140rem;
+    max-width: 80rem;
+  }
+  
+  .hidden{
+    display: none;
+  }
+
+  .editProfile_image_section{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height:25rem;
+  }
+
+  .editProfile_icon_section{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height:100%;
+  }
+
+  .editProfile_image_img{
+    width: 80vmin;
+    max-width: 25rem;
+    height: 25rem;
+    border-radius: 100%;
+  }
+
+  .editProfile_imageBox_div{
+      display:flex;
+      flex-direction:column;
+  }
+
+  .cameraIcon{
+      height:2rem;
+  }
+
+  .editProfile_box_div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    div{
+        text-align: left;
+    }
+  }
+  
+  .editProfile_image_label{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 2rem;
+  }
+  
+  .editProfile_password_input{
+      width: 80vmin;
+      max-width: 20rem;
+      height: 3rem;
+      margin: 1rem;
+      padding: 0.5rem;
+  }
+
+  .editProfile_message_input{
+      margin: 1rem;
+      width: 80vmin;
+      max-width: 60rem;
+      height: 6rem;
+      padding: 0.5rem;
+  }
+
+  .editProfile_nickname_button{
+    height: 3rem;
+    margin: 1rem;
+    padding: auto;
+    font-size: 1.5rem;
+  }
+
+  .editProfile_submit_div{
+      display: flex;
+      justify-content: center;
+  }
+
+  .editProfile_submit_button{
+    margin: 2rem;
+    padding: auto;
+    height: 5rem;
+    width: 80vmin;
+    max-width: 15rem;
+    font-size: 2.5rem;
+  }

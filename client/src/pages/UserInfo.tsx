@@ -3,7 +3,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '..';
-import FollowerModal from '../components/Modals/Mypage/FollowerModal';
+import FollowerModal from '../components/Modals/Mypage/followerModal';
 import FollowingModal from '../components/Modals/Mypage/FollowingModal';
 import logo from '../images/logo.png'
 import { getFollower, getFollowing } from '../store/FollowSlice';

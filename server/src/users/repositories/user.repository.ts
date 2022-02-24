@@ -36,7 +36,7 @@ export class UserRepository extends Repository<User> {
         if (userData.password) user.password = userData.password;
         if (userData.nickname) user.nickname = userData.nickname;
         if (userData.profileImage) user.profileImage = userData.profileImage;
-        if (userData.statusMessage) user.statusMessage = userData.statusMessage;
+        user.statusMessage = userData.statusMessage;
         this.save(user);
         return {
             data: {
