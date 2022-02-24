@@ -102,9 +102,7 @@ export class UsersService {
     }
 
     async validateToken(authDto: AuthDto) {
-        console.log("validateToken 시작!!!!!");
         const { id, loginMethod, accessToken } = authDto;
-        console.log("authDto", authDto);
         const userInfo = await this.userRepository.findOne({ id, loginMethod });
         if (!userInfo) throw new NotFoundException('cannnot find user');
         if (loginMethod === 0) {

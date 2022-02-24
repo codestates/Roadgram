@@ -44,13 +44,14 @@ export class ArticlesService {
 
   async getMain(user: number, page: number): Promise<object> {
     const getFollowing = await this.followRepository.getFollowingIds(user);
-
     if (!getFollowing) {
       throw new UnauthorizedException('permisson denied');
     } else if (getFollowing.length === 0) {
-      throw new NotFoundException('Not have a following list');
+      return {
+        statusCode: 204,
+        message: 'Not have a following list'
+      }
     }
-    console.log(`following 하는 유저의 ID값은 ${getFollowing}입니다.`);
     const newArticles = [];
     try {
       let limit: number = 9;

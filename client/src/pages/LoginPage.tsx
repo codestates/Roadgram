@@ -1,13 +1,14 @@
 /* Library import */
 import React, { createRef, useEffect, useRef, useState } from 'react'
 import axios from 'axios'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import logo from '../images/logo.png'
 import kakaoLogin from '../images/kakao.png'
 import '../style.scss'
 /* Store import */
 import { login } from '../store/AuthSlice';
+import { RootState } from '..'
 
 function LoginPage() {
   const dispatch = useDispatch()
@@ -17,7 +18,8 @@ function LoginPage() {
     email: '',
     password: '',
   })
-
+  const {isLogin} = useSelector((state: RootState) => state.auth);
+  
   const kakao = (window as any).Kakao;
   // SDK는 한 번만 초기화해야 한다.
   // 중복되는 초기화를 막기 위해 isInitialized()로 SDK 초기화 여부를 판단한다.

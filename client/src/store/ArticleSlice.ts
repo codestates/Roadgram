@@ -8,7 +8,14 @@ export interface articles {
   // articleRecent: any[]
   // followArticle: any[]
   // searchArticle: any[]
-  mainArticles: any[] | []
+  mainArticles: {
+    id?: number,
+    thumbnail?: string,
+    nickname?: string,
+    totalLike?: number,
+    totalComment?: number
+    tags?: string[] | undefined | any
+  }[] | [] | any[]
 }
 
 /* State 초기값 설정 */
