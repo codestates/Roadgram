@@ -9,7 +9,6 @@ export class TagRepository extends Repository<Tag>{
   }
 
   async createTag(tagName) {
-    console.log("tagName ====", tagName);
     const result = await this.save({tagName});
     return result;
   }
@@ -22,6 +21,10 @@ export class TagRepository extends Repository<Tag>{
 
   async getTagId(tagName: string): Promise<number> {
     const tagId = await this.find({where: {tagName}, select: ["id"]});
-    return tagId[0].id;
+    if(!tagId || tagId.length === 0) {
+      return undefined
+    } else {
+      return tagId[0].id;
+    }
   }
 }

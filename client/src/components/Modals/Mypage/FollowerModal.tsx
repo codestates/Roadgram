@@ -56,7 +56,7 @@ function FollowerModal () {
             </li>
             )
           })
-        }
+          }
         </div>
       </div>
     </div>

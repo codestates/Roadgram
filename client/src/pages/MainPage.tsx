@@ -16,35 +16,59 @@ function MainPage() {
   const { isLogin, accessToken, userInfo } = useSelector((state: RootState) => state.auth)
   const { mainArticles } = useSelector((state: RootState) => state.articles)
 
+  console.log("state ==== ", state);
   const getRecentArticleHandler = async () => {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/articles/recent?page=1`)
-    dispatch(getMainArticles(response.data.data.articles))
+    await axios
+    .get(`${process.env.REACT_APP_API_URL}/articles/recent?page=1`)
+    .then((res) => {
+      if(res.data.statusCode === 204) {
+        console.log(res.data.message);
+        dispatch(getMainArticles([]));
+      } else {
+        dispatch(getMainArticles(res.data.data.articles))
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      // dispatch(getMainArticles([]));
+    })
+    
   }
 
   const getFollowArticleHandler = async () => {
-    const response = await axios.get(
+    await axios
+    .get(
       `${process.env.REACT_APP_API_URL}/articles?user=${userInfo.id}&loginMethod=${userInfo.loginMethod}&page=1`,
       {
         headers: {
           Authorization: `${accessToken}`,
         },
-      },
-    )
-    dispatch(getMainArticles(response.data.data.articles))
+      })
+    .then((res) => {
+      if(res.data.statusCode === 204) {
+        console.log(res.data.message);
+        dispatch(getMainArticles([]));
+      } else {
+        dispatch(getMainArticles(res.data.data.articles))
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      // dispatch(getMainArticles([]));
+    })
+    
   }
 
-  // console.log('state ===', state)
-
-  useEffect(() => {
-    if (isLogin) {
-      getFollowArticleHandler()
+  useEffect(() => {   
+    // 로그인 여부에 따라 변경   
+    if(isLogin) {
+      getFollowArticleHandler()  
     } else {
       getRecentArticleHandler()
     }
 
+    // 최초 렌더링 시 url에 있는 code값 전달
     if (isInitialMount.current) {
-      // 로그인 여부에 따라 변경
-
       const url = new URL(window.location.href)
       const authorizationCode = url.searchParams.get('code')
       // authorization server로부터 클라이언트로 리디렉션된 경우, authorization code가 함께 전달됩니다.
@@ -56,6 +80,7 @@ function MainPage() {
     }
   }, [isLogin])
 
+  // 카카오 accessToken 받아오기
   async function getAccessToken(code: string) {
     await axios
       .post(`${process.env.REACT_APP_API_URL}/users/login/kakao`, { code })
@@ -66,10 +91,19 @@ function MainPage() {
       })
       .catch(err => console.log(err))
   }
-
-  return (
-    <div id="mainContainer">
-      {mainArticles.map(article => {
+  
+  // if(mainArticles.length === 0) {
+  //   return (
+  //   <div> 
+  //     <div>1</div>
+  //     1 </div>
+  //   );
+  // } else {
+    return (
+      <div id="mainContainer">
+      {mainArticles.length === 0 || !mainArticles 
+      ? <div className="no_following_post">팔로우 하는 사람 혹은 게시물이 없습니다. 찾아주세요!!</div>
+      : mainArticles.map(article => {
         return (
           <div className="postBox" key={article.id}>
             <img src={article.thumbnail} alt="mainImage" className="mainImage" />
@@ -100,6 +134,7 @@ function MainPage() {
         )
       })}
     </div>
-  )
-}
+    )
+  }
+
 export default MainPage

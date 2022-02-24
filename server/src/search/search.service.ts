@@ -21,10 +21,26 @@ export class SearchService {
   
   async searchArticle(tag: string, page: number): Promise<Article|any> {
     try {
+      console.log(`tag ===${tag} page ===${page}`);
       let limit: number = 9;
       let offset: number = (page - 1) * 9;
       const tagId = await this.tagRepository.getTagId(tag);
+
+      if(!tagId) {
+        return {
+          statusCode: 204,
+          message: "해당하는 태그의 게시물을 찾을 수 없습니다."
+        }
+      }
       const articleIds = await this.articleToTagRepository.getArticleIds(tagId);
+
+      if(!articleIds) {
+        return {
+          statusCode: 204,
+          message: "해당하는 태그의 게시물을 찾을 수 없습니다."
+        }
+      }
+
       const articles = await this.articleRepository.searchArticle(articleIds, limit, offset);
       console.log(`받아온 게시물 갯수는 ${articles.length}개 입니다.`);
       // // 각 게시물에 태그 이름(배열) 추가

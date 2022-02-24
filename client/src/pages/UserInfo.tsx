@@ -1,14 +1,14 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { RootState } from '..'
-import FollowerModal from '../components/Modals/Mypage/FollowerModal'
-import FollowingModal from '../components/Modals/Mypage/FollowingModal'
-import { getMainArticles } from '../store/ArticleSlice'
-import { getFollower, getFollowing } from '../store/FollowSlice'
-import { followerModal, followingModal } from '../store/ModalSlice'
-import MainPage from './MainPage'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { RootState } from '..';
+import FollowerModal from '../components/Modals/Mypage/FollowerModal';
+import FollowingModal from '../components/Modals/Mypage/FollowingModal';
+import { getMainArticles } from '../store/ArticleSlice';
+import { getFollower, getFollowing } from '../store/FollowSlice';
+import { followerModal, followingModal } from '../store/ModalSlice';
+import MainPage from './MainPage';
 
 function UserInfo() {
   const dispatch = useDispatch()
@@ -20,41 +20,47 @@ function UserInfo() {
   const { userInfo, articles } = useSelector((state: RootState) => state.userInfo)
   const [isFollow, setIsFollow] = useState(userInfo.followedOrNot)
   // 팔로잉, 팔로워 모달 on/off
-  const { isFollowingModal, isFollowerModal } = useSelector((state: RootState) => state.modal)
-  console.log('팔로우 친구 여부 ==', isFollow)
-  console.log('state 확인!===', state)
-
+  const { isFollowingModal, isFollowerModal } = useSelector((state: RootState) => state.modal);
+  
   useEffect(() => {
-    dispatch(getMainArticles(articles))
-  })
+    dispatch(getMainArticles(articles));
+  },[articles])
+
   function moveToEditProfile() {
     navigate('/editprofile')
   }
 
   const openFollowingModal = async () => {
     await axios
-      .get(`${process.env.REACT_APP_API_URL}/follow/following?user=${id}&loginMethod=${0}&page=${1}`, {
-        headers: { authorization: `${accessToken}` },
-      })
-      .then(res => {
+    .get(`${process.env.REACT_APP_API_URL}/follow/following?user=${id}&loginMethod=${0}&page=${1}`, {headers: {authorization: `${accessToken}`}})
+    .then((res) => {
+      if(res.data.statusCode === 204) {
+        dispatch(getFollowing([]))
+      } else {
         dispatch(getFollowing(res.data.data))
-        dispatch(followingModal(!isFollowingModal))
-      })
-      .catch(console.log)
-  }
+      }
+      dispatch(followingModal(!isFollowingModal));
+    })
+    .catch(console.log);  
+    
+  };
 
   const openFollowerModal = async () => {
     await axios
-      .get(`${process.env.REACT_APP_API_URL}/follow/follower?user=${id}&loginMethod=${0}&page=${1}`, {
-        headers: { authorization: `${accessToken}` },
-      })
-      .then(res => {
+    .get(`${process.env.REACT_APP_API_URL}/follow/follower?user=${id}&loginMethod=${0}&page=${1}`, {headers: {authorization: `${accessToken}`}})
+    .then((res) => {
+      if(res.data.statusCode === 204) {
+        dispatch(getFollower([]))
+      } else {
         dispatch(getFollower(res.data.data))
-        dispatch(followerModal(!isFollowerModal))
-      })
-      .catch(console.log)
-  }
-
+      }
+      dispatch(followerModal(!isFollowerModal));
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+  };
+  
   const followingOrCacnel = async () => {
     // 서버 요청
     await axios

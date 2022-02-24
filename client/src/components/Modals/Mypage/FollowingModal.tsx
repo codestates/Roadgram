@@ -87,7 +87,8 @@ function FollowingModal() {
         </div>
         <hr />
         <div className="follows">
-          {followingList?.map(each => {
+          {followingList
+          ? followingList.map(each => {
             return (
               <li
                 className="follow_profile_list"
@@ -103,7 +104,9 @@ function FollowingModal() {
                 <span>{each.nickname}</span>
               </li>
             )
-          })}
+          })
+          : <div>1</div>
+        }
         </div>
       </div>
     </div>
