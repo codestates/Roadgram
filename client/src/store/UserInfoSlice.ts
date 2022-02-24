@@ -21,6 +21,7 @@ export interface Info {
   profileImage?: string,
   totalFollower?: number,
   totalFollowing?: number,
+  followedOrNot?: boolean
 }
 
 export interface UserInfo {
