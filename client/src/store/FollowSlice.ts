@@ -11,8 +11,8 @@ export interface followList {
 }
 
 export interface followInfo {
-  followingList?: followList[],
-  followerList?: followList[]
+  followingList?: followList[] | [],
+  followerList?: followList[] | []
 }
 /* State 초기값 설정 */
 const initialState: followInfo = {

@@ -73,8 +73,11 @@ function Navigator() {
       axios
       .get(`${process.env.REACT_APP_API_URL}/articles/recent?page=${page}`)
       .then((res) => {
-        dispatch(getMainArticles(res.data.data.articles));
-        navigate('/main');
+        if(res.data.statusCode === 204) {
+          dispatch(getMainArticles([]));
+        } else {
+          dispatch(getMainArticles(res.data.data.articles));
+        }
       })
       .catch((err) => {
         dispatch(getMainArticles([]));
@@ -83,8 +86,11 @@ function Navigator() {
       await axios
       .get(`${process.env.REACT_APP_API_URL}/search?tag=${word}&page=${page}`)
       .then((res) => {
-        dispatch(getMainArticles(res.data.data.articles));
-        navigate('/main');
+        if(res.data.statusCode === 204) {
+          dispatch(getMainArticles([]));
+        } else {
+          dispatch(getMainArticles(res.data.data.articles));
+        }
       })
       .catch((err) => {
         dispatch(getMainArticles([]));
@@ -104,7 +110,9 @@ function Navigator() {
         <div className="structure sideMenu">
           <div className="inputDiv">
             <input className="searchBar" type="text" placeholder="검색어를 입력하세요." onChange={changeWord} />
+            <Link to="/main" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>
             <FontAwesomeIcon icon={faMagnifyingGlass} onClick={searching} className="searchIcon" />
+            </Link>
           </div>
           <div>
             <Link to="/postdetails" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>

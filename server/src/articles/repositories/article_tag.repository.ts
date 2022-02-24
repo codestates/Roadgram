@@ -27,7 +27,12 @@ export class ArticleToTagRepository extends Repository<ArticleToTag>{
     const result = await this.createQueryBuilder("tag")
       .where({ tagId })
       .getMany();
-    const articleIds = result.map((each) => each.articleId);
-    return articleIds
+
+    if(!result || result.length === 0) {
+      return undefined
+    } else {
+      const articleIds = result.map((each) => each.articleId);
+      return articleIds
+    }
   }
 }

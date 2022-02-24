@@ -21,12 +21,11 @@ function UserInfo() {
   const [isFollow, setIsFollow] = useState(userInfo.followedOrNot);
   // 팔로잉, 팔로워 모달 on/off
   const { isFollowingModal, isFollowerModal } = useSelector((state: RootState) => state.modal);
-  console.log("팔로우 친구 여부 ==", isFollow);
-  console.log("state 확인!===", state);
-
+  
   useEffect(() => {
     dispatch(getMainArticles(articles));
-  })
+  },[articles])
+
   function moveToEditProfile() {
     navigate('/editprofile')
   }
@@ -35,7 +34,11 @@ function UserInfo() {
     await axios
     .get(`${process.env.REACT_APP_API_URL}/follow/following?user=${id}&loginMethod=${0}&page=${1}`, {headers: {authorization: `${accessToken}`}})
     .then((res) => {
-      dispatch(getFollowing(res.data.data))
+      if(res.data.statusCode === 204) {
+        dispatch(getFollowing([]))
+      } else {
+        dispatch(getFollowing(res.data.data))
+      }
       dispatch(followingModal(!isFollowingModal));
     })
     .catch(console.log);  
@@ -46,10 +49,16 @@ function UserInfo() {
     await axios
     .get(`${process.env.REACT_APP_API_URL}/follow/follower?user=${id}&loginMethod=${0}&page=${1}`, {headers: {authorization: `${accessToken}`}})
     .then((res) => {
-      dispatch(getFollower(res.data.data))
+      if(res.data.statusCode === 204) {
+        dispatch(getFollower([]))
+      } else {
+        dispatch(getFollower(res.data.data))
+      }
       dispatch(followerModal(!isFollowerModal));
     })
-    .catch(console.log);
+    .catch((err) => {
+      console.log(err)
+    });
   };
   
   const followingOrCacnel = async () => {
