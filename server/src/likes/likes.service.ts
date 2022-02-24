@@ -15,9 +15,9 @@ export class LikesService {
 
   async likeUnlike(likesDto: LikesDto): Promise<object> {
     const { user, articleId } = likesDto;
-    const likeOrNot = await this.likesRepository.likeOrNot(likesDto);
+    const likeOrNot = await this.likesRepository.likeOrNot(user, articleId);
 
-    if (likeOrNot === undefined) {
+    if (!likeOrNot) {
       const result = await this.likesRepository.likeArticle(likesDto);
       const total_likes = await this.articleRepository.likeIncrement(articleId);
       return {

@@ -4,12 +4,12 @@ import { Likes } from '../entities/likes.entity';
 
 @EntityRepository(Likes)
 export class LikesRepository extends Repository<Likes> {
-    async likeOrNot(likesDto: LikesDto) {
-      const { user, articleId } = likesDto;
-      return await this.findOne({
+    async likeOrNot(user, articleId) {
+      const result =  await this.findOne({
         userId: user,
         articleId: articleId,
       });
+      return Boolean(result);
     };
 
     async likeArticle(likesDto: LikesDto): Promise<string> {

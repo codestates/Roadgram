@@ -10,6 +10,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommentRepository } from 'src/comments/repositories/comments.repository';
 import { FollowRepository } from 'src/follow/repositories/follow.repository';
+import { LikesRepository } from 'src/likes/repositories/likes.repository';
 import { UserRepository } from 'src/users/repositories/user.repository';
 import { CreateArticleDto } from './dto/createArticle.dto';
 import { UpdateArticleDto } from './dto/updateArticle.dto';
@@ -37,6 +38,8 @@ export class ArticlesService {
     private followRepository: FollowRepository,
     @InjectRepository(CommentRepository)
     private commentRepository: CommentRepository,
+    @InjectRepository(LikesRepository)
+    private likesRepository: LikesRepository  
   ) {}
 
   async getMain(user: number, page: number): Promise<object> {
@@ -315,6 +318,7 @@ export class ArticlesService {
     try {
       const userInfo = await this.userRepository.getUserInfo(user);
       const articleInfo = await this.articleRepository.getArticleDetail(id);
+      const likedOrNot = await this.likesRepository.likeOrNot(user, id);
       // // 각 게시물에 태그 이름(배열) 추가
       const tagIds = await this.articleToTagRepository.getTagIds(
         articleInfo.id,
@@ -331,6 +335,7 @@ export class ArticlesService {
           content: articleInfo.content,
           totalLike: articleInfo.totalLike,
           totalComment: articleInfo.totalComment,
+          likedOrNot: likedOrNot,
           tags: tagNames,
           roads,
           comments: [],
@@ -358,6 +363,7 @@ export class ArticlesService {
           content: articleInfo.content,
           totalLike: articleInfo.totalLike,
           totalComment: articleInfo.totalComment,
+          likedOrNot: likedOrNot,
           tags: tagNames,
           roads,
           comments: commentsList,

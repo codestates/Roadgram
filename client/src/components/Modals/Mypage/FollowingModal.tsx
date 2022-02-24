@@ -65,10 +65,10 @@ function FollowingModal() {
   // }, [target]);
 
   async function moveToUserPage(id: any) {
-    closeModal()
-    const page = 1
+    closeModal();
+    const page = 1;
     await axios
-      .get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=${page}`)
+      .get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${userInfo.id}&page=${page}&other=${id}`)
       .then(res => {
         dispatch(update(res.data.data)) // userInfo 정보 update
         navigate('/userinfo')
