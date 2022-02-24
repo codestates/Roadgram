@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart, faCommentDots, faC, faTags } from '@fortawesome/free-solid-svg-icons'
+import { faHeart, faCommentDots } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
 import { RootState } from '..'
 import { getMainArticles } from '../store/ArticleSlice'
@@ -90,9 +90,9 @@ function MainPage() {
                 <div className="communityBox">
                   <div className="nickname">{article.nickname}</div>
                   <div className="iconBox">
-                    <FontAwesomeIcon className="heartIcon" icon={faHeart} />
+                    <FontAwesomeIcon className="mainIcon" icon={faHeart} />
                     <div className="like">{article.totalLike}</div>
-                    <FontAwesomeIcon className="commentIcon" icon={faCommentDots} />
+                    <FontAwesomeIcon className="mainIcon" icon={faCommentDots} />
                     <div className="reply">{article.totalComment}</div>
                   </div>
                 </div>

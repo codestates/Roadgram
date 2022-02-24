@@ -1,7 +1,12 @@
 import React from 'react'
 
 function SettingRoutePage() {
-  return <div>SettingRoutePage</div>
+  return (
+    <div className="settingRouteContainer">
+      <div>searchBar</div>
+      <div>Kakaomap</div>
+    </div>
+  )
 }
 
 export default SettingRoutePage

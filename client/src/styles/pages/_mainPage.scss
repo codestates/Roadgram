@@ -7,29 +7,74 @@
 
   .postBox {
     // border: 1px solid green;
-    margin: 5rem;
+    @include mobile-only {
+      margin: 1rem;
+    }
+    @include md {
+      margin: 1rem;
+    }
+    @include lg {
+      margin: 5rem;
+    }
 
     .mainImage {
-      border-radius: 1rem;
-      width: 40rem;
-      height: 31rem;
+      cursor: pointer;
+      @include mobile-only {
+        border-radius: 1rem;
+        width: 15rem;
+        height: 12rem;
+      }
+      @include md {
+        border-radius: 1rem;
+        width: 24rem;
+        height: 18rem;
+      }
+      @include lg {
+        border-radius: 1rem;
+        width: 40rem;
+        height: 31rem;
+      }
     }
     .tagBox {
+      // border: 1px solid green;
       display: flex;
-      margin: 0.4rem 0 0.9rem 0;
+      flex-wrap: wrap;
+      @include mobile-only {
+        width: 15rem;
+        margin: 0.2rem 0 0.4rem 0;
+      }
+      @include md {
+        width: 24rem;
+        margin: 0.4rem 0 0.9rem 0;
+      }
+      @include lg {
+        width: 40rem;
+        margin: 0.4rem 0 0.9rem 0;
+      }
 
       .tag {
         // border: 1px solid green;
         display: flex;
-        flex-wrap: wrap;
         justify-content: center;
         align-items: center;
         box-sizing: border-box;
-        background-color: rgb(142, 238, 194);
-        margin: 0.2rem;
         border-radius: 1rem;
-        padding: 0.8rem 2rem 0.8rem 2rem;
-        font-size: 1.4rem;
+        background-color: rgb(142, 238, 194);
+        @include mobile-only {
+          margin: 0.2rem;
+          padding: 0.2rem 0.4rem 0.2rem 0.3rem;
+          font-size: 0.7rem;
+        }
+        @include md {
+          margin: 0.2rem;
+          padding: 0.4rem 1rem 0.4rem 0.9rem;
+          font-size: 1rem;
+        }
+        @include lg {
+          margin: 0.2rem;
+          padding: 0.8rem 2rem 0.8rem 2rem;
+          font-size: 1.4rem;
+        }
       }
     }
 
@@ -38,32 +83,81 @@
 
       .nickname {
         // border: 1px solid green;
-        font-size: 1.7rem;
+        cursor: pointer;
+        flex: 1;
         font-weight: bold;
-        padding-left: 0.3rem;
+        transition: 0.4s;
+        text-align: left;
+        @include mobile-only {
+          font-size: 1rem;
+          padding-left: 0.3rem;
+        }
+        @include md {
+          font-size: 1.5rem;
+          padding-left: 0.3rem;
+        }
+        @include lg {
+          font-size: 1.7rem;
+          padding-left: 0.3rem;
+        }
       }
+
+      .nickname:hover {
+        color: purple;
+      }
+
       .iconBox {
         // border: 1px solid green;
         display: flex;
-        margin-left: 20rem;
-
-        .heartIcon {
-          height: 2.6rem;
-          margin-right: 1.2rem;
+        flex: 1;
+        justify-content: flex-end;
+        @include mobile-only {
+          font-size: 1.2rem;
         }
-        .commentIcon {
-          height: 2.6rem;
-          margin-right: 1.2rem;
+        @include md {
+          font-size: 1.5rem;
+        }
+        @include lg {
+          font-size: 2rem;
+        }
+
+        .mainIcon {
+          @include mobile-only {
+            height: 1.2rem;
+            margin-right: 0.4rem;
+          }
+          @include md {
+            height: 1.8rem;
+            margin-right: 0.5rem;
+          }
+          @include lg {
+            height: 2.6rem;
+            margin-right: 1.2rem;
+          }
         }
         .like {
-          font-size: 2rem;
           font-weight: bold;
-          margin: 0.2rem 1.2rem 0 0;
+          @include mobile-only {
+            margin: 0rem 0.5rem 0 0;
+          }
+          @include md {
+            margin: 0.2rem 0.5rem 0 0;
+          }
+          @include lg {
+            margin: 0.2rem 1rem 0 0;
+          }
         }
         .reply {
-          font-size: 2rem;
           font-weight: bold;
-          margin: 0.2rem 0 0 0;
+          @include mobile-only {
+            margin: 0 0.2rem 0 0;
+          }
+          @include md {
+            margin: 0 0.2rem 0 0;
+          }
+          @include lg {
+            margin: 0.2rem 0.5rem 0 0;
+          }
         }
       }
     }
