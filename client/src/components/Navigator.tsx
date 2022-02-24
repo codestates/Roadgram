@@ -107,7 +107,7 @@ function Navigator() {
             <FontAwesomeIcon icon={faMagnifyingGlass} onClick={searching} className="searchIcon" />
           </div>
           <div>
-            <Link to="/settingroute" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>
+            <Link to="/postdetails" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>
               <FontAwesomeIcon icon={faPencil} className="pencilIcon" />
             </Link>
             {/* <Link to="/mypage" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}> */}
