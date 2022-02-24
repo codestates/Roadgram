@@ -102,6 +102,8 @@
 
     .searchIcon {
       position: absolute;
+      cursor: pointer;
+      
       @include mobile-only {
         height: 0.5rem;
         left: 4.2rem;

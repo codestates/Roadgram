@@ -57,7 +57,7 @@ export class ArticleRepository extends Repository<Article> {
 
   async getArticleDetail(id: number): Promise<Article> {
     const result = await this.find({ id });
-    return result[0]
+    return result[0];
   }
 
   async createArticle(userId: number, content: string, thumbnail: string) {

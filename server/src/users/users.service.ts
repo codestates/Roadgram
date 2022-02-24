@@ -223,13 +223,13 @@ export class UsersService {
         }
     }
 
-    async getMypage(user: number, page: number, authUser?: number): Promise<object> {
+    async getMypage(user: number, page: number, other?: number): Promise<object> {
         try {
             let limit: number = 9;
             let offset: number = (page - 1) * 9;
-            const userInfo = await this.userRepository.getUserInfo(user);
-            const followedOrNot = await this.followRepository.followedOrNot(authUser, user);
-            const articles = await this.articleRepository.getArticleInfo(user, limit, offset);
+            const userInfo = await this.userRepository.getUserInfo(other || user);
+            const followedOrNot = await this.followRepository.followedOrNot(user, other || user);
+            const articles = await this.articleRepository.getArticleInfo(other || user, limit, offset);
 
             // // 각 게시물에 태그 이름(배열) 추가
             let newArticles = [];
