@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart, faCommentDots, faC, faTags } from '@fortawesome/free-solid-svg-icons'
+import { faHeart, faCommentDots } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
 import { RootState } from '..'
 import { getArticleRecent, getFollowArticle } from '../store/ArticleSlice'
@@ -36,8 +36,11 @@ function MainPage() {
   console.log('state ===', state)
 
   useEffect(() => {
-    getRecentArticleHandler()
-    getFollowArticleHandler()
+    if (isLogin) {
+      getFollowArticleHandler()
+    } else {
+      getRecentArticleHandler()
+    }
     if (isInitialMount.current) {
       isInitialMount.current = false
       const url = new URL(window.location.href)
@@ -85,9 +88,9 @@ function MainPage() {
                 <div className="communityBox">
                   <div className="nickname">{article.nickname}</div>
                   <div className="iconBox">
-                    <FontAwesomeIcon className="heartIcon" icon={faHeart} />
+                    <FontAwesomeIcon className="mainIcon" icon={faHeart} />
                     <div className="like">{article.totalLike}</div>
-                    <FontAwesomeIcon className="commentIcon" icon={faCommentDots} />
+                    <FontAwesomeIcon className="mainIcon" icon={faCommentDots} />
                     <div className="reply">{article.totalComment}</div>
                   </div>
                 </div>
@@ -118,9 +121,9 @@ function MainPage() {
                 <div className="communityBox">
                   <div className="nickname">{article.nickname}</div>
                   <div className="iconBox">
-                    <FontAwesomeIcon className="heartIcon" icon={faHeart} />
+                    <FontAwesomeIcon className="mainIcon" icon={faHeart} />
                     <div className="like">{article.totalLike}</div>
-                    <FontAwesomeIcon className="commentIcon" icon={faCommentDots} />
+                    <FontAwesomeIcon className="mainIcon" icon={faCommentDots} />
                     <div className="reply">{article.totalComment}</div>
                   </div>
                 </div>
