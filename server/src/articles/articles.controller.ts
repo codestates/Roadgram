@@ -30,7 +30,8 @@ export class ArticlesController {
   @Get('/detail')
   getDetail(
     @Query('id', ParseIntPipe) id: number,
-    @Query('user', ParseIntPipe) user: number): Promise<object> {
+    @Query('user', ParseIntPipe) user: number
+  ): Promise<object> {
     return this.articlesService.getArticleDetail(id, user);
   }
 

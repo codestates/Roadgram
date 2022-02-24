@@ -17,7 +17,7 @@ export class FollowService {
     const { user, followingUserId } = followDto;
     const followedOrNot = await this.followRepository.followedOrNot(user, followingUserId);
 
-    if (followedOrNot === undefined) {
+    if (!followedOrNot) {
       const result = await this.followRepository.follow(followDto);
       const followResult = await this.userRepository.followIncrement(followDto);
       return {

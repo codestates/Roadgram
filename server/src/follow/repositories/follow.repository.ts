@@ -5,10 +5,16 @@ import { Follow } from "../entities/follow.entity";
 @EntityRepository(Follow)
 export class FollowRepository extends Repository<Follow> {
   async followedOrNot(user, followingUserId) {
-    return await this.findOne({
-      followerId: user,
-      followingId: followingUserId
-    });
+    if (user === followingUserId) {
+      return `login user`;
+    } else {
+      const result = await this.findOne({
+        followerId: user,
+        followingId: followingUserId
+      });
+      console.log(result);
+      return Boolean(result);
+    }
   }
 
   async follow(followDto: FollowDto): Promise<string> {
