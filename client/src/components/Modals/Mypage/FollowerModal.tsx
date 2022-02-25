@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { RootState } from '../../..'
+import { getMainArticles } from '../../../store/ArticleSlice'
 import { followerModal } from '../../../store/ModalSlice'
 import { update } from '../../../store/UserInfoSlice'
 import './_followModal.scss'
@@ -13,26 +14,30 @@ function FollowerModal () {
   const navigate = useNavigate()
   const { isFollowerModal } = useSelector((state: RootState) => state.modal)
   const {followerList} = useSelector((state: RootState) => state.follow)
-  const state = useSelector((state: RootState) => state)
-  // const { userInfo, accessToken } = useSelector((state: RootState) => state.auth);
+  const { id } = useSelector((state: RootState) => state.auth.userInfo);
   
-  console.log("followerList === ", followerList)
-  console.log("state === ", state)
   const closeModal = () => {
     dispatch(followerModal(!isFollowerModal))
   }
 
-  async function moveToUserPage(id: any) {
+  const moveToUserPage = (targetId: any) => {
+    dispatch(update({targetId, userInfo: {}, articles: []}));
     closeModal();
-    const page = 1;
-    await axios
-    .get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=${page}`)
-    .then((res) => {
-      dispatch(update(res.data.data)); // userInfo 정보 update
-      navigate('/userinfo');
-    })
-    .catch(console.log);
+    navigate(`/userinfo?id=${targetId}`);
   }
+
+  // async function moveToUserPage(targetId: any) {
+  //   closeModal();
+  //   const page = 1;
+  //   await axios
+  //   .get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=${page}&other=${targetId}`)
+  //   .then((res) => {
+  //     dispatch(update(res.data.data)); // userInfo 정보 update
+  //     dispatch(getMainArticles(res.data.data.articles))
+  //     navigate(`/userinfo?id=${targetId}`);
+  //   })
+  //   .catch(console.log);
+  // }
 
   return (
     <div className="follow-center-wrap">
