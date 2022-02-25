@@ -19,6 +19,7 @@ import SettingRoutePage from './pages/SettingRoutePage'
 import CreatePostPage from './pages/CreatePostPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
+import SearchPage from './pages/SearchPage'
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           <Route path="/createpost/*" element={<CreatePostPage />} />
           <Route path="/logins/*" element={<LoginPage />} />
           <Route path="/signup/*" element={<SignupPage />} />
+          <Route path="/search/*" element={<SearchPage />} />
         </Routes>
       </BrowserRouter>
     </div>

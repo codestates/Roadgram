@@ -25,6 +25,7 @@ export interface Info {
 }
 
 export interface UserInfo {
+  targetId?: number | null,
   userInfo: Info,
   articles: Article[]
 }
@@ -32,6 +33,7 @@ export interface UserInfo {
 
 /* State 초기값 설정 */
 const initialState: UserInfo = {
+  targetId: null,
   userInfo: {},
   articles: []
 }
@@ -42,9 +44,10 @@ const userInfoSlice = createSlice({
   reducers: {
     /* Action 설정 */
     update: (state: UserInfo,  action: PayloadAction<UserInfo>) => {
-      const {userInfo, articles} = action.payload;
+      const {userInfo, articles, targetId} = action.payload;
       state.userInfo = userInfo;
       state.articles = articles;
+      state.targetId = targetId;
     },
     resetUserInfo: () => initialState
   },
