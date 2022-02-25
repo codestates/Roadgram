@@ -113,7 +113,7 @@ function MainPage() {
     }
   export default MainPage
   
-{/* <div id="mainContainer">
+/* <div id="mainContainer">
       {mainArticles.length === 0 || !mainArticles 
       ? <div className="no_following_post">팔로우 하는 사람 혹은 게시물이 없습니다. 찾아주세요!!</div>
       : mainArticles.map(article => {
@@ -150,4 +150,4 @@ function MainPage() {
     )
   }
 
-export default MainPage */}
+export default MainPage */
