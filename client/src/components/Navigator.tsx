@@ -43,6 +43,7 @@ function Navigator() {
           setUsericonCLick(!usericonClick)
         })
     } catch {
+      // 테스트를 위해 로그아웃 강제 처리
       dispatch(logout())
       dispatch(resetFollow())
       dispatch(resetModal())
@@ -83,7 +84,7 @@ function Navigator() {
         </div>
       {isLogin 
       ? <div>
-          <Link to="/postdetails" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>
+          <Link to="/settingroute" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>
             <FontAwesomeIcon icon={faPencil} className="pencilIcon" />
           </Link>
           {/* <Link to="/mypage" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}> */}

@@ -93,6 +93,16 @@ function MainPage() {
       })
       .catch(err => console.log(err))
   }
+
+  const moveToDetails = async (id: number) => {
+    await axios.get(
+      `${process.env.REACT_APP_API_URL}/articles/detail?id=${id}&user=${userInfo.id}`)
+      .then(res => {
+        console.log(res.data.data)
+        // dispatch(detailInfo(res.data.data)) // article detail 정보 update
+        navigate('/postdetails')
+      })
+  }
   
 
     return (
@@ -102,4 +112,41 @@ function MainPage() {
       )
     }
   export default MainPage
+<!--       <div id="mainContainer">
+      {mainArticles.length === 0 || !mainArticles 
+      ? <div className="no_following_post">팔로우 하는 사람 혹은 게시물이 없습니다. 찾아주세요!!</div>
+      : mainArticles.map(article => {
+        return (
+          <div className="postBox" key={article.id}>
+            <img src={article.thumbnail} alt="mainImage" className="mainImage" onClick={() => moveToDetails(article.id)} onKeyDown={() => moveToDetails(article.id)}/>
+            <div className="tagBox">
+              {article.tags
+                .map((el: any) => {
+                  return { id: article.tags.indexOf(el), tag: el }
+                })
+                .map((ele: any) => {
+                  return (
+                    <div className="tag" key={ele.id}>
+                      {ele.tag}
+                    </div>
+                  )
+                })}
+            </div>
+            <div className="communityBox">
+              <div className="nickname">{article.nickname}</div>
+              <div className="iconBox">
+                <FontAwesomeIcon className="mainIcon" icon={faHeart} />
+                <div className="like">{article.totalLike}</div>
+                <FontAwesomeIcon className="mainIcon" icon={faCommentDots} />
+                <div className="reply">{article.totalComment}</div>
+              </div>
+            </div>
+            <div />
+          </div>
+        )
+      })}
+    </div>
+    )
+  }
 
+export default MainPage -->

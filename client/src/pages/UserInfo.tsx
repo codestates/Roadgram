@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,8 +13,8 @@ import { update } from '../store/UserInfoSlice';
 import MainPage from './MainPage';
 
 function UserInfo() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   // 로그인한 유저 ID
   const {accessToken} = useSelector((state: RootState) => state.auth); 
   const state = useSelector((state: RootState) => state); 
@@ -25,6 +25,7 @@ function UserInfo() {
   const [target, setTarget] = useState(0);
   const [totalFollower, setTotalFollower] = useState(0);
   const [totalFollowing, setTotalFollowing] = useState(0);
+
   // 팔로잉, 팔로워 모달 on/off
   const { isFollowingModal, isFollowerModal } = useSelector((state: RootState) => state.modal);
   
@@ -124,10 +125,15 @@ function UserInfo() {
     <div className="userInfo_div">
       <div className="userinfo_whole_div">
         <div className="userinfo_image_div">
-          {userInfo.profileImage
-          ? <img src={userInfo.profileImage} className="userinfo_image_img" alt="profile_image"/>
-          : <div><button type="button" onClick={moveToEditProfile}>사진추가</button></div>}
-          
+          {userInfo.profileImage ? (
+            <img src={userInfo.profileImage} className="userinfo_image_img" alt="profile_image" />
+          ) : (
+            <div>
+              <button type="button" onClick={moveToEditProfile}>
+                사진추가
+              </button>
+            </div>
+          )}
         </div>
         <div className="userinfo_profile_div">
           <div className="userinfo_nickname_div">
@@ -137,11 +143,12 @@ function UserInfo() {
             : <button type="button" onClick={moveToEditProfile}>프로필수정</button>}
           </div>
           <div className="userinfo_inform_div">
-            <div> 게시물
+            <div>
+              {' '}
+              게시물
               <span>{articles.length}</span>
             </div>
-            {id !== userInfo.id
-            ? 
+            {id !== userInfo.id ? (
               <>
                 <li className="other"> 팔로잉
                   <span >{totalFollowing}</span>
@@ -158,9 +165,7 @@ function UserInfo() {
                   <span>{totalFollower}</span>
                 </li>
               </>
-              }
-            
-            
+            )}
           </div>
           <div className="userinfo_status_div">
             <span>{userInfo.statusMessage}</span>
@@ -178,7 +183,7 @@ function UserInfo() {
       : <Article/>
       }
     </div>
-    )
+  )
 }
 
 export default UserInfo
