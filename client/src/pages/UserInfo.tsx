@@ -144,7 +144,6 @@ function UserInfo() {
           </div>
           <div className="userinfo_inform_div">
             <div>
-              {' '}
               게시물
               <span>{articles.length}</span>
             </div>
@@ -156,8 +155,10 @@ function UserInfo() {
                 <li className="other"> 팔로워
                   <span >{totalFollower}</span>
                 </li>
-                </>
-            : <>
+              </>
+            )
+            : 
+            ( <>
                 <li className="owner" onClick={openFollowingModal} onKeyDown={openFollowingModal}> 팔로잉
                   <span>{totalFollowing}</span>
                 </li>
