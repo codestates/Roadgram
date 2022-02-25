@@ -8,6 +8,8 @@ import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { RootState } from '..';
 import { logout, newAccessToken, updateUserInfo } from '../store/AuthSlice';
 import { update } from '../store/UserInfoSlice';
+import { withdrawalModal } from '../store/ModalSlice';
+import WithdrawalModal from '../components/Modals/WithdrawalModal';
 
 function EditProfilePage(): any {
   const auth = useSelector((state: RootState) => state.auth);
@@ -132,6 +134,12 @@ function EditProfilePage(): any {
     dispatch(newAccessToken(response.data.data));
   }
 
+  const { isWithdrawalModal } = useSelector((state: RootState) => state.modal);
+
+  const openWithdrawalModal = () => {
+    dispatch(withdrawalModal(!isWithdrawalModal));
+  }
+
   const submitHandler = async () => {
     const body: any = {};
     if (editInform.profileImage) body.profileImage = editInform.profileImage;
@@ -212,9 +220,10 @@ function EditProfilePage(): any {
           {!isPasswordSame ? <span className='editProfile_passwordCheck_span'>비밀번호가 일치하지 않습니다.</span> : null}
         </div>
         <div className='editProfile_submit_div'> 
-          <button className='editProfile_submit_button' type='button'>회원탈퇴</button>
+          <button className='editProfile_submit_button' type='button' onClick={openWithdrawalModal}>회원탈퇴</button>
           <button className='editProfile_submit_button' type='button' onClick={submitHandler}>수정완료</button>
         </div>
+        {isWithdrawalModal ? <WithdrawalModal /> : null}
       </div>
     </div>
   )
