@@ -91,6 +91,16 @@ function MainPage() {
       })
       .catch(err => console.log(err))
   }
+
+  const moveToDetails = async (id: number) => {
+    await axios.get(
+      `${process.env.REACT_APP_API_URL}/articles/detail?id=${id}&user=${userInfo.id}`)
+      .then(res => {
+        console.log(res.data.data)
+        // dispatch(detailInfo(res.data.data)) // article detail 정보 update
+        navigate('/postdetails')
+      })
+  }
   
   // if(mainArticles.length === 0) {
   //   return (
@@ -106,7 +116,7 @@ function MainPage() {
       : mainArticles.map(article => {
         return (
           <div className="postBox" key={article.id}>
-            <img src={article.thumbnail} alt="mainImage" className="mainImage" />
+            <img src={article.thumbnail} alt="mainImage" className="mainImage" onClick={() => moveToDetails(article.id)} onKeyDown={() => moveToDetails(article.id)}/>
             <div className="tagBox">
               {article.tags
                 .map((el: any) => {

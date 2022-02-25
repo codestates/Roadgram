@@ -1,7 +1,17 @@
-import React from 'react'
+import React from 'react';
+import './_track.scss'
 
 function Track() {
-  return <div>Track</div>
+  return (
+    <div className="track-container">
+      <div className="title">
+        장소 정보
+      </div>
+      <div className="spots">
+        장소1부터 스크롤(무한스크롤)
+      </div>
+    </div>
+  )
 }
 
 export default Track;
