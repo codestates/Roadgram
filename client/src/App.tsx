@@ -19,6 +19,8 @@ import SettingRoutePage from './pages/SettingRoutePage'
 import CreatePostPage from './pages/CreatePostPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
+import SearchPage from './pages/SearchPage'
+import Test from './pages/test'
 
 
 function App() {
@@ -36,6 +38,9 @@ function App() {
           <Route path="/createpost/*" element={<CreatePostPage />} />
           <Route path="/logins/*" element={<LoginPage />} />
           <Route path="/signup/*" element={<SignupPage />} />
+          <Route path="/search/*" element={<SearchPage />} />
+          {/* 무한스크롤 테스트용 페이지 */}
+          <Route path='/test' element={<Test/>} />
         </Routes>
       </BrowserRouter>
     </div>

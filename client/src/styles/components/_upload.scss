@@ -1,0 +1,84 @@
+.createpost_upload_section {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  margin: auto; 
+
+  .createpost_upload_title {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 1.5rem;
+    // background-color: aqua;
+  }
+
+  .createpost_upload_div {
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    // background-color: aliceblue
+  }
+
+  .createpost_upload_route_div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5px;
+    width: 32%;
+    height: 45%;;
+  }
+
+  span {
+    font-size: 16px;
+  }
+
+  .createpost_upload_route_img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    background-color: #F2F2F2;
+  }
+
+  .createpost_plusicon {
+    color: #4680FF;
+    width: 32px;
+    height: 32px;
+    
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .createpost_upload_route_span {
+    display: flex;
+    // justify-content: center;
+    margin: 10px 5px;
+  }
+  
+  .upload-icon {
+    width: 30px;
+    height: 30px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .createpost_upload_route_thumbnail_div {
+    display: flex;
+  }
+
+  .createpost_upload_route_thumbnail_checkbox {
+    margin: 2px 0 0 10px;
+    width: 15px;
+    height: 15px;
+    
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

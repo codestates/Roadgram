@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { RootState } from '../../..'
+import { getMainArticles } from '../../../store/ArticleSlice'
 import { getFollower } from '../../../store/FollowSlice'
 // import { followings } from '../../../store/FollowSlice'
 import { followingModal } from '../../../store/ModalSlice'
@@ -15,7 +16,7 @@ function FollowingModal() {
   const { isFollowingModal } = useSelector((state: RootState) => state.modal)
   const { followingList } = useSelector((state: RootState) => state.follow)
   // const { id, nickname, profileImage } = useSelector((state: RootState) => state.follow)
-  const { userInfo, accessToken } = useSelector((state: RootState) => state.auth)
+  const { id } = useSelector((state: RootState) => state.auth.userInfo)
   // const observerRef = useRef()
 
   const closeModal = () => {
@@ -64,16 +65,10 @@ function FollowingModal() {
   //   return () => observer && observer.disconnect();
   // }, [target]);
 
-  async function moveToUserPage(id: any) {
+  const moveToUserPage = (targetId: any) => {
+    dispatch(update({targetId, userInfo: {}, articles: []}));
     closeModal();
-    const page = 1;
-    await axios
-      .get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${userInfo.id}&page=${page}&other=${id}`)
-      .then(res => {
-        dispatch(update(res.data.data)) // userInfo 정보 update
-        navigate('/userinfo')
-      })
-      .catch(console.log)
+    navigate(`/userinfo?id=${targetId}`);
   }
 
   return (

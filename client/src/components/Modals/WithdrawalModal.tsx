@@ -17,7 +17,7 @@ function WithdrawalModal() {
     try {
       dispatch(logout());
       await axios.delete(
-        `${process.env.REACT_APP_API_URL}/users/withdrawal?user=${userInfo.id}&loginMethod=${0}`,
+        `${process.env.REACT_APP_API_URL}/users/withdrawal?user=${userInfo.id}&loginMethod=${userInfo.loginMethod}`,
         {
           headers: {
             authorization: `${accessToken}`
@@ -45,6 +45,6 @@ function WithdrawalModal() {
       </div>
     </div>
   )
-};
+}
 
 export default WithdrawalModal;
