@@ -1,13 +1,18 @@
 .createpost_whole_div {
-  width: 40vw;
+  width: 35vw;
   height: 90vh;
   display: flex;
   flex-direction: column;
   margin: auto;
 
+  h1 {
+    font-size: 22px;
+    margin-left: 10px;
+  }
   h3 {
     font-size: 16px;
     margin-left: 20px;
+    color: #6D7176;
   }
 
   span {
@@ -15,10 +20,37 @@
   }
 
   ::placeholder {
-    margin-left: 10px;
+    margin-left: 5px;
   }
 }
 
+.createpost_title_div {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: auto;
+
+  .arrow_icon_div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f3f3f3;
+    width: 32px;
+    height: 32px;
+    
+    .arrow_icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      text-decoration: none; color: black;
+    }
+  }
+  
+
+  h1 {
+    display: inline-block;
+  }
+}
 .createpost_route_section {
   width: 100%;
   height: 50%;
@@ -34,40 +66,19 @@
 
 .createpost_tag_section {
   width: 100%;
-  height: 15%;
+  height: 20%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  // background-color: aqua;
-
 }
 
-
-
-.createpost_button_section {
-  width: 100%;
-  height: 5%;
-  // background-color: rgb(255, 187, 85);
-
-  button {
-    width: 12rem;
-    height: 3em;
-    margin: 0 2rem;
-    border-radius: 6px;
-  }
-
-  .createpost_prev_button {
-    color: black;
-    border: 1px solid black;
-    background-color: white;
-  }
-  .createpost_submit_button {
-    color: black;
-    border: 1px solid black;
-    background-color: rgb(135, 230, 247);
-  }
-  .createpost_cancel_button {
-  
-  }
+.createpost_submit_button {
+  width: 90%;
+  font-size: 16px;
+  height: 55px;
+  background-color: #4680ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
 }

@@ -1,7 +1,9 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useEffect } from 'react';
 import { useState } from 'react';
-import RoutePreview from '../components/CreatePostPage/Route';
 import Tag from '../components/CreatePostPage/Tag';
 import TextArea from '../components/CreatePostPage/TextArea';
 import Upload from '../components/CreatePostPage/Upload';
@@ -13,31 +15,29 @@ function CreatePostPage() {
     console.log(tags);
   },[tags])
 
-
-
   return (
   <div className='createpost_whole_div'>
-    <section className='createpost_route_section'>
-      <h3 className='createpost_route_title'>경로 Preview</h3>
-      <RoutePreview/>
-    </section>
-    <section className='createpost_upload_section'>
-      <h3 className='createpost_upload_title'>사진업로드</h3>
-      <Upload/>
-    </section>
+    <div className="createpost_title_div">
+      <div className="arrow_icon_div">
+        <Link to="/settingroute">
+        <FontAwesomeIcon icon={faArrowLeft} className="arrow_icon"/>
+        </Link>
+      </div>
+      <h1>게시글 작성</h1>
+    </div>
     <section className='createpost_tag_section'>
-      <h3 className='createpost_tag_title'>태그 추가</h3>
+      <span className='createpost_tag_title'>* 태그</span>
       <Tag/>
     </section>
     <section className='createpost_content_section'>
-      <h3 className='createpost_content_title'>본문</h3>
+      <span className='createpost_content_title'>* 본문</span>
       <TextArea/>
     </section>
-    <section className='createpost_button_section'>
-      <button className='createpost_prev_button' type="button">이전</button>
-      <button className='createpost_submit_button'type="submit">작성</button>
-      <button className='createpost_cancel_button' type="button">취소</button>
+    <section className='createpost_upload_section'>
+      <span className='createpost_upload_title'>* 이미지 업로드</span>
+      <Upload/>
     </section>
+      <button className='createpost_submit_button'type="submit">저장하기</button>
   </div>
   )
 }
