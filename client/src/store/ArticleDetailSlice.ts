@@ -1,10 +1,9 @@
 /* Store import */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { timestamp } from 'aws-sdk/clients/cloudfront';
 
 /* State Type 설정 */
 export interface articleDetails {
-  userInfo: {
+  writerInfo: {
     id: number;
     nickname: string;
     profileImage: string;
@@ -17,23 +16,24 @@ export interface articleDetails {
       location: string;
     }[];
     tags?: string[] | undefined | any;
-    totalLikes: number;
-    totalComments: number;
+    totalLike: number;
+    totalComment: number;
     likedOrNot: boolean;
+    createdAt: Date | null;
     comments?: {
       id: number;
       userId: number;
       profileImage: string;
       nickname: string;
       comment: string;
-      createdAt: any;
-    }[]
+      createdAt: Date;
+    }[];
   }
 }
 
 /* State 초기값 설정 */
 const initialState: articleDetails = {
-  userInfo: {
+  writerInfo: {
     id: 0,
     nickname: '',
     profileImage: ''
@@ -43,9 +43,10 @@ const initialState: articleDetails = {
     content: '',
     roads: [],
     tags: [],
-    totalLikes: 0,
-    totalComments: 0,
+    totalLike: 0,
+    totalComment: 0,
     likedOrNot: false,
+    createdAt: null,
     comments: []
   }
 }
@@ -56,11 +57,11 @@ const articleDetailSlice = createSlice({
   reducers: {
     /* Action 설정 */
     detailInfo: (state: articleDetails, { payload }: PayloadAction<any>) => {
-      state.userInfo = payload.userInfo;
+      state.writerInfo = payload.userInfo;
       state.articleInfo = payload.articleInfo;
     }
   }
 })
 
-// export const {  } = articleDetailSlice.actions;
+export const { detailInfo } = articleDetailSlice.actions;
 export default articleDetailSlice.reducer;
