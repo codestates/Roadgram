@@ -41,11 +41,11 @@
       }
       @include md {
         width: 13rem;
-        height: 6rem;
+        height: 8rem;
       }
       @include lg {
         width: 15rem;
-        height: 7rem;
+        height: 9rem;
       }
     }
   }
@@ -103,7 +103,7 @@
     .searchIcon {
       position: absolute;
       cursor: pointer;
-      
+
       @include mobile-only {
         height: 0.5rem;
         left: 4.2rem;
