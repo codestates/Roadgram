@@ -1,41 +1,63 @@
 .createpost_upload_section {
   width: 100%;
-  height: 20%;
+  height: 50%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  // .createpost_upload_title {
-  // }
-  .createpost_upload_route {
-    display: flex;
-    margin: 5px 0 10px 20px;
+  margin: auto; 
+
+  .createpost_upload_title {
     width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 1.5rem;
+    // background-color: aqua;
+  }
+
+  .createpost_upload_div {
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    // background-color: aliceblue
+  }
+
+  .createpost_upload_route_div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5px;
+    width: 32%;
+    height: 45%;;
   }
 
   span {
     font-size: 16px;
   }
 
-  .createpost_upload_route_number {
+  .createpost_upload_route_img {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px double black;
-    margin: 5px;
-    width: 5rem;
-    margin: 0;
-    height: auto;
+    width: 200px;
+    height: 200px;
+    background-color: #F2F2F2;
   }
 
-  .createpost_upload_route_name {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: auto 10px;
-    width: 150px;
-    height: 30px;
-    line-height: 50%;
+  .createpost_plusicon {
+    color: #4680FF;
+    width: 32px;
+    height: 32px;
+    
+    &:hover {
+      cursor: pointer;
+    }
+  }
 
+  .createpost_upload_route_span {
+    display: flex;
+    // justify-content: center;
+    margin: 10px 5px;
   }
   
   .upload-icon {
@@ -46,20 +68,17 @@
     }
   }
 
-  .createpost_upload_route_checkbox {
+  .createpost_upload_route_thumbnail_div {
+    display: flex;
+  }
+
+  .createpost_upload_route_thumbnail_checkbox {
     margin: 2px 0 0 10px;
-    width: 25px;
-    height: 25px;
-    background-color: black;
+    width: 15px;
+    height: 15px;
+    
     &:hover {
       cursor: pointer;
     }
-  }
-  .thumbnail_selectbox_span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: auto 10px;
-    color: lightgray
   }
 }

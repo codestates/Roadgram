@@ -97,6 +97,7 @@ function MainPage() {
     mainArticles.length === 0 || !mainArticles 
     ? <div className="no_following_post">팔로우 하는 사람 혹은 작성하신 게시물이 없습니다.</div>
     : <Article/>
-    )
+
+  )
 }
 export default MainPage;
