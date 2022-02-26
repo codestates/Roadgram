@@ -319,6 +319,7 @@ export class ArticlesService {
     try {
       const userInfo = await this.userRepository.getUserInfo(user);
       const articleInfo = await this.articleRepository.getArticleDetail(id);
+      console.log(articleInfo.createdAt);
       const likedOrNot = await this.likesRepository.likeOrNot(user, id);
       // // 각 게시물에 태그 이름(배열) 추가
       const tagIds = await this.articleToTagRepository.getTagIds(
@@ -334,6 +335,7 @@ export class ArticlesService {
           thumbnail: articleInfo.thumbnail,
           nickname: userInfo.nickname,
           content: articleInfo.content,
+          createdAt: articleInfo.createdAt,
           totalLike: articleInfo.totalLike,
           totalComment: articleInfo.totalComment,
           likedOrNot: likedOrNot,
@@ -365,6 +367,7 @@ export class ArticlesService {
           totalLike: articleInfo.totalLike,
           totalComment: articleInfo.totalComment,
           likedOrNot: likedOrNot,
+          createdAt: articleInfo.createdAt,
           tags: tagNames,
           roads,
           comments: commentsList,

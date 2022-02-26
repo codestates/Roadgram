@@ -9,14 +9,7 @@ import '../styles/pages/_postdetailsPage.scss';
 
 function PostDetailsPage() {
   const dispatch = useDispatch();
-  const { userInfo } = useSelector((state: RootState) => state.auth);
-
-  // 게시물 상세 조회 API 요청
-  const getPostDetails = async () => {
-    // 로그인하지 않은 경우 들어갈 user id 값 구분할 것
-
-  }
-  getPostDetails();
+  const { writerInfo, articleInfo } = useSelector((state: RootState) => state.articleDetails);
 
   return (
     <div className="total-container">
