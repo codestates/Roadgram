@@ -31,8 +31,11 @@ const articleSlice = createSlice({
     },
     setTag: (state: articles, { payload }: PayloadAction<string>) => {
       state.tag = payload
+    },
+    addMainArticles: (state: articles, { payload }: PayloadAction<Array<any>>) => {
+      state.mainArticles = [...state.mainArticles, ...payload]
     }
   },
 })
-export const { getMainArticles, setTag } = articleSlice.actions
+export const { getMainArticles, setTag, addMainArticles } = articleSlice.actions
 export default articleSlice.reducer
