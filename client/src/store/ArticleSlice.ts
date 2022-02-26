@@ -1,26 +1,27 @@
 /* Store import */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { useNavigate } from 'react-router-dom'
-import { persistor } from '../index'
 
 /* State Type 설정 */
 export interface articles {
   // articleRecent: any[]
   // followArticle: any[]
   // searchArticle: any[]
-  mainArticles: {
-    id?: number,
-    thumbnail?: string,
-    nickname?: string,
-    totalLike?: number,
-    totalComment?: number
-    tags?: string[] | undefined | any
-  }[] | [] | any[]
+  mainArticles:
+    | {
+        id?: number
+        thumbnail?: string
+        nickname?: string
+        totalLike?: number
+        totalComment?: number
+        tags?: string[] | undefined | any
+      }[]
+    | []
+    | any[]
 }
 
 /* State 초기값 설정 */
 const initialState: articles = {
-  mainArticles: []
+  mainArticles: [],
   // articleRecent: [],
   // followArticle: [],
   // searchArticle: []
