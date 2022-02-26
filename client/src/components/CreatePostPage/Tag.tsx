@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from "react";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faX, faXmark, faXmarkCircle, faXmarkSquare } from '@fortawesome/free-solid-svg-icons'
 // TODO: Styled-Component 라이브러리를 활용해 여러분만의 tag 를 자유롭게 꾸며 보세요!
 
 function Tag() {
@@ -34,19 +35,16 @@ function Tag() {
           {tags.map((tag, index) => (
             <li key={tag} className="tag">
               <span className="tag-title">{tag}</span>
-              <span
-                tabIndex={index}
-                role="button"
+              <FontAwesomeIcon
+                icon={faXmark}
+                // tabIndex={index}
+                // role="button"
                 className="tag-close-icon"
-                onClick={() => {
-                  removeTags(index);
-                }}
-                onKeyDown={() => {
-                  removeTags(index);
-                }}
-              >
-                &times;
-              </span>
+                onClick={() => {removeTags(index);}}
+                // onKeyDown={() => {
+                //   removeTags(index);
+                // }}
+              />
             </li>
           ))}
         </ul>
@@ -56,7 +54,7 @@ function Tag() {
           onKeyUp={(event) => {
               if (event.key === "Enter") addTags(event);
           }}
-          placeholder={tags.length === 0 ? "태그를 입력해 주세요(최대 5개까지 등록 가능)" : ""}
+          placeholder={tags.length === 0 ? "태그를 입력해주세요 (최대 5개까지 등록 가능)" : ""}
         />
       </div>
   );

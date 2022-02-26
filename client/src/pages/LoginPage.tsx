@@ -86,14 +86,16 @@ function LoginPage() {
   return (
     <div className="login_whole_div">
       <form className="login_main_div" >
-        <img className="login_logo_img" alt="logo" src={logo} />
-        <input className="login_email_input" type="text" placeholder="이메일" onChange={handleInputValue('email')} />
-        <input className="login_password_input" type="password" placeholder="비밀번호" onChange={handleInputValue('password')} />
-        <button className="login_login_button" type="button" onClick={loginHandler}>로그인</button>
-        <img className="login_kakao_button" alt="kakaologin" src={kakaoLogin} onClick={kakaoHandler} onKeyDown={handleKeyDown}/>
-        <div className="login_side_div">
-          <button className="login_findpassword_button" type="button" onClick={redirectToFindPassword}>비밀번호 찾기</button>
+        <h1 className="login_logo_title">로그인</h1>
+        <h3>이메일</h3>
+        <input className="login_email_input" type="text" placeholder="이메일을 입력해주세요" onChange={handleInputValue('email')} />
+        <h3>비밀번호</h3>
+        <input className="login_password_input" type="password" placeholder="비밀번호를 입력해주세요" onChange={handleInputValue('password')} />
+        <button className="login_findpassword_button" type="button" onClick={redirectToFindPassword}>비밀번호 찾기</button>
+        <div className="button_div">
+          <button className="login_login_button" type="button" onClick={loginHandler}>로그인</button>
           <button className="login_signup_button" type="button" onClick={redirectToSignup}>회원가입</button>
+          <img className="login_kakao_button" alt="kakaologin" src={kakaoLogin} onClick={kakaoHandler} onKeyDown={handleKeyDown}/>
         </div>
       </form>
     </div>
