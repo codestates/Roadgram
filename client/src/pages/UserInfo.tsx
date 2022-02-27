@@ -28,7 +28,6 @@ function UserInfo() {
 
   // 팔로잉, 팔로워 모달 on/off
   const { isFollowingModal, isFollowerModal } = useSelector((state: RootState) => state.modal);
-  
   // 최초 렌더링 시 getMypageInfo 실행 effect
   useEffect(() => {
     // dispatch(getMainArticles(articles));
@@ -69,36 +68,36 @@ function UserInfo() {
   }
 
   const openFollowingModal = async () => {
-    const page = 1;
-    await axios
-    .get(`${process.env.REACT_APP_API_URL}/follow/following?user=${id}&loginMethod=${loginMethod}&page=${page}`, {headers: {authorization: `${accessToken}`}})
-    .then((res) => {
-      if(res.data.statusCode === 204) {
-        dispatch(getFollowing([]))
-      } else {
-        dispatch(getFollowing(res.data.data))
-      }
+    // const page = 1;
+    // await axios
+    // .get(`${process.env.REACT_APP_API_URL}/follow/following?user=${id}&loginMethod=${loginMethod}&page=${page}`, {headers: {authorization: `${accessToken}`}})
+    // .then((res) => {
+    //   if(res.data.statusCode === 204) {
+    //     dispatch(getFollowing([]))
+    //   } else {
+    //     dispatch(getFollowing(res.data.data))
+    //   }
       dispatch(followingModal(!isFollowingModal));
-    })
-    .catch(console.log);  
+    // })
+    // .catch(console.log);  
     
   };
 
   const openFollowerModal = async () => {
-    const page = 1;
-    await axios
-    .get(`${process.env.REACT_APP_API_URL}/follow/follower?user=${id}&loginMethod=${loginMethod}&page=${page}`, {headers: {authorization: `${accessToken}`}})
-    .then((res) => {
-      if(res.data.statusCode === 204) {
-        dispatch(getFollower([]))
-      } else {
-        dispatch(getFollower(res.data.data))
-      }
+    // const page = 1;
+    // await axios
+    // .get(`${process.env.REACT_APP_API_URL}/follow/follower?user=${id}&loginMethod=${loginMethod}&page=${page}`, {headers: {authorization: `${accessToken}`}})
+    // .then((res) => {
+    //   if(res.data.statusCode === 204) {
+    //     dispatch(getFollower([]))
+    //   } else {
+    //     dispatch(getFollower(res.data.data))
+    //   }
       dispatch(followerModal(!isFollowerModal));
-    })
-    .catch((err) => {
-      console.log(err)
-    });
+    // })
+    // .catch((err) => {
+    //   console.log(err)
+    // });
   };
   
   const followingOrCacnel = async () => {

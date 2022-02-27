@@ -27,22 +27,17 @@ export class SearchService {
       const tagId = await this.tagRepository.getTagId(tag);
 
       if(!tagId) {
-        return {
-          statusCode: 204,
-          message: "해당하는 태그의 게시물을 찾을 수 없습니다."
-        }
+        throw new NotFoundException('cannot find articles');
       }
       const articleIds = await this.articleToTagRepository.getArticleIds(tagId);
 
-      if(!articleIds) {
-        return {
-          statusCode: 204,
-          message: "해당하는 태그의 게시물을 찾을 수 없습니다."
-        }
+      if(!articleIds.length) {
+        throw new NotFoundException('cannot find articles');
       }
 
       const articles = await this.articleRepository.searchArticle(articleIds, limit, offset);
       console.log(`받아온 게시물 갯수는 ${articles.length}개 입니다.`);
+      if(!articles.length) throw new NotFoundException('cannot find articles')
       // // 각 게시물에 태그 이름(배열) 추가
       let newArticles = [];
       for(const article of articles) {
@@ -77,7 +72,6 @@ export class SearchService {
           message: "ok"
       }
   } catch (err) {
-      console.error(err);
       throw new NotFoundException("No Content")
   }
   }

@@ -47,10 +47,7 @@ export class ArticlesService {
     if (!getFollowing) {
       throw new UnauthorizedException('permisson denied');
     } else if (getFollowing.length === 0) {
-      return {
-        statusCode: 204,
-        message: 'Not have a following list'
-      }
+      throw new NotFoundException('cannot find articles')
     }
     const newArticles = [];
     try {
@@ -235,7 +232,10 @@ export class ArticlesService {
       limit,
       offset,
     );
-
+    console.log(articles)
+    if(!articles.length){
+      throw new NotFoundException('cannot find articles')
+    }
     // 각 게시물에 태그 이름(배열) 추가
     let newArticles = [];
     for (const article of articles) {
