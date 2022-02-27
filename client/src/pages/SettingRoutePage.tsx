@@ -6,7 +6,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders'
 import { create } from 'domain'
 import { RootState } from '..'
-import { getLocationList, deleteLocationList, getRouteList, deleteRouteList } from '../store/KakaoSlice'
+import { getLocationList, deleteLocationList } from '../store/LocationListSlice'
+import { getRouteList, AddRouteList, deleteRouteList } from '../store/RouteListSlice'
 import { resetUserInfo } from '../store/UserInfoSlice'
 
 // 글로벌로 kakao를 선언해주지 않으면 앱이 인식하지 못한다.
@@ -22,7 +23,7 @@ function SettingRoutePage() {
   const [addRoute1, setAddRoute1] = useState(false) // 장소추가 버튼 클릭 여부
 
   const { locationList } = useSelector((state: RootState) => state.locations)
-  const { routeList } = useSelector((state: RootState) => state.locations)
+  const { routeList } = useSelector((state: RootState) => state.routes)
 
   const dispatch = useDispatch()
 
@@ -206,7 +207,7 @@ function SettingRoutePage() {
                   <div className="locationBox" key={location.id}>
                     <div className="placeName">{location.place_name}</div>
                     <div className="adressName">{location.address_name}</div>
-                    <button className="addButton" type="button" onClick={() => dispatch(getRouteList(location))}>
+                    <button className="addButton" type="button" onClick={() => dispatch(AddRouteList(location))}>
                       장소추가
                     </button>
                   </div>
