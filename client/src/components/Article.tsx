@@ -13,17 +13,11 @@ function Article () {
   const navigate = useNavigate();
   const { mainArticles } = useSelector((state: RootState) => state.articles);
   const { userInfo } = useSelector((state: RootState) => state.auth);
-  const { writerInfo, articleInfo } = useSelector((state: RootState) => state.articleDetails);
+  const { targetId, writerInfo, articleInfo } = useSelector((state: RootState) => state.articleDetails);
 
-  // 수정 예정
-  const moveToDetails = async (id: number) => {
-    await axios.get(
-      `${process.env.REACT_APP_API_URL}/articles/detail?id=${id}&user=${userInfo.id}`)
-      .then(res => {
-        console.log(res.data.data)
-        dispatch(detailInfo(res.data.data)) // article detail 정보 update
-        navigate(`/postdetails`)
-      })
+  const updateTargetId = async (id: number) => {
+    dispatch(detailInfo({targetId: id, userInfo: {}, articleInfo: {}}));
+    navigate(`/postdetails?id=${id}`);
   }
 
   return (
@@ -31,7 +25,7 @@ function Article () {
     {mainArticles.map(article => {
       return (
         <div className="postBox" key={article.id}>
-          <img src={article.thumbnail} alt="mainImage" className="mainImage" onClick={() => moveToDetails(article.id)} onKeyDown={() => moveToDetails(article.id)}/>
+          <img src={article.thumbnail} alt="mainImage" className="mainImage" onClick={() => updateTargetId(article.id)} onKeyDown={() => updateTargetId(article.id)}/>
           <div className="tagBox">
             {article.tags
               .map((el: any) => {

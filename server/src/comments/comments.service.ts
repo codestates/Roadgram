@@ -55,4 +55,26 @@ export class CommentsService {
       }
     }
   }
+
+  async getComments(articleId: number, page: number): Promise<object> {
+    let limit: number = 10;
+    let offset: number = (page - 1) * 10;
+    const comments = await this.commentRepository.getComments(articleId, limit, offset);
+    const commentsList = await Promise.all(
+      comments.map(async (comment) => {
+        const commentUserInfo = await this.userRepository.getUserInfo(
+          comment.userId,
+        );
+        return {
+          id: comment.id,
+          userId: comment.userId,
+          profileImage: commentUserInfo.profileImage,
+          nickname: commentUserInfo.nickname,
+          comment: comment.comment,
+          createdAt: comment.createdAt
+        };
+      })
+    )
+    return commentsList;
+  }
 }
