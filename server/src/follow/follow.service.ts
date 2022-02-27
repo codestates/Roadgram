@@ -36,16 +36,8 @@ export class FollowService {
 
   async getFollowerList(user: number, page: number): Promise<object> {
     const followerIds = await this.followRepository.getFollowedIds(user);
-    if (!followerIds) {
-      return {
-        statusCode: 204,
-        message: "'No followers yet'"
-      }
-    } else if (followerIds.length === 0) {
-      return {
-        statusCode: 204,
-        message: "'No followers yet'"
-      }
+    if (!followerIds||!followerIds.length) {
+      throw new NotFoundException('cannot find followers')
     } else {
       let limit: number = 10;
       let offset: number = (page - 1) * 10;
@@ -59,16 +51,8 @@ export class FollowService {
 
   async getFollowingList(user: number, page: number): Promise<object> {
     const followingIds = await this.followRepository.getFollowingIds(user);
-    if (!followingIds) {
-      return {
-        statusCode: 204,
-        message: "'No followings yet'"
-      }
-    } else if (followingIds.length === 0) {
-      return {
-        statusCode: 204,
-        message: "'No followings yet'"
-      }
+    if (!followingIds||!followingIds.length) {
+      throw new NotFoundException('cannot find following users')
     } else {
       let limit: number = 10;
       let offset: number = (page - 1) * 10;
