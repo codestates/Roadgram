@@ -30,9 +30,8 @@
 #settingRouteContainer {
   border: 1px solid green;
   width: 100%;
-  height: 100%;
+  height: 90%;
   display: flex;
-
   .searchBox {
     // border: 1px solid green;
     display: flex;
@@ -59,7 +58,7 @@
       border: 1px solid gray;
       border-radius: 1rem;
       width: 80%;
-      height: 200%;
+      height: 160%;
       padding-left: 1.5rem;
       font-size: 160%;
     }
@@ -71,17 +70,19 @@
       position: absolute;
       cursor: pointer;
       color: rgb(103, 102, 102);
-      height: 110%;
+      height: 100%;
       right: 14%;
-      top: 40%;
+      top: 25%;
     }
   }
   .locationListBox {
-    // border: 1px solid green;
+    // border: 1px solid red;
     width: 80%;
     height: 100%;
     margin-top: 2rem;
+    overflow: auto;
     .locationBox {
+      transition: 0.2s;
       border-top: 1px solid gray;
       border-left: 1px solid gray;
       border-right: 1px solid gray;
@@ -101,6 +102,8 @@
       }
       .addButton {
         border: 0;
+        cursor: pointer;
+        transition: 0.4s;
         border-radius: 1rem;
         color: white;
         background-color: rgb(90, 165, 254);
@@ -109,6 +112,12 @@
         height: 2.5rem;
         margin-bottom: 1rem;
       }
+      .addButton:hover {
+        background-color: rgb(28, 71, 125);
+      }
+    }
+    .locationBox:hover {
+      background-color: whitesmoke;
     }
   }
   .mapBox {
@@ -130,12 +139,32 @@
       font-weight: bold;
       cursor: pointer;
       right: 4%;
-      bottom: 15%;
+      bottom: 6%;
       width: 6%;
       height: 4%;
       transition: 0.4s;
     }
     .nextButton:hover {
+      background-color: aquamarine;
+      color: rgb(28, 71, 125);
+    }
+    .deleteButton {
+      position: absolute;
+      z-index: 1;
+      border: 0;
+      border-radius: 1rem;
+      background-color: rgb(90, 165, 254);
+      color: white;
+      font-size: 200%;
+      font-weight: bold;
+      cursor: pointer;
+      right: 4%;
+      top: 6%;
+      width: 6%;
+      height: 4%;
+      transition: 0.4s;
+    }
+    .deleteButton:hover {
       background-color: aquamarine;
       color: rgb(28, 71, 125);
     }
