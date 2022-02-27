@@ -19,8 +19,8 @@ export class CommentRepository extends Repository<Comments> {
     return commentInfo;
   }
 
-  async getComments(articleId: number): Promise<Comments[] | undefined> {
-    const result = await this.find({ where: { articleId }, order: { id: "DESC" } });
+  async getComments(articleId: number, limit: number, offset: number): Promise<Comments[] | undefined> {
+    const result = await this.find({ where: { articleId }, order: { createdAt: "DESC" }, take: limit, skip: offset });
     return result;
   }
 }
