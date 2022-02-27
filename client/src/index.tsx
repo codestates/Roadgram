@@ -18,9 +18,10 @@ import userInfoSlice, { UserInfo } from './store/UserInfoSlice'
 import modalSlice, { modals } from './store/ModalSlice'
 import articleSlice, { articles } from './store/ArticleSlice'
 import followSlice, { followInfo } from './store/FollowSlice'
-import KakaoSlice, { locations } from './store/KakaoSlice'
+import locationListSlice, { locations } from './store/LocationListSlice'
 import articleDetailSlice, { articleDetails } from './store/ArticleDetailSlice'
-
+import RouteSlice, { routes } from './store/RouteListSlice'
+import RouteListSlice from './store/RouteListSlice'
 
 /* persist 선언 */
 const persistConfig = {
@@ -37,8 +38,9 @@ const reducers = combineReducers({
   modal: modalSlice,
   articles: articleSlice,
   follow: followSlice,
-  locations: KakaoSlice,
-  articleDetails: articleDetailSlice
+  locations: locationListSlice,
+  articleDetails: articleDetailSlice,
+  routes: RouteListSlice,
 })
 
 /* persist reducer 세팅 (persistConfig가 추가된 reducer) */
@@ -62,6 +64,7 @@ export interface RootState {
   follow: followInfo
   locations: locations
   articleDetails: articleDetails
+  routes: routes
 }
 
 /* persist store 세팅 (새로고침, 종료해도 지속될 store) */
