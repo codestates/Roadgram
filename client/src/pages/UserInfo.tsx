@@ -30,11 +30,18 @@ function UserInfo() {
   const { isFollowingModal, isFollowerModal } = useSelector((state: RootState) => state.modal);
   // 최초 렌더링 시 getMypageInfo 실행 effect
   useEffect(() => {
-    // dispatch(getMainArticles(articles));
-    const url = new URL(window.location.href);
-    const id: string | null = url.searchParams.get('id');
-    getMyPageInfo(Number(id));
-    console.log("state===", state);
+    let isMounted = true;
+    dispatch(getMainArticles(articles));
+    if (isMounted) {
+      const url = new URL(window.location.href);
+      const id: string | null = url.searchParams.get('id');
+      getMyPageInfo(Number(id));
+      console.log("state===", state);
+    } else {
+      console.log('error')
+    }
+
+    return () => {isMounted = false};
   },[targetId])
 
   // isFollow 변경 시 값 확인 렌더링

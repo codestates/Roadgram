@@ -14,7 +14,7 @@ import LandingPage from './pages/LandingPage'
 import MainPage from './pages/MainPage'
 import UserInfo from './pages/UserInfo'
 import EditProfilePage from './pages/EditProfilePage'
-import PostDetailsPage from './pages/PostDetailsPage'
+import ArticleDetailsPage from './pages/ArticleDetailsPage'
 import SettingRoutePage from './pages/SettingRoutePage'
 import CreatePostPage from './pages/CreatePostPage'
 import LoginPage from './pages/LoginPage'
@@ -33,7 +33,7 @@ function App() {
           <Route path="/main/*" element={<MainPage />} />
           <Route path="/userinfo/*" element={<UserInfo />} />
           <Route path="/editprofile/*" element={<EditProfilePage />} />
-          <Route path="/postdetails/*" element={<PostDetailsPage />} />
+          <Route path="/postdetails/*" element={<ArticleDetailsPage />} />
           <Route path="/settingroute/*" element={<SettingRoutePage />} />
           <Route path="/createpost/*" element={<CreatePostPage />} />
           <Route path="/logins/*" element={<LoginPage />} />
