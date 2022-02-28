@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders'
-import { create } from 'domain'
 import { RootState } from '..'
-import { getLocationList, deleteLocationList } from '../store/LocationListSlice'
-import { getRouteList, AddRouteList, deleteRouteList } from '../store/RouteListSlice'
+import { getLocationList, deleteLocationList, locations } from '../store/LocationListSlice'
+import { getRouteList, addRouteList, deleteRouteList } from '../store/RouteListSlice'
 import { resetUserInfo } from '../store/UserInfoSlice'
 import markerImg from '../images/marker.png'
 import line from '../images/line.png'
@@ -50,6 +50,7 @@ function SettingRoutePage() {
   // 카카오맵으로부터 키워드 검색해주는 함수
   function placesSearchCB(data: any, status: any, pagination: any) {
     if (status === window.kakao.maps.services.Status.OK) {
+      console.log("data =======", data);
       setCreateMarker(true)
       dispatch(getLocationList(data)) // 검색결과 데이터를 store에 저장
     } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
@@ -128,7 +129,7 @@ function SettingRoutePage() {
 
         const infowindow = new window.kakao.maps.InfoWindow({
           content: `<div style="width:150px; padding: 6px; text-align:center; 0;">
-        <div>${route.place_name}</div>
+        <div>${route.placeName}</div>
         </div>`,
         })
         window.kakao.maps.event.addListener(routeMarker, 'mouseover', function () {
@@ -173,6 +174,19 @@ function SettingRoutePage() {
     }
   }
 
+  const addRoute = (location: any) => {
+    
+    const routeInfo = {
+      placeName: location.place_name,
+      addressName: location.address_name,
+      x: location.x,
+      y: location.y,
+      imageSrc: "",
+      order: routeList.length + 1
+    }
+    dispatch(addRouteList(routeInfo))
+  }
+
   useEffect(() => {
     createMap()
     // setCreateMarker(false)
@@ -210,7 +224,7 @@ function SettingRoutePage() {
                   <div className="locationBox" key={location.id}>
                     <div className="placeName">{location.place_name}</div>
                     <div className="adressName">{location.address_name}</div>
-                    <button className="addButton" type="button" onClick={() => dispatch(AddRouteList(location))}>
+                    <button className="addButton" type="button" onClick={() => addRoute(location)}>
                       장소추가
                     </button>
                   </div>
@@ -222,9 +236,11 @@ function SettingRoutePage() {
       </div>
       <div className="mapBox">
         <div id="map" className="kakaomap" />
+        <Link to="/createpost">
         <button className="nextButton" type="button">
           NEXT
         </button>
+        </Link>
         <button className="deleteButton" type="button" onClick={() => deleteInformation()}>
           경로제거
         </button>

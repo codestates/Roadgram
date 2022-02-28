@@ -37,7 +37,7 @@ export class ArticlesController {
 
   @Post()
   @UseGuards(AuthGuard)
-  createArticle(@Body() createArticleDto: CreateArticleDto): any {
+  createArticle(@Body() createArticleDto: CreateArticleDto): Promise<object> {
     const result = this.articlesService.createArticle(createArticleDto);
     return result
   }

@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage, faPlus, faCircleDot, faCircle } from '@fortawesome/free-solid-svg-icons'
+import { faImage, faPlus, faCircleDot} from '@fortawesome/free-solid-svg-icons'
+import { faCircle} from '@fortawesome/free-regular-svg-icons'
 import AWS, { S3 } from 'aws-sdk';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../..';
+import { setImages } from '../../store/RouteListSlice';
+import { setThumbnail } from '../../store/createPostSlice';
 
 function Upload() {
-  const [routes, setRoutes] = useState([
-    {name:"해운대 국밥 맛집", imgSrc: ""},
-    {name:"해운대 카페거리", imgSrc: ""},
-    // {name:"광안리 해수욕장", imgSrc: ""},
-    // {name:"삼겹살집", imgSrc: ""},
-    // {name:"5번째항목10글자까지가능하니", imgSrc: ""},
-    // {name:"6번째항목", imgSrc: ""},
-]);
-  const [thumbnail, setThumbnail] = useState("");
+  const { routeList } = useSelector((state: RootState) => state.routes);
+  const { thumbnail } = useSelector((state: RootState) => state.createPost);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [checkOption, setCheckOption] = useState<boolean[]>([true]);
+  const dispatch = useDispatch();
 
-  const selectIdx = (e:any) => {
-    const checking = routes.map((_, idx) => idx === Number(e.target.value));
-    setCheckOption(checking)
+
+  const selectThumbnail = (index: number) => {
+    const { imageSrc } = routeList[index];
+    if(imageSrc === "" || !imageSrc) {
+      alert("이미지가 업로드 된 항목만 지정 가능합니다.");
+      return;
+    } 
+
+    // thumbnail state에 이미지 저장
+    dispatch(setThumbnail(imageSrc));
   }
 
    /* s3 버킷 설정 */
@@ -28,55 +33,61 @@ function Upload() {
   });
 
    /* s3 버킷 업로드 합수 */
-  //  const imageHandler = (e: any) => {
-  //    const firstImageFile = e.target.files[0];
-  //    if (!firstImageFile) {
-  //      setEditInform({ ...editInform, profileImage: '' });
-  //    }
-  //    else {       
-  //  };
-
-  // const uploadImage = (idx: number) => {
-  //   const upload = new S3.ManagedUpload({
-  //     params: {
-  //       Bucket: "ootd13image",
-  //       Key: `firstImageFile.name`,
-  //       Body: `firstImageFile`,
-  //     },
-  //   });
-  //   const promise = upload.promise();
-  //   promise.then(
-  //     function (data: any) {
-  //       setEditInform({ ...editInform, profileImage: data.Location });
-  //     },
-  //     function (err: any) {
-  //       console.log(err);
-  //     }
-  //   );
-  // }
-  // }
+  const imageHandler = (idx: number, e: any) => {
+    const routeImage = e.target.files[0];
+    console.log("index 값은 ===", idx, "받은 사진정보 ==", routeImage)
+    if (!routeImage) {
+      // 이미지가 없으면 공백값 넣어줌
+      dispatch(setImages({idx, src: ""}));
+    } else {       
+      const upload = new S3.ManagedUpload({
+        params: {
+          Bucket: "ootd13image",
+          Key: routeImage.name,
+          Body: routeImage
+        },
+      });
+      const promise = upload.promise();
+      promise.then((data: any) => {
+        dispatch(setImages({idx, src: data.Location}));
+      })
+      .catch((err: any) => 
+        console.log(err))
+    }
+  }
 
   return (
     <div className="createpost_upload_div">
-    {routes && true ?
-    routes.map((route, idx) => {
+    {routeList && true ?
+    routeList.map((route, idx) => {
       return (
-        <label key={route.name} className='createpost_upload_route_div' htmlFor='upload_image'>
-          <div className="createpost_upload_route_img">
-            <input id="upload_image" className='hidden' accept='image/*' type="file"/>
-            <FontAwesomeIcon icon={faPlus} className="createpost_plusicon" />
-          </div>
-          {/* <div className="createpost_upload_route_span_div"> */}
-            <span className="createpost_upload_route_span">{`경로${idx+1}: ${route.name}`}</span>
-            {/* <span className="createpost_upload_route_name">{route.name}</span>
-          </div> */}
+        <div className='createpost_upload_route_div'>
+        <label key={route.placeName} className='createpost_upload_route_label' htmlFor={`upload_image${idx}`}>
+          {route.imageSrc === "" || !route.imageSrc 
+          ? <div className="createpost_upload_route_img">
+              <FontAwesomeIcon icon={faPlus} className="createpost_plusicon" />
+            </div>
+          : <>
+          <div className='createpost_upload_image_img_div'>이미지 변경</div>
+          <img className='createpost_upload_image_img' src={route.imageSrc} alt="route_image" />
+            </>
+          }
+          <input id={`upload_image${idx}`} className='hidden' accept='image/*' type="file" onChange={(e) => imageHandler(idx, e)}/>
+          <span className="createpost_upload_route_span">{route.placeName}</span>
+          </label>
           <div className="createpost_upload_route_thumbnail_div">
-            {/* <FontAwesomeIcon icon={faCircleDot} className="createpost_upload_route__thumbnail_checkbox" type="checkbox"  checked={checkOption[idx]} value={idx} onClick={(event)=>selectIdx(event)}/>
-             */}
-            <FontAwesomeIcon icon={faCircleDot} className="createpost_upload_route_thumbnail_checkbox" type="checkbox" onClick={(event)=>selectIdx(event)}/>
-            <span className="createpost_upload_route_thumnail_span">썸네일로 지정</span>
+          {route.imageSrc === thumbnail && thumbnail !== ""
+          ? <>
+              <FontAwesomeIcon icon={faCircleDot} className="createpost_upload_route_thumbnail_checkbox" type="checkbox" />
+              <span className="createpost_upload_route_thumnail_span">썸네일로 지정</span>
+            </> 
+          : <>
+              <FontAwesomeIcon icon={faCircle} className="createpost_upload_route_thumbnail_checkbox" type="checkbox" onClick={() => selectThumbnail(idx)}/>
+              <span className="createpost_upload_route_thumnail_span">썸네일로 지정</span>
+            </> 
+          }
           </div>
-        </label>
+        </div>
       )
     })
       : <div>등록한 경로를 찾을 수 없습니다.</div>

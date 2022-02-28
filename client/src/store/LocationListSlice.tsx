@@ -22,8 +22,9 @@ const locationListSlice = createSlice({
     deleteLocationList: (state: locations) => {
       state.locationList = []
     },
+    resetKaKao: () => initialState
   },
 })
 
-export const { getLocationList, deleteLocationList } = locationListSlice.actions
+export const { getLocationList, deleteLocationList, resetKaKao } = locationListSlice.actions
 export default locationListSlice.reducer

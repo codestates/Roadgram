@@ -66,11 +66,13 @@ const articleDetailSlice = createSlice({
       state.writerInfo = payload.userInfo;
       state.articleInfo = payload.articleInfo;
     },
+    resetArticleDetail: () => initialState,
     getComments: (state: articleDetails, { payload }: PayloadAction<any>) => {
       state.articleInfo.comments = payload;
     }
   }
 })
 
-export const { detailInfo, getComments } = articleDetailSlice.actions;
+
+export const { detailInfo, resetArticleDetail, getComments } = articleDetailSlice.actions;
 export default articleDetailSlice.reducer;
