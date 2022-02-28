@@ -71,9 +71,6 @@ const articleDetailSlice = createSlice({
       state.articleInfo.totalLike = payload;
     },
     resetArticleDetail: () => initialState,
-    getComments: (state: articleDetails, { payload }: PayloadAction<any>) => {
-      state.articleInfo.comments = payload;
-    }
   }
 })
 
