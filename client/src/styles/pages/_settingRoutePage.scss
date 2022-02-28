@@ -168,5 +168,35 @@
       background-color: aquamarine;
       color: rgb(28, 71, 125);
     }
+    .selectedRouteBox {
+      border: 2px solid black;
+      border-radius: 2rem;
+      background-color: white;
+      position: absolute;
+      z-index: 1;
+      box-sizing: border-box;
+      padding: 2rem;
+      // width: 35%;
+      // height: 10%;
+      left: 35%;
+      right: 35%;
+      top: 3%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .markerBox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .markerImg {
+        height: 4rem;
+        width: 4rem;
+      }
+      .line {
+        height: 3rem;
+        width: 8rem;
+      }
+    }
   }
 }

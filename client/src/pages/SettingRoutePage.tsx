@@ -9,6 +9,8 @@ import { RootState } from '..'
 import { getLocationList, deleteLocationList } from '../store/LocationListSlice'
 import { getRouteList, AddRouteList, deleteRouteList } from '../store/RouteListSlice'
 import { resetUserInfo } from '../store/UserInfoSlice'
+import markerImg from '../images/marker.png'
+import line from '../images/line.png'
 
 // 글로벌로 kakao를 선언해주지 않으면 앱이 인식하지 못한다.
 declare global {
@@ -20,7 +22,7 @@ declare global {
 function SettingRoutePage() {
   const [word, setWord] = useState('') // 검색어 state
   const [createMarker, setCreateMarker] = useState(false) // 마커 생성여부 state
-  const [addRoute1, setAddRoute1] = useState(false) // 장소추가 버튼 클릭 여부
+  const [isSearch, setIsSearch] = useState(false) // 검색여부 state
 
   const { locationList } = useSelector((state: RootState) => state.locations)
   const { routeList } = useSelector((state: RootState) => state.routes)
@@ -41,6 +43,7 @@ function SettingRoutePage() {
 
   // 키워드 검색 작동
   const searching = () => {
+    setIsSearch(true)
     ps.keywordSearch(word, placesSearchCB)
   }
 
@@ -198,8 +201,8 @@ function SettingRoutePage() {
           <FontAwesomeIcon icon={faMagnifyingGlass} onClick={searching} className="searchIcon" />
         </div>
         <div className="locationListBox">
-          {locationList === [] ? (
-            <div>장소를 검색해 보세요.</div>
+          {!isSearch ? (
+            <div>검색된 장소가 없습니다.</div>
           ) : (
             <div>
               {locationList.map(location => {
@@ -225,6 +228,17 @@ function SettingRoutePage() {
         <button className="deleteButton" type="button" onClick={() => deleteInformation()}>
           경로제거
         </button>
+        {routeList.length > 0 ? (
+          <div className="selectedRouteBox">
+            <div>
+              <img className="markerImg" alt="markerImg" src={markerImg} />
+              <div>광화문</div>
+            </div>
+            <div>
+              <img className="line" alt="line" src={line} />
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   )
