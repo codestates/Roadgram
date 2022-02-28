@@ -20,6 +20,7 @@ import articleSlice, { articles } from './store/ArticleSlice'
 import followSlice, { followInfo } from './store/FollowSlice'
 import locationListSlice, { locations } from './store/LocationListSlice'
 import articleDetailSlice, { articleDetails } from './store/ArticleDetailSlice'
+import commentsSlice, { comments } from './store/CommentsSlice'
 import createPostSlice, { createPost } from './store/createPostSlice'
 import RouteSlice, { routes } from './store/RouteListSlice'
 import RouteListSlice from './store/RouteListSlice'
@@ -41,6 +42,7 @@ const reducers = combineReducers({
   follow: followSlice,
   locations: locationListSlice,
   articleDetails: articleDetailSlice,
+  comments: commentsSlice,
   routes: RouteListSlice,
   createPost: createPostSlice
 })
@@ -66,6 +68,7 @@ export interface RootState {
   follow: followInfo
   locations: locations
   articleDetails: articleDetails
+  comments: comments
   createPost: createPost
   routes: routes
 }

@@ -20,14 +20,14 @@ export interface articleInfo {
   totalComment: number;
   likedOrNot: boolean;
   createdAt: Date | null;
-  comments?: {
-    id: number;
-    userId: number;
-    profileImage: string;
-    nickname: string;
-    comment: string;
-    createdAt: Date;
-  }[];
+  // comments?: {
+  //   id: number;
+  //   userId: number;
+  //   profileImage: string;
+  //   nickname: string;
+  //   comment: string;
+  //   createdAt: Date;
+  // }[];
 }
 
 export interface articleDetails {
@@ -52,7 +52,7 @@ const initialState: articleDetails = {
     totalComment: 0,
     likedOrNot: false,
     createdAt: null,
-    comments: []
+    // comments: []
   }
 }
 
@@ -66,6 +66,10 @@ const articleDetailSlice = createSlice({
       state.writerInfo = payload.userInfo;
       state.articleInfo = payload.articleInfo;
     },
+
+    likeUnlike: (state: articleDetails, { payload }: PayloadAction<any>) => {
+      state.articleInfo.totalLike = payload;
+    },
     resetArticleDetail: () => initialState,
     getComments: (state: articleDetails, { payload }: PayloadAction<any>) => {
       state.articleInfo.comments = payload;
@@ -73,6 +77,6 @@ const articleDetailSlice = createSlice({
   }
 })
 
+export const { detailInfo, resetArticleDetail,likeUnlike} = articleDetailSlice.actions;
 
-export const { detailInfo, resetArticleDetail, getComments } = articleDetailSlice.actions;
 export default articleDetailSlice.reducer;

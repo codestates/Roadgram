@@ -316,12 +316,12 @@ export class ArticlesService {
     }
   }
 
-  async getArticleDetail(id: number, user: number): Promise<any> {
+  async getArticleDetail(id: number, user?: number): Promise<any> {
     try {
       // const userInfo = await this.userRepository.getUserInfo(user);
       const articleInfo = await this.articleRepository.getArticleDetail(id);
       const userInfo = await this.userRepository.getUserInfo(articleInfo.userId);
-      const likedOrNot = await this.likesRepository.likeOrNot(user, id);
+      const likedOrNot = await this.likesRepository.likeOrNot(user || undefined, id);
       // // 각 게시물에 태그 이름(배열) 추가
       const tagIds = await this.articleToTagRepository.getTagIds(
         articleInfo.id,

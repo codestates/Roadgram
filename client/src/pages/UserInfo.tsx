@@ -33,13 +33,11 @@ function UserInfo() {
   const { isFollowingModal, isFollowerModal } = useSelector((state: RootState) => state.modal);
   // 최초 렌더링 시 getMypageInfo 실행 effect
   useEffect(() => {
-    // dispatch(getMainArticles(articles));
     const url = new URL(window.location.href);
     const id: string | null = url.searchParams.get('id');
     getMyPageInfo(Number(id));
     setEndScroll(false);
     setPage(2); // 새로 렌더링 시 페이지와 스크롤 상태 초기화
-    console.log("state===", state);
   }, [targetId])
 
   // isFollow 변경 시 값 확인 렌더링

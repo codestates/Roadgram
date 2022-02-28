@@ -5,11 +5,15 @@ import { Likes } from '../entities/likes.entity';
 @EntityRepository(Likes)
 export class LikesRepository extends Repository<Likes> {
     async likeOrNot(user, articleId) {
-      const result =  await this.findOne({
-        userId: user,
-        articleId: articleId,
-      });
-      return Boolean(result);
+      if (user === undefined) {
+        return false;
+      } else {
+        const result =  await this.findOne({
+          userId: user,
+          articleId: articleId,
+        });
+        return Boolean(result);
+      }
     };
 
     async likeArticle(likesDto: LikesDto): Promise<string> {

@@ -32,6 +32,7 @@ export class CommentsService {
     };
   }
 
+  // Nightmare
   async modifyComment(modifyCommentDto: ModifyCommentDto): Promise<object> {
     const { commentId, comment } = modifyCommentDto;
     await this.commentRepository.update({ id: commentId }, { comment });
@@ -75,6 +76,13 @@ export class CommentsService {
         };
       })
     )
-    return commentsList;
+    if (commentsList.length === 0) {
+      return { message: 'No comments' }
+    } else {
+      return {
+        data: commentsList,
+        message: 'ok'
+      };
+    }
   }
 }
