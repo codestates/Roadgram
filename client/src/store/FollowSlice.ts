@@ -11,8 +11,8 @@ export interface followList {
 }
 
 export interface followInfo {
-  followingList?: followList[] | [],
-  followerList?: followList[] | []
+  followingList: followList[] | [],
+  followerList: followList[] | []
 }
 /* State 초기값 설정 */
 const initialState: followInfo = {
@@ -25,15 +25,21 @@ const followSlice = createSlice({
   initialState,
   reducers: {
     /* Action 설정 */
-    getFollowing: (state: followInfo,  {payload}: PayloadAction<[]>) => {
+    getFollowing: (state: followInfo, { payload }: PayloadAction<[]>) => {
       state.followingList = payload
     },
-    getFollower: (state: followInfo,  {payload}: PayloadAction<[]>) => {
+    addFollowing: (state: followInfo, { payload }: PayloadAction<[]>) => {
+      state.followingList = [...state.followingList, ...payload];
+    },
+    getFollower: (state: followInfo, { payload }: PayloadAction<[]>) => {
       state.followerList = payload;
+    },
+    addFollower: (state: followInfo, { payload }: PayloadAction<[]>) => {
+      state.followerList = [...state.followerList, ...payload];
     },
     resetFollow: () => initialState
   },
 })
 
-export const { getFollowing, getFollower, resetFollow } = followSlice.actions
+export const { getFollowing, getFollower, resetFollow, addFollower, addFollowing } = followSlice.actions
 export default followSlice.reducer
