@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Patch, Delete, HttpCode, Query, UseGuards, ParseIntPipe } from '@nestjs/common';
+import { Body, Controller, Post, Patch, Delete, HttpCode, Query, UseGuards, ParseIntPipe, Get } from '@nestjs/common';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto, ModifyCommentDto } from './dto/comments.dto';
@@ -33,5 +33,14 @@ export class CommentsController {
     @Query('user', ParseIntPipe) user: number
   ): Promise<object> {
     return this.commentsService.deleteComment(commentId, articleId);
+  }
+
+  @Get()
+  @HttpCode(200)
+  getComments(
+    @Query('id', ParseIntPipe) id: number,
+    @Query('page', ParseIntPipe) page: number
+  ): Promise<object> {
+    return this.commentsService.getComments(id, page);
   }
 }

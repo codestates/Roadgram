@@ -1,37 +1,61 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { RootState } from '..';
 import Tag from '../components/CreatePostPage/Tag';
 import TextArea from '../components/CreatePostPage/TextArea';
 import Upload from '../components/CreatePostPage/Upload';
+import { resetRouteList } from '../store/RouteListSlice';
+import { resetKaKao } from '../store/LocationListSlice';
+import { resetCreatePost } from '../store/createPostSlice';
 
 function CreatePostPage() {
+  const state = useSelector((state: RootState) => state);
   const postInfo = useSelector((state: RootState) => state.createPost);
   const {userInfo, accessToken} = useSelector((state: RootState) => state.auth)
-  const {content, images, tagsInfo, thumbnail} = postInfo;
+  const { routeList } = useSelector((state:RootState) => state.routes);
+  const {content, tagsInfo, thumbnail} = postInfo;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("전체 state ==", state);
     console.log("post 입력 정보 ==", postInfo);
-  }, [postInfo]);
+  }, [state, postInfo]);
 
   const posting = () => {
-    console.log("posting 시작!");
     if(content === "") {
-      alert("본문은 필수 입력 정보입니다..");
+      alert("본문은 필수 입력 정보입니다.");
       return;
-    } 
+    }
+    
+    let isImageNull = true
+    routeList.forEach((route) => {
+      if(route.imageSrc === "")
+        isImageNull = false
+    })
+
+    if(!isImageNull) {
+      alert(`모든 경로의 이미지를 업로드 해 주시기 바랍니다.`);
+      return;
+    }
+
+    if(!thumbnail || thumbnail === "") {
+      alert("썸네일을 선택 해주시기 바랍니다.")
+      return;
+    }
+
     axios
     .post(`${process.env.REACT_APP_API_URL}/articles`,
     {
       user: userInfo.id,
       content,
-      road: images,
+      road: routeList,
       tag: tagsInfo,
       thumbnail,
       loginMethod: userInfo.loginMethod
@@ -42,16 +66,16 @@ function CreatePostPage() {
         authorization: `${accessToken}`
       }
     })
-    .then((res) => console.log(res.data))
-    .catch(console.log);
-
-    let isImageNull = true
-    images.forEach((image) => {
-      if(image.imgSrc === "")
-        isImageNull = false
+    .then((res) => {
+      alert("작성이 완료되었습니다.");
+      navigate(`/postdetail?id=${res.data.data.articleInfo.id}`)
+      dispatch(resetKaKao());
+      dispatch(resetRouteList());
+      dispatch(resetCreatePost());
     })
-
-    if(!isImageNull) alert(`모든 경로의 이미지를 업로드 해 주시기 바랍니다.`);
+    .catch((err) => {
+      console.log("err!", err);
+    });
   }
 
 

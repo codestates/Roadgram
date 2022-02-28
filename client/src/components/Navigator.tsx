@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import '../style.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faUser, faPencil } from '@fortawesome/free-solid-svg-icons'
@@ -14,7 +14,8 @@ import { resetModal } from '../store/ModalSlice'
 import { getMainArticles, resetArticle, setTag } from '../store/ArticleSlice'
 import { resetArticleDetail } from '../store/ArticleDetailSlice'
 import { resetCreatePost } from '../store/createPostSlice'
-import { resetKaKao } from '../store/KakaoSlice'
+import { resetKaKao } from '../store/LocationListSlice'
+import { resetRouteList } from '../store/RouteListSlice'
 
 function Navigator() {
   const [usericonClick, setUsericonCLick] = useState(false)
@@ -23,6 +24,18 @@ function Navigator() {
   const [word, setWord] = useState("");
   const dispatch = useDispatch();
   
+  const resetAllState = () => {
+    dispatch(logout())
+    dispatch(resetFollow())
+    dispatch(resetModal())
+    dispatch(resetUserInfo())
+    dispatch(resetArticleDetail())
+    dispatch(resetCreatePost())
+    dispatch(resetArticle())
+    dispatch(resetKaKao())
+    dispatch(resetRouteList())
+  }
+
   const handleLogout = async () => {
     try {
       await axios
@@ -39,27 +52,13 @@ function Navigator() {
           },
         )
         .then(() => {
-          dispatch(logout())
-          dispatch(resetFollow())
-          dispatch(resetModal())
-          dispatch(resetUserInfo())
-          dispatch(resetArticleDetail())
-          dispatch(resetCreatePost())
-          dispatch(resetArticle())
-          dispatch(resetKaKao())
-          setUsericonCLick(!usericonClick)
+          resetAllState();
+          setUsericonCLick(!usericonClick);
         })
     } catch {
       // 테스트를 위해 로그아웃 강제 처리
-      dispatch(logout())
-      dispatch(resetFollow())
-      dispatch(resetModal())
-      dispatch(resetUserInfo())
-      dispatch(resetArticleDetail())
-      dispatch(resetCreatePost())
-      dispatch(resetArticle())
-      dispatch(resetKaKao())
-      setUsericonCLick(!usericonClick)
+      resetAllState();
+      setUsericonCLick(!usericonClick);
       console.log('logout error')
     }
   }
@@ -83,7 +82,7 @@ function Navigator() {
       <div className="structure" />
       <div className="structure">
         <Link to="/main" style={{ textDecoration: 'none' }}>
-          <img className="logo" alt="logoImg" src={logo} />
+          <img className="logo" alt="logoImg" src={logo}/>
         </Link>
       </div>
       <div className="structure sideMenu">

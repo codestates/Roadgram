@@ -5,11 +5,16 @@ import { Track } from "../entities/track.entity";
 export class TrackRepository extends Repository<Track>{
   async createTrack(road: [], articleId: number) {
     return await Promise.all(road.map(async (each) => {
-      const { order, imageSrc, location } = each;
-      const track = await this.save({ order, imageSrc, location, articleId });
+      console.log("each", each);
+      const { order, imageSrc, placeName, addressName, x, y } = each;
+      const track = await this.save({ order, imageSrc, placeName, addressName, x, y, articleId });
       return {
+        order: track.order,
         imageSrc: track.imageSrc,
-        location: track.location
+        placeName: track.placeName,
+        addressName: track.addressName,
+        x: track.x,
+        y: track.y,
       }
     }))
   }
@@ -19,7 +24,10 @@ export class TrackRepository extends Repository<Track>{
     const data = result.map((each) => {
       return {
         imageSrc: each.imageSrc,
-        location: each.location
+        placeName: each.placeName,
+        addressName: each.addressName,
+        x: each.x,
+        y: each.y,
       }
     })
     return data;

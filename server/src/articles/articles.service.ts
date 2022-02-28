@@ -47,10 +47,7 @@ export class ArticlesService {
     if (!getFollowing) {
       throw new UnauthorizedException('permisson denied');
     } else if (getFollowing.length === 0) {
-      return {
-        statusCode: 204,
-        message: 'Not have a following list'
-      }
+      throw new NotFoundException('cannot find articles')
     }
     const newArticles = [];
     try {
@@ -235,7 +232,10 @@ export class ArticlesService {
       limit,
       offset,
     );
-
+    console.log(articles)
+    if(!articles.length){
+      throw new NotFoundException('cannot find articles')
+    }
     // 각 게시물에 태그 이름(배열) 추가
     let newArticles = [];
     for (const article of articles) {
@@ -317,52 +317,52 @@ export class ArticlesService {
 
   async getArticleDetail(id: number, user: number): Promise<any> {
     try {
-      const userInfo = await this.userRepository.getUserInfo(user);
+      // const userInfo = await this.userRepository.getUserInfo(user);
       const articleInfo = await this.articleRepository.getArticleDetail(id);
-      console.log(articleInfo.createdAt);
+      const userInfo = await this.userRepository.getUserInfo(articleInfo.userId);
       const likedOrNot = await this.likesRepository.likeOrNot(user, id);
       // // 각 게시물에 태그 이름(배열) 추가
       const tagIds = await this.articleToTagRepository.getTagIds(
         articleInfo.id,
       );
       const tagNames = await this.tagRepository.getTagNameWithIds(tagIds);
-      const comments = await this.commentRepository.getComments(articleInfo.id);
+      // const comments = await this.commentRepository.getComments(articleInfo.id);
       const roads = await this.trackRepository.getRoads(articleInfo.id);
       let article = {};
-      if (!comments || comments.length === 0) {
+      // if (!comments || comments.length === 0) {
+      //   article = {
+      //     id: articleInfo.id,
+      //     thumbnail: articleInfo.thumbnail,
+      //     nickname: userInfo.nickname,
+      //     content: articleInfo.content,
+      //     createdAt: articleInfo.createdAt,
+      //     totalLike: articleInfo.totalLike,
+      //     totalComment: articleInfo.totalComment,
+      //     likedOrNot: likedOrNot,
+      //     tags: tagNames,
+      //     roads,
+      //     comments: [],
+      //   };
+      // } else {
+      //   const commentsList = await Promise.all(
+      //     comments.map(async (comment) => {
+      //       const commentUserInfo = await this.userRepository.getUserInfo(
+      //         comment.userId,
+      //       );
+      //       return {
+      //         id: comment.id,
+      //         userId: comment.userId,
+      //         profileImage: commentUserInfo.profileImage,
+      //         nickname: commentUserInfo.nickname,
+      //         comment: comment.comment,
+      //         createdAt: comment.createdAt,
+      //       };
+      //     }),
+      //   );
         article = {
           id: articleInfo.id,
           thumbnail: articleInfo.thumbnail,
-          nickname: userInfo.nickname,
-          content: articleInfo.content,
-          createdAt: articleInfo.createdAt,
-          totalLike: articleInfo.totalLike,
-          totalComment: articleInfo.totalComment,
-          likedOrNot: likedOrNot,
-          tags: tagNames,
-          roads,
-          comments: [],
-        };
-      } else {
-        const commentsList = await Promise.all(
-          comments.map(async (comment) => {
-            const commentUserInfo = await this.userRepository.getUserInfo(
-              comment.userId,
-            );
-            return {
-              id: comment.id,
-              userId: comment.userId,
-              profileImage: commentUserInfo.profileImage,
-              nickname: commentUserInfo.nickname,
-              comment: comment.comment,
-              createdAt: comment.createdAt,
-            };
-          }),
-        );
-        article = {
-          id: articleInfo.id,
-          thumbnail: articleInfo.thumbnail,
-          nickname: userInfo.nickname,
+          // nickname: userInfo.nickname,
           content: articleInfo.content,
           totalLike: articleInfo.totalLike,
           totalComment: articleInfo.totalComment,
@@ -370,9 +370,9 @@ export class ArticlesService {
           createdAt: articleInfo.createdAt,
           tags: tagNames,
           roads,
-          comments: commentsList,
+          // comments: commentsList,
         };
-      }
+      // }
 
       return {
         data: {
@@ -409,23 +409,23 @@ export class ArticlesService {
       where: { articleId },
       select: ['tagId', 'order'],
     });
-    const commentsList = await this.commentRepository.getComments(articleId);
+    // const commentsList = await this.commentRepository.getComments(articleId);
     const roads = await this.trackRepository.getRoads(articleId);
-    const comments = await Promise.all(
-      commentsList.map(async (comment) => {
-        const commentUserInfo = await this.userRepository.getUserInfo(
-          comment.userId,
-        );
-        return {
-          id: comment.id,
-          userId: comment.userId,
-          profileImage: commentUserInfo.profileImage,
-          nickname: commentUserInfo.nickname,
-          comment: comment.comment,
-          createdAt: comment.createdAt,
-        };
-      }),
-    );
+    // const comments = await Promise.all(
+    //   commentsList.map(async (comment) => {
+    //     const commentUserInfo = await this.userRepository.getUserInfo(
+    //       comment.userId,
+    //     );
+    //     return {
+    //       id: comment.id,
+    //       userId: comment.userId,
+    //       profileImage: commentUserInfo.profileImage,
+    //       nickname: commentUserInfo.nickname,
+    //       comment: comment.comment,
+    //       createdAt: comment.createdAt,
+    //     };
+    //   }),
+    // );
     try {
       this.articleToTagRepository.deleteTags(articleId);
       const tags = await this.findOrCreateTags(user, articleId, tag);
@@ -436,7 +436,7 @@ export class ArticlesService {
             ...articleInfo,
             roads,
             tags,
-            comments,
+            // comments,
           },
         },
         message: 'article modified',

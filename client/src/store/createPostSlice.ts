@@ -5,11 +5,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export interface createPost {
   content: string,
   thumbnail: string,
-  images: {
-    order: number,
-    imgSrc: string,
-    location: string,
-  }[],
   tagsInfo: {
     order: number,
     tagName: string
@@ -20,7 +15,6 @@ export interface createPost {
 const initialState: createPost = {
   content: "",
   thumbnail: "",
-  images: [],
   tagsInfo: []
 }
 
@@ -38,12 +32,12 @@ const createPostSlice = createSlice({
     setContent: (state: createPost, { payload }: PayloadAction<any>) => {
       state.content = payload;
     },
-    setImages: (state: createPost, { payload }: PayloadAction<any>) => {
-      state.images = payload;
+    removeLastTag: (state: createPost) => {
+      state.tagsInfo.pop();
     },
     resetCreatePost: () => initialState
   },
 })
 
-export const { setTagsInfo, setThumbnail, setContent, setImages, resetCreatePost } = createPostSlice.actions
+export const { setTagsInfo, setThumbnail, setContent, removeLastTag, resetCreatePost } = createPostSlice.actions
 export default createPostSlice.reducer

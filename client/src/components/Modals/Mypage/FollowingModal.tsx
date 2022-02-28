@@ -1,10 +1,12 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import e from 'express'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { RootState } from '../../..'
 import { getMainArticles } from '../../../store/ArticleSlice'
-import { getFollower } from '../../../store/FollowSlice'
+import { logout, newAccessToken } from '../../../store/AuthSlice'
+import { getFollower, getFollowing } from '../../../store/FollowSlice'
 // import { followings } from '../../../store/FollowSlice'
 import { followingModal } from '../../../store/ModalSlice'
 import { update } from '../../../store/UserInfoSlice'
@@ -16,12 +18,49 @@ function FollowingModal() {
   const { isFollowingModal } = useSelector((state: RootState) => state.modal)
   const { followingList } = useSelector((state: RootState) => state.follow)
   // const { id, nickname, profileImage } = useSelector((state: RootState) => state.follow)
-  const { id } = useSelector((state: RootState) => state.auth.userInfo)
+  const { id, loginMethod } = useSelector((state: RootState) => state.auth.userInfo);
+  const { accessToken } = useSelector((state: RootState) => state.auth);
   // const observerRef = useRef()
 
   const closeModal = () => {
     dispatch(followingModal(!isFollowingModal))
   }
+
+  const getFollowingList = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/follow/following?user=${id}&loginMethod=${loginMethod}&page=${1}`, { headers: { authorization: `${accessToken}` } });
+      dispatch(getFollowing(response.data.data));
+    } catch (err: any) {
+      if (err.response.data.statusCode === 401) {
+        try {
+          await accessTokenRequest();
+        } catch {
+          dispatch(followingModal(!isFollowingModal))
+          alert('다시 로그인해주세요');
+          dispatch(logout());
+          navigate('/logins');
+        }
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/follow/following?user=${id}&loginMethod=${loginMethod}&page=${1}`, { headers: { authorization: `${accessToken}` } });
+          dispatch(getFollowing(response.data.data));
+        } catch {
+          dispatch(getFollowing([]));
+        }
+      }
+      else {
+        dispatch(getFollowing([]));
+      }
+    }
+  }
+
+  const accessTokenRequest = async () => {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/auth?user=${id}&loginMethod=${loginMethod}`, { headers: { authorizaion: `${accessToken}` } });
+    dispatch(newAccessToken(response.data.data));
+  }
+
+  useEffect(() => {
+    getFollowingList();
+  }, [isFollowingModal])
 
   // const [target, setTarget] = useState(null)
 
@@ -66,7 +105,7 @@ function FollowingModal() {
   // }, [target]);
 
   const moveToUserPage = (targetId: any) => {
-    dispatch(update({targetId, userInfo: {}, articles: []}));
+    dispatch(update({ targetId, userInfo: {}, articles: [] }));
     closeModal();
     navigate(`/userinfo?id=${targetId}`);
   }
@@ -83,25 +122,25 @@ function FollowingModal() {
         <hr />
         <div className="follows">
           {followingList
-          ? followingList.map(each => {
-            return (
-              <li
-                className="follow_profile_list"
-                key={each.id}
-                onClick={() => {
-                  moveToUserPage(each.id)
-                }}
-                onKeyDown={() => {
-                  moveToUserPage(each.id)
-                }}
-              >
-                <img alt="profile_image" src={each.profileImage} className="follow_profile_image" />
-                <span>{each.nickname}</span>
-              </li>
-            )
-          })
-          : <div>1</div>
-        }
+            ? followingList.map(each => {
+              return (
+                <li
+                  className="follow_profile_list"
+                  key={each.id}
+                  onClick={() => {
+                    moveToUserPage(each.id)
+                  }}
+                  onKeyDown={() => {
+                    moveToUserPage(each.id)
+                  }}
+                >
+                  <img alt="profile_image" src={each.profileImage} className="follow_profile_image" />
+                  <span>{each.nickname}</span>
+                </li>
+              )
+            })
+            : <div>1</div>
+          }
         </div>
       </div>
     </div>

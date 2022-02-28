@@ -18,12 +18,11 @@ import userInfoSlice, { UserInfo } from './store/UserInfoSlice'
 import modalSlice, { modals } from './store/ModalSlice'
 import articleSlice, { articles } from './store/ArticleSlice'
 import followSlice, { followInfo } from './store/FollowSlice'
-import KakaoSlice, { locations } from './store/KakaoSlice'
+import locationListSlice, { locations } from './store/LocationListSlice'
 import articleDetailSlice, { articleDetails } from './store/ArticleDetailSlice'
-import ArticleInfoSlice, { createPost } from './store/createPostSlice'
-import createArticleSlice from './store/createPostSlice'
-import createPostSlice from './store/createPostSlice'
-
+import createPostSlice, { createPost } from './store/createPostSlice'
+import RouteSlice, { routes } from './store/RouteListSlice'
+import RouteListSlice from './store/RouteListSlice'
 
 /* persist 선언 */
 const persistConfig = {
@@ -40,8 +39,9 @@ const reducers = combineReducers({
   modal: modalSlice,
   articles: articleSlice,
   follow: followSlice,
-  locations: KakaoSlice,
+  locations: locationListSlice,
   articleDetails: articleDetailSlice,
+  routes: RouteListSlice,
   createPost: createPostSlice
 })
 
@@ -67,6 +67,7 @@ export interface RootState {
   locations: locations
   articleDetails: articleDetails
   createPost: createPost
+  routes: routes
 }
 
 /* persist store 세팅 (새로고침, 종료해도 지속될 store) */

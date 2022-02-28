@@ -2,33 +2,38 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 /* State Type 설정 */
-export interface articleDetails {
-  writerInfo: {
+export interface writerInfo {
+  id: number;
+  nickname: string;
+  profileImage: string;
+}
+
+export interface articleInfo {
+  id: number;
+  content: string;
+  roads: {
+    imageSrc: string;
+    location: string;
+  }[];
+  tags?: string[] | undefined | any;
+  totalLike: number;
+  totalComment: number;
+  likedOrNot: boolean;
+  createdAt: Date | null;
+  comments?: {
     id: number;
-    nickname: string;
+    userId: number;
     profileImage: string;
-  },
-  articleInfo: {
-    id: number;
-    content: string;
-    roads: {
-      imageSrc: string;
-      location: string;
-    }[];
-    tags?: string[] | undefined | any;
-    totalLike: number;
-    totalComment: number;
-    likedOrNot: boolean;
-    createdAt: Date | null;
-    comments?: {
-      id: number;
-      userId: number;
-      profileImage: string;
-      nickname: string;
-      comment: string;
-      createdAt: Date;
-    }[];
-  }
+    nickname: string;
+    comment: string;
+    createdAt: Date;
+  }[];
+}
+
+export interface articleDetails {
+  targetId?: number | null,
+  writerInfo: writerInfo,
+  articleInfo: articleInfo
 }
 
 /* State 초기값 설정 */
@@ -57,12 +62,17 @@ const articleDetailSlice = createSlice({
   reducers: {
     /* Action 설정 */
     detailInfo: (state: articleDetails, { payload }: PayloadAction<any>) => {
+      state.targetId = payload.taretId;
       state.writerInfo = payload.userInfo;
       state.articleInfo = payload.articleInfo;
     },
-    resetArticleDetail: () => initialState
+    resetArticleDetail: () => initialState,
+    getComments: (state: articleDetails, { payload }: PayloadAction<any>) => {
+      state.articleInfo.comments = payload;
+    }
   }
 })
 
-export const { detailInfo, resetArticleDetail } = articleDetailSlice.actions;
+
+export const { detailInfo, resetArticleDetail, getComments } = articleDetailSlice.actions;
 export default articleDetailSlice.reducer;

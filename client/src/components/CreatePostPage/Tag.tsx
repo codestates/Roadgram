@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faXmark, faXmarkCircle, faXmarkSquare } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../..';
-import { setTagsInfo } from '../../store/createPostSlice';
+import { removeLastTag, setTagsInfo } from '../../store/createPostSlice';
 
 function Tag() {
   const state = useSelector((state: RootState) => state.createPost);
@@ -23,25 +23,39 @@ function Tag() {
   const addTags = (event: any) => {
     const { value } = event.target;
     if(value === "") return;
+        // ESLint 수정 후 작업 필요
+
     if(tagsInfo.length >= 5) {
       alert("태그는 최대 5개까지 등록 가능합니다.");
       return;
     }
 
-    const hashTag = `#${value}`;
-    // ESLint 수정 후 작업 필요
-    // tagsInfo.forEach((tag) => {
-    //   if(tag.tagName === hashTag) return;
-    // })
+    let isTagExist = false;
+    tagsInfo.forEach((tag) => {
+      if(tag.tagName === value) {
+        isTagExist = true;
+      }
+    })
+
+    if(isTagExist) {
+      alert("이미 등록된 태그입니다.");
+      return;
+    }
 
     if(tagsInfo.length === 0) {
-      const newObj = { order: 1, tagName: hashTag };
+      const newObj = { order: 1, tagName: value };
       dispatch(setTagsInfo([newObj]));
     } else {
-      const newObj = { order: tagsInfo.length + 1, tagName: hashTag };
+      const newObj = { order: tagsInfo.length + 1, tagName: value };
       dispatch(setTagsInfo([...tagsInfo, newObj]));
     }
     event.target.value = "";
+  }
+
+  const deleteOneTag = (event: any) => {
+    if(event.target.value === "" && tagsInfo.length > 0) {
+      dispatch(removeLastTag());
+    }
   }
 
   return (
@@ -50,7 +64,7 @@ function Tag() {
           {tagsInfo && true 
           ? tagsInfo.map((tag, index) => (
             <li key={tag.tagName} className="tag">
-              <span className="tag-title">{tag.tagName}</span>
+              <span className="tag-title">{`#${tag.tagName}`}</span>
               <FontAwesomeIcon
                 icon={faXmark}
                 // tabIndex={index}
@@ -70,8 +84,9 @@ function Tag() {
           type="text"
           onKeyUp={(event) => {
               if (event.key === "Enter") addTags(event);
+              if (event.key === "Backspace") deleteOneTag(event); 
           }}
-          placeholder={!tagsInfo ? "태그를 입력해주세요 (최대 5개까지 등록 가능)" : ""}
+          placeholder={!tagsInfo || tagsInfo.length === 0 ? "태그를 입력해주세요 (최대 5개까지 등록 가능)" : ""}
         />
       </div>
   );
