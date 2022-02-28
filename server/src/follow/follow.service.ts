@@ -42,6 +42,7 @@ export class FollowService {
       let limit: number = 10;
       let offset: number = (page - 1) * 10;
       const followers = await this.userRepository.getProfileList(followerIds, limit, offset);
+      if(!followers.length) throw new NotFoundException('cannot find followers');
       return {
         data: followers,
         message: "follower list"
@@ -57,6 +58,7 @@ export class FollowService {
       let limit: number = 10;
       let offset: number = (page - 1) * 10;
       const followings = await this.userRepository.getProfileList(followingIds, limit, offset);
+      if(!followings.length) throw new NotFoundException('cannot find following users');
       return {
         data: followings,
         message: "following list"

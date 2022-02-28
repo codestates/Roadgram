@@ -32,8 +32,9 @@ const articleSlice = createSlice({
     },
     addMainArticles: (state: articles, { payload }: PayloadAction<Array<any>>) => {
       state.mainArticles = [...state.mainArticles, ...payload]
-    }
+    },
+    resetArticle: () => initialState
   },
 })
-export const { getMainArticles, setTag, addMainArticles } = articleSlice.actions
+export const { getMainArticles, setTag, addMainArticles, resetArticle } = articleSlice.actions
 export default articleSlice.reducer

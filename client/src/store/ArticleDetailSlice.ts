@@ -66,11 +66,17 @@ const articleDetailSlice = createSlice({
       state.writerInfo = payload.userInfo;
       state.articleInfo = payload.articleInfo;
     },
+
     likeUnlike: (state: articleDetails, { payload }: PayloadAction<any>) => {
       state.articleInfo.totalLike = payload;
+    },
+    resetArticleDetail: () => initialState,
+    getComments: (state: articleDetails, { payload }: PayloadAction<any>) => {
+      state.articleInfo.comments = payload;
     }
   }
 })
 
-export const { detailInfo, likeUnlike } = articleDetailSlice.actions;
+export const { detailInfo, resetArticleDetail,likeUnlike} = articleDetailSlice.actions;
+
 export default articleDetailSlice.reducer;

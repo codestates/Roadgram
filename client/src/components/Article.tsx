@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { faCommentDots, faHeart } from '@fortawesome/free-solid-svg-icons';
@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getMainArticles } from '../store/ArticleSlice'
 import { RootState } from '..'
 import { detailInfo } from '../store/ArticleDetailSlice';
+import { resetCreatePost } from '../store/createPostSlice';
+import { resetKaKao } from '../store/LocationListSlice';
+import { resetRouteList } from '../store/RouteListSlice';
 
 function Article () {
   const dispatch = useDispatch();
@@ -15,6 +18,19 @@ function Article () {
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const { targetId, writerInfo, articleInfo } = useSelector((state: RootState) => state.articleDetails);
 
+  useEffect(() => {
+    console.log("Article 작동!!");
+    // main이 불러와지면 post 작성정보를 초기화시켜준다.
+    resetPostInfo();
+  }, [])
+
+  const resetPostInfo = () => {
+    dispatch(resetCreatePost());
+    dispatch(resetKaKao());
+    dispatch(resetRouteList());
+  }
+
+  
   const updateTargetId = async (id: number) => {
     dispatch(detailInfo({targetId: id, userInfo: {}, articleInfo: {}}));
     navigate(`/postdetails?id=${id}`);

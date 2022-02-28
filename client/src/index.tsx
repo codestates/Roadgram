@@ -21,6 +21,7 @@ import followSlice, { followInfo } from './store/FollowSlice'
 import locationListSlice, { locations } from './store/LocationListSlice'
 import articleDetailSlice, { articleDetails } from './store/ArticleDetailSlice'
 import commentsSlice, { comments } from './store/CommentsSlice'
+import createPostSlice, { createPost } from './store/createPostSlice'
 import RouteSlice, { routes } from './store/RouteListSlice'
 import RouteListSlice from './store/RouteListSlice'
 
@@ -43,6 +44,7 @@ const reducers = combineReducers({
   articleDetails: articleDetailSlice,
   comments: commentsSlice,
   routes: RouteListSlice,
+  createPost: createPostSlice
 })
 
 /* persist reducer 세팅 (persistConfig가 추가된 reducer) */
@@ -67,6 +69,7 @@ export interface RootState {
   locations: locations
   articleDetails: articleDetails
   comments: comments
+  createPost: createPost
   routes: routes
 }
 

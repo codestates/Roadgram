@@ -22,7 +22,6 @@ import SignupPage from './pages/SignupPage'
 import SearchPage from './pages/SearchPage'
 import Test from './pages/test'
 
-
 function App() {
   return (
     <div className="App">

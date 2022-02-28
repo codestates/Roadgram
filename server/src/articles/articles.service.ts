@@ -58,6 +58,7 @@ export class ArticlesService {
         limit,
         offset,
       );
+      if(!articles.length) throw new NotFoundException();
 
       console.log(`가져온 게시물 정보는 ${articles}입니다.`);
       // 각 게시물에 태그 이름(배열) 추가

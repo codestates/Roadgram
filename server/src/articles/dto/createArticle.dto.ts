@@ -11,7 +11,7 @@ export class CreateArticleDto {
 
   @IsNotEmpty()
   @IsArray()
-  tag: [];
+  tag?: [];
 
   @IsNotEmpty()
   @IsString()
