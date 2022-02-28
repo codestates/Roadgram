@@ -11,7 +11,10 @@ import { RootState } from '../index'
 import { logout } from '../store/AuthSlice'
 import { resetFollow } from '../store/FollowSlice'
 import { resetModal } from '../store/ModalSlice'
-import { getMainArticles, setTag } from '../store/ArticleSlice'
+import { getMainArticles, resetArticle, setTag } from '../store/ArticleSlice'
+import { resetArticleDetail } from '../store/ArticleDetailSlice'
+import { resetCreatePost } from '../store/createPostSlice'
+import { resetKaKao } from '../store/KakaoSlice'
 
 function Navigator() {
   const [usericonClick, setUsericonCLick] = useState(false)
@@ -40,6 +43,10 @@ function Navigator() {
           dispatch(resetFollow())
           dispatch(resetModal())
           dispatch(resetUserInfo())
+          dispatch(resetArticleDetail())
+          dispatch(resetCreatePost())
+          dispatch(resetArticle())
+          dispatch(resetKaKao())
           setUsericonCLick(!usericonClick)
         })
     } catch {
@@ -48,6 +55,10 @@ function Navigator() {
       dispatch(resetFollow())
       dispatch(resetModal())
       dispatch(resetUserInfo())
+      dispatch(resetArticleDetail())
+      dispatch(resetCreatePost())
+      dispatch(resetArticle())
+      dispatch(resetKaKao())
       setUsericonCLick(!usericonClick)
       console.log('logout error')
     }

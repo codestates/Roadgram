@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
@@ -342,9 +343,11 @@ function SettingRoutePage() {
       </div>
       <div className="mapBox">
         <div id="map" className="kakaomap" />
+        <Link to="/createpost">
         <button className="nextButton" type="button">
           NEXT
         </button>
+        </Link>
       </div>
     </div>
   )

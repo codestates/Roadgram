@@ -59,9 +59,10 @@ const articleDetailSlice = createSlice({
     detailInfo: (state: articleDetails, { payload }: PayloadAction<any>) => {
       state.writerInfo = payload.userInfo;
       state.articleInfo = payload.articleInfo;
-    }
+    },
+    resetArticleDetail: () => initialState
   }
 })
 
-export const { detailInfo } = articleDetailSlice.actions;
+export const { detailInfo, resetArticleDetail } = articleDetailSlice.actions;
 export default articleDetailSlice.reducer;

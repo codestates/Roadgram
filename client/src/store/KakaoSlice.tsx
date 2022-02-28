@@ -24,8 +24,9 @@ const kakaoSlice = createSlice({
     getPagenationList: (state: locations, { payload }: PayloadAction<object>) => {
       state.paginationList = payload
     },
+    resetKaKao: () => initialState
   },
 })
 
-export const { getLocationList, getPagenationList } = kakaoSlice.actions
+export const { getLocationList, getPagenationList, resetKaKao } = kakaoSlice.actions
 export default kakaoSlice.reducer
