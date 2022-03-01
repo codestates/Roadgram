@@ -1,60 +1,59 @@
 .userInfo_div {
   display: flex;
+  width: 100%;
+  overflow-x: hidden;
   flex-direction: row;
-  justify-content: space-evenly;
-  width: 99vw;
-  height: 100vh;
+  justify-content: flex-start;
+  background-color:rgb(249,249,250);
+  @include mobile-only{
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
 }
 .userinfo_article_div{
   display: flex;
-  height:100%;
-  width: 80%;;
-  overflow-y: scroll;
+  margin-right:74px;
+  @include mobile-only{
+    margin-right:0;
+  }
 }
 .userinfo_whole_div {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 20%;
-  height: 100%;
-  border-bottom: 1px solid lightgray;
-  background-color: lightgray;
+  border: 1px solid #e5e8eb;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+  border-radius: 12px;
+  width: 262px;
+  height:487px;
+  margin:42px 25px 304px 70px;
+  padding-top: 45px;
+  @include mobile-only{
+    margin: 20px 10px;
+    padding-top: 20px;
+    height: 380px;
+  }
 }
 .userinfo_image_div {
-  width: 40%;
+  width:262px;
+  height:96px;
   display: flex;
   justify-content: center;
   align-items: center;
-
-    div {
-      width: 150px;
-      height: 150px;
-      border-radius: 100%;
-      border: 1px solid lightgray;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: bisque;
-      button {
-        border: 1px solid rosybrown;
-        background-color: white;
-        font-weight: 600;
-        &:hover {
-          cursor: pointer;
-        }
-      }
-    }
+  img{
+    width: 96px;
+    height: 96px;
+    border-radius: 100%;
+    border: 1px solid lightgray;
+  }
 }
 
-.userinfo_image_img {
-  width: 150px;
-  height: 150px;
-  border-radius: 100%;
-  border: 1px solid lightgray;
-}
+
 
 .userinfo_profile_div {
-  width: 50%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -64,26 +63,24 @@
 }
 
 .userinfo_nickname_div {
-  margin: 10px;
+  margin-top:14px;
+  height: 24px;
   span {
     display: inline-block;
-    font-size: 25px;
-    font-weight: 600;
-  }
-
-  button {
-    margin: 0;
-    margin-left: 15px;
-    width: 100px;
-    height: 30px;
-    border: 1px solid lightgray;
+    font-size: 16px;
+    line-height: 24px;
+    font-style: normal;
+    font-weight: bold;
+    font-family: SpoqaHanSans;
   }
 }
 .userinfo_inform_div {
   display: flex;
-  justify-content: space-evenly;
+  margin-top:25px;
+  justify-content: center;
   flex-direction: row;
-  
+  margin-bottom: 35px;
+  align-items: center;
   .owner {
     cursor: pointer;
   }
@@ -92,8 +89,85 @@
 .userinfo_inform_list{
   display:flex;
   flex-direction: column;
+  font-size: 13px;
+  line-height: 19.24px;
+  padding:0 17px;
+}
+
+.userinfo_inform_divider{
+  height:30px;
+  width:1px;
+  background: #EDEDED;
+}
+.userinfo_inform_title{
+  font-weight: 400;
+}
+.userinfo_inform_value{
+  font-weight: 700;
 }
 .userinfo_status_div {
-  margin: 10px;
+  margin-top: 2px;
+  height: 24px;
+  span{
+    font-size: 14px;
+    font-family: SpoqaHanSans;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 24px;
+    color:#888e95;
+  }
 }
-    
+
+.userinfo_edit_button{
+  label{
+    width:100%;
+    height:55px;
+    background:#f2f4f6;
+    padding:14px 24px;
+    display:flex;
+    align-items: center;
+    flex-direction: row;
+    @include mobile-only{
+      height: 45px;
+      padding: 12px 20px;
+    }
+  }
+  div{
+    font-size: 17px;
+    font-weight: normal;
+    line-height: 160%;
+    font-family: Pretendard;
+    @include mobile-only{
+      font-size:14px;
+    }
+  }
+}
+
+.userinfo_fake{
+  label{
+    width:100%;
+    height:55px;
+    background:#FFFFFF;
+    padding:14px 24px;
+    display:flex;
+    align-items: center;
+    flex-direction: row;
+    @include mobile-only{
+      height: 45px;
+      padding: 12px 20px;
+    }
+    &:hover{
+      cursor: pointer;
+      background:#f2f4f6;
+    }
+  }
+  div{
+    font-size: 17px;
+    font-weight: normal;
+    line-height: 160%;
+    font-family: Pretendard;
+    @include mobile-only{
+      font-size:14px;
+    }
+  }
+}

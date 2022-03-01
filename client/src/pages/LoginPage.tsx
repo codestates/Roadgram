@@ -34,18 +34,16 @@ function LoginPage() {
   }
 
   /* login 핸들러 */
-  const loginHandler = async () => {
+  const loginHandler = () => {
     const { email, password } = loginInfo
     console.log("email ===", email, "password", password);
-    try {
       if (!email) {
         alert("이메일을 입력 해 주세요");
       } else if (!password) {
         alert("패스워드를 입력 해 주세요");
-        return;
       } else {
         /* reponse 변수에 /users/login 서버 응답결과를 담는다 */
-        await axios
+        axios
         .post(`${process.env.REACT_APP_API_URL}/users/login`,{ email, password })
         .then((res) => {
           /* 서버의 응답결과에 유저정보가 담겨있으면 로그인 성공 */
@@ -61,9 +59,6 @@ function LoginPage() {
           alert("아이디 혹은 비밀번호를 확인 해 주세요.")
         })
       } 
-    } catch (err) {
-      console.log(err)
-    }  
   }
 
   const kakaoHandler = async () => {
@@ -83,6 +78,15 @@ function LoginPage() {
   function redirectToFindPassword() {
     alert("비밀번호찾기 서비스 준비 중");
   }
+
+  // 이미 로그인시 메인페이지로 이동
+  useEffect(()=>{
+    if(isLogin){
+      alert('잘못된 접근입니다.');
+      navigate('/main');
+    }
+  },[])
+
   return (
     <div className="login_whole_div">
       <form className="login_main_div" >
