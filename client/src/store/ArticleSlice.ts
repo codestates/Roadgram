@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 /* State Type 설정 */
 export interface articles {
   mainArticles: {
-    id?: number,
+    id: number,
     thumbnail?: string,
     nickname?: string,
     totalLike?: number,
@@ -33,7 +33,7 @@ const articleSlice = createSlice({
     addMainArticles: (state: articles, { payload }: PayloadAction<Array<any>>) => {
       state.mainArticles = [...state.mainArticles, ...payload]
     },
-    resetArticle: () => initialState
+    resetArticle: (state: articles) => { state.mainArticles = []; state.tag = "" }
   },
 })
 export const { getMainArticles, setTag, addMainArticles, resetArticle } = articleSlice.actions

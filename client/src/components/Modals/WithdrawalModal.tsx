@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from '../..';
 import { logout } from '../../store/AuthSlice';
 import { withdrawalModal } from '../../store/ModalSlice';
-import './_withdrawalModal.scss';
+import { resetUserInfo } from '../../store/UserInfoSlice';
+import '../../styles/components/modals/_withdrawalModal.scss';
 
 function WithdrawalModal() {
   const dispatch = useDispatch();
@@ -15,7 +16,9 @@ function WithdrawalModal() {
 
   const handleDeleteUser = async () => {
     try {
-      dispatch(logout());
+      dispatch(withdrawalModal(!isWithdrawalModal));
+      navigate('/');
+      resetUserInfo();
       await axios.delete(
         `${process.env.REACT_APP_API_URL}/users/withdrawal?user=${userInfo.id}&loginMethod=${userInfo.loginMethod}`,
         {
@@ -23,7 +26,7 @@ function WithdrawalModal() {
             authorization: `${accessToken}`
           }
         }).then(() => {
-          navigate('/');
+          dispatch(logout());
         });
     } catch {
       console.log('withdrawal error');

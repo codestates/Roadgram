@@ -1,11 +1,13 @@
 .track-container {
   display: flex;
-  height: 250px;
+  height: 24rem;
   flex-direction: column;
   justify-content: flex-start;
-  border: 1px solid black;
+  border: 1px solid white;
+  background-color: white;
   border-radius: 20px;
   align-self: flex-end;
+  margin-top: 1rem;
 }
 
 .title {

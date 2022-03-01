@@ -5,9 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '..';
-import { addComment, getComments, removeComment } from '../store/CommentsSlice';
+import { addComment, getComments, removeComment, resetComments } from '../store/CommentsSlice';
+import { updateTotalComments } from '../store/ArticleDetailSlice';
 import { update } from '../store/UserInfoSlice';
-import './_contentsDetails.scss';
+import '../styles/components/_contentsDetails.scss';
 
 function Comments() {
   const dispatch = useDispatch();
@@ -19,32 +20,37 @@ function Comments() {
 
   const newComment = (e: any) => {
     setComment(e.target.value);
-  }
+  };
 
   const createComment = async () => {
-    await axios.post(
-      `${process.env.REACT_APP_API_URL}/comments`,
-      {
-        loginMethod: userInfo.loginMethod,
-        user: userInfo.id,
-        articleId: articleInfo.id,
-        comment
-      },
-      { 
-        headers: {
-          authorization: `${accessToken}`
+    if (isLogin) {
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/comments`,
+        {
+          loginMethod: userInfo.loginMethod,
+          user: userInfo.id,
+          articleId: articleInfo.id,
+          comment
+        },
+        { 
+          headers: {
+            authorization: `${accessToken}`
+          }
         }
-      }
-    ).then(res => {
-      console.log(res.data);
-      dispatch(addComment(res.data));
-    })
-    await axios.get(
-      `${process.env.REACT_APP_API_URL}/comments?id=${articleInfo.id}&page=${1}`)
-      .then(res => {
-        console.log(res.data.data);
-        dispatch(getComments(res.data.data));
-    })
+      ).then(res => {
+        dispatch(addComment(res.data));
+        dispatch(updateTotalComments(res.data.data.totalComments));
+        setComment('');
+      })
+      await axios.get(
+        `${process.env.REACT_APP_API_URL}/comments?id=${articleInfo.id}&page=${1}`) // 댓글 추가한 직후는 가장 마지막 렌더링??
+        .then(res => {
+          dispatch(getComments(res.data.data));
+      })
+    } else {
+      alert("로그인이 필요한 서비스입니다.");
+      navigate('/logins');
+    }
   }
 
   // 댓글마다 수정 버튼에 연결(해당 댓글 id 값 받아오기)
@@ -77,16 +83,13 @@ function Comments() {
         }
       }
     ).then(res => {
-      console.log(res);
       dispatch(removeComment(id));
-    }).then(() => {
-      navigate(`/postdetails?id=${articleInfo.id}`);
+      dispatch(updateTotalComments(res.data.data.totalComments));
     }).catch(() => {
       navigate(`/postdetails?id=${articleInfo.id}`);
     })
   }
 
-  // 수정, 삭제 버튼 생성해야함.
   return (
     <div className="comments-container">
         <div className="comment-writing">
@@ -113,7 +116,13 @@ function Comments() {
                 <span>{each.nickname}</span>
                 <span>{each.createdAt}</span>
                 <div>{each.comment}</div>
-                <button type="button" onClick={() => deleteComment(each.id)}>삭제</button>
+                {
+                  userInfo.id === each.userId
+                  ? <div>
+                      <button type="button" onClick={() => deleteComment(each.id)}>삭제</button>
+                    </div>
+                  : null
+                }
               </li>
             )
           })

@@ -8,7 +8,7 @@ import { logout, newAccessToken } from '../../../store/AuthSlice'
 import { addFollower, getFollower } from '../../../store/FollowSlice'
 import { followerModal } from '../../../store/ModalSlice'
 import { update } from '../../../store/UserInfoSlice'
-import './_followModal.scss'
+import '../../../styles/components/modals/_followModal.scss'
 
 
 function FollowerModal() {

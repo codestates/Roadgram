@@ -9,7 +9,7 @@ import { logout, newAccessToken } from '../../../store/AuthSlice'
 import { addFollowing, getFollower, getFollowing } from '../../../store/FollowSlice'
 import { followingModal } from '../../../store/ModalSlice'
 import { update } from '../../../store/UserInfoSlice'
-import './_followModal.scss'
+import '../../../styles/components/modals/_followModal.scss'
 
 function FollowingModal() {
   const dispatch = useDispatch()

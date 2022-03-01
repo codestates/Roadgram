@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../..';
 import { articleDeleteModal } from '../../store/ModalSlice';
-import './_withdrawalModal.scss';
+import '../../styles/components/modals/_withdrawalModal.scss';
 
 function PostDeleteCheckModal() {
   const dispatch = useDispatch();
@@ -12,20 +12,6 @@ function PostDeleteCheckModal() {
   const { isArticleDeleteModal } = useSelector((state: RootState) => state.modal);
   const { isLogin, userInfo, accessToken } = useSelector((state: RootState) => state.auth);
  const { targetId, writerInfo, articleInfo } = useSelector((state: RootState) => state.articleDetails);
-
-
-  // 삭제 버튼 클릭 시 실행
-  const deleteArticle = async () => {
-    await axios.delete(
-      `${process.env.REACT_APP_API_URL}/articles?id=${articleInfo.id}&user=${userInfo.id}&loginMethod=${userInfo.loginMethod}`,
-      {
-        headers: { authorization: `${accessToken}`}
-      }
-    ).then(res => {
-      console.log(res.data)
-    })
-  }
-
   
   const handleDeleteArticle = async () => {
     try {

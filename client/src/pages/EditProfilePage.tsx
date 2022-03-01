@@ -31,7 +31,7 @@ function EditProfilePage(): any {
   /* 로그인 안된 상태에서 접근 차단 */
   useEffect(() => {
     if (!auth.isLogin) {
-      alert('로그인이 필요합니다');
+      // alert('로그인이 필요합니다');
       navigate('/logins');
     }
   }, [auth.isLogin]);
