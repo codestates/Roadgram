@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from '../..';
 import { logout, newAccessToken } from '../../store/AuthSlice';
 import { articleDeleteModal } from '../../store/ModalSlice';
-import './_withdrawalModal.scss';
+import '../../styles/components/modals/_withdrawalModal.scss';
 
 function PostDeleteCheckModal() {
   const dispatch = useDispatch();

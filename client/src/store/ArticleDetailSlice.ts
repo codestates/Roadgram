@@ -62,18 +62,20 @@ const articleDetailSlice = createSlice({
   reducers: {
     /* Action 설정 */
     detailInfo: (state: articleDetails, { payload }: PayloadAction<any>) => {
-      state.targetId = payload.taretId;
+      state.targetId = payload.targetId;
       state.writerInfo = payload.userInfo;
       state.articleInfo = payload.articleInfo;
     },
-
     likeUnlike: (state: articleDetails, { payload }: PayloadAction<any>) => {
       state.articleInfo.totalLike = payload;
+    },
+    updateTotalComments: (state: articleDetails, { payload }: PayloadAction<any>) => {
+      state.articleInfo.totalComment = payload;
     },
     resetArticleDetail: () => initialState,
   }
 })
 
-export const { detailInfo, resetArticleDetail,likeUnlike} = articleDetailSlice.actions;
+export const { detailInfo, likeUnlike, updateTotalComments, resetArticleDetail} = articleDetailSlice.actions;
 
 export default articleDetailSlice.reducer;

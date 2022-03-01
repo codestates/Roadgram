@@ -1,5 +1,5 @@
 import React from 'react';
-import './_track.scss'
+import '../styles/components/_track.scss'
 
 function Track() {
   return (

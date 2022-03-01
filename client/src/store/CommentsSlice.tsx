@@ -31,9 +31,12 @@ const commentsSlice = createSlice({
     },
     removeComment: (state: comments, { payload }: PayloadAction<any>) => {
       state.commentInfo = state.commentInfo.filter(el => el.id !== payload)
+    },
+    resetComments: (state: comments) => {
+        state.commentInfo = []
     }
   }
 })
 
-export const { getComments, addComment, removeComment } = commentsSlice.actions;
+export const { getComments, addComment, removeComment, resetComments } = commentsSlice.actions;
 export default commentsSlice.reducer;

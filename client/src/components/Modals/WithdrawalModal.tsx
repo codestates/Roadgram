@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from '../..';
 import { logout, newAccessToken } from '../../store/AuthSlice';
 import { withdrawalModal } from '../../store/ModalSlice';
-import './_withdrawalModal.scss';
+import { resetUserInfo } from '../../store/UserInfoSlice';
+import '../../styles/components/modals/_withdrawalModal.scss';
 
 function WithdrawalModal() {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ function WithdrawalModal() {
         })
       closeModal();
       dispatch(logout());
+      dispatch(resetUserInfo());
       navigate('/'); // 성공 시 랜딩페이지로 이동
     } catch {
       // 실패시 새로 액세스토큰 발급 요청
