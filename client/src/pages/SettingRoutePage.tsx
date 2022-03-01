@@ -50,7 +50,7 @@ function SettingRoutePage() {
   // 카카오맵으로부터 키워드 검색해주는 함수
   function placesSearchCB(data: any, status: any, pagination: any) {
     if (status === window.kakao.maps.services.Status.OK) {
-      console.log("data =======", data);
+      console.log('data =======', data)
       setCreateMarker(true)
       dispatch(getLocationList(data)) // 검색결과 데이터를 store에 저장
     } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
@@ -175,14 +175,13 @@ function SettingRoutePage() {
   }
 
   const addRoute = (location: any) => {
-    
     const routeInfo = {
       placeName: location.place_name,
       addressName: location.address_name,
       x: location.x,
       y: location.y,
-      imageSrc: "",
-      order: routeList.length + 1
+      imageSrc: '',
+      order: routeList.length + 1,
     }
     dispatch(addRouteList(routeInfo))
   }
@@ -237,9 +236,9 @@ function SettingRoutePage() {
       <div className="mapBox">
         <div id="map" className="kakaomap" />
         <Link to="/createpost">
-        <button className="nextButton" type="button">
-          NEXT
-        </button>
+          <button className="nextButton" type="button">
+            NEXT
+          </button>
         </Link>
         <button className="deleteButton" type="button" onClick={() => deleteInformation()}>
           경로제거
