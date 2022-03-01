@@ -68,16 +68,25 @@ function CreatePostPage() {
     })
     .then((res) => {
       alert("작성이 완료되었습니다.");
-      navigate(`/postdetail?id=${res.data.data.articleInfo.id}`)
-      dispatch(resetKaKao());
-      dispatch(resetRouteList());
-      dispatch(resetCreatePost());
+      navigate(`/postdetail?id=${res.data.data.articleInfo.id}`);
+      resetPostInfo();
     })
     .catch((err) => {
       console.log("err!", err);
     });
   }
+  const resetPostInfo = () => {
+    dispatch(resetCreatePost());
+    dispatch(resetKaKao());
+    dispatch(resetRouteList());
+  }
 
+  const cancelPost = () => {
+    if(window.confirm("취소하시면 작성하신 내용을 모두 잃게됩니다. 계속 하시겠습니까?")) {
+      resetPostInfo();
+      navigate('/main');
+    }
+  }
 
   return (
   <div className='createpost_whole_div'>
@@ -101,7 +110,10 @@ function CreatePostPage() {
       <span className='createpost_upload_title'>* 이미지 업로드</span>
       <Upload/>
     </section>
-      <button className='createpost_submit_button'type="submit" onClick={() => posting()}>저장하기</button>
+    <div className='createpost_submit_button_div'>
+      <button className='createpost_cancel_button' type="button" onClick={() => cancelPost()}>작성취소</button>
+      <button className='createpost_submit_button' type="submit" onClick={() => posting()}>저장하기</button>
+    </div>
   </div>
   )
 }
