@@ -3,12 +3,15 @@ import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import logo from '../images/logo.png'
+import { RootState } from '..'
 
 
 function SignupPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isInitialMount = useRef(true);
+  const {isLogin}=useSelector((state:RootState)=>state.auth)
+
   const [signupInform, setSignupInform] = useState(
     { email: "",
       nickname: "",
@@ -146,6 +149,14 @@ function SignupPage() {
       })
     }
   }
+  
+  // 이미 로그인 상태 시 메인페이지로 이동
+  useEffect(()=>{
+    if(isLogin){
+      alert('잘못된 접근입니다.');
+      navigate('/main');
+    }
+  },[])
 
   return (    
     <div className="signup_whole_div">

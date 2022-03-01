@@ -1,20 +1,32 @@
 .editProfile_whole_div{ 
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+  padding-bottom: 10vh;
     span {
         width: 100%;
         color: red;
         text-align: left;
+        font-size: 10px;
+        height:10px;
     }
   
     h3 {
-        width: 100%;
-        text-align: start;
-        font-size: 2rem;
-        padding: 1rem;
+      text-align: left;
+      font-size: 16px;
+      color: #5f6776;
+      margin: 20px 0px 8px 0px;
+      font-weight: 500;
+      @include mobile-only{
+        font-size: 12px;
+      }
+    }
+    input{
+      border-radius: 4px;
+      @include mobile-only{
+        height:40px;
+        padding:10px 10px;
+      }
     }
   }
   
@@ -23,11 +35,55 @@
     flex-direction: column;
     justify-content: space-evenly;
     align-items: row;
-    border: 2px double black;
-    padding: 2rem;
-    width: 100vmin;
-    height: 140rem;
-    max-width: 80rem;
+    border: none;
+    width: 450px;
+    padding-top: 10px;
+    @include mobile-only{
+      width:250px;
+    }
+  }
+  .editProfile_title_box{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 28px 0 50px 0;
+    @include mobile-only{
+      margin:20px 0 30px 0;
+    }
+    .editProfile_arrow_box{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f3f3f3;
+      width: 32px;
+      height: 32px;
+      @include mobile-only{
+        width:24px;
+        height:24px;
+      }
+      .editProfile_arrow_icon{
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        text-decoration: none; color: black;
+        @include mobile-only{
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+    h1{
+      font-family: Spoqa Han Sans Neo;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 160%;
+      margin-left: 14px;
+      @include mobile-only{
+        font-size: 16px;
+        margin-left: 11px;
+      }
+    }
   }
   
   .hidden{
@@ -38,7 +94,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height:25rem;
   }
 
   .editProfile_icon_section{
@@ -50,19 +105,21 @@
   }
 
   .editProfile_image_img{
-    width: 80vmin;
-    max-width: 25rem;
-    height: 25rem;
+    width: 150px;
+    height: 150px;
     border-radius: 100%;
+    border:1px solid lightgray;
   }
 
   .editProfile_imageBox_div{
       display:flex;
       flex-direction:column;
+      margin-bottom: 20px;
   }
 
   .cameraIcon{
       height:2rem;
+      position:absolute;
   }
 
   .editProfile_box_div{
@@ -78,42 +135,131 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 2rem;
+      margin-top:5px;
+  }
+  
+  .editProfile_email_div{
+      width: 100%;
+      border-radius: 4px;
+      height: 50px;
+      font-size: 14px;
+      padding:15px 16px;
+      line-height: 20px;
+      font-family: SpoqaHanSans;
+      font-style: normal;
+      font-weight: normal;
+      border: 1px solid #EAECEF;
+      @include mobile-only{
+        font-size: 11px;
+        height:40px;
+        padding:10px 10px;
+      }
   }
   
   .editProfile_password_input{
-      width: 80vmin;
-      max-width: 20rem;
-      height: 3rem;
-      margin: 1rem;
-      padding: 0.5rem;
+      width: 100%;
+      height: 50px;
+      font-size: 14px;
+      padding:15px 16px;
+      line-height: 20px;
+      font-family: SpoqaHanSans;
+      font-style: normal;
+      font-weight: normal;
+      border: 1px solid #EAECEF;
+      @include mobile-only{
+        font-size: 11px;
+      }
   }
 
   .editProfile_message_input{
-      margin: 1rem;
-      width: 80vmin;
-      max-width: 60rem;
-      height: 6rem;
-      padding: 0.5rem;
+      width: 100%;
+      height: 50px;
+      font-size: 14px;
+      padding:15px 16px;
+      line-height: 20px;
+      font-family: SpoqaHanSans;
+      font-style: normal;
+      font-weight: normal;
+      border: 1px solid #EAECEF;
+      @include mobile-only{
+        font-size: 11px;
+      }
   }
 
-  .editProfile_nickname_button{
-    height: 3rem;
-    margin: 1rem;
-    padding: auto;
-    font-size: 1.5rem;
+  .editProfile_nickname_box{
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    input{
+      font-size: 14px;
+      padding:15px 16px;
+      line-height: 20px;
+      font-family: SpoqaHanSans;
+      font-style: normal;
+      font-weight: normal;
+      border: 1px solid #EAECEF;
+      @include mobile-only{
+        font-size: 11px;
+        padding:10px 10px;
+      }
+      @include md{
+        width:330px;
+      }
+      @include lg{
+        width:330px;
+      }
+    }
+    button{
+      border-radius: 4px;
+      margin-left:9px;
+      height:50px;
+      width: 110px;
+      font-family: SpoqaHanSans;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 24px; 
+      padding:12px 16px;
+      color:#4680ff;
+      background: #F1F5FA;
+      border:none;
+
+      &:hover{
+        cursor: pointer;
+      }
+      @include mobile-only{
+        font-size: 12px;
+        line-height: 14px;
+        height:40px;
+      }
+    }
   }
 
   .editProfile_submit_div{
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
   }
 
   .editProfile_submit_button{
-    margin: 2rem;
-    padding: auto;
-    height: 5rem;
-    width: 80vmin;
-    max-width: 15rem;
-    font-size: 2.5rem;
+    background-color: #4680ff;
+    color: white;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    width: 220px;
+    height: 50px;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover{
+      cursor: pointer;
+    }
+    @include mobile-only{
+      font-size: 16px;
+      width:120px;
+      height:40px;
+    }
   }
