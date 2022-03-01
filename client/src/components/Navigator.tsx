@@ -19,11 +19,11 @@ import { resetRouteList } from '../store/RouteListSlice'
 
 function Navigator() {
   const [usericonClick, setUsericonCLick] = useState(false)
-  const { isLogin, userInfo, accessToken } = useSelector((state: RootState) => state.auth);
-  const { tag } = useSelector((state: RootState) => state.articles);
-  const [word, setWord] = useState("");
-  const dispatch = useDispatch();
-  
+  const { isLogin, userInfo, accessToken } = useSelector((state: RootState) => state.auth)
+  const { tag } = useSelector((state: RootState) => state.articles)
+  const [word, setWord] = useState('')
+  const dispatch = useDispatch()
+
   const resetAllState = () => {
     dispatch(logout())
     dispatch(resetFollow())
@@ -52,82 +52,77 @@ function Navigator() {
           },
         )
         .then(() => {
-          resetAllState();
-          setUsericonCLick(!usericonClick);
+          resetAllState()
+          setUsericonCLick(!usericonClick)
         })
     } catch {
       // 테스트를 위해 로그아웃 강제 처리
-      resetAllState();
-      setUsericonCLick(!usericonClick);
+      resetAllState()
+      setUsericonCLick(!usericonClick)
       console.log('logout error')
     }
   }
 
   const convertToTag = (e: any) => {
-    dispatch(setTag(word));
-    setWord("");
+    dispatch(setTag(word))
+    setWord('')
   }
 
   const changeWordOfState = (e: any) => {
-    setWord(e.target.value);
+    setWord(e.target.value)
   }
 
   const updateTargetId = () => {
-    dispatch(update({targetId: userInfo.id, userInfo: {}, articles: []}));
-    setUsericonCLick(!usericonClick);
+    dispatch(update({ targetId: userInfo.id, userInfo: {}, articles: [] }))
+    setUsericonCLick(!usericonClick)
   }
 
   return (
     <div id="navigator-container">
-      <div className="structure" />
       <div className="structure">
-        <Link to="/main" style={{ textDecoration: 'none' }}>
-          <img className="logo" alt="logoImg" src={logo}/>
+        <Link to="/" style={{ textDecoration: 'none' }}>
+          <img className="logo" alt="logoImg" src={logo} />
         </Link>
       </div>
       <div className="structure sideMenu">
         <div className="inputDiv">
-          <input className="searchBar" type="text" placeholder="검색어를 입력하세요." onChange={changeWordOfState} value={word}/>
+          <input
+            className="searchBar"
+            type="text"
+            placeholder="검색어를 입력하세요."
+            onChange={changeWordOfState}
+            value={word}
+          />
           <Link to={`/search?tag=${word}`} style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>
-            <FontAwesomeIcon icon={faMagnifyingGlass} className="searchIcon" type="submit" onClick={convertToTag}/>
+            <FontAwesomeIcon icon={faMagnifyingGlass} className="searchIcon" type="submit" onClick={convertToTag} />
           </Link>
         </div>
-      {isLogin 
-      ? <div>
-          <Link to="/settingroute" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>
-            <FontAwesomeIcon icon={faPencil} className="pencilIcon" />
+        {isLogin ? (
+          <div>
+            <Link to="/settingroute" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>
+              <FontAwesomeIcon icon={faPencil} className="pencilIcon" />
+            </Link>
+            <FontAwesomeIcon icon={faUser} className="userIcon" onClick={() => setUsericonCLick(!usericonClick)} />
+          </div>
+        ) : (
+          <Link to="/logins" style={{ textDecoration: 'none' }}>
+            <div className="login-button">로그인</div>
           </Link>
-          {/* <Link to="/mypage" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}> */}
-          <FontAwesomeIcon icon={faUser} className="userIcon" onClick={() => setUsericonCLick(!usericonClick)} />
-          {/* </Link> */}
-        </div>
-      : <Link to="/logins" style={{ textDecoration: 'none' }}>
-          <div className="login-button">로그인</div>
+        )}
+      </div>
+      <div className={usericonClick ? 'openMenu' : 'hiddenMenu'}>
+        <Link
+          to={`/userinfo?id=${userInfo.id}`}
+          style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}
+          onClick={updateTargetId}
+          onKeyDown={updateTargetId}
+        >
+          <div className="mypageMenu">마이페이지</div>
         </Link>
-      }
+        <Link to="/main" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }} onClick={handleLogout}>
+          <div className="logoutMenu">로그아웃</div>
+        </Link>
       </div>
-      {
-      usericonClick 
-      ? (
-        <div className="hiddenMenu">
-          <Link to={`/userinfo?id=${userInfo.id}`} style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>
-            <li 
-            className="mypageMenu" 
-            onClick={updateTargetId}
-            onKeyDown={updateTargetId}>
-              마이페이지
-            </li>
-          </Link>
-          <Link to="/main" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }} onClick={handleLogout}>
-            <div className="logoutMenu">로그아웃</div>
-          </Link>
-        </div>
-      ) : (
-      <div className="hiddenMenu">
-        {/* <div className="mypageMenu">마이페이지</div>
-        <div className="logoutMenu">로그아웃</div> */}
-      </div>
-      )}
     </div>
   )
 }

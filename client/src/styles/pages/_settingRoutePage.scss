@@ -32,6 +32,11 @@
   width: 100%;
   height: 90%;
   display: flex;
+
+  .noplace {
+    font-size: 16px;
+  }
+
   .searchBox {
     // border: 1px solid green;
     display: flex;
@@ -46,6 +51,14 @@
     }
     @include lg {
       width: 20%;
+    }
+
+    h1 {
+      // border: 1px solid black;
+      width: auto;
+      display: flex; 
+      justify-content: flex-start;
+      margin: 1rem 0 0 1rem;
     }
   }
   .inputBox {
@@ -95,11 +108,17 @@
         font-weight: bold;
         margin: 1rem 0 0.5rem 0;
       }
-      .adressName {
+      .addressName {
         color: rgb(74, 73, 73);
         font-size: 1.4rem;
         margin-bottom: 1rem;
       }
+      .locationDiv {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+      }
+
       .addButton {
         border: 0;
         cursor: pointer;
@@ -110,16 +129,34 @@
         font-weight: bold;
         width: 7rem;
         height: 2.5rem;
-        margin-bottom: 1rem;
+        margin: 0 1rem;
+      }
+
+      .detailButton {
+        border: 1px solid lightgray;
+        cursor: pointer;
+        transition: 0.4s;
+        border-radius: 1rem;
+        color: #5aa5fe;
+        background-color: white;
+        font-weight: bold;
+        width: 7rem;
+        height: 2.5rem;
+        margin: 0 0 1rem 1rem;
       }
       .addButton:hover {
-        background-color: rgb(28, 71, 125);
+        background-color: #1c487d;
       }
     }
     .locationBox:hover {
+      cursor: pointer;
       background-color: whitesmoke;
     }
   }
+  .selectedRouteBox_hidden {
+    display: none;
+  }
+
   .mapBox {
     position: relative;
     width: 100%;
@@ -128,59 +165,21 @@
       width: 100%;
       height: 100%;
     }
-    .nextButton {
-      position: absolute;
-      z-index: 1;
-      border: 0;
-      border-radius: 1rem;
-      background-color: rgb(90, 165, 254);
-      color: white;
-      font-size: 200%;
-      font-weight: bold;
-      cursor: pointer;
-      right: 4%;
-      bottom: 6%;
-      width: 6%;
-      height: 4%;
-      transition: 0.4s;
-    }
-    .nextButton:hover {
-      background-color: aquamarine;
-      color: rgb(28, 71, 125);
-    }
-    .deleteButton {
-      position: absolute;
-      z-index: 1;
-      border: 0;
-      border-radius: 1rem;
-      background-color: rgb(90, 165, 254);
-      color: white;
-      font-size: 200%;
-      font-weight: bold;
-      cursor: pointer;
-      right: 4%;
-      top: 6%;
-      width: 6%;
-      height: 4%;
-      transition: 0.4s;
-    }
-    .deleteButton:hover {
-      background-color: aquamarine;
-      color: rgb(28, 71, 125);
-    }
+
+
     .selectedRouteBox {
-      border: 2px solid black;
+      width: 40%;
+      border: 2px solid rgb(28, 71, 125);
       border-radius: 2rem;
       background-color: white;
       position: absolute;
       z-index: 1;
       box-sizing: border-box;
-      padding: 2rem;
-      // width: 35%;
-      // height: 10%;
-      left: 35%;
+      padding: 0.5rem;
+      height: 10%;
+      left: 35%; 
       right: 35%;
-      top: 3%;
+      top: 1%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -189,13 +188,114 @@
         justify-content: center;
         align-items: center;
       }
+      .marker_div {
+        width: 10rem;
+        height: 10rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .marker_img_div {
+        // width: 100%;
+        display: flex;
+        margin: 1rem;
+      }
       .markerImg {
+        position: relative;
+        color: #4680ff;
         height: 4rem;
         width: 4rem;
+        left: 1rem;
+        &:hover {
+          cursor: pointer;
+        }
+        &:hover ~ .cancelImg{
+          display: block;
+        }
+      }
+      .cancelImg { 
+        position: relative;
+        color: black;
+        height: 1.5rem;
+        width: 1.5rem;
+        margin: 0;
+        padding: 0;
+        left: 0.5rem;
+        display: none;
+        // background-color: #4680ff;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+      .marker_span {
+        position: relative;
+        font-size: 1.2rem;
+        display: block;
+        left: 1rem;
       }
       .line {
         height: 3rem;
         width: 8rem;
+      }
+    }
+  }
+
+  .footstep_div {
+    display: flex;
+  }
+
+  .footstep {
+    color: rgb(28, 71, 125);
+    width: 25px;
+    height: 25px;
+    margin: 0 0.2rem;
+  }
+
+  .buttonDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid gray;
+    width: 100%;
+    height: 10%;
+
+    .nextButton {
+      // position: absolute;
+      // z-index: 1;
+      border: 0;
+      border-radius: 1rem;
+      background-color: #4680ff;
+      color: white;
+      font-size: 1.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      width: 30%;
+      height: 5rem;
+      transition: 0.2s;
+      margin: 2rem;
+      &:hover {
+        background-color: #392ffcc6;
+      }
+    }
+
+    .cancelButton {
+      // position: absolute;
+      // z-index: 1;
+      border-radius: 1rem;
+      background-color: white;
+      color: #4680ff;
+      border: 1px solid lightgray;
+      font-size: 1.8rem;
+      font-weight: bold;
+      width: 30%;
+      height: 5rem;
+      transition: 0.2s;
+      margin: 2rem;
+      cursor: pointer;
+      &:hover {
+        background-color: rgb(229, 229, 230);
+        color: rgb(66, 90, 119);
       }
     }
   }

@@ -97,7 +97,7 @@ function SearchPage() {
   return (
     mainArticles.length === 0 || !mainArticles
       ? <div className="no_following_post">{`'${word}'에 해당하는 게시물을 찾을 수 없습니다.`}</div>
-      : <Article />
+      : (<div className='main_whole_div'><Article /></div>)
   )
 }
 

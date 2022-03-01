@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AWS, { S3 } from 'aws-sdk';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { RootState } from '..';
 import { logout, newAccessToken, updateUserInfo } from '../store/AuthSlice';
 import { update } from '../store/UserInfoSlice';
 import { withdrawalModal } from '../store/ModalSlice';
 import WithdrawalModal from '../components/Modals/WithdrawalModal';
+
 
 function EditProfilePage(): any {
   const auth = useSelector((state: RootState) => state.auth);
@@ -34,7 +35,7 @@ function EditProfilePage(): any {
       // alert('로그인이 필요합니다');
       navigate('/logins');
     }
-  }, [auth.isLogin]);
+  }, []);
 
   /* 비밀번호 일치여부 및에 띄우기 */
   useEffect(() => {
@@ -114,22 +115,10 @@ function EditProfilePage(): any {
     }
   }
 
-  /* 서버 api 요청 */
-  const updateUserRequest = async (body: any) => {
-    const response = await axios.patch(`${process.env.REACT_APP_API_URL}/users/profile`,
-      { user: auth.userInfo.id, loginMethod: auth.userInfo.loginMethod, ...body },
-      { headers: { authorization: auth.accessToken || '' } }
-    );
-    dispatch(updateUserInfo(response.data.data));
-    const res = await axios.get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${auth.userInfo.id}&page=1`);
-    dispatch(update(res.data.data)); // userInfo 정보 update
-    return navigate(`/userinfo/${auth.userInfo.id}`);
-  }
-
   /* 액세스토큰 재발급 요청 */
   const accessTokenRequest = async () => {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/auth?user=${auth.userInfo.id}&loginMethod=${auth.userInfo.loginMethod}`, {
-      headers: { authorization: auth.refreshToken || '' }
+      headers: { authorization: `${auth.refreshToken}` }
     });
     dispatch(newAccessToken(response.data.data));
   }
@@ -147,16 +136,21 @@ function EditProfilePage(): any {
     if (editInform.nickname) {
       if (editInform.nickname.length === 1 || editInform.nickname.length > 15) return alert("닉네임은 2~15자 이내로 입력바랍니다.");
       if (!nicknameAvailability) return alert("닉네임 중복 여부를 확인 해 주시기 바랍니다.");
-      body.profileImage = editInform.nickname;
+      body.nickname = editInform.nickname;
     }
     if (editInform.password) {
       if (!passwordAvailability) return alert("비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.");
       if (editInform.password !== editInform.passwordCheck) return alert('비밀번호가 일치하지 않습니다.');
-      body.profileImage = editInform.password;
+      body.password=editInform.password;
     }
     /* api 요청 시작 */
     try {
-      return await updateUserRequest(body);
+      const response = await axios.patch(`${process.env.REACT_APP_API_URL}/users/profile`,
+        { user: auth.userInfo.id, loginMethod: auth.userInfo.loginMethod, ...body },
+        { headers: { authorization: `${auth.accessToken}`} }
+      );
+      dispatch(updateUserInfo(response.data.data));
+      return navigate(`/userinfo?id=${auth.userInfo.id}`);
     } catch (err: any) {
       /* 401에러는 개발 완료되면 제외되도 되는 경우의 수라 나중에 개발 후에 제거해도 됨 */
       if (err.response.data.statusCode === 401) {
@@ -165,21 +159,42 @@ function EditProfilePage(): any {
           await accessTokenRequest();
         } catch {
           dispatch(logout());
+          alert('다시 로그인해 주세요.')
+          return navigate('/logins')
         }
         /* 이전 요청 한번 더 */
         try {
-          return await updateUserRequest(body);
+          const response = await axios.patch(`${process.env.REACT_APP_API_URL}/users/profile`,
+            { user: auth.userInfo.id, loginMethod: auth.userInfo.loginMethod, ...body },
+            { headers: { authorization: `${auth.accessToken}`} }
+          );
+          dispatch(updateUserInfo(response.data.data));
+          return navigate(`/userinfo?id=${auth.userInfo.id}`);
         } catch {
-          return alert('다시 시도해주세요');
+          dispatch(logout());
+          alert('잘못된 시도입니다.');
+          return navigate('/main')
         }
       }
-      else return alert('잘못된 시도입니다.');
+      else {
+        alert('잘못된 시도입니다.');
+        dispatch(logout());
+        return navigate('/main')
+      }
     }
   }
 
   return (
     <div className='editProfile_whole_div'>
       <div className='editProfile_main_div'>
+        <div className='editProfile_title_box'>
+          <Link to={`/userinfo?id=${auth.userInfo.id}`}>
+            <div className='editProfile_arrow_box'>
+              <FontAwesomeIcon className='editProfile_arrow_icon' icon={faArrowLeft}/>
+            </div>
+          </Link>
+          <h1>내 정보 수정</h1>
+        </div>
         <div className='editProfile_imageBox_div'>
           <h3 className='editProfile_title'>프로필 사진</h3>
           <label className='editProfile_image_label' htmlFor='editProfile_image_label'>
@@ -200,24 +215,24 @@ function EditProfilePage(): any {
         </div>
         <div className='editProfile_box_div'>
           <h3 className='editProfile_title'>닉네임</h3>
-          <div>
+          <div className='editProfile_nickname_box'>
             <input className='editProfile_password_input' type='text' placeholder='닉네임' onChange={(e) => inputValueHandler(e, 'nickname')} />
             <button type='submit' className='editProfile_nickname_button' onClick={nicknameCheck}>중복체크</button>
           </div>
         </div>
         <div className='editProfile_box_div'>
           <h3 className='editProfile_title'>이메일</h3>
-          <div className='editProfile_email_div'>{auth.userInfo.email}</div>
+          <div className='editProfile_email_div'>{auth.userInfo.email?auth.userInfo.email:`kimcoding@gmail.com`}</div>
         </div>
         <div className='editProfile_box_div'>
           <h3 className='editProfile_title'>패스워드</h3>
           <input className='editProfile_password_input' type='password' placeholder='비밀번호' onChange={(e) => inputValueHandler(e, 'password')} />
-          {!passwordAvailability ? <span className='editProfile_password_span'>비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.</span> : null}
+          {!passwordAvailability ? <span className='editProfile_password_span'>비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.</span> : <span> </span>}
         </div>
         <div className='editProfile_box_div'>
           <h3 className='editProfile_title'>패스워드 확인</h3>
           <input className='editProfile_password_input' type='password' placeholder='비밀번호 확인' onChange={(e) => inputValueHandler(e, 'passwordCheck')} />
-          {!isPasswordSame ? <span className='editProfile_passwordCheck_span'>비밀번호가 일치하지 않습니다.</span> : null}
+          {!isPasswordSame ? <span className='editProfile_passwordCheck_span'>비밀번호가 일치하지 않습니다.</span> : <span> </span>}
         </div>
         <div className='editProfile_submit_div'> 
           <button className='editProfile_submit_button' type='button' onClick={openWithdrawalModal}>회원탈퇴</button>

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../..';
+import { logout, newAccessToken } from '../../store/AuthSlice';
 import { articleDeleteModal } from '../../store/ModalSlice';
 import '../../styles/components/modals/_withdrawalModal.scss';
 
@@ -10,23 +11,41 @@ function PostDeleteCheckModal() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isArticleDeleteModal } = useSelector((state: RootState) => state.modal);
-  const { isLogin, userInfo, accessToken } = useSelector((state: RootState) => state.auth);
- const { targetId, writerInfo, articleInfo } = useSelector((state: RootState) => state.articleDetails);
-  
+  const { isLogin, userInfo, accessToken, refreshToken } = useSelector((state: RootState) => state.auth);
+  const { targetId, writerInfo, articleInfo } = useSelector((state: RootState) => state.articleDetails);
+
+  const accessTokenRequest = async () => {
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/users/auth?id=${userInfo.id}&loginMethod=${userInfo.loginMethod}`,
+      { headers: { authorization: `${refreshToken}` } });
+    dispatch(newAccessToken(res.data.data));
+  }
+
   const handleDeleteArticle = async () => {
     try {
+      await axios.delete(
+        `${process.env.REACT_APP_API_URL}/articles?id=${articleInfo.id}&user=${userInfo.id}&loginMethod=${userInfo.loginMethod}`,
+        { headers: { authorization: `${accessToken}` } });
+      closeModal();
+      navigate(`/userinfo?id=${userInfo.id}`);
+    } catch {
+      try {
+        await accessTokenRequest();
+      } catch {
+        closeModal();
+        dispatch(logout());
+        alert('다시 로그인해 주세요.');
+        navigate('/logins');
+      }
+      try {
         await axios.delete(
           `${process.env.REACT_APP_API_URL}/articles?id=${articleInfo.id}&user=${userInfo.id}&loginMethod=${userInfo.loginMethod}`,
-          {
-            headers: { authorization: `${accessToken}`}
-          }
-        ).then(res => {
-          console.log(res.data);
-          closeModal();
-          navigate(`/userinfo?id=${userInfo.id}`);
-        })
-    } catch {
-        console.log('failed to delete this post');
+          { headers: { authorization: `${accessToken}` } });
+        closeModal();
+        navigate(`/userinfo?id=${userInfo.id}`);
+      } catch (err: any) {
+        closeModal();
+        console.log(err)
+      }
     }
   };
 

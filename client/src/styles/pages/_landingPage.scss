@@ -1,5 +1,5 @@
 #landingContainer {
-  background-color: $main-color;
+  background-color: #f8f9fa;
   width: 100%;
   height: 100%;
   @include mobile-only {
@@ -11,240 +11,308 @@
 
   .introBox {
     // border: 1px solid green;
-    background-color: white;
+    background-color: #f8f9fa;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-items: flex-start;
+    width: 100%;
     @include mobile-only {
-      padding-left: 2.5rem;
-      margin-bottom: 1rem;
-      width: 100%;
-      height: 10rem;
+      height: 25rem;
     }
     @include md {
-      padding-left: 10rem;
-      margin-bottom: 10rem;
-      width: 100%;
-      height: 20rem;
+      height: 50rem;
     }
     @include lg {
-      padding-left: 40rem;
-      margin-bottom: 10rem;
-      width: 100%;
-      height: 20rem;
+      height: 60rem;
+    }
+    .introTextBox {
+      // border: 1px solid green;
+      text-align: left;
+      .line1 {
+        color: #4b5057;
+        font-weight: 600;
+        @include mobile-only {
+          font-size: 0.6rem;
+          margin-bottom: 0.5rem;
+        }
+        @include md {
+          font-size: 1.8rem;
+          margin-bottom: 1rem;
+        }
+        @include lg {
+          font-size: 3rem;
+          margin-bottom: 1.5rem;
+        }
+      }
+      .line2 {
+        font-weight: bold;
+        @include mobile-only {
+          font-size: 1rem;
+          margin-bottom: 0.5rem;
+        }
+        @include md {
+          font-size: 2.8rem;
+          margin-bottom: 1rem;
+        }
+        @include lg {
+          font-size: 5rem;
+          margin-bottom: 1rem;
+        }
+      }
+      .line3 {
+        font-weight: bold;
+        @include mobile-only {
+          font-size: 1rem;
+          padding-bottom: 1rem;
+        }
+        @include md {
+          font-size: 2.8rem;
+          padding-bottom: 1.5rem;
+        }
+        @include lg {
+          font-size: 5rem;
+          margin-bottom: 1.5rem;
+        }
+      }
+      .line4 {
+        @include mobile-only {
+          font-size: 0.4rem;
+          margin-bottom: 0.5rem;
+        }
+        @include md {
+          font-size: 1.6rem;
+          margin-bottom: 3rem;
+        }
+        @include lg {
+          font-size: 2.1rem;
+          margin-bottom: 2rem;
+        }
+      }
+      .moreButton {
+        transition: 0.3s;
+        color: white;
+        background-color: #4680ff;
+        border: 0;
+        font-weight: bold;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        @include mobile-only {
+          margin-top: 0.5rem;
+          width: 4.5rem;
+          height: 1.5rem;
+          font-size: 0.8rem;
+        }
+        @include md {
+          margin-top: 1rem;
+          width: 16rem;
+          height: 4rem;
+          font-size: 1.7rem;
+        }
+        @include lg {
+          margin-top: 1rem;
+          width: 16rem;
+          height: 4rem;
+          font-size: 1.7rem;
+        }
+      }
+      .moreButton:hover {
+        background-color: #93b1f3;
+      }
     }
 
-    .line1 {
-      @include mobile-only {
-        font-size: 0.9rem;
-        color: gray;
-      }
-      @include md {
-        font-size: 1.8rem;
-        color: gray;
-      }
-      @include lg {
-        font-size: 1.8rem;
-        color: gray;
-      }
-    }
-    .line2 {
-      @include mobile-only {
-        font-size: 2rem;
-        font-weight: bold;
-      }
-      @include md {
-        font-size: 5rem;
-        font-weight: bold;
-      }
-      @include lg {
-        font-size: 5rem;
-        font-weight: bold;
-      }
-    }
-    .line3 {
-      @include mobile-only {
-        font-size: 0.8rem;
-        padding-bottom: 0.2rem;
-      }
-      @include md {
-        font-size: 1.6rem;
-        padding-bottom: 1rem;
-      }
-      @include lg {
-        font-size: 1.6rem;
-        padding-bottom: 1rem;
-      }
-    }
-    .line4 {
-      @include mobile-only {
-        font-size: 0.8rem;
-      }
-      @include md {
-        font-size: 1.6rem;
-      }
-      @include lg {
-        font-size: 1.6rem;
+    .landimgBox {
+      // border: 1px solid green;
+      .landimg {
+        @include mobile-only {
+          width: 12rem;
+          height: 14rem;
+        }
+        @include md {
+          width: 40rem;
+          height: 30rem;
+        }
+        @include lg {
+          width: 70rem;
+          height: 50rem;
+        }
       }
     }
   }
   .featureBox {
-    border: 1px solid green;
+    // border: 1px solid green;
     width: 100%;
-    background-color: $main-color;
+    background-color: white;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 2.5rem 0rem 2.5rem 0rem;
     @include mobile-only {
-      height: 20rem;
-    }
-    @include md {
-      height: 60rem;
-    }
-    @include lg {
-      height: 90rem;
-    }
-
-    .textBox {
-      //   border: 1px solid blue;
-      width: 50%;
-      height: 50%;
-      color: rgb(81, 81, 81);
-      display: flex;
-      flex-direction: column;
-      justify-content: left;
-      align-items: flex-end;
-      @include mobile-only {
-        margin: 0 0 5rem 3rem;
-      }
-      @include md {
-        margin: 0 10rem 0rem 0rem;
-      }
-      @include lg {
-        margin: 0 12.5rem 0 0;
-      }
-      .title {
-        font-weight: bold;
-        color: black;
-
-        @include mobile-only {
-          font-size: 1rem;
-          margin-bottom: 0.3rem;
-        }
-        @include md {
-          font-size: 3.3rem;
-          margin-bottom: 1rem;
-        }
-        @include lg {
-          font-size: 3.3rem;
-          margin-bottom: 1rem;
-        }
-      }
-      .content {
-        @include mobile-only {
-          font-size: 0.7rem;
-        }
-        @include md {
-          font-size: 2rem;
-        }
-        @include lg {
-          font-size: 2rem;
-        }
-      }
-    }
-    .imageBox {
-      width: 50%;
-      height: 50%;
-      //   border: 1px solid blue;
-      display: flex;
-      @include mobile-only {
-      }
-      @include md {
-      }
-      @include lg {
-        margin-left: 12.5rem;
-      }
-      .landingImage {
-        border-radius: 2rem;
-        @include mobile-only {
-          width: 12rem;
-          height: 9rem;
-        }
-        @include md {
-          width: 35rem;
-          height: 25rem;
-        }
-        @include lg {
-          width: 55rem;
-          height: 40rem;
-        }
-      }
-    }
-  }
-  .startBox {
-    // border: 1px solid green;
-    width: 100%;
-    background-color: rgb(142, 151, 238);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2.5rem 0rem 2.5rem 0rem;
-    @include mobile-only {
-      height: 12rem;
+      height: 25rem;
     }
     @include md {
       height: 40rem;
     }
     @include lg {
-      height: 60rem;
+      height: 40rem;
     }
-    .startText {
-      color: white;
+    .mainTitle {
+      // border: 1px solid green;
       font-weight: bold;
       @include mobile-only {
-        font-size: 1.2rem;
+        font-size: 2rem;
       }
       @include md {
         font-size: 3rem;
       }
       @include lg {
+        font-size: 3rem;
+      }
+    }
+    .serviceBox {
+      // border: 1px solid red;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      .serviceInfoBox {
+        // border: 1px solid green;
+        @include mobile-only {
+          margin: 2rem 1rem 2rem 1rem;
+        }
+        @include md {
+          margin: 5rem 5rem 5rem 5rem;
+        }
+        @include lg {
+          margin: 5rem 10rem 5rem 10rem;
+        }
+
+        .serviceImage {
+          @include mobile-only {
+            height: 4rem;
+          }
+          @include md {
+            height: 10rem;
+          }
+          @include lg {
+            height: 10rem;
+          }
+        }
+        .subtitle {
+          font-weight: bold;
+          @include mobile-only {
+            font-size: 1rem;
+            margin: 1rem 0 1rem 0;
+          }
+          @include md {
+            font-size: 2rem;
+            margin: 1rem 0 1rem 0;
+          }
+          @include lg {
+            font-size: 2rem;
+            margin: 1rem 0 1rem 0;
+          }
+        }
+        .subContent {
+          color: #4b5057;
+          @include mobile-only {
+            font-size: 0.5rem;
+            margin: 0 0 0.3rem 0;
+          }
+          @include md {
+            font-size: 1.3rem;
+            margin: 0 0 0.3rem 0;
+          }
+          @include lg {
+            font-size: 1.3rem;
+            margin: 0 0 0.3rem 0;
+          }
+        }
+      }
+    }
+  }
+  .startBox {
+    position: relative;
+    // border: 1px solid green;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    @include mobile-only {
+      height: 20rem;
+    }
+    @include md {
+      height: 40rem;
+    }
+    @include lg {
+      height: 50rem;
+    }
+    .onroadimage {
+      @include mobile-only {
+        width: 25rem;
+        height: 10rem;
+      }
+      @include md {
+        width: 100rem;
+        height: 30rem;
+      }
+      @include lg {
+        width: 140rem;
+        height: 40rem;
+      }
+    }
+    .startContent {
+      position: absolute;
+      color: white;
+      font-weight: bold;
+      @include mobile-only {
+        font-size: 1.5rem;
+        top: 6.5rem;
+      }
+      @include md {
+        font-size: 3rem;
+        top: 12rem;
+      }
+      @include lg {
         font-size: 4rem;
+        top: 15rem;
       }
     }
     .startButton {
-      background-color: rgb(123, 15, 145);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      transition: 0.3s;
       color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 1rem;
-      -webkit-transition-duration: 0.4s;
-      transition-duration: 0.4s;
       cursor: pointer;
+      background-color: #4680ff;
+      border: 0;
+      font-weight: bold;
+      border-radius: 0.5rem;
       @include mobile-only {
-        width: 7rem;
+        width: 6rem;
         height: 2rem;
-        margin-top: 1rem;
         font-size: 1rem;
+        bottom: 6.5rem;
       }
       @include md {
         width: 14rem;
         height: 4rem;
-        margin-top: 3rem;
-        font-size: 1.8rem;
+        font-size: 2rem;
+        bottom: 12rem;
       }
       @include lg {
-        width: 18rem;
-        height: 5rem;
-        margin-top: 6rem;
-        font-size: 2.4rem;
+        width: 14rem;
+        height: 4rem;
+        font-size: 2rem;
+        bottom: 15rem;
       }
     }
-
     .startButton:hover {
-      background-color: rgb(47, 46, 46);
+      background-color: #93b1f3;
     }
   }
 }
