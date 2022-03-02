@@ -43,6 +43,7 @@ export class SearchService {
       for(const article of articles) {
           const userId: number = await this.articleRepository.getUserId(article.id);
           const writer: string = await this.userRepository.getUsername(userId);
+          const profileImage: string = await this.userRepository.getProfileImage(userId);
           const tagIds: object = await this.articleToTagRepository.getTagIds(article.id);
           const tagNames: string[] = await this.tagRepository.getTagNameWithIds(tagIds);
           article.tags = tagNames;
@@ -50,7 +51,8 @@ export class SearchService {
           interface articleObject {
               id: string,
               thumbnail: string,
-              nickname: string
+              nickname: string,
+              profileImage: string,
               totalLike: number,
               totalComment: number,
               tags: string[]
@@ -59,6 +61,7 @@ export class SearchService {
               id: article.id,
               thumbnail: article.thumbnail,
               nickname: writer,
+              profileImage,
               totalLike: article.totalLike,
               totalComment: article.totalComment,
               tags: article.tags

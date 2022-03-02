@@ -19,5 +19,5 @@ export class UpdateArticleDto {
   
   @IsOptional()
   @IsArray()
-  tag?: [];
+  tag?: [] | object[];
 }

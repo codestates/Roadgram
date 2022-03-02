@@ -27,6 +27,20 @@ const routeListSlice = createSlice({
       state.routeList = []
     },
     addRouteList: (state: routes, { payload }: PayloadAction<any>) => {
+      if(state.routeList.length > 0) {
+        let duplicationCheck = false
+        state.routeList.forEach((route) => {
+          if(route.x === payload.x && route.y === payload.y) {
+            duplicationCheck = true
+          }
+        })
+
+        if(duplicationCheck) {
+          alert("같은 경로를 중복해서 추가할 수 없습니다.");
+          return;
+        }
+      }
+
       if (state.routeList.length < 5) {
         state.routeList.push(payload)
       } else {

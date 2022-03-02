@@ -5,14 +5,15 @@
   width: 100%;
   height: 88vh;
   font-size: 20px;
-  background-color: rgb(249,249,250);
+  background-color: rgb(249, 249, 250);
   .hidden {
     display: none;
   }
 }
 
 #mainContainer {
-  background-color: white;
+  // border: 1px solid green;
+  background-color: rgb(247, 248, 249);
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -21,31 +22,34 @@
   .postBox {
     // border: 1px solid green;
     @include mobile-only {
-      margin: 1rem;
+      margin: 5% 1% 1% 1%;
+      width: 100%;
     }
     @include md {
-      margin: 1rem;
+      margin: 1%;
+      width: 30%;
     }
     @include lg {
-      margin: 5rem;
+      margin: 1%;
+      width: 30%;
     }
 
     .mainImage {
       cursor: pointer;
       @include mobile-only {
         border-radius: 1rem;
-        width: 15rem;
-        height: 12rem;
+        width: 90%;
+        height: 70vw;
       }
       @include md {
         border-radius: 1rem;
-        width: 24rem;
-        height: 18rem;
+        width: 100%;
+        height: 25vw;
       }
       @include lg {
         border-radius: 1rem;
-        width: 40rem;
-        height: 31rem;
+        width: 100%;
+        height: 20vw;
       }
     }
     .tagBox {
@@ -53,16 +57,15 @@
       display: flex;
       flex-wrap: wrap;
       @include mobile-only {
-        width: 15rem;
-        margin: 0.2rem 0 0.4rem 0;
+        width: 100%;
+        margin: 2% 0 2% 3%;
       }
       @include md {
-        width: 24rem;
-        margin: 0.4rem 0 0.9rem 0;
+        width: 100%;
+        margin: 2% 0 2% 0;
       }
       @include lg {
-        width: 40rem;
-        margin: 0.4rem 0 0.9rem 0;
+        width: 100%;
       }
 
       .tag {
@@ -72,46 +75,68 @@
         align-items: center;
         box-sizing: border-box;
         border-radius: 1rem;
-        background-color: rgb(142, 238, 194);
+        font-weight: bold;
         @include mobile-only {
           margin: 0.2rem;
-          padding: 0.2rem 0.4rem 0.2rem 0.3rem;
-          font-size: 0.7rem;
+          padding: 0 2% 0 2%;
+          font-size: 140%;
         }
         @include md {
           margin: 0.2rem;
-          padding: 0.4rem 1rem 0.4rem 0.9rem;
-          font-size: 1rem;
+          padding: 0 2% 0 2%;
+          font-size: 150%;
         }
         @include lg {
           margin: 0.2rem;
-          padding: 0.8rem 2rem 0.8rem 2rem;
-          font-size: 1.4rem;
+          padding: 0 1.3% 0 1.3%;
+          font-size: 160%;
         }
       }
     }
 
     .communityBox {
+      // border: 1px solid green;
       display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+
+      .profileImage {
+        // border: 1px solid green;
+        border-radius: 10rem;
+        @include mobile-only {
+          width: 6%;
+          height: 6%;
+          margin-left: 6%;
+        }
+        @include md {
+          width: 8%;
+          height: 8%;
+          margin-left: 5%;
+        }
+        @include lg {
+          width: 7%;
+          height: 7%;
+          margin-left: 1rem;
+        }
+      }
 
       .nickname {
         // border: 1px solid green;
         cursor: pointer;
-        flex: 1;
-        font-weight: bold;
         transition: 0.4s;
         text-align: left;
         @include mobile-only {
-          font-size: 1rem;
-          padding-left: 0.3rem;
+          font-size: 160%;
+          padding-left: 1rem;
         }
         @include md {
-          font-size: 1.5rem;
-          padding-left: 0.3rem;
+          font-size: 150%;
+          padding-left: 3%;
         }
         @include lg {
-          font-size: 1.7rem;
-          padding-left: 0.3rem;
+          font-size: 160%;
+          padding-left: 0.5rem;
         }
       }
 
@@ -125,51 +150,74 @@
         flex: 1;
         justify-content: flex-end;
         @include mobile-only {
-          font-size: 1.2rem;
-        }
-        @include md {
-          font-size: 1.5rem;
-        }
-        @include lg {
-          font-size: 2rem;
+          padding-right: 5%;
         }
 
-        .mainIcon {
+        .mainIcon_heart {
+          color: gray;
+          transition: 0.2s;
           @include mobile-only {
-            height: 1.2rem;
+            height: 1.6rem;
             margin-right: 0.4rem;
           }
           @include md {
             height: 1.8rem;
-            margin-right: 0.5rem;
+            margin-right: 0.8rem;
           }
           @include lg {
-            height: 2.6rem;
+            height: 2rem;
             margin-right: 1.2rem;
           }
         }
-        .like {
-          font-weight: bold;
+
+        .mainIcon_comment {
+          color: gray;
           @include mobile-only {
-            margin: 0rem 0.5rem 0 0;
+            height: 1.6rem;
+            margin-right: 0.4rem;
+          }
+          @include md {
+            height: 1.8rem;
+            margin-right: 0.8rem;
+          }
+          @include lg {
+            height: 2rem;
+            margin-right: 1.2rem;
+          }
+        }
+
+        .mainIcon_heart:hover {
+          color: red;
+        }
+
+        .like {
+          color: gray;
+          @include mobile-only {
+            margin: 0.1rem 0.6rem 0 0;
+            font-size: 130%;
           }
           @include md {
             margin: 0.2rem 0.5rem 0 0;
+            font-size: 1.3rem;
           }
           @include lg {
             margin: 0.2rem 1rem 0 0;
+            font-size: 1.5rem;
           }
         }
         .reply {
-          font-weight: bold;
+          color: gray;
           @include mobile-only {
-            margin: 0 0.2rem 0 0;
+            margin: 0.1rem 0.6rem 0 0;
+            font-size: 130%;
           }
           @include md {
-            margin: 0 0.2rem 0 0;
+            margin: 0.2rem 0.5rem 0 0;
+            font-size: 1.3rem;
           }
           @include lg {
             margin: 0.2rem 0.5rem 0 0;
+            font-size: 1.5rem;
           }
         }
       }
@@ -177,8 +225,18 @@
   }
 }
 
-.main_whole_div{
-  padding:0 218px;
-  background-color: rgb(249,249,250);
+.main_whole_div {
+  // border: 3px solid blue;
+  background-color: rgb(249, 249, 250);
   width: 100%;
+  @include mobile-only {
+    padding: 0;
+  }
+  @include md {
+    padding: 0;
+  }
+
+  @include lg {
+    padding: 0 10%;
+  }
 }

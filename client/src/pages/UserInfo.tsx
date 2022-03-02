@@ -243,9 +243,9 @@ function UserInfo() {
       </div>
       {mainArticles.length === 0 || !mainArticles
         ? <div className="no_following_post">작성된 게시글이 없습니다.
-          <Link to="/createpost" style={{ textDecoration: 'none' }}>
+          {/* <Link to="/createpost" style={{ textDecoration: 'none' }}>
             <button type="button" className={id !== userInfo.id ? "hidden" : ""}>작성하기</button>
-          </Link>
+          </Link> */}
         </div>
         : (
           <div className='userinfo_article_div'>
