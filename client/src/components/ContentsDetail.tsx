@@ -183,7 +183,7 @@ function ContentsDetail() {
             userInfo.id === writerInfo.id
             ? <div className="article-buttons">
                 <button className="post-delete" type="button" onClick={deleteArticle}>삭제</button>
-                <button className="post-modify" type="button">수정</button>
+                <button className="post-modify" type="button" onClick={moveTodEdit}>수정</button>
               </div>
             : null
           }
