@@ -11,6 +11,7 @@ import Article from '../components/Article'
 import { resetCreatePost } from '../store/createPostSlice'
 import { resetKaKao } from '../store/LocationListSlice'
 import { resetRouteList } from '../store/RouteListSlice'
+import { resetComments } from '../store/CommentsSlice'
 
 function MainPage() {
   const dispatch = useDispatch()
@@ -19,7 +20,10 @@ function MainPage() {
   const isInitialMount = useRef(true)
   const { isLogin, accessToken, userInfo, refreshToken } = useSelector((state: RootState) => state.auth)
   const { mainArticles } = useSelector((state: RootState) => state.articles)
+// const { commentInfo } = useSelector((state: RootState) => state.comments)
 
+//   console.log(commentInfo)
+//   dispatch(resetComments())
   const [page, setPage] = useState(2); // 페이지 정보
   const [end, setEnd] = useState(false); // 추가로 받아올 데이터 없을 시 더 이상 무한 스크롤 작동안하게 하는 상태값
   // 액세스토큰 만료 시 재발급 요청
