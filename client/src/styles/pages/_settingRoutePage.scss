@@ -30,70 +30,125 @@
 #settingRouteContainer {
   border: 1px solid green;
   width: 100%;
-  height: 90%;
-  display: flex;
+  @include mobile-only {
+    display: flex;
+    flex-direction: column-reverse;
+    height: 94%;
+  }
+  @include md {
+    display: flex;
+    height: 90%;
+  }
+  @include lg {
+    display: flex;
+    height: 90%;
+  }
 
   .noplace {
-    font-size: 16px;
+    font-size: 1.5rem;
   }
 
   .searchBox {
     // border: 1px solid green;
+    background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100%;
     @include mobile-only {
       width: 100%;
+      height: 50%;
     }
     @include md {
       width: 30%;
+      height: 100%;
     }
     @include lg {
       width: 20%;
+      height: 100%;
     }
 
     h1 {
       // border: 1px solid black;
-      width: auto;
-      display: flex; 
-      justify-content: flex-start;
-      margin: 1rem 0 0 1rem;
+      width: 100%;
+      // display: flex;
+      // justify-content: flex-start;
+      margin: 2rem 0 0 0;
     }
   }
   .inputBox {
     position: relative;
-    margin: 2rem 0 1rem 0;
     width: 100%;
     height: 3%;
+    @include mobile-only {
+      margin: 2rem 0 1rem 0;
+    }
+    @include md {
+      margin: 2rem 0 1rem 0;
+    }
+    @include lg {
+      margin: 2rem 0 1rem 0;
+    }
 
     .locationSearchBar {
       border: 1px solid gray;
       border-radius: 1rem;
-      width: 80%;
-      height: 160%;
       padding-left: 1.5rem;
-      font-size: 160%;
-    }
-    .locationSearchBar::placeholder {
-      font-size: 100%;
+      @include mobile-only {
+        width: 80%;
+        height: 300%;
+        font-size: 140%;
+      }
+      @include md {
+        width: 80%;
+        height: 160%;
+        font-size: 160%;
+      }
+      @include lg {
+        width: 80%;
+        height: 160%;
+        font-size: 160%;
+      }
     }
 
     .searchIcon {
       position: absolute;
       cursor: pointer;
       color: rgb(103, 102, 102);
-      height: 100%;
-      right: 14%;
-      top: 25%;
+
+      @include mobile-only {
+        height: 200%;
+        right: 14%;
+        top: 50%;
+      }
+      @include md {
+        height: 100%;
+        right: 14%;
+        top: 25%;
+      }
+      @include lg {
+        height: 100%;
+        right: 14%;
+        top: 25%;
+      }
     }
   }
   .locationListBox {
     // border: 1px solid red;
     width: 80%;
-    height: 100%;
-    margin-top: 2rem;
     overflow: auto;
+    @include mobile-only {
+      height: 100%;
+      margin-top: 2rem;
+    }
+    @include md {
+      height: 100%;
+      margin-top: 2rem;
+    }
+    @include lg {
+      height: 100%;
+      margin-top: 2rem;
+    }
+
     .locationBox {
       transition: 0.2s;
       border-top: 1px solid gray;
@@ -153,6 +208,10 @@
       background-color: whitesmoke;
     }
   }
+  .locationListBox::-webkit-scrollbar {
+    display: none;
+  }
+
   .selectedRouteBox_hidden {
     display: none;
   }
@@ -160,12 +219,11 @@
   .mapBox {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 50%;
     .kakaomap {
       width: 100%;
       height: 100%;
     }
-
 
     .selectedRouteBox {
       width: 40%;
@@ -177,7 +235,7 @@
       box-sizing: border-box;
       padding: 0.5rem;
       height: 10%;
-      left: 35%; 
+      left: 35%;
       right: 35%;
       top: 1%;
       display: flex;
@@ -210,11 +268,11 @@
         &:hover {
           cursor: pointer;
         }
-        &:hover ~ .cancelImg{
+        &:hover ~ .cancelImg {
           display: block;
         }
       }
-      .cancelImg { 
+      .cancelImg {
         position: relative;
         color: black;
         height: 1.5rem;
@@ -258,40 +316,79 @@
     align-items: center;
     border-top: 1px solid gray;
     width: 100%;
-    height: 10%;
+    @include mobile-only {
+      height: 20%;
+    }
+    @include md {
+      height: 10%;
+    }
+    @include lg {
+      height: 10%;
+    }
 
+    // @include mobile-only {
+    // }
+    // @include md {
+    // }
+    // @include lg {
+    // }
     .nextButton {
-      // position: absolute;
-      // z-index: 1;
       border: 0;
       border-radius: 1rem;
       background-color: #4680ff;
       color: white;
-      font-size: 1.8rem;
       font-weight: bold;
       cursor: pointer;
-      width: 30%;
-      height: 5rem;
       transition: 0.2s;
-      margin: 2rem;
+      @include mobile-only {
+        margin: 2rem;
+        font-size: 1.3rem;
+        width: 30%;
+        height: 3rem;
+      }
+      @include md {
+        margin: 5%;
+        font-size: 140%;
+        width: 40%;
+        height: 4rem;
+      }
+      @include lg {
+        margin: 2rem;
+        font-size: 140%;
+        width: 40%;
+        height: 50%;
+      }
+
       &:hover {
         background-color: #392ffcc6;
       }
     }
 
     .cancelButton {
-      // position: absolute;
-      // z-index: 1;
       border-radius: 1rem;
       background-color: white;
       color: #4680ff;
       border: 1px solid lightgray;
-      font-size: 1.8rem;
       font-weight: bold;
-      width: 30%;
-      height: 5rem;
       transition: 0.2s;
-      margin: 2rem;
+      @include mobile-only {
+        margin: 2rem;
+        font-size: 1.3rem;
+        width: 30%;
+        height: 3rem;
+      }
+      @include md {
+        margin: 5%;
+        font-size: 140%;
+        width: 40%;
+        height: 4rem;
+      }
+      @include lg {
+        margin: 2rem;
+        font-size: 140%;
+        width: 40%;
+        height: 50%;
+      }
       cursor: pointer;
       &:hover {
         background-color: rgb(229, 229, 230);
