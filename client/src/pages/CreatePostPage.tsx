@@ -68,7 +68,7 @@ function CreatePostPage() {
     })
     .then((res) => {
       alert("작성이 완료되었습니다.");
-      navigate(`/postdetail?id=${res.data.data.articleInfo.id}`);
+      navigate(`/postdetails?id=${res.data.data.articleInfo.id}`);
       resetPostInfo();
     })
     .catch((err) => {

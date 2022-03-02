@@ -133,6 +133,7 @@ function MainPage() {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/articles?user=${userInfo.id}&loginMethod=${userInfo.loginMethod}&page=1`,
         { headers: { authorization: `${accessToken}` } });
+        console.log(response)
       dispatch(getMainArticles(response.data.data.articles));
     } catch (err: any) {
       if (err.response.data.statusCode === 401) {

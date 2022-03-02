@@ -15,6 +15,7 @@ export interface articleInfo {
     imageSrc: string;
     location: string;
   }[];
+  thumbnail: string;
   tags?: string[] | undefined | any;
   totalLike: number;
   totalComment: number;
@@ -47,6 +48,7 @@ const initialState: articleDetails = {
     id: 0,
     content: '',
     roads: [],
+    thumbnail: '',
     tags: [],
     totalLike: 0,
     totalComment: 0,

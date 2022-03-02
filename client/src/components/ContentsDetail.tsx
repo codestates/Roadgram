@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Comments from './Comments';
 import { RootState } from '..';
 import './_contentsDetails.scss';
@@ -14,6 +15,7 @@ import ArticleDeleteModal from './Modals/articleDeleteCheck';
 
 function ContentsDetail() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // article detail 상태 정보 갖고 오기
   const { userInfo, accessToken } = useSelector((state: RootState) => state.auth);
   const { isArticleDeleteModal } = useSelector((state: RootState) => state.modal);
@@ -45,7 +47,7 @@ function ContentsDetail() {
 
   // 수정 버튼 온클릭 연결
   const moveToEdit = async () =>{
-    // 편집 페이지로 이동
+    navigate(`/editpost?id=${articleInfo.id}`);
   }
 
   const likeUnlikeHandler = async () => {
@@ -72,7 +74,7 @@ function ContentsDetail() {
           <div className="nickname">{writerInfo.nickname}</div>
           <div className="nickname">{articleInfo.createdAt}</div>
           <button className="post-delete" type="button" onClick={deleteArticle}>삭제</button>
-          <button className="post-modify" type="button">수정</button>
+          <button className="post-modify" type="button" onClick={moveToEdit}>수정</button>
         </div>
         <div className="post-text">{articleInfo.content}</div>
         <div className="post-tags"> 

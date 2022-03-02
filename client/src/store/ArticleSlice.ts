@@ -6,6 +6,7 @@ export interface articles {
   mainArticles: {
     id?: number,
     thumbnail?: string,
+    profileImage?: string,
     nickname?: string,
     totalLike?: number,
     totalComment?: number
