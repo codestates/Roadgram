@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ArticleRepository } from 'src/articles/repositories/article.repository';
 import { ArticleToTagRepository } from 'src/articles/repositories/article_tag.repository';
 import { TagRepository } from 'src/articles/repositories/tag.repository';
+import { CommentRepository } from 'src/comments/repositories/comments.repository';
+import { LikesRepository } from 'src/likes/repositories/likes.repository';
 import { UserRepository } from 'src/users/repositories/user.repository';
 import { UsersService } from 'src/users/users.service';
 import { FollowController } from './follow.controller';
@@ -19,6 +21,8 @@ import { FollowRepository } from './repositories/follow.repository';
       UserRepository, 
       ArticleRepository, 
       ArticleToTagRepository,
+      LikesRepository,
+      CommentRepository,
       TagRepository]),
     JwtModule.register({ secret: process.env.JWT_SECRET })
   ]

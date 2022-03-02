@@ -13,6 +13,8 @@ import { ArticleToTagRepository } from 'src/articles/repositories/article_tag.re
 import { TagRepository } from 'src/articles/repositories/tag.repository';
 import { User } from './entities/user.entity';
 import { FollowRepository } from 'src/follow/repositories/follow.repository';
+import { LikesRepository } from 'src/likes/repositories/likes.repository';
+import { CommentRepository } from 'src/comments/repositories/comments.repository';
 require('dotenv').config();
 
 @Injectable()
@@ -28,6 +30,10 @@ export class UsersService {
         private tagRepository: TagRepository,
         @InjectRepository(FollowRepository)
         private followRepository: FollowRepository,
+        @InjectRepository(LikesRepository)
+        private likesRepository: LikesRepository,
+        @InjectRepository(CommentRepository)
+        private commentsRepository: (CommentRepository),
         private jwtService: JwtService
     ) { }
 
@@ -67,7 +73,7 @@ export class UsersService {
                         id: userInfo.id,
                         nickname: userInfo.nickname,
                         loginMethod: userInfo.loginMethod,
-                        profileImage:userInfo.profileImage
+                        profileImage: userInfo.profileImage
                     }
                 },
                 message: 'login ok'
@@ -90,8 +96,31 @@ export class UsersService {
         return this.userRepository.createUser(createUserDto);
     }
 
-    deleteUser(idDto: IdDto) {
-        return this.userRepository.deleteUser(idDto.user);
+    async deleteUser(idDto: IdDto) {
+        const id: number = idDto.user;
+        this.userRepository.deleteUser(id);// 일단 유저 삭제
+        const followers = await this.followRepository.getFollowedIds(id);// 팔로우 한 사람들 아이디
+        const followings = await this.followRepository.getFollowingIds(id);// 팔로잉 한 사람들 아이디
+        const likes = await this.likesRepository.articleIdsByUserId(id);// 좋아요 누른 아티클 아이디
+        const comments = await this.commentsRepository.getCommentsByUserId(id);// 댓글 단 아티클 아이디
+        // 각각 forEach 함수로 하나 당 하나 씩 숫자 감소 시키기
+        followers.forEach(async (followerId) => {
+            const follower = await this.userRepository.findOne({ id: followerId });
+            this.userRepository.update({ id: followerId }, { totalFollower: follower.totalFollower - 1 });
+        })
+        followings.forEach(async (followingId) => {
+            const following = await this.userRepository.findOne({ id: followingId });
+            this.userRepository.update({ id: followingId }, { totalFollowing: following.totalFollowing - 1 });
+        })
+        likes.forEach(async (articleId) => {
+            const article = await this.articleRepository.findOne({ id: articleId });
+            this.articleRepository.update({ id: articleId }, { totalLike: article.totalLike - 1 });
+        })
+        comments.forEach(async (articleId) => {
+            const article = await this.articleRepository.findOne({ id: articleId });
+            this.articleRepository.update({ id: articleId }, { totalComment: article.totalComment - 1 });
+        })
+        return { message: 'withdrawal succeed' };
     }
 
     modifyUser(userData: UpdateUserDto) {
@@ -210,7 +239,7 @@ export class UsersService {
                             id: userInfo.id,
                             nickname: userInfo.nickname,
                             loginMethod: 1,
-                            profileImage:userInfo.profileImage
+                            profileImage: userInfo.profileImage
                         }
                     },
                     message: 'login successfully'
