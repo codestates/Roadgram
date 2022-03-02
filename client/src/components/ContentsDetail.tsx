@@ -55,8 +55,8 @@ function ContentsDetail() {
   }
 
   // 수정 버튼 온클릭 연결
-  const moveToEdit = async () => {
-    // 편집 페이지로 이동
+  const moveToEdit = async () =>{
+    navigate(`/editpost?id=${articleInfo.id}`);
   }
 
   const likeUnlikeHandler = async () => {

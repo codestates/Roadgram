@@ -29,6 +29,8 @@ function SettingRoutePage() {
   const [enterIdx, setEnterIdx] = useState(-1);
   const { locationList } = useSelector((state: RootState) => state.locations)
   const { routeList } = useSelector((state: RootState) => state.routes)
+  const [coordinate, setCoordinate] = useState([37.56682, 126.97865])
+  const [isSelectLocation, setIsSelectLocation] = useState(false);
   const dispatch = useDispatch()
   const navigate = useNavigate();
 
@@ -49,14 +51,9 @@ function SettingRoutePage() {
   const markerImage = new window.kakao.maps.MarkerImage(markerImageUrl, markerImageSize, markerImageOptions)
 
   useEffect(() => {
-    createMap();
-    setCreateMarker(false)
-    // dispatch(deleteRouteList())
-    // dispatch(deleteLocationList())
-    // console.log(createMarker)
-    // console.log('루트리스트 ', routeList)
-    // console.log('장소리스트 ', locationList)
+    createMap(coordinate);
   }, [locationList, routeList])
+
   
   // 검색창(input 태그) 입력값 받아와서 'word' State에 저장
   const changeWord = (e: any) => {
@@ -83,15 +80,19 @@ function SettingRoutePage() {
     }
   }
 
+  
+
   // 카카오맵을 생성하는 함수
-  const createMap = () => {
+  const createMap = (coordinate: Array<any>) => {
     // 바운스 함수
+
     const mapBounds = () => {
       map.setBounds(bounds);
     }
     // 지도를 표시할 div
     const mapContainer = document.getElementById('map')
     // 지도의 옵션들..
+
     const mapOption = {
       center: new window.kakao.maps.LatLng(37.56682, 126.97865), // 처음 시작할 때 지도의 중심좌표 (서울시청)
       level: 3, // 지도의 확대 레벨
@@ -99,7 +100,6 @@ function SettingRoutePage() {
     }
     // 지도를 생성한다
     const map = new window.kakao.maps.Map(mapContainer, mapOption)
-
     // 검색이 실행되었다면 지도 위에 마커들을 생성합니다
     if (createMarker) {
       locationList.forEach(location => {
@@ -118,10 +118,23 @@ function SettingRoutePage() {
         bounds.extend(new window.kakao.maps.LatLng(location.y, location.x))
         // 인포윈도우로 장소에 대한 설명을 표시합니다
         const infowindow = new window.kakao.maps.InfoWindow({
-          content: `<div style="width:150px;text-align:center;padding:6px 0;">
-          <div>${location.place_name}</div><div>${location.address_name}</div>
+          content: `
+          <div style=
+          "width:150px;
+          text-align:center;
+          padding:6px 0;
+          font-weight: 600;
+          font-size: 1.2rem;
+          z-index: 999;
+          // border-radius: 1rem;
+          ">
+            ${location.place_name}
           </div>`,
         })
+        // <div>${location.address_name}</div>
+        if(location.x === coordinate[1] && location.y === coordinate[0]) {
+          infowindow.open(map, marker);
+        }
 
         window.kakao.maps.event.addListener(marker, 'mouseover', function () {
           infowindow.open(map, marker)
@@ -133,7 +146,7 @@ function SettingRoutePage() {
       mapBounds() // 지도의 범위를 재설정한다
     }
 
-    if (routeList.length >= 1) {  
+    if (routeList.length >= 1) {
       routeList.forEach(route => {
         const routeMarker = new window.kakao.maps.Marker({
           position: new window.kakao.maps.LatLng(route.y, route.x), // 마커의 좌표
@@ -144,9 +157,19 @@ function SettingRoutePage() {
         bounds.extend(new window.kakao.maps.LatLng(route.y, route.x));
 
         const infowindow = new window.kakao.maps.InfoWindow({
-          content: `<div style="width:150px; padding: 6px; text-align:center; 0;">
-        <div>${route.placeName}</div>
-        </div>`,
+          content: `
+          <div 
+          <div style=
+          "width:150px;
+          text-align:center;
+          padding:6px 0;
+          font-weight: 600;
+          font-size: 1.2rem;
+          z-index: 999;
+          // border-radius: 1rem;
+          ">
+          ${route.placeName}
+          </div>`,
         })
 
         window.kakao.maps.event.addListener(routeMarker, 'mouseover', function () {
@@ -159,20 +182,18 @@ function SettingRoutePage() {
           map,
           content: `
           <div style="
-          border-radius: 100%; 
-          padding: 0.3rem 0.8rem; 
-          font-size:16px; 
-          color: white; 
-          font-weight:700; 
-          background:#EF6D6D;
-          // border: 1px solid #087472;
-          display:flex;
-          justify-content: center;
-          align-item: center;
-          "
-          >${
-            routeList.indexOf(route) + 1
-          }</div>`,
+            border-radius: 100%; 
+            padding: 0.3rem 0.8rem; 
+            font-size:16px; 
+            color: white; 
+            font-weight:700; 
+            background:#EF6D6D;
+            display:flex;
+            justify-content: center;
+            align-item: center;
+          ">
+            ${routeList.indexOf(route) + 1}
+          </div>`,
           position: new window.kakao.maps.LatLng(route.y, route.x), // 커스텀 오버레이를 표시할 좌표
           xAnchor: 0.6, // 컨텐츠의 x 위치
           yAnchor: 0.1, // 컨텐츠의 y 위치
@@ -269,6 +290,10 @@ function SettingRoutePage() {
       setEnterIdx(-1);  
   };
 
+  const clickLocation = (location: any) => {
+      createMap([location.y, location.x]);
+  }
+
   return (
     <div id="settingRouteContainer">
       <div className="searchBox">
@@ -294,7 +319,7 @@ function SettingRoutePage() {
             <div>
               {locationList.map(location => {
                 return (
-                  <div className="locationBox" key={location.id} >
+                  <li className="locationBox" key={location.id} onClick={()=> clickLocation(location)} onKeyDown ={() => clickLocation(location)}>
                     <div className="placeName">{location.place_name}</div>
                     <div className="addressName">{location.address_name}</div>
                     <div className="locationDiv">
@@ -303,7 +328,7 @@ function SettingRoutePage() {
                       </a>
                       <button className="addButton" type="button" onClick={() => addRoute(location)}>장소추가</button>
                     </div>
-                  </div>
+                  </li>
                 )
               })}
             </div>

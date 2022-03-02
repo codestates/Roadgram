@@ -66,17 +66,14 @@ export class ArticlesService {
         const userId: number = await this.articleRepository.getUserId(
           article.id,
         );
-        console.log('userId', userId);
         const writer: string = await this.userRepository.getUsername(userId);
-        console.log('writer', writer);
+        const profileImage: string = await this.userRepository.getProfileImage(userId);
         const tagIds: object = await this.articleToTagRepository.getTagIds(
           article.id,
         );
-        console.log('tagIds', tagIds);
         const tagNames: string[] = await this.tagRepository.getTagNameWithIds(
           tagIds,
         );
-        console.log('tagNames', tagNames);
         article.tags = tagNames;
 
         // API 문서에 양식에 맞게 네이밍
@@ -84,6 +81,7 @@ export class ArticlesService {
           id: string;
           thumbnail: string;
           nickname: string;
+          profileImage: string;
           totalLike: number;
           totalComment: number;
           tags: string[];
@@ -92,6 +90,7 @@ export class ArticlesService {
           id: article.id,
           thumbnail: article.thumbnail,
           nickname: writer,
+          profileImage,
           totalLike: article.totalLike,
           totalComment: article.totalComment,
           tags: article.tags,
@@ -113,7 +112,7 @@ export class ArticlesService {
   async findOrCreateTags(
     user: number,
     articleId: number,
-    tag: [],
+    tag: [] | object[],
   ): Promise<string[]> {
     // for (const eachTag of tag) {
     //   const { tagName, order } = eachTag;
@@ -242,6 +241,7 @@ export class ArticlesService {
     for (const article of articles) {
       const userId: number = await this.articleRepository.getUserId(article.id);
       const writer: string = await this.userRepository.getUsername(userId);
+      const profileImage: string = await this.userRepository.getProfileImage(userId);
       const tagIds: object = await this.articleToTagRepository.getTagIds(
         article.id,
       );
@@ -254,6 +254,7 @@ export class ArticlesService {
         id: string;
         thumbnail: string;
         nickname: string;
+        profileImage: string;
         totalLike: number;
         totalComment: number;
         tags: string[];
@@ -262,6 +263,7 @@ export class ArticlesService {
         id: article.id,
         thumbnail: article.thumbnail,
         nickname: writer,
+        profileImage,
         totalLike: article.totalLike,
         totalComment: article.totalComment,
         tags: article.tags,

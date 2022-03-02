@@ -21,6 +21,7 @@ import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import SearchPage from './pages/SearchPage'
 import Test from './pages/test'
+import EditPostPage from './pages/EditPostPage'
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/postdetails/*" element={<ArticleDetailsPage />} />
           <Route path="/settingroute/*" element={<SettingRoutePage />} />
           <Route path="/createpost/*" element={<CreatePostPage />} />
+          <Route path="/editpost/*" element={<EditPostPage />} />
           <Route path="/logins/*" element={<LoginPage />} />
           <Route path="/signup/*" element={<SignupPage />} />
           <Route path="/search/*" element={<SearchPage />} />

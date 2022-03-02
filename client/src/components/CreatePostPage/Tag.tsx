@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from "react";
+import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faXmark, faXmarkCircle, faXmarkSquare } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,11 +10,12 @@ import { removeLastTag, setTagsInfo } from '../../store/createPostSlice';
 function Tag() {
   const state = useSelector((state: RootState) => state.createPost);
   const { tagsInfo } = useSelector((state: RootState) => state.createPost);
+  const { tags } = useSelector((state: RootState) => state.articleDetails.articleInfo);
   const dispatch = useDispatch();
-
+  const location = useLocation();
+  const path = location.pathname;
   useEffect(() => {
-    console.log(state);
-    console.log(tagsInfo);
+    console.log("state === ", state);
   },)
   const removeTags = (indexToRemove: number) => {
     // setTempTags([...tags.slice(0, indexToRemove), ...tags.slice(indexToRemove + 1, tags.length)]);
@@ -64,7 +66,7 @@ function Tag() {
           {tagsInfo && true 
           ? tagsInfo.map((tag, index) => (
             <li key={tag.tagName} className="tag">
-              <span className="tag-title">{`#${tag.tagName}`}</span>
+              <span className="tag-title">{`#${tag.tagName || tag}`}</span>
               <FontAwesomeIcon
                 icon={faXmark}
                 // tabIndex={index}
@@ -89,7 +91,7 @@ function Tag() {
           placeholder={!tagsInfo || tagsInfo.length === 0 ? "태그를 입력해주세요 (최대 5개까지 등록 가능)" : ""}
         />
       </div>
-  );
+      ); 
 }
 
 

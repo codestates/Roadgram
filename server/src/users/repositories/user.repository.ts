@@ -85,4 +85,9 @@ export class UserRepository extends Repository<User> {
         const result = await this.find({ where: { id }, select: ["nickname"] });
         return result[0].nickname
     };
+
+    async getProfileImage(id: number): Promise<object | any> {
+        const result = await this.find({ where: { id }, select: ["profileImage"] });
+        return result[0].profileImage
+    };
 }
