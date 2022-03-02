@@ -18,6 +18,15 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  @include mobile-only {
+    padding-top: 5rem;
+  }
+  @include md {
+    padding-top: 10rem;
+  }
+  @include lg {
+    padding-top: 12rem;
+  }
 
   .postBox {
     // border: 1px solid green;

@@ -3,7 +3,11 @@
   box-shadow: 1px 1px 5px 1px rgb(212, 212, 212);
   // border: 1pt solid green;
   display: flex;
-  position: relative;
+  position: fixed;
+  z-index: 11;
+  // top: 0;
+  // left: 0;
+  // right: 0;
   width: 100%;
   @include mobile-only() {
     height: 4rem;
