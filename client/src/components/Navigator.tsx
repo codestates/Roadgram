@@ -80,7 +80,7 @@ function Navigator() {
   return (
     <div id="navigator-container">
       <div className="structure">
-        <Link to="/main" style={{ textDecoration: 'none' }}>
+        <Link to="/" style={{ textDecoration: 'none' }}>
           <img className="logo" alt="logoImg" src={logo} />
         </Link>
       </div>

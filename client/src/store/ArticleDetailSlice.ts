@@ -21,14 +21,6 @@ export interface articleInfo {
   totalComment: number;
   likedOrNot: boolean;
   createdAt: Date | null;
-  // comments?: {
-  //   id: number;
-  //   userId: number;
-  //   profileImage: string;
-  //   nickname: string;
-  //   comment: string;
-  //   createdAt: Date;
-  // }[];
 }
 
 export interface articleDetails {
@@ -54,7 +46,6 @@ const initialState: articleDetails = {
     totalComment: 0,
     likedOrNot: false,
     createdAt: null,
-    // comments: []
   }
 }
 
@@ -64,18 +55,21 @@ const articleDetailSlice = createSlice({
   reducers: {
     /* Action 설정 */
     detailInfo: (state: articleDetails, { payload }: PayloadAction<any>) => {
-      state.targetId = payload.taretId;
+      state.targetId = payload.targetId;
       state.writerInfo = payload.userInfo;
       state.articleInfo = payload.articleInfo;
     },
-
     likeUnlike: (state: articleDetails, { payload }: PayloadAction<any>) => {
       state.articleInfo.totalLike = payload;
+      state.articleInfo.likedOrNot = !state.articleInfo.likedOrNot;
+    },
+    updateTotalComments: (state: articleDetails, { payload }: PayloadAction<any>) => {
+      state.articleInfo.totalComment = payload;
     },
     resetArticleDetail: () => initialState,
   }
 })
 
-export const { detailInfo, resetArticleDetail,likeUnlike} = articleDetailSlice.actions;
+export const { detailInfo, likeUnlike, updateTotalComments, resetArticleDetail} = articleDetailSlice.actions;
 
 export default articleDetailSlice.reducer;
