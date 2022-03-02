@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { RootState } from '../../..'
 import { getMainArticles } from '../../../store/ArticleSlice'
 import { logout, newAccessToken } from '../../../store/AuthSlice'
-import { addFollowing, getFollower, getFollowing } from '../../../store/FollowSlice'
+import { addFollowing, getFollower, getFollowing, resetFollow } from '../../../store/FollowSlice'
 import { followingModal } from '../../../store/ModalSlice'
 import { update } from '../../../store/UserInfoSlice'
 import '../../../styles/components/modals/_followModal.scss'
@@ -115,6 +115,7 @@ function FollowingModal() {
 
   // 처음 렌더링 시 데이터 추가 & 상태 초기화
   useEffect(() => {
+    dispatch(resetFollow());
     getFollowingList();
     setPage(2);
     setEnd(false);
@@ -185,11 +186,10 @@ function FollowingModal() {
       <div className="follow-box">
         <div className="follow-background">
           <span className="follow-title">팔로잉</span>
-          <button className="close-button" type="button" onClick={closeModal}>
-            &times;
-          </button>
+          <div className='close-button-box'>
+            <button className="close-button" type="button" onClick={closeModal}>&times;</button>
+          </div>
         </div>
-        <hr />
         <div className="follows">
           {followingList
             ? followingList.map(each => {

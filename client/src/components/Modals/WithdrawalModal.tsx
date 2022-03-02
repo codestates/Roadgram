@@ -6,7 +6,6 @@ import { RootState } from '../..';
 import { logout, newAccessToken } from '../../store/AuthSlice';
 import { withdrawalModal } from '../../store/ModalSlice';
 import { resetUserInfo } from '../../store/UserInfoSlice';
-import '../../styles/components/modals/_withdrawalModal.scss';
 
 function WithdrawalModal() {
   const dispatch = useDispatch();
@@ -74,13 +73,16 @@ function WithdrawalModal() {
 
   return (
     <div className="withdrawal-center-wrap">
-      <div className="withdrawal-background">
-        <div className="withdrawal-box">
+      <label className="withdrawal-background" htmlFor='closeModal'>
+        <div className="withdrawal-box" onClick={undefined} onKeyDown={undefined}>
           <div className="withdrawal-msg">정말 탈퇴하시겠습니까?</div>
-          <button className="yesorno" type="button" onClick={handleDeleteUser}>네</button>
-          <button className="yesorno" type="button" onClick={closeModal}>아니오</button>
+          <div className='withdrawal-button-box'>
+            <button className="yesorno" type="button" onClick={handleDeleteUser}>네</button>
+            <button className="yesorno" type="button" onClick={closeModal}>아니오</button>
+          </div>
         </div>
-      </div>
+      </label>
+      <button id='closeModal' type='button' onClick={closeModal} className='hidden'>sdf</button>
     </div>
   )
 }

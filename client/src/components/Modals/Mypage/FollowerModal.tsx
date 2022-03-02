@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { RootState } from '../../..'
 import { getMainArticles } from '../../../store/ArticleSlice'
 import { logout, newAccessToken } from '../../../store/AuthSlice'
-import { addFollower, getFollower } from '../../../store/FollowSlice'
+import { addFollower, getFollower, resetFollow } from '../../../store/FollowSlice'
 import { followerModal } from '../../../store/ModalSlice'
 import { update } from '../../../store/UserInfoSlice'
 import '../../../styles/components/modals/_followModal.scss'
@@ -119,6 +119,7 @@ function FollowerModal() {
   
   // 처음 랜더링 시 데이터 받아오기& 상태 초기화
   useEffect(() => {
+    dispatch(resetFollow());
     getFollowerList();
     setPage(2);
     setEnd(false);
@@ -152,9 +153,10 @@ function FollowerModal() {
       <div className="follow-box">
         <div className="follow-background">
           <span className="follow-title">팔로워</span>
-          <button className="close-button" type="button" onClick={closeModal}>&times;</button>
+          <div className='close-button-box'>
+            <button className="close-button" type="button" onClick={closeModal}>&times;</button>
+          </div>
         </div>
-        <hr />
         <div className="follows">
           {followerList?.map((each) => {
             return (

@@ -1,6 +1,6 @@
 .editProfile_whole_div{ 
   display: flex;
-  width: 100vw;
+  width: 100%;
   justify-content: center;
   padding-bottom: 10vh;
     span {
@@ -65,10 +65,17 @@
         display: inline-block;
         width: 20px;
         height: 20px;
-        text-decoration: none; color: black;
+        text-decoration: none;
+        color: black;
         @include mobile-only{
           width: 16px;
           height: 16px;
+        }
+      }
+      &:hover{
+        background-color: #4680ff;
+        .editProfile_arrow_icon{
+          color:#ffffff;
         }
       }
     }
@@ -217,16 +224,18 @@
       width: 110px;
       font-family: SpoqaHanSans;
       font-style: normal;
-      font-weight: bold;
+      font-weight: 400;
       font-size: 16px;
       line-height: 24px; 
       padding:12px 16px;
-      color:#4680ff;
+      color:black;
       background: #F1F5FA;
       border:none;
 
       &:hover{
         cursor: pointer;
+        background-color:#4680ff;
+        color:#ffffff;
       }
       @include mobile-only{
         font-size: 12px;

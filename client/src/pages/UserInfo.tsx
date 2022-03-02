@@ -17,7 +17,7 @@ function UserInfo() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   // 로그인한 유저 ID
-  const { accessToken,refreshToken } = useSelector((state: RootState) => state.auth);
+  const { accessToken, refreshToken } = useSelector((state: RootState) => state.auth);
   const state = useSelector((state: RootState) => state);
   const { id, loginMethod } = useSelector((state: RootState) => state.auth.userInfo);
   const { targetId, userInfo, articles } = useSelector((state: RootState) => state.userInfo);
@@ -27,8 +27,8 @@ function UserInfo() {
   const [totalFollower, setTotalFollower] = useState(0);
   const [totalFollowing, setTotalFollowing] = useState(0);
 
-  const [page,setPage]=useState(2);
-  const [endScroll,setEndScroll]=useState(false);
+  const [page, setPage] = useState(2);
+  const [endScroll, setEndScroll] = useState(false);
 
   // 팔로잉, 팔로워 모달 on/off
   const { isFollowingModal, isFollowerModal } = useSelector((state: RootState) => state.modal);
@@ -54,7 +54,7 @@ function UserInfo() {
       top: -${window.scrollY}px;
       overflow-y: scroll;
       width:100%;
-      `;
+      `;  
     }
     return () => {
       document.documentElement.style.cssText = '';
@@ -76,23 +76,23 @@ function UserInfo() {
     setTotalFollowing(res.data.data.userInfo.totalFollowing);
     // follow 여부 update
     setIsFollow(res.data.data.userInfo.followedOrNot);
-    if(!res.data.data.articles.length){
-      setEndScroll(true);
-    }
-  }
-  
-  // 스크롤 시 게시물 서버에 요청하는 함수
-  const addArticle=async()=>{
-    const res = await axios.get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=${page}&other=${targetId}`);
-    dispatch(addMainArticles(res.data.data.articles));// 게시물만 추가
-    if(!res.data.data.articles.length){
+    if (!res.data.data.articles.length) {
       setEndScroll(true);
     }
   }
 
-   // 스크롤 발생시 콜백함수
-   const handleScroll = useCallback((): void => {
-    const { innerHeight }= window// 팔로우 모달창 높이
+  // 스크롤 시 게시물 서버에 요청하는 함수
+  const addArticle = async () => {
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=${page}&other=${targetId}`);
+    dispatch(addMainArticles(res.data.data.articles));// 게시물만 추가
+    if (!res.data.data.articles.length) {
+      setEndScroll(true);
+    }
+  }
+
+  // 스크롤 발생시 콜백함수
+  const handleScroll = useCallback((): void => {
+    const { innerHeight } = window// 팔로우 모달창 높이
     const { scrollHeight } = document.documentElement;// 총 스크롤 길이
     const { scrollTop } = document.documentElement;// 스크롤 현 위치
     // 팔로우 모달창 길이와 스크롤 현위치를 더해서 총 스크롤 길이가 되면 다음 데이터 호출
@@ -133,108 +133,107 @@ function UserInfo() {
 
   const followingOrCacnel = async () => {
     // 서버 요청
-    try{
-      const res=await axios.post(`${process.env.REACT_APP_API_URL}/follow`,
+    try {
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/follow`,
         {
           user: id, followingUserId: userInfo.id, loginMethod
         },
         {
           headers: { authorization: `${accessToken}` }
         })
-        setTotalFollower(res.data.data.totalFollower);
-        setIsFollow(!isFollow);
-      } catch{
-        try{
-          await accessTokenRequest();
-        }catch{
-          dispatch(logout());
-          alert('다시 로그인해 주세요');
-          navigate('/logins');
-        }
-        try{
-          const res=await axios.post(`${process.env.REACT_APP_API_URL}/follow`,
+      setTotalFollower(res.data.data.totalFollower);
+      setIsFollow(!isFollow);
+    } catch {
+      try {
+        await accessTokenRequest();
+      } catch {
+        dispatch(logout());
+        alert('다시 로그인해 주세요');
+        navigate('/logins');
+      }
+      try {
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/follow`,
           {
             user: id, followingUserId: userInfo.id, loginMethod
           },
           {
             headers: { authorization: `${accessToken}` }
           })
-          setTotalFollower(res.data.data.totalFollower);
-          setIsFollow(!isFollow);  
-        }catch{
-          alert('잘못된 요청입니다.')
-          dispatch(logout());
-          navigate('/main');
-        }
+        setTotalFollower(res.data.data.totalFollower);
+        setIsFollow(!isFollow);
+      } catch {
+        alert('잘못된 요청입니다.')
+        dispatch(logout());
+        navigate('/main');
       }
-      
+    }
+
   }
-  
+
   console.log(`useEffect밖:::::isFollow는 ${isFollow}입니다.`);
   return (
     <div className="userInfo_div">
       <div className="userinfo_whole_div">
-        <div className="userinfo_image_div">
-          <img src={userInfo.profileImage} className="userinfo_image_img" alt="profile_image" />
-        </div>
-        <div className="userinfo_profile_div">
-          <div className="userinfo_nickname_div">
-            <span>{userInfo.nickname}</span>
+        <div>
+          <div className="userinfo_image_div">
+            <img src={userInfo.profileImage} className="userinfo_image_img" alt="profile_image" />
           </div>
-          <div className="userinfo_status_div">
-            <span>{userInfo.statusMessage}</span>
-          </div>
-          <div className="userinfo_inform_div">
-            <div className="userinfo_inform_list">
-              <div className='userinfo_inform_title'>게시물</div>
-              <div className='userinfo_inform_value'>{articles.length}</div>
+          <div className="userinfo_profile_div">
+            <div className="userinfo_nickname_div">
+              <span>{userInfo.nickname}</span>
             </div>
-            <div className='userinfo_inform_divider'/>
-            {id !== userInfo.id ? (
+            <div className="userinfo_status_div">
+              <span>{userInfo.statusMessage}</span>
+            </div>
+            <div className="userinfo_inform_div">
               <div className="userinfo_inform_list">
-                <div className='userinfo_inform_title'> 팔로잉</div>
-                <div className='userinfo_inform_value'>{totalFollowing}</div>
-              </div>) : (
-              <label className='owner' htmlFor='following'>
-                <div className="userinfo_inform_list" >
-                  <div className='userinfo_inform_title'>팔로잉</div>
-                  <div className='userinfo_inform_value'>{totalFollowing}</div>
-                </div>
-              </label>
-            )}
-            <div className='userinfo_inform_divider'/>
-            {id !== userInfo.id ? (
-              <div className="userinfo_inform_list">
-                <div className='userinfo_inform_title' > 팔로워</div>
-                <div className='userinfo_inform_value'>{totalFollower}</div>
+                <div className='userinfo_inform_title'>게시물</div>
+                <div className='userinfo_inform_value'>{articles.length}</div>
               </div>
-            ) : (
-              <label className='owner' htmlFor='follower'>
-                <div className="userinfo_inform_list" >
-                  <div className='userinfo_inform_title'>팔로워</div>
+              <div className='userinfo_inform_divider' />
+              {id !== userInfo.id ? (
+                <div className="userinfo_inform_list">
+                  <div className='userinfo_inform_title'> 팔로잉</div>
+                  <div className='userinfo_inform_value'>{totalFollowing}</div>
+                </div>) : (
+                <label className='owner' htmlFor='following'>
+                  <div className="userinfo_inform_list" >
+                    <div className='userinfo_inform_title'>팔로잉</div>
+                    <div className='userinfo_inform_value'>{totalFollowing}</div>
+                  </div>
+                </label>
+              )}
+              <div className='userinfo_inform_divider' />
+              {id !== userInfo.id ? (
+                <div className="userinfo_inform_list">
+                  <div className='userinfo_inform_title' > 팔로워</div>
                   <div className='userinfo_inform_value'>{totalFollower}</div>
                 </div>
-              </label>
-            )}
-            <button id='following' type='button' className='hidden' onClick={openFollowingModal} onKeyDown={openFollowingModal}>123</button>
-            <button id='follower' type='button' className='hidden' onClick={openFollowerModal} onKeyDown={openFollowerModal}>123</button>
+              ) : (
+                <label className='owner' htmlFor='follower'>
+                  <div className="userinfo_inform_list" >
+                    <div className='userinfo_inform_title'>팔로워</div>
+                    <div className='userinfo_inform_value'>{totalFollower}</div>
+                  </div>
+                </label>
+              )}
+              <button id='following' type='button' className='hidden' onClick={openFollowingModal} onKeyDown={openFollowingModal}>123</button>
+              <button id='follower' type='button' className='hidden' onClick={openFollowerModal} onKeyDown={openFollowerModal}>123</button>
+            </div>
           </div>
-          <div className='userinfo_fake'>
-            {id !== userInfo.id
-              ? (<label htmlFor='followgogo'>
-                <div>{isFollow === true && isFollow ? "팔로우 해제" : "팔로우"}</div>
-              </label>)
-              : (<label htmlFor='editgogo'>
-                <div>내 정보 수정</div>
-              </label>)
-              }
-          </div>
-          <div className='userinfo_edit_button'>
-            <label htmlFor='abcd' className='abcd'>
-              <div>포스트</div>
-            </label>
-          </div>
-          
+        </div>
+        <div className='userinfo_fake'>
+          {id !== userInfo.id
+            ? (<label htmlFor='followgogo'>
+              <div>{isFollow === true && isFollow ? "팔로우 해제" : "팔로우"}</div>
+            </label>)
+            : (<label htmlFor='editgogo'>
+              <div>내 정보 수정</div>
+            </label>)
+          }
+          <label htmlFor='abcd' className='abcd'>
+            <div>포스트</div>
+          </label>
         </div>
         <div className='hidden' id='abcd'>asdfa</div>
         <button id='followgogo' className='hidden' type="button" onClick={followingOrCacnel} >sdfs</button>
