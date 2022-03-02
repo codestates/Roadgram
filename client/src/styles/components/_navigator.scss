@@ -189,6 +189,8 @@
     }
 
     .pencilIcon {
+      // border: 1px solid green;
+      color: rgb(80, 78, 78);
       height: 3vmin;
       margin-right: 4vmin;
       transition: 0.2s;
@@ -198,10 +200,11 @@
     }
 
     .userIcon {
+      // border: 1px solid green;
       height: 3vmin;
       color: rgb(80, 78, 78);
       cursor: pointer;
-      padding-right: 4vmin;
+      margin-right: 4vmin;
       transition: 0.2s;
     }
     .userIcon:hover {
