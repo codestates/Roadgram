@@ -29,6 +29,8 @@ function EditProfilePage(): any {
   const [passwordAvailability, setPasswordAvailability] = useState(true);
   const [isPasswordSame, setIsPasswordSame] = useState(true);
 
+  const [scroll,setScroll] =useState(0); // 스크롤 방지 기능을 위해 현재 스크롤 위치 저장
+
   /* 로그인 안된 상태에서 접근 차단 */
   useEffect(() => {
     if (!auth.isLogin) {
@@ -128,6 +130,27 @@ function EditProfilePage(): any {
   const openWithdrawalModal = () => {
     dispatch(withdrawalModal(!isWithdrawalModal));
   }
+
+  // 모달 창 띄울 시 스크롤 고정
+  useEffect(() => {
+    if (isWithdrawalModal) {
+      setScroll(document.documentElement.scrollTop) // 현재 스크롤 위치 저장
+      // css텍스트 고정으로 변경
+      document.documentElement.style.cssText = `
+      position: fixed;
+      top: -${window.scrollY}px;
+      overflow-y: scroll;
+      width:100%;
+      `;
+    }
+    else{
+      document.documentElement.scrollTop=scroll; // 저장해둔 스크롤 위치로 이동
+      setScroll(0);// 스크롤 위치 상태 초기화 
+    }
+    return () => {
+      document.documentElement.style.cssText ='';
+    }
+  }, [isWithdrawalModal])
 
   const submitHandler = async () => {
     const body: any = {};

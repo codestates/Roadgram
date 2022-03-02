@@ -1,39 +1,68 @@
 .userInfo_div {
   display: flex;
   width: 100%;
-  overflow-x: hidden;
-  flex-direction: row;
   justify-content: flex-start;
   background-color:rgb(249,249,250);
   @include mobile-only{
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
+  }
+  @include md{
+    flex-direction: column;
+    align-items: center;
+  }
+  @include lg{
+    flex-direction: row;
+    align-items: flex-start;
   }
 }
 .userinfo_article_div{
   display: flex;
-  margin-right:74px;
   @include mobile-only{
-    margin-right:0;
+    margin-right:10px;
+    margin-left: 10px;
+  }
+  @include md{
+    margin-left:10px;
+    margin-right:10px;
+  }
+  @include lg{
+    margin-right:74px;
+    margin-left: 362px;
   }
 }
 .userinfo_whole_div {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   border: 1px solid #e5e8eb;
   background-color: #FFFFFF;
   box-sizing: border-box;
   border-radius: 12px;
-  width: 262px;
-  height:487px;
-  margin:42px 25px 304px 70px;
-  padding-top: 45px;
   @include mobile-only{
     margin: 20px 10px;
     padding-top: 20px;
     height: 380px;
+    width: 262px;
+    flex-direction: column;
+    align-items: center;
+  }
+  @include md{
+    height: 290px;
+    margin: 20px 10px;
+    padding-top:30px;
+    width: 520px;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-evenly;
+  }
+  @include lg{
+    height:487px;
+    width: 262px;
+    margin:42px 25px 304px 70px;
+    padding-top: 45px;
+    position:fixed;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
   }
 }
 .userinfo_image_div {
@@ -82,7 +111,10 @@
   margin-bottom: 35px;
   align-items: center;
   .owner {
-    cursor: pointer;
+    &:hover{
+      cursor: pointer;
+      background-color: #f2f4f6;
+    }
   }
 }
 
@@ -144,22 +176,35 @@
 }
 
 .userinfo_fake{
+  width:100%;
   label{
-    width:100%;
-    height:55px;
     background:#FFFFFF;
-    padding:14px 24px;
+    
     display:flex;
     align-items: center;
     flex-direction: row;
     @include mobile-only{
+      width:100%;
       height: 45px;
       padding: 12px 20px;
+    }
+    @include md{
+      width:256px;
+      height:55px;
+      padding:14px 24px;
+    }
+    @include lg{
+      width: 100%;
+      height:55px;
+      padding:14px 24px;
     }
     &:hover{
       cursor: pointer;
       background:#f2f4f6;
     }
+  }
+  .abcd{
+    background-color: #f2f4f6;
   }
   div{
     font-size: 17px;

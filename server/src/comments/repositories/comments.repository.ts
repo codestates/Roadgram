@@ -23,4 +23,9 @@ export class CommentRepository extends Repository<Comments> {
     const result = await this.find({ where: { articleId }, order: { createdAt: "ASC" }, take: limit, skip: offset });
     return result;
   }
+
+  async getCommentsByUserId(id:number){
+    const comments=await this.find({userId:id});
+    return comments.map((comment)=>comment.articleId);
+  }
 }

@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ArticleToTagRepository } from 'src/articles/repositories/article_tag.repository';
 import { TagRepository } from 'src/articles/repositories/tag.repository';
 import { FollowRepository } from 'src/follow/repositories/follow.repository';
+import { LikesRepository } from 'src/likes/repositories/likes.repository';
 
 @Module({
   providers: [CommentsService, UsersService],
@@ -21,6 +22,7 @@ import { FollowRepository } from 'src/follow/repositories/follow.repository';
       UserRepository, 
       ArticleToTagRepository,
       TagRepository,
+      LikesRepository,
       FollowRepository]),
     JwtModule.register({ secret: process.env.JWT_SECRET })]
 })

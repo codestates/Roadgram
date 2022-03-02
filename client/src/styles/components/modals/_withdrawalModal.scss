@@ -2,18 +2,13 @@
   position: fixed;
   top: 0;
   left: 0;
+  height:100%;
   width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 10;
+  background-color:rgba(255, 255, 255, 0.5);
 }
 
 .withdrawal-background {
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   display: flex;
@@ -23,37 +18,48 @@
 
 .withdrawal-box {
   position: relative;
-  background-color: #7895f5;
-  width: 400px;
-  height: 200px;
-  padding: 30px;
-  border-radius: 2em;
+  background-color: #ffffff;
+  width: 300px;
+  height: 175px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  border: 1px solid #e5e8eb;
 }
 
 .withdrawal-msg {
-  flex: 1;
   overflow: hidden;
   display: flex;
-  margin-top: 1em;
-  font-size: 2em;
+  font-size: 14px;
+  width:100%;
   justify-content: center;
   align-items: center;
+  margin-bottom: 30px;
+}
+.withdrawal-button-box{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  padding:0 25px;
 }
 
 .yesorno {
-  width: 8em;
-  padding: 0.5em 0.3em;
-  margin-top: 3em;
-  margin-right: 0.5em;
-  margin-bottom: 0.5em;
-  margin-left: 0.5em;
+  width: 80px;
+  line-height: 25px;
+  padding:5px 10px;
   color: black;
-  font-size: 1.5em;
+  font-size: 14px;
   display: inline-block;
   text-align: center;
-  cursor: pointer;
-  border-radius: 2em;
-  border: 0.5px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  border:none;
+  &:hover{
+    cursor:pointer;
+    color:#ffffff;
+    background-color: #4680ff;
+  }
 }

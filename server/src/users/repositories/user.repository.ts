@@ -19,13 +19,8 @@ export class UserRepository extends Repository<User> {
         return { message: "signup succeed" };
     }
 
-    async deleteUser(id: number) {
-        try {
-            await this.delete({ id });
-            return { message: 'withdrawal succeed' };
-        } catch {
-            throw new NotFoundException('cannot find user by id');
-        }
+    deleteUser(id: number) {
+        this.delete({ id });
     }
 
     async updateUser(userData: UpdateUserDto): Promise<object> {
