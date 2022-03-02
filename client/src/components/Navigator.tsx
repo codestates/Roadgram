@@ -23,6 +23,7 @@ function Navigator() {
   const { tag } = useSelector((state: RootState) => state.articles)
   const [word, setWord] = useState('')
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const resetAllState = () => {
     dispatch(logout())
@@ -99,9 +100,9 @@ function Navigator() {
         </div>
         {isLogin ? (
           <div>
-            <Link to="/settingroute" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }}>
-              <FontAwesomeIcon icon={faPencil} className="pencilIcon" />
-            </Link>
+            {/* <Link to="/settingroute" style={{ color: 'rgb(80, 78, 78)' }}> */}
+            <FontAwesomeIcon icon={faPencil} className="pencilIcon" onClick={() => navigate('/settingroute')} />
+            {/* </Link> */}
             <FontAwesomeIcon icon={faUser} className="userIcon" onClick={() => setUsericonCLick(!usericonClick)} />
           </div>
         ) : (
@@ -119,7 +120,7 @@ function Navigator() {
         >
           <div className="mypageMenu">마이페이지</div>
         </Link>
-        <Link to="/main" style={{ textDecoration: 'none', color: 'rgb(80, 78, 78)' }} onClick={handleLogout}>
+        <Link to="/main" style={{ textDecorationLine: 'none', color: 'rgb(80, 78, 78)' }} onClick={handleLogout}>
           <div className="logoutMenu">로그아웃</div>
         </Link>
       </div>
