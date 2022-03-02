@@ -23,7 +23,7 @@ function Comments() {
   };
 
   const createComment = async () => {
-    if (isLogin) {
+    if (isLogin && comment) {
       await axios.post(
         `${process.env.REACT_APP_API_URL}/comments`,
         {
@@ -47,6 +47,8 @@ function Comments() {
         .then(res => {
           dispatch(getComments(res.data.data));
       })
+    } else if (isLogin && !comment) {
+      alert("내용을 입력해주세요.")
     } else {
       alert("로그인이 필요한 서비스입니다.");
       navigate('/logins');
