@@ -1,12 +1,12 @@
 import axios from 'axios'
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '..';
-import ContentsDetail from '../components/ContentsDetail';
-import Media from '../components/Media';
-import Track from '../components/Track';
-import { detailInfo } from '../store/ArticleDetailSlice';
-import { getComments } from '../store/CommentsSlice';
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '..'
+import ContentsDetail from '../components/ContentsDetail'
+import Media from '../components/Media'
+import Track from '../components/Track'
+import { detailInfo } from '../store/ArticleDetailSlice'
+import { getComments } from '../store/CommentsSlice'
 
 function PostDetailsPage() {
   const dispatch = useDispatch()
@@ -22,36 +22,33 @@ function PostDetailsPage() {
   }, [targetId])
 
   const getArticleDetails = async (id: number) => {
-    await axios.get(
-      `${process.env.REACT_APP_API_URL}/articles/detail?id=${id}&user=${userInfo.id}`)
-      .then(res => {
-        dispatch(detailInfo(res.data.data));
-      })
+    await axios.get(`${process.env.REACT_APP_API_URL}/articles/detail?id=${id}&user=${userInfo.id}`).then(res => {
+      dispatch(detailInfo(res.data.data))
+    })
   }
 
   const getArticleComments = async (id: number) => {
-    await axios.get(
-      `${process.env.REACT_APP_API_URL}/comments?id=${id}&page=${1}`)
-      .then(res => {
-        dispatch(getComments(res.data.data));
-      })
+    await axios.get(`${process.env.REACT_APP_API_URL}/comments?id=${id}&page=${1}`).then(res => {
+      dispatch(getComments(res.data.data))
+    })
   }
 
   return (
     <div className="total-container">
       {/* <div className="post-details-container"> */}
-        <div className="media-track-box">
-          {/* <div className="media"> */}
-            <Media />
-          {/* </div> */}
-          {/* <div className="track"> */}
-            <Track />
-          {/* </div> */}
-        </div>
-        <div className="contents-detail-box">
-          <ContentsDetail />
-        </div>
-       {/* </div> */}
+      <div className="media-track-box">
+        {/* <div className="media"> */}
+        <Media />
+        {/* </div> */}
+        {/* <div className="track"> */}
+        <Track />
+        {/* </div> */}
+      </div>
+      <div className="contents-detail-box">
+        <ContentsDetail />
+      </div>
+      {/* </div> */}
+      {/* <Media /> */}
     </div>
   )
 }
