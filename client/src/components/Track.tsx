@@ -1,5 +1,4 @@
 import React from 'react'
-import '../styles/components/_track.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
