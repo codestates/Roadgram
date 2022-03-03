@@ -8,6 +8,8 @@
   padding: 0 8px;
   border: 1px solid rgb(214, 216, 218);
   border-radius: 6px;
+  background-color: white;
+
   
   ul {
     display: flex;
@@ -21,13 +23,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #6D7176;
-    padding: 0 8px;
-    font-size: 14px;
+    padding: 0 0.2rem;
+    font-size: 1.5rem;
     list-style: none;
     border-radius: 15px;
     margin: 0 8px 8px 0;
     border: 1px solid lightgray;
+
+    @include mobile-only {
+      font-size: 2.5vmin;
+    }
+    @include md {
+      font-size: 1.5rem;
+    }
+    @include lg {
+      font-size: 1.5rem;
+    }
     .tag-close-icon {
       display: block;
       width: 16px;
@@ -45,20 +56,19 @@
   }
 
   input {
+    width: auto;
     flex: 1;
     border: none;
     height: 46px;
-    font-size: 14px;
+    font-size: 1.5rem;
     padding: 4px 0 0 0;
     &:focus {
       outline: transparent;
     }
+    background-color: white;
   }
   &:focus-within {
     border: 2px solid #5482f5;
   }
   
-  ::placeholder {
-    margin-left: 10px;
-  }
 }

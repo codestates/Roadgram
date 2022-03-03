@@ -12,8 +12,12 @@ export interface articleInfo {
   id: number;
   content: string;
   roads: {
-    imageSrc: string;
-    location: string;
+    placeName: string,
+    addressName: string,
+    x: number,
+    y: number,
+    imageSrc: string,
+    order: number
   }[];
   thumbnail: string;
   tags?: string[] | undefined | any;
