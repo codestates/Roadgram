@@ -33,8 +33,10 @@ function Track() {
         : <div>1</div>
       }
       </div>
+      <FontAwesomeIcon className="ellipsis" icon={faEllipsisVertical} />
     </div>
   )
 }
 
 export default Track
+
