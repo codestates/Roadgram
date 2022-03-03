@@ -254,15 +254,15 @@
     }
     .onroadimage {
       @include mobile-only {
-        width: 25rem;
+        width: 80%;
         height: 10rem;
       }
       @include md {
-        width: 100rem;
+        width: 80%;
         height: 30rem;
       }
       @include lg {
-        width: 140rem;
+        width: 70%;
         height: 40rem;
       }
     }
