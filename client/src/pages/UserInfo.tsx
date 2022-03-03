@@ -173,73 +173,75 @@ function UserInfo() {
   console.log(`useEffect밖:::::isFollow는 ${isFollow}입니다.`);
   return (
     <div className="userInfo_div">
-      <div className="userinfo_whole_div">
-        <div>
-          <div className="userinfo_image_div">
-            <img src={userInfo.profileImage} className="userinfo_image_img" alt="profile_image" />
-          </div>
-          <div className="userinfo_profile_div">
-            <div className="userinfo_nickname_div">
-              <span>{userInfo.nickname}</span>
+      <div className='userinfo_container'>
+        <div className="userinfo_whole_div">
+          <div className='sibalsibal'>
+            <div className="userinfo_image_div">
+              <img src={userInfo.profileImage} className="userinfo_image_img" alt="profile_image" />
             </div>
-            <div className="userinfo_status_div">
-              <span>{userInfo.statusMessage}</span>
-            </div>
-            <div className="userinfo_inform_div">
-              <div className="userinfo_inform_list">
-                <div className='userinfo_inform_title'>게시물</div>
-                <div className='userinfo_inform_value'>{articles.length}</div>
+            <div className="userinfo_profile_div">
+              <div className="userinfo_nickname_div">
+                <span>{userInfo.nickname}</span>
               </div>
-              <div className='userinfo_inform_divider' />
-              {id !== userInfo.id ? (
+              <div className="userinfo_status_div">
+                <span>{userInfo.statusMessage}</span>
+              </div>
+              <div className="userinfo_inform_div">
                 <div className="userinfo_inform_list">
-                  <div className='userinfo_inform_title'> 팔로잉</div>
-                  <div className='userinfo_inform_value'>{totalFollowing}</div>
-                </div>) : (
-                <label className='owner' htmlFor='following'>
-                  <div className="userinfo_inform_list" >
-                    <div className='userinfo_inform_title'>팔로잉</div>
-                    <div className='userinfo_inform_value'>{totalFollowing}</div>
-                  </div>
-                </label>
-              )}
-              <div className='userinfo_inform_divider' />
-              {id !== userInfo.id ? (
-                <div className="userinfo_inform_list">
-                  <div className='userinfo_inform_title' > 팔로워</div>
-                  <div className='userinfo_inform_value'>{totalFollower}</div>
+                  <div className='userinfo_inform_title'>게시물</div>
+                  <div className='userinfo_inform_value'>{articles.length}</div>
                 </div>
-              ) : (
-                <label className='owner' htmlFor='follower'>
-                  <div className="userinfo_inform_list" >
-                    <div className='userinfo_inform_title'>팔로워</div>
+                <div className='userinfo_inform_divider' />
+                {id !== userInfo.id ? (
+                  <div className="userinfo_inform_list">
+                    <div className='userinfo_inform_title'> 팔로잉</div>
+                    <div className='userinfo_inform_value'>{totalFollowing}</div>
+                  </div>) : (
+                  <label className='owner' htmlFor='following'>
+                    <div className="userinfo_inform_list" >
+                      <div className='userinfo_inform_title'>팔로잉</div>
+                      <div className='userinfo_inform_value'>{totalFollowing}</div>
+                    </div>
+                  </label>
+                )}
+                <div className='userinfo_inform_divider' />
+                {id !== userInfo.id ? (
+                  <div className="userinfo_inform_list">
+                    <div className='userinfo_inform_title' > 팔로워</div>
                     <div className='userinfo_inform_value'>{totalFollower}</div>
                   </div>
-                </label>
-              )}
-              <button id='following' type='button' className='hidden' onClick={openFollowingModal} onKeyDown={openFollowingModal}>123</button>
-              <button id='follower' type='button' className='hidden' onClick={openFollowerModal} onKeyDown={openFollowerModal}>123</button>
+                ) : (
+                  <label className='owner' htmlFor='follower'>
+                    <div className="userinfo_inform_list" >
+                      <div className='userinfo_inform_title'>팔로워</div>
+                      <div className='userinfo_inform_value'>{totalFollower}</div>
+                    </div>
+                  </label>
+                )}
+                <button id='following' type='button' className='hidden' onClick={openFollowingModal} onKeyDown={openFollowingModal}>123</button>
+                <button id='follower' type='button' className='hidden' onClick={openFollowerModal} onKeyDown={openFollowerModal}>123</button>
+              </div>
             </div>
           </div>
+          <div className='userinfo_fake'>
+            {id !== userInfo.id
+              ? (<label htmlFor='followgogo'>
+                <div>{isFollow === true && isFollow ? "팔로우 해제" : "팔로우"}</div>
+              </label>)
+              : (<label htmlFor='editgogo'>
+                <div>내 정보 수정</div>
+              </label>)
+            }
+            <label htmlFor='abcd' className='abcd'>
+              <div>포스트</div>
+            </label>
+          </div>
+          <div className='hidden' id='abcd'>asdfa</div>
+          <button id='followgogo' className='hidden' type="button" onClick={followingOrCacnel} >sdfs</button>
+          <button id='editgogo' className='hidden' type="button" onClick={moveToEditProfile}>프로필수정</button>
+          {isFollowingModal ? <FollowingModal /> : null}
+          {isFollowerModal ? <FollowerModal /> : null}
         </div>
-        <div className='userinfo_fake'>
-          {id !== userInfo.id
-            ? (<label htmlFor='followgogo'>
-              <div>{isFollow === true && isFollow ? "팔로우 해제" : "팔로우"}</div>
-            </label>)
-            : (<label htmlFor='editgogo'>
-              <div>내 정보 수정</div>
-            </label>)
-          }
-          <label htmlFor='abcd' className='abcd'>
-            <div>포스트</div>
-          </label>
-        </div>
-        <div className='hidden' id='abcd'>asdfa</div>
-        <button id='followgogo' className='hidden' type="button" onClick={followingOrCacnel} >sdfs</button>
-        <button id='editgogo' className='hidden' type="button" onClick={moveToEditProfile}>프로필수정</button>
-        {isFollowingModal ? <FollowingModal /> : null}
-        {isFollowerModal ? <FollowerModal /> : null}
       </div>
       {mainArticles.length === 0 || !mainArticles
         ? <div className="no_following_post">작성된 게시글이 없습니다.

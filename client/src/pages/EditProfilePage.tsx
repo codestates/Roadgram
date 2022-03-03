@@ -259,7 +259,7 @@ function EditProfilePage(): any {
         </div>
         <div className='editProfile_submit_div'> 
           <button className='editProfile_submit_button' type='button' onClick={openWithdrawalModal}>회원탈퇴</button>
-          <button className='editProfile_submit_button' type='button' onClick={submitHandler}>수정완료</button>
+          <button className='editProfile_submit_button1' type='button' onClick={submitHandler}>수정완료</button>
         </div>
         {isWithdrawalModal ? <WithdrawalModal /> : null}
       </div>

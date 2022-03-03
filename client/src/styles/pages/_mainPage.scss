@@ -18,15 +18,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  @include mobile-only {
-    padding-top: 5rem;
-  }
-  @include md {
-    padding-top: 10rem;
-  }
-  @include lg {
-    padding-top: 12rem;
-  }
+ 
 
   .postBox {
     // border: 1px solid green;
@@ -239,13 +231,14 @@
   background-color: rgb(249, 249, 250);
   width: 100%;
   @include mobile-only {
-    padding: 0;
+    padding-top: 5rem;
   }
   @include md {
-    padding: 0;
+    padding-top: 10rem;
   }
-
   @include lg {
-    padding: 0 10%;
+    padding-top: 12rem;
+    padding-left: 4%;
+    padding-right: 4%;
   }
 }
