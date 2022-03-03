@@ -20,7 +20,7 @@ export class CommentRepository extends Repository<Comments> {
   }
 
   async getComments(articleId: number, limit: number, offset: number): Promise<Comments[] | undefined> {
-    const result = await this.find({ where: { articleId }, order: { createdAt: "ASC" }, take: limit, skip: offset });
+    const result = await this.find({ where: { articleId }, order: { createdAt: "DESC" }, take: limit, skip: offset });
     return result;
   }
 
