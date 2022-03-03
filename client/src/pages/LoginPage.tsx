@@ -63,7 +63,8 @@ function LoginPage() {
 
   const kakaoHandler = async () => {
     kakao.Auth.authorize({
-      redirectUri: "http://localhost:3000/main" // 메인페이지로 redirect 예정
+      // 로컬에서 테스트 시 "http://localhost:3000/main"로 변경 필요
+      redirectUri: "https://roadgram.net/main"
     });
   }
 
@@ -95,7 +96,11 @@ function LoginPage() {
         <input className="login_email_input" type="text" placeholder="이메일을 입력해주세요" onChange={handleInputValue('email')} />
         <h3>비밀번호</h3>
         <input className="login_password_input" type="password" placeholder="비밀번호를 입력해주세요" onChange={handleInputValue('password')} />
-        <button className="login_findpassword_button" type="button" onClick={redirectToFindPassword}>비밀번호 찾기</button>
+        <li 
+          className="login_findpassword_button" 
+          onClick={()=>alert("비밀번호 찾기 서비스는 준비 중입니다.")}
+          onKeyDown={()=>alert("비밀번호 찾기 서비스는 준비 중입니다.")}
+          >비밀번호 찾기</li>
         <div className="button_div">
           <button className="login_login_button" type="button" onClick={loginHandler}>로그인</button>
           <button className="login_signup_button" type="button" onClick={redirectToSignup}>회원가입</button>

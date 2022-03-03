@@ -1,8 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react'
 import axios from 'axios'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import logo from '../images/logo.png'
+import { Link, useNavigate } from 'react-router-dom'
 import { RootState } from '..'
 
 
@@ -161,7 +162,14 @@ function SignupPage() {
   return (    
     <div className="signup_whole_div">
       <div className="signup_main_div">
-        <img className="signup_logo_img" alt="logo" src={logo} />
+        <div className="signup_title_div">
+          <div className="arrow_icon_div">
+          <Link to="/">
+          <FontAwesomeIcon icon={faArrowLeft} className="arrow_icon"/>
+          </Link>
+          </div>
+          <h1 className="signup_title">회원가입</h1>
+        </div>
           <div className="signup_nickname_div">
             <h3 className="signup_nickname_title">닉네임</h3>  
             <div>
