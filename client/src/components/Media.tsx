@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleLeft, faAngleRight, faCircle } from '@fortawesome/free-solid-svg-icons'
+import { faChevronCircleLeft, faChevronCircleRight, faCircle } from '@fortawesome/free-solid-svg-icons'
 import { RootState } from '..'
 
-function Media() {
-  const { articleInfo } = useSelector((state: RootState) => state.articleDetails)
-  console.log('오고있니?', articleInfo)
+declare global {
+  interface Window {
+    kakao: any
+  }
+}
 
+function Media() {
+
+  const { articleInfo } = useSelector((state: RootState) => state.articleDetails)
   const [current, setCurrent] = useState(0)
+  const [isStaticMap, setIsStaticMap] = useState(true)
   const [imageLength, setImageLength] = useState(0)
+
 
   useEffect(() => {
     if (articleInfo.roads) {
       setImageLength(articleInfo.roads.length)
     }
+    
   }, [current])
 
   const nextSlide = () => {
@@ -29,19 +37,38 @@ function Media() {
     setCurrent(index)
   }
 
-  console.log(current)
-  // console.log(articleInfo.roads.indexOf(articleInfo.roads[2]))
-
   if (!Array.isArray(articleInfo.roads || imageLength <= 0)) {
     return null
   }
 
   return (
     <div className="slider">
-      <FontAwesomeIcon className="angleLeft" icon={faAngleLeft} onClick={prevSlide} />
-      <FontAwesomeIcon className="angleRight" icon={faAngleRight} onClick={nextSlide} />
+      {!isStaticMap && articleInfo.roads && articleInfo.roads.length > 0
+        ? <>
+            <FontAwesomeIcon className="angleLeft" icon={faChevronCircleLeft} onClick={prevSlide} />
+            <FontAwesomeIcon className="angleRight" icon={faChevronCircleRight} onClick={nextSlide} />
+          </>
+        : null
+      }
+      {articleInfo.roads && articleInfo.roads.length > 0
+        ? <div className="view_selectbox">
+            <li 
+              className={`${isStaticMap ? "view_span_select" : "view_span"}`} 
+              onClick={()=>setIsStaticMap(true)}
+              onKeyDown={()=>setIsStaticMap(true)}
+            >경로보기</li>
+            <span className="road_view">ㅣ</span>
+            <li 
+              className={`${isStaticMap ? "view_span" : "view_span_select"}`}
+              onClick={()=>setIsStaticMap(false)}
+              onKeyDown={()=>setIsStaticMap(false)} 
+            >사진보기</li>
+          </div>
+        : null
+      }
       <div className="dots">
-        {articleInfo.roads ? (
+        {!isStaticMap && articleInfo.roads && articleInfo.roads.length > 0
+        ? (
           articleInfo.roads.map(image => {
             return (
               <FontAwesomeIcon
@@ -51,17 +78,19 @@ function Media() {
               />
             )
           })
-        ) : (
-          <div>등록된 이미지가 없습니다.</div>
-        )}
+        ) : null
+        }
       </div>
-      {articleInfo.roads.map(image => {
-        return (
-          <div className={articleInfo.roads.indexOf(image) === current ? 'slide active' : 'slide'}>
-            {articleInfo.roads.indexOf(image) === current && <img className="image" alt="img" src={image.imageSrc} />}
-          </div>
-        )
-      })}
+      { isStaticMap ?
+        <div key={articleInfo.thumbnail} id="staticMap" />
+        : articleInfo.roads.map(image => {
+          return (
+            <div className={articleInfo.roads.indexOf(image) === current ? 'slide active' : 'slide'}>
+              {articleInfo.roads.indexOf(image) === current && <img className="image" alt="img" src={image.imageSrc} />}
+            </div>
+          )
+        })
+      }
     </div>
   )
 }
