@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleLeft, faChevronCircleRight, faCircle } from '@fortawesome/free-solid-svg-icons'
+import Map from './Map'
 import { RootState } from '..'
 
 function Media() {
@@ -37,6 +38,9 @@ function Media() {
 
   return (
     <div className="slider">
+      { isStaticMap
+      ? <Map />
+      : null }
       {!isStaticMap && articleInfo.roads && articleInfo.roads.length > 0
         ? <>
             <FontAwesomeIcon className="angleLeft" icon={faChevronCircleLeft} onClick={prevSlide} />
@@ -50,13 +54,13 @@ function Media() {
               className={`${isStaticMap ? "view_span_select" : "view_span"}`} 
               onClick={()=>setIsStaticMap(true)}
               onKeyDown={()=>setIsStaticMap(true)}
-            >경로보기</li>
+            >경로 보기</li>
             <span className="road_view">ㅣ</span>
             <li 
               className={`${isStaticMap ? "view_span" : "view_span_select"}`}
               onClick={()=>setIsStaticMap(false)}
               onKeyDown={()=>setIsStaticMap(false)} 
-            >사진보기</li>
+            >사진 보기</li>
           </div>
         : null
       }
@@ -72,7 +76,7 @@ function Media() {
               />
             )
           })
-        ) : null
+          ) : null
         }
       </div>
       { isStaticMap ?

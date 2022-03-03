@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import Comments from './Comments';
 import { RootState } from '..';
-// import '../styles/components/_contentsDetails.scss';
 import { detailInfo, updateTotalComments } from '../store/ArticleDetailSlice';
 import { articleDeleteModal } from '../store/ModalSlice';
 import { likeUnlike } from '../store/ArticleDetailSlice';
@@ -33,31 +32,11 @@ function ContentsDetail() {
 
   const [page,setPage]=useState(2);
   const [endScroll,setEndScroll]=useState(false);
-
-  // 수정 버튼 클릭 후 편집 모드 이동, 게시물 저장 시 실행하는 핸들러. 여기 아님
-  const updateArticle = async () => {
-    await axios.patch(
-      `${process.env.REACT_APP_API_URL}/articles`,
-      {
-        loginMethod: userInfo.loginMethod,
-        user: userInfo.id,
-        articleId: articleInfo.id,
-        content: '수정할 게시물 텍스트',
-        tags: ['수정할 태그들']
-      },
-      {
-        headers: { authorization: `${accessToken}` }
-      }
-    ).then(res => {
-      console.log(res.data)
-    })
-  }
   
   const deleteArticle = async () => {
     dispatch(articleDeleteModal(!isArticleDeleteModal));
   }
 
-  // 수정 버튼 온클릭 연결
   const moveToEdit = () =>{
     navigate(`/editpost?id=${articleInfo.id}`);
   }
@@ -105,7 +84,7 @@ function ContentsDetail() {
         setComment('');
       })
       await axios.get(
-        `${process.env.REACT_APP_API_URL}/comments?id=${articleInfo.id}&page=${1}`) // 댓글 추가한 직후는 가장 마지막 렌더링??
+        `${process.env.REACT_APP_API_URL}/comments?id=${articleInfo.id}&page=${1}`)
         .then(res => {
           dispatch(getComments(res.data.data));
       })
@@ -166,8 +145,11 @@ function ContentsDetail() {
     ).then(res => {
       dispatch(removeComment(id));
       dispatch(updateTotalComments(res.data.data.totalComments));
-    }).catch(() => {
-      navigate(`/postdetails?id=${articleInfo.id}`);
+    })
+    await axios.get(
+      `${process.env.REACT_APP_API_URL}/comments?id=${articleInfo.id}&page=${1}`)
+      .then(res => {
+        dispatch(getComments(res.data.data));
     })
   }
 
