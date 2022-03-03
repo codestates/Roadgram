@@ -26,6 +26,8 @@ function MainPage() {
 //   dispatch(resetComments())
   const [page, setPage] = useState(2); // 페이지 정보
   const [end, setEnd] = useState(false); // 추가로 받아올 데이터 없을 시 더 이상 무한 스크롤 작동안하게 하는 상태값
+
+  const [isRecent,setIsRecenst]=useState(true);
   // 액세스토큰 만료 시 재발급 요청
 
   const accessTokenRequest = async () => {
@@ -81,14 +83,14 @@ function MainPage() {
     const { innerHeight } = window;
     const { scrollHeight, scrollTop } = document.documentElement;
     if (Math.round(scrollTop + innerHeight) >= scrollHeight) {
-      if (isLogin) {
+      if (!isRecent) {
         addFollowerArticle();
       } else {
         addRecentArticle();
       }
       setPage(page + 1);
     }
-  }, [page, isLogin]);
+  }, [page, isRecent]);
 
   useEffect(() => {
     if (!end) {
@@ -101,14 +103,6 @@ function MainPage() {
 
 
   useEffect(() => {
-    // 로그인 여부에 따라 변경   
-    if (isLogin) {
-      getFollowArticleHandler()
-    } else {
-      getRecentArticleHandler()
-    }
-    setPage(2);
-    setEnd(false);
     // 최초 렌더링 시 url에 있는 code값 전달
     if (isInitialMount.current) {
       const url = new URL(window.location.href)
@@ -177,12 +171,39 @@ function MainPage() {
       .catch(err => console.log(err))
   }
 
-  console.log(end, page)
+  const recentButtonHandler=()=>{
+    setIsRecenst(true);
+  }
+  const followButtonHandler=()=>{
+    if(isLogin){
+      setIsRecenst(false);
+    }
+    else{
+      alert('로그인이 필요합니다');
+      navigate('/logins');
+    }
+  }
+
+  console.log(page,end,isRecent)
+
+  useEffect(()=>{
+    if (!isRecent) {
+      getFollowArticleHandler()
+    } else {
+      getRecentArticleHandler()
+    }
+    setPage(2);
+    setEnd(false);
+  },[isRecent,isLogin])
 
   return (
     mainArticles.length === 0 || !mainArticles
       ? <div className="no_following_post">팔로우 하는 사람 혹은 작성하신 게시물이 없습니다.</div>
       :(<div className='main_whole_div'>
+        <div className='main_buttons'>
+          <button type='button' className={isRecent?'button_selected':'button_unSelected'} onClick={recentButtonHandler}>최신순</button>
+          <button type='button' className={isRecent?'button_unSelected':'button_selected'} onClick={followButtonHandler}>팔로우</button>
+        </div>
         <Article />
       </div>) 
   )

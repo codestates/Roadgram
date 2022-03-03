@@ -313,6 +313,7 @@
     align-items: center;
     &:hover{
       cursor: pointer;
+      background-color: #93b1f3;
     }
     @include mobile-only{
       font-size: 16px;
