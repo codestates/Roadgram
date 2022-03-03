@@ -38,7 +38,7 @@ function PostDetailsPage() {
     <div className="total-container">
       <div className="media-track-box">
         <Media />
-        <Map />
+        {/* <Map /> */}
         <Track />
       </div>
       <div className="contents-detail-box">

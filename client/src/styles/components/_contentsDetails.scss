@@ -28,6 +28,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-top: 1rem;
   margin-left: 1rem;
 }
 
@@ -37,8 +38,8 @@
 }
 
 .writer_profile_image {
-  width: 5rem;
-  height: 5rem;
+  width: 4.5rem;
+  height: 4.5rem;
   border-radius: 50%;
   justify-content: center;
   align-items: center;
@@ -57,13 +58,13 @@
   font-weight: bold;
   cursor: pointer;
   @include mobile-only {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
   }
   @include md {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
   @include lg {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
 }
 
@@ -109,9 +110,17 @@
 }
 
 .detail-infinite-scroll {
-  height: 50rem;
   overflow-x: hidden;
   overflow-y: auto;
+  @include mobile-only {
+    height: 30rem;
+  }
+  @include md {
+    height: 50rem;
+  }
+  @include lg {
+    height: 50rem;
+  }
 }
 
 .detail-infinite-scroll::-webkit-scrollbar {
@@ -120,22 +129,23 @@
 
 .post-text {
   display: flex;
-  margin-top: 1.5rem;
+  margin-top: 2.5rem;
   margin-left: 1rem;
   margin-right: 1rem;
   text-align: left;
   @include mobile-only {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
   @include md {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
   @include lg {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
 }
 
 .post-tags {
+  margin-top: 0.5rem;
   margin-right: 1rem;
   margin-bottom: 1rem;
   margin-left: 1rem;
@@ -287,8 +297,12 @@
   list-style: none;
   display: flex;
   justify-content: flex-start;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
+  padding: 1rem;
   align-items: flex-start;
+  &:hover {
+    background-color: rgb(241, 238, 238);
+  }
 }
 
 .comment_info {
@@ -348,4 +362,9 @@
   justify-content: flex-start;
   text-align: left;
   align-items: flex-start;
+}
+
+.no-comments-msg {
+  margin-top: 15rem;
+  font-size: 1.4rem;
 }
