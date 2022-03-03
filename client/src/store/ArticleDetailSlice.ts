@@ -3,29 +3,33 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 /* State Type 설정 */
 export interface writerInfo {
-  id: number;
-  nickname: string;
-  profileImage: string;
+  id: number
+  nickname: string
+  profileImage: string
 }
 
 export interface articleInfo {
-  id: number;
-  content: string;
+  id: number
+  content: string
   roads: {
-    imageSrc: string;
-    location: string;
-  }[];
-  thumbnail: string;
-  tags?: string[] | undefined | any;
-  totalLike: number;
-  totalComment: number;
-  likedOrNot: boolean;
-  createdAt: Date | null;
+    placeName: string
+    addressName: string
+    x: number
+    y: number
+    imageSrc: string
+    order: number
+  }[]
+  thumbnail: string
+  tags?: string[] | undefined | any
+  totalLike: number
+  totalComment: number
+  likedOrNot: boolean
+  createdAt: Date | null
 }
 
 export interface articleDetails {
-  targetId?: number | null,
-  writerInfo: writerInfo,
+  targetId?: number | null
+  writerInfo: writerInfo
   articleInfo: articleInfo
 }
 
@@ -34,7 +38,7 @@ const initialState: articleDetails = {
   writerInfo: {
     id: 0,
     nickname: '',
-    profileImage: ''
+    profileImage: '',
   },
   articleInfo: {
     id: 0,
@@ -46,7 +50,7 @@ const initialState: articleDetails = {
     totalComment: 0,
     likedOrNot: false,
     createdAt: null,
-  }
+  },
 }
 
 const articleDetailSlice = createSlice({
@@ -55,21 +59,21 @@ const articleDetailSlice = createSlice({
   reducers: {
     /* Action 설정 */
     detailInfo: (state: articleDetails, { payload }: PayloadAction<any>) => {
-      state.targetId = payload.targetId;
-      state.writerInfo = payload.userInfo;
-      state.articleInfo = payload.articleInfo;
+      state.targetId = payload.targetId
+      state.writerInfo = payload.userInfo
+      state.articleInfo = payload.articleInfo
     },
     likeUnlike: (state: articleDetails, { payload }: PayloadAction<any>) => {
-      state.articleInfo.totalLike = payload;
-      state.articleInfo.likedOrNot = !state.articleInfo.likedOrNot;
+      state.articleInfo.totalLike = payload
+      state.articleInfo.likedOrNot = !state.articleInfo.likedOrNot
     },
     updateTotalComments: (state: articleDetails, { payload }: PayloadAction<any>) => {
-      state.articleInfo.totalComment = payload;
+      state.articleInfo.totalComment = payload
     },
     resetArticleDetail: () => initialState,
-  }
+  },
 })
 
-export const { detailInfo, likeUnlike, updateTotalComments, resetArticleDetail} = articleDetailSlice.actions;
+export const { detailInfo, likeUnlike, updateTotalComments, resetArticleDetail } = articleDetailSlice.actions
 
-export default articleDetailSlice.reducer;
+export default articleDetailSlice.reducer
