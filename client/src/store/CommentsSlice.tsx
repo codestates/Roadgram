@@ -27,7 +27,11 @@ const commentsSlice = createSlice({
       state.commentInfo = payload;
     },
     addComment: (state: comments, { payload }: PayloadAction<any>) => {
-      state.commentInfo = [...state.commentInfo, payload];
+      if (state.commentInfo === undefined) {
+        state.commentInfo = [payload];
+      } else {
+        state.commentInfo = [...state.commentInfo, payload];
+      }    
     },
     removeComment: (state: comments, { payload }: PayloadAction<any>) => {
       state.commentInfo = state.commentInfo.filter(el => el.id !== payload)

@@ -6,35 +6,59 @@
   background-color: white;
   border-radius: 20px;
   // align-self: flex-end;
-  margin-top: 1rem;
   box-shadow: 3px 3px 6px 3px rgb(212, 212, 212);
   @include mobile-only {
-    height: 47%;
+    height: 24rem;
+    width: 100%;
+    margin-top: 1rem;
   }
   @include md {
     width: 29rem;
     height: 100%;
     margin-left: 1rem;
+    margin-top: 0rem;
   }
   @include lg {
     width: 100%;
     height: 30rem;
+    margin-left: 0rem;
+    margin-top: 1rem;
   }
 }
 
 .track_title {
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   font-weight: 600;
-  margin: 2rem;
+  margin-top: 2rem;
+  margin-left: 2rem;
+  height: 1rem;
+  @include mobile-only {
+    margin-bottom: 2rem;
+  }
+  @include md {
+    margin-bottom: 2.5rem;
+  }
+  @include lg {
+    margin-bottom: 2.5rem;
+  }
 }
+
 .track_marker_each_div {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
-  height: 20%;
-  margin-top: 2rem;
+  height: 15%;
   margin-left: 2rem;
+  @include mobile-only {
+    margin-top: 0.8rem;
+  }
+  @include md {
+    margin-top: 1rem;
+  }
+  @include lg {
+    margin-top: 1rem;
+  }
 }
 
 .track_marker_icon_div {
@@ -42,46 +66,84 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   // width: auto;
   height: 20%;
   // background-color: #4680ff;
+  margin-left: 1rem;
   .track_marker_icon {
-    width: 3rem;
-    height: 3rem;
     color: #4680ff;
+    @include mobile-only {
+      width: 1.2rem;
+      height: 2rem;
+    }
+    @include md {
+      width: 1.8rem;
+      height: 2.6rem;
+    }
+    @include lg {
+      width: 1.8rem;
+      height: 2.6rem;
+    }
   }
 
   .ellipsis_icon {
     color: lightgray;
-    width: 3rem;
-    height: 2rem;
+    @include mobile-only {
+      width: 1.4rem;
+      height: 0.7rem;
+    }
+    @include md {
+      width: 2rem;
+      height: 1rem;
+    }
+    @include lg {
+      width: 2rem;
+      height: 1rem;
+    }
   }
 }
 
 .track_maker_name_div {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
+  margin-top: -1rem;
   margin-left: 2rem;
   width: 100%;
   height: 100%;
   // background-color: blue;
   .track_marker_placename {
-    font-size: 1.6rem;
     font-weight: 600;
+    @include mobile-only {
+      font-size: 1.1rem;
+    }
+    @include md {
+      font-size: 1.4rem;
+    }
+    @include lg {
+      font-size: 1.4rem;
+    }
   }
   .track_marker_addressname {
-    font-size: 1.3rem;
     font-weight: 400;
     color: gray;
+    @include mobile-only {
+      font-size: 1rem;
+    }
+    @include md {
+      font-size: 1.1rem;
+    }
+    @include lg {
+      font-size: 1.1rem;
+    }
   }
 }
 
 .track_marker_div {
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
   height: 100%;
 }

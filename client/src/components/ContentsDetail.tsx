@@ -97,7 +97,7 @@ function ContentsDetail() {
         }
       ).then(res => {
         console.log(res.data)
-        dispatch(addComment(res.data));
+        dispatch(addComment(res.data.data));
         dispatch(updateTotalComments(res.data.data.totalComments));
         setComment('');
       })
@@ -239,7 +239,7 @@ function ContentsDetail() {
                 </li>
               )
             })
-            : <div>No Comments Yet!</div>
+            : <div className="no-comments-msg">첫 번째 댓글을 작성해주세요!</div>
           }
           </div>
         </div>

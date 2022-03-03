@@ -1,7 +1,7 @@
 .slider {
   // display: flex;
-  width: 44rem;
-  height: 35rem;
+  // width: 44rem;
+  // height: 35rem;
   // flex-direction: column;
   // justify-content: flex-start;
   // border: 1px solid white;
@@ -12,7 +12,8 @@
   border-radius: 20px;
   box-shadow: 3px 3px 6px 3px rgb(212, 212, 212);
   @include mobile-only {
-    height: 52%;
+    height: 70%;
+    width: 100%;
   }
   @include md {
     height: 100%;
@@ -25,8 +26,8 @@
 }
 
 .image {
-  width: 44rem;
-  height: 35rem;
+  width: 100%;
+  height: 30rem;
 }
 
 .angleLeft {
