@@ -9,11 +9,12 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
+  z-index: 10;
   background-color: white;
   border-radius: 20px;
   box-shadow: 3px 3px 6px 3px rgb(212, 212, 212);
   @include mobile-only {
-    height: 70%;
+    height: 50%;
     width: 100%;
   }
   @include md {
@@ -34,7 +35,6 @@
   // display: flex;
   // justify-content: center;
   // align-items: center;
-
 }
 
 .angleLeft {
@@ -52,7 +52,6 @@
   }
 }
 
-
 .angleRight {
   position: absolute;
   transition: 0.6s;
@@ -68,7 +67,6 @@
     opacity: 0.8;
   }
 }
-
 
 .slide {
   opacity: 0;
@@ -121,7 +119,7 @@
 
 .view_selectbox {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   position: absolute;
   top: 5%;
@@ -130,14 +128,17 @@
   opacity: 1;
   height: 5rem;
   z-index: 12;
-  width: 35%;
+  width: 40%;
   height: 10%;
   border-radius: 1rem;
-  margin: 0;
-  padding: 0;
+  margin-top: -1rem;
+  margin-left: 30%;
+  margin-right: 30%;
+  padding-left: 1rem;
+  padding-right: 1rem;
 
   .view_span {
-    font-size: 1.5rem;
+    // font-size: 1.5rem
     font-weight: 700;
     color: black;
     z-index: 10;
@@ -145,10 +146,19 @@
       cursor: pointer;
     }
     list-style: none;
+    @include mobile-only {
+      font-size: 1.2rem;
+    }
+    @include md {
+      font-size: 1.5rem;
+    }
+    @include lg {
+      font-size: 1.5rem;
+    }
   }
-  
+
   .view_span_select {
-    font-size: 1.5rem;
+    // font-size: 1.5rem;
     font-weight: 700;
     color: #4680ff;
     z-index: 10;
@@ -157,5 +167,13 @@
       cursor: pointer;
     }
   }
+  @include mobile-only {
+    font-size: 1.2rem;
+  }
+  @include md {
+    font-size: 1.5rem;
+  }
+  @include lg {
+    font-size: 1.5rem;
+  }
 }
-

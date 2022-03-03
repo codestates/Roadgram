@@ -31,6 +31,8 @@ function PostDetailsPage() {
   const getArticleComments = async (id: number) => {
     await axios.get(`${process.env.REACT_APP_API_URL}/comments?id=${id}&page=${1}`).then(res => {
       dispatch(getComments(res.data.data))
+    }).catch(()=>{
+      dispatch(getComments([]))
     })
   }
 

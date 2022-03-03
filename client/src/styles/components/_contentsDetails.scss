@@ -9,10 +9,10 @@
   box-shadow: 3px 3px 6px 3px rgb(212, 212, 212);
   @include mobile-only {
     margin-top: 1rem;
-    padding: 1rem;
+    padding: 0.5rem;
   }
   @include md {
-    padding: 2rem;
+    padding: 1rem;
   }
   @include lg {
     margin-left: 1rem;
@@ -70,7 +70,7 @@
 
 .written_time {
   display: flex;
-  width: 8rem;
+  width: 9rem;
   margin-top: 0.3rem;
 }
 
@@ -84,8 +84,6 @@
 
 .post-delete {
   display: flex;
-  width: 4rem;
-  height: 3rem;
   justify-content: center;
   align-items: center;
   margin-right: 0.2rem;
@@ -94,32 +92,57 @@
   border: 1px solid #ee6d6d;
   border-radius: 4px;
   cursor: pointer;
+  @include mobile-only {
+    width: 2.5rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+  @include md {
+    width: 4rem;
+    height: 3rem;
+  }
+  @include lg {
+    width: 4rem;
+    height: 3rem;
+  }
 }
 
 .post-modify {
   display: flex;
-  width: 4rem;
-  height: 3rem;
   justify-content: center;
   align-items: center;
   background-color: rgb(49, 48, 48);
   color: #f2f2f2;
-  border: 1px solid #f2f2f2;
+  border: 1px solid rgb(49, 48, 48);
   border-radius: 4px;
   cursor: pointer;
+  @include mobile-only {
+    width: 2.5rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+  @include md {
+    width: 4rem;
+    height: 3rem;
+  }
+  @include lg {
+    width: 4rem;
+    height: 3rem;
+  }
 }
 
 .detail-infinite-scroll {
   overflow-x: hidden;
   overflow-y: auto;
+  margin-top: 2rem;
   @include mobile-only {
-    height: 30rem;
+    height: 50rem;
   }
   @include md {
-    height: 50rem;
+    height: 40rem;
   }
   @include lg {
-    height: 50rem;
+    height: 48rem;
   }
 }
 
@@ -129,12 +152,12 @@
 
 .post-text {
   display: flex;
-  margin-top: 2.5rem;
+  margin-top: 1rem;
   margin-left: 1rem;
   margin-right: 1rem;
   text-align: left;
   @include mobile-only {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
   @include md {
     font-size: 1.4rem;
@@ -289,6 +312,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  margin-top: 2rem;
   padding-left: 1rem;
   padding-right: 1rem;
 }
@@ -297,7 +321,7 @@
   list-style: none;
   display: flex;
   justify-content: flex-start;
-  margin-top: 1rem;
+  // margin-top: 1rem;
   padding: 1rem;
   align-items: flex-start;
   &:hover {
