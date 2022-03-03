@@ -1,14 +1,23 @@
 .detail-container {
   display: flex;
-  height: 60rem;
+  height: 100%;
   flex-direction: column;
   justify-content: space-between;
   border: 1px solid white;
   background-color: white;
   border-radius: 20px;
-  margin-left: 1em;
-  padding: 2rem;
   box-shadow: 3px 3px 6px 3px rgb(212, 212, 212);
+  @include mobile-only {
+    margin-top: 1rem;
+    padding: 1rem;
+  }
+  @include md {
+    padding: 2rem;
+  }
+  @include lg {
+    margin-left: 1rem;
+    padding: 2rem;
+  }
 }
 
 .detail-body {
@@ -24,11 +33,12 @@
 
 .writer-info {
   display: flex;
+  align-items: center;
 }
 
 .writer_profile_image {
-  width: 6rem;
-  height: 6rem;
+  width: 5rem;
+  height: 5rem;
   border-radius: 50%;
   justify-content: center;
   align-items: center;
@@ -38,8 +48,7 @@
 .nickname_time-box {
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
-  margin-left: 0.5rem;
+  margin-left: 1rem;
 }
 
 .writer_nickname {
@@ -47,6 +56,15 @@
   font-size: 2rem;
   font-weight: bold;
   cursor: pointer;
+  @include mobile-only {
+    font-size: 1.8rem;
+  }
+  @include md {
+    font-size: 2rem;
+  }
+  @include lg {
+    font-size: 2rem;
+  }
 }
 
 .written_time {
@@ -91,22 +109,36 @@
 }
 
 .detail-infinite-scroll {
-  height: 40rem;
+  height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
 }
 
+.detail-infinite-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 .post-text {
   display: flex;
-  font-size: 1.8em;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   margin-left: 1rem;
   margin-right: 1rem;
   text-align: left;
+  @include mobile-only {
+    font-size: 1.3rem;
+  }
+  @include md {
+    font-size: 1.6rem;
+  }
+  @include lg {
+    font-size: 1.6rem;
+  }
 }
 
 .post-tags {
-  margin: 1rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
   justify-content: flex-start;
   display: flex;
   flex-direction: row;
@@ -119,14 +151,23 @@
   border: 1px solid #4f4f4f;
   border-radius: 10px;
   color: #4f4f4f;
-  font-size: 1.1em;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-right: 0.3rem;
+  margin-top: 0.5rem;
+  margin-right: 0.4em;
   padding: 0.5rem;
   cursor: pointer;
+  @include mobile-only {
+    font-size: 1rem;
+  }
+  @include md {
+    font-size: 1.1rem;
+  }
+  @include lg {
+    font-size: 1.1rem;
+  }
 }
 
 .detail-footer {
@@ -141,6 +182,7 @@
   flex-direction: row;
   margin-left: 0.2rem;
   margin-top: 1rem;
+  align-items: center;
 }
 
 .likeUnlikeIcon {
@@ -160,15 +202,16 @@
 }
 
 .totallikes {
+  display: flex;
   margin-right: 0.3rem;
   font-size: 1.5rem;
   font-weight: bold;
+  align-items: flex-end;
 }
 
 .totalcomments {
   font-size: 1.5rem;
   font-weight: bold;
-  width: 1rem;
 }
 
 .comment-writing {
@@ -180,7 +223,7 @@
 .comment-writing-title {
   display: flex;
   justify-content: flex-start;
-  margin-left: 1rem;
+  margin-left: 1.3rem;
   margin-top: 1rem;
   margin-bottom: 0.2rem;
 }
@@ -243,9 +286,9 @@
 .comment_list {
   list-style: none;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin-top: 1.5rem;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .comment_info {
@@ -254,48 +297,55 @@
 }
 
 .comment-writer_profile_image {
-  width: 3rem;
-  height: 3rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  min-width: 3.5rem;
+  min-height: 3.5rem;
   border-radius: 50%;
   justify-content: center;
   cursor: pointer;
 }
 
+.writer-nickname-time-delete-box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  min-width: 10rem;
+  margin-left: 1rem;
+}
+
 .comment-writer-nickname {
-  margin-left: 0.5rem;
   font-size: 1.2rem;
   font-weight: bold;
-  justify-content: center;
-  align-items: center;
   cursor: pointer;
 }
 
 .comment-written-time {
-  justify-content: flex-end;
-  display: flex;
-  min-width: 10rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  font-size: 0.8rem;
+  color: rgb(64, 64, 64);
 }
 
-.comment-text {
-  margin-left: 0.5rem;
-  flex-wrap: wrap;
-  font-size: 1.2rem;
-  max-width: 26rem;
-  word-break: break-all;
-  display: flex;
-  justify-content: flex-start;
-  text-align: left;
-  align-items: center;
+.comment-modify {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
 }
 
 .comment-delete {
   width: 1rem;
   height: 1rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
   cursor: pointer;
 }
 
-.comment-modify {
-  cursor: pointer;
+.comment-text {
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
+  align-items: flex-start;
 }

@@ -6,13 +6,14 @@ import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '..'
 
+
 function Track() {
   const { roads } = useSelector((state: RootState) => state.articleDetails.articleInfo)
 
 
   return (
     <div className="track_container">
-      <div className="track_title">장소정보</div>
+      <div className="track_title">장소 정보</div>
       <div className="track_marker_div">
         {roads 
         ? 

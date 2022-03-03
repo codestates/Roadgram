@@ -11,6 +11,17 @@
   background-color: white;
   border-radius: 20px;
   box-shadow: 3px 3px 6px 3px rgb(212, 212, 212);
+  @include mobile-only {
+    height: 52%;
+  }
+  @include md {
+    height: 100%;
+    width: 40rem;
+  }
+  @include lg {
+    height: 40rem;
+    width: 100%;
+  }
 }
 
 .image {

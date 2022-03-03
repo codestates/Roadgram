@@ -35,20 +35,13 @@ function PostDetailsPage() {
 
   return (
     <div className="total-container">
-      {/* <div className="post-details-container"> */}
       <div className="media-track-box">
-        {/* <div className="media"> */}
         <Media />
-        {/* </div> */}
-        {/* <div className="track"> */}
         <Track />
-        {/* </div> */}
       </div>
       <div className="contents-detail-box">
         <ContentsDetail />
       </div>
-      {/* </div> */}
-      {/* <Media /> */}
     </div>
   )
 }

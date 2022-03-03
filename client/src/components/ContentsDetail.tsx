@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import Comments from './Comments';
 import { RootState } from '..';
-import '../styles/components/_contentsDetails.scss';
+// import '../styles/components/_contentsDetails.scss';
 import { detailInfo, updateTotalComments } from '../store/ArticleDetailSlice';
 import { articleDeleteModal } from '../store/ModalSlice';
 import { likeUnlike } from '../store/ArticleDetailSlice';
@@ -208,35 +208,38 @@ function ContentsDetail() {
                   className="comment_list"
                   key={each.id}
                 >
-                  <div className="comment_info">
+                  {/* <div className="comment_info"> */}
                     <img
                       alt="profile_image"
                       src={each.profileImage}
                       className="comment-writer_profile_image" 
                       onClick={() => {navigate(`/userinfo?id=${each.userId}`)}}
                       onKeyDown={() => {navigate(`/userinfo?id=${each.userId}`)}} />
-                    <span
-                      className="comment-writer-nickname"
-                      role="contentinfo"
-                      onClick={() => {navigate(`/userinfo?id=${each.userId}`)}}
-                      onKeyDown={() => {navigate(`/userinfo?id=${each.userId}`)}}>{each.nickname}</span>
-                    <div className="comment-text">{each.comment}</div>
-                  </div>
-                  <div className="comment-written-time">
-                    {
-                      userInfo.id === each.userId
-                      ? <div>
-                          {/* <FontAwesomeIcon className="comment-modify" icon={faPencil} onClick={() => updateComment(each.id, each.comment)} /> */}
-                          <FontAwesomeIcon className="comment-delete" icon={faTrashCan} onClick={() => deleteComment(each.id)} />
-                        </div>
-                      : null
-                    }
-                    <span>{`${String(each.createdAt).slice(0, 10)} ${String(each.createdAt).slice(11, 16)}`}</span>
-                  </div>
+                    <div className="comment-info">
+                      <div className="writer-nickname-time-delete-box">
+                        <span
+                          className="comment-writer-nickname"
+                          role="contentinfo"
+                          onClick={() => {navigate(`/userinfo?id=${each.userId}`)}}
+                          onKeyDown={() => {navigate(`/userinfo?id=${each.userId}`)}}>{each.nickname}
+                        </span>
+                        <span className="comment-written-time">{`${String(each.createdAt).slice(0, 10)} ${String(each.createdAt).slice(11, 16)}`}</span>
+                        {
+                          userInfo.id === each.userId
+                          ? <div>
+                              {/* <FontAwesomeIcon className="comment-modify" icon={faPencil} onClick={() => updateComment(each.id, each.comment)} /> */}
+                              <FontAwesomeIcon className="comment-delete" icon={faTrashCan} onClick={() => deleteComment(each.id)} />
+                            </div>
+                          : null
+                        }
+                      </div>
+                      <div className="comment-text">{each.comment}</div>
+                    </div>
+                  {/* </div> */}
                 </li>
               )
             })
-            : <div>1</div>
+            : <div>No Comments Yet!</div>
           }
           </div>
         </div>
