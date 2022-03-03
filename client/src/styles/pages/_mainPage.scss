@@ -13,7 +13,7 @@
 
 #mainContainer {
   // border: 1px solid green;
-  background-color: rgb(247, 248, 249);
+  background-color: rgb(249, 249, 250);
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -98,13 +98,13 @@
     .communityBox {
       // border: 1px solid green;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       width: 100%;
       label{
         display:flex;
         justify-content: center;
-        align-items: center;
+        align-items:center;
         @include mobile-only {
           margin-left: 6%;
         }
@@ -112,7 +112,7 @@
           margin-left: 1%;
         }
         @include lg {
-          margin-left: 1rem;
+          margin-left: 0;
         }
       }
 
@@ -145,10 +145,12 @@
         @include md {
           font-size: 150%;
           padding-left: 3%;
+          width:7rem;
         }
         @include lg {
           font-size: 160%;
           padding-left: 0.5rem;
+          width:8rem;
         }
       }
 
@@ -159,8 +161,8 @@
       .iconBox {
         // border: 1px solid green;
         display: flex;
-        flex: 1;
         justify-content: flex-end;
+        margin:0;
         @include mobile-only {
           padding-right: 5%;
         }
@@ -174,11 +176,11 @@
           }
           @include md {
             height: 1.8rem;
-            margin-right: 0.8rem;
+            margin-right: 0.4rem;
           }
           @include lg {
             height: 2rem;
-            margin-right: 1.2rem;
+            margin-right: 0.8rem;
           }
         }
 
@@ -190,11 +192,11 @@
           }
           @include md {
             height: 1.8rem;
-            margin-right: 0.8rem;
+            margin-right: 0.4rem;
           }
           @include lg {
             height: 2rem;
-            margin-right: 1.2rem;
+            margin-right: 0.8rem;
           }
         }
 
@@ -205,7 +207,7 @@
         .like {
           color: gray;
           @include mobile-only {
-            margin: 0.1rem 0.6rem 0 0;
+            margin: 0.1rem 0.5rem 0 0;
             font-size: 130%;
           }
           @include md {
@@ -213,14 +215,14 @@
             font-size: 1.3rem;
           }
           @include lg {
-            margin: 0.2rem 1rem 0 0;
+            margin: 0.2rem 0.8rem 0 0;
             font-size: 1.5rem;
           }
         }
         .reply {
           color: gray;
           @include mobile-only {
-            margin: 0.1rem 0.6rem 0 0;
+            margin: 0.1rem 0.5rem 0 0;
             font-size: 130%;
           }
           @include md {
