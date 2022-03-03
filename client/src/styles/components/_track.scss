@@ -1,6 +1,5 @@
 .track-container {
   display: flex;
-  height: 24rem;
   flex-direction: column;
   justify-content: flex-start;
   border: 1px solid white;
@@ -9,6 +8,18 @@
   align-self: flex-end;
   margin-top: 1rem;
   box-shadow: 3px 3px 6px 3px rgb(212, 212, 212);
+  @include mobile-only {
+    height: 47%;
+  }
+  @include md {
+    width: 29rem;
+    height: 100%;
+    margin-left: 1rem;
+  }
+  @include lg {
+    width: 100%;
+    height: 30rem;
+  }
 }
 
 .title {

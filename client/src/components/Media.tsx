@@ -1,5 +1,4 @@
 import React from 'react'
-import '../styles/components/_media.scss'
 
 function Media() {
   return (
