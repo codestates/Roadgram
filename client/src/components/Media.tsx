@@ -1,29 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleLeft, faAngleRight, faCircle } from '@fortawesome/free-solid-svg-icons'
+import { faChevronCircleLeft, faChevronCircleRight, faCircle } from '@fortawesome/free-solid-svg-icons'
 import { RootState } from '..'
-
-declare global {
-  interface Window {
-    kakao: any
-  }
-}
-
-// 지도의 범위를 설정하는 함수를 불러온다
-const bounds = new window.kakao.maps.LatLngBounds()
 
 function Media() {
   const { articleInfo } = useSelector((state: RootState) => state.articleDetails)
-
   const [current, setCurrent] = useState(0)
+  const [isStaticMap, setIsStaticMap] = useState(true)
   const [imageLength, setImageLength] = useState(0)
   const [isMap, setIsMap] = useState(false)
+
 
   useEffect(() => {
     if (articleInfo.roads) {
       setImageLength(articleInfo.roads.length)
     }
+    
   }, [current])
 
   const nextSlide = () => {
@@ -38,41 +31,60 @@ function Media() {
     setCurrent(index)
   }
 
-  console.log(current)
-  // console.log(articleInfo.roads.indexOf(articleInfo.roads[2]))
-
   if (!Array.isArray(articleInfo.roads || imageLength <= 0)) {
     return null
   }
 
   return (
-    <div>
-      <div className="slider">
-        <FontAwesomeIcon className="angleLeft" icon={faAngleLeft} onClick={prevSlide} />
-        <FontAwesomeIcon className="angleRight" icon={faAngleRight} onClick={nextSlide} />
-        <div className="dots">
-          {articleInfo.roads ? (
-            articleInfo.roads.map(image => {
-              return (
-                <FontAwesomeIcon
-                  className={articleInfo.roads.indexOf(image) === current ? 'dot-active' : 'dot'}
-                  icon={faCircle}
-                  onClick={() => moveDot(articleInfo.roads.indexOf(image))}
-                />
-              )
-            })
-          ) : (
-            <div>등록된 이미지가 없습니다.</div>
-          )}
-        </div>
-        {articleInfo.roads.map(image => {
+    <div className="slider">
+      {!isStaticMap && articleInfo.roads && articleInfo.roads.length > 0
+        ? <>
+            <FontAwesomeIcon className="angleLeft" icon={faChevronCircleLeft} onClick={prevSlide} />
+            <FontAwesomeIcon className="angleRight" icon={faChevronCircleRight} onClick={nextSlide} />
+          </>
+        : null
+      }
+      {articleInfo.roads && articleInfo.roads.length > 0
+        ? <div className="view_selectbox">
+            <li 
+              className={`${isStaticMap ? "view_span_select" : "view_span"}`} 
+              onClick={()=>setIsStaticMap(true)}
+              onKeyDown={()=>setIsStaticMap(true)}
+            >경로보기</li>
+            <span className="road_view">ㅣ</span>
+            <li 
+              className={`${isStaticMap ? "view_span" : "view_span_select"}`}
+              onClick={()=>setIsStaticMap(false)}
+              onKeyDown={()=>setIsStaticMap(false)} 
+            >사진보기</li>
+          </div>
+        : null
+      }
+      <div className="dots">
+        {!isStaticMap && articleInfo.roads && articleInfo.roads.length > 0
+        ? (
+          articleInfo.roads.map(image => {
+            return (
+              <FontAwesomeIcon
+                className={articleInfo.roads.indexOf(image) === current ? 'dot-active' : 'dot'}
+                icon={faCircle}
+                onClick={() => moveDot(articleInfo.roads.indexOf(image))}
+              />
+            )
+          })
+        ) : null
+        }
+      </div>
+      { isStaticMap ?
+        <div key={articleInfo.thumbnail} id="staticMap" />
+        : articleInfo.roads.map(image => {
           return (
             <div className={articleInfo.roads.indexOf(image) === current ? 'slide active' : 'slide'}>
               {articleInfo.roads.indexOf(image) === current && <img className="image" alt="img" src={image.imageSrc} />}
             </div>
           )
-        })}
-      </div>
+        })
+      }
     </div>
   )
 }
