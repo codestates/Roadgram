@@ -267,18 +267,22 @@ export class UsersService {
 
                 interface articleObject {
                     id: string,
+                    userId:number,
                     thumbnail: string,
                     nickname: string
                     totalLike: number,
                     totalComment: number,
+                    profileImage:string,
                     tags: string[]
                 }
                 let creation: articleObject = {
                     id: article.id,
+                    userId:other||user,
                     thumbnail: article.thumbnail,
                     nickname: userInfo.nickname,
                     totalLike: article.totalLike,
                     totalComment: article.totalComment,
+                    profileImage:userInfo.profileImage,
                     tags: article.tags
                 };
                 newArticles.push(creation);

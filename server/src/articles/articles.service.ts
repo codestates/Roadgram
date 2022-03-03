@@ -79,6 +79,7 @@ export class ArticlesService {
         // API 문서에 양식에 맞게 네이밍
         interface articleObject {
           id: string;
+          userId:number;
           thumbnail: string;
           nickname: string;
           profileImage: string;
@@ -88,6 +89,7 @@ export class ArticlesService {
         }
         let creation: articleObject = {
           id: article.id,
+          userId:userId,
           thumbnail: article.thumbnail,
           nickname: writer,
           profileImage,
@@ -253,6 +255,7 @@ export class ArticlesService {
 
       interface articleObject {
         id: string;
+        userId:number;
         thumbnail: string;
         nickname: string;
         profileImage: string;
@@ -262,6 +265,7 @@ export class ArticlesService {
       }
       let creation: articleObject = {
         id: article.id,
+        userId:userId,
         thumbnail: article.thumbnail,
         nickname: writer,
         profileImage,

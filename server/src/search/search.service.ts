@@ -50,6 +50,7 @@ export class SearchService {
   
           interface articleObject {
               id: string,
+              userId:number,
               thumbnail: string,
               nickname: string,
               profileImage: string,
@@ -59,6 +60,7 @@ export class SearchService {
           }
           let creation: articleObject = {
               id: article.id,
+              userId:userId,
               thumbnail: article.thumbnail,
               nickname: writer,
               profileImage,
