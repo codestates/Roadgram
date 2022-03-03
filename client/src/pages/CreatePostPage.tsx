@@ -98,18 +98,18 @@ function CreatePostPage() {
       </div>
       <h1>게시글 작성</h1>
     </div>
-    <section className='createpost_tag_section'>
+    <div className='createpost_tag_section'>
       <span className='createpost_tag_title'>* 태그</span>
       <Tag/>
-    </section>
-    <section className='createpost_content_section'>
+    </div>
+    <div className='createpost_content_section'>
       <span className='createpost_content_title'>* 본문</span>
       <TextArea/>
-    </section>
-    <section className='createpost_upload_section'>
+    </div>
+    <div className='createpost_upload_section'>
       <span className='createpost_upload_title'>* 이미지 업로드</span>
       <Upload/>
-    </section>
+    </div>
     <div className='createpost_submit_button_div'>
       <button className='createpost_cancel_button' type="button" onClick={() => cancelPost()}>작성취소</button>
       <button className='createpost_submit_button' type="submit" onClick={() => posting()}>저장하기</button>

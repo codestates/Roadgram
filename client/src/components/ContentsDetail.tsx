@@ -13,7 +13,7 @@ import { articleDeleteModal } from '../store/ModalSlice';
 import { likeUnlike } from '../store/ArticleDetailSlice';
 import ArticleDeleteModal from './Modals/articleDeleteCheck';
 import { setTag } from '../store/ArticleSlice';
-import { addComment, getComments, removeComment, resetComments } from '../store/CommentsSlice';
+import { addComment, getComments, removeComment } from '../store/CommentsSlice';
 
 
 function ContentsDetail() {
@@ -55,7 +55,7 @@ function ContentsDetail() {
   }
 
   // 수정 버튼 온클릭 연결
-  const moveToEdit = async () =>{
+  const moveToEdit = () =>{
     navigate(`/editpost?id=${articleInfo.id}`);
   }
 
