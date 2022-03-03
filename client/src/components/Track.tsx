@@ -7,18 +7,31 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '..'
 
 function Track() {
-  const { articleInfo } = useSelector((state: RootState) => state.articleDetails)
-  // console.log(articleInfo)
+  const { roads } = useSelector((state: RootState) => state.articleDetails.articleInfo)
+
 
   return (
-    <div className="track-container">
-      <div>장소정보</div>
-      <div className="marker_div">
-        <FontAwesomeIcon className="markerImg" icon={faLocationDot} />
-        <div>
-          <div className="marker_span">서울 남산 타워</div>
-          <div>서울시 노원구 상계동 22-12</div>
-        </div>
+    <div className="track_container">
+      <div className="track_title">장소정보</div>
+      <div className="track_marker_div">
+        {roads 
+        ? 
+          roads.map((road) => {
+            return (
+              <div key={road.imageSrc} className="track_marker_each_div">
+                <div className="track_marker_icon_div">
+                  <FontAwesomeIcon className="track_marker_icon" icon={faLocationDot} />
+                  <FontAwesomeIcon className="ellipsis_icon" icon={faEllipsisVertical} />  
+                </div>
+                <div className="track_maker_name_div">
+                    <span className="track_marker_placename">{road.placeName}</span>
+                    <span className="track_marker_addressname">{road.addressName}</span>
+                </div>
+              </div>
+            )
+        })
+        : <div>1</div>
+      }
       </div>
       <FontAwesomeIcon className="ellipsis" icon={faEllipsisVertical} />
     </div>
@@ -26,3 +39,4 @@ function Track() {
 }
 
 export default Track
+

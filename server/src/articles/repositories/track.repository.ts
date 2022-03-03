@@ -5,7 +5,6 @@ import { Track } from "../entities/track.entity";
 export class TrackRepository extends Repository<Track>{
   async createTrack(road: [], articleId: number) {
     return await Promise.all(road.map(async (each) => {
-      console.log("each", each);
       const { order, imageSrc, placeName, addressName, x, y } = each;
       const track = await this.save({ order, imageSrc, placeName, addressName, x, y, articleId });
       return {

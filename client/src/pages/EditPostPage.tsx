@@ -121,6 +121,9 @@ function EditPostPage() {
   return (
   <div className='createpost_whole_div'>
     <div className="createpost_title_div">
+    <div className="arrow_icon_div">
+        <FontAwesomeIcon icon={faArrowLeft} className="arrow_icon" onClick={() => cancelPost()}/>
+      </div>
       <h1>게시글 수정</h1>
       <span className='inform_span'>※ 게시물 수정은 태그와 본문 수정만 가능합니다.</span>
     </div>
@@ -137,7 +140,6 @@ function EditPostPage() {
       <UploadHold/>
     </section>
     <div className='createpost_submit_button_div'>
-      <button className='createpost_cancel_button' type="button" onClick={() => cancelPost()}>취소</button>
       <button className='createpost_submit_button' type="submit" onClick={() => posting()}>수정하기</button>
     </div>
   </div>

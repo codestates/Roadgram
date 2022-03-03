@@ -1,23 +1,28 @@
 .createpost_content_section {
   width: 100%;
-  height: 18%;
-  // background-color: blanchedalmond;
+  height: 14rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  
-  ::placeholder {
-    font-size: 14px;
-    margin-left: 10px;
-  }
 
   textarea {
-    font-size: 14px;
+    font-size: 1.5rem;
     width: 90%;
-    height: 90%;
     margin: 2rem 0 0 20px;
+    padding: 1rem;
     border-radius: 6px;
     border: 1px solid lightgray;
+    // text-indent: 1.5rem;
+    height: 12rem;
+    @include mobile-only {
+      font-size: 2.5vmin;
+    }
+    @include md {
+      font-size: 1.5rem;
+    }
+    @include lg {
+      font-size: 1.5rem;
+    }
 
     &:focus {
       outline: transparent;

@@ -12,19 +12,19 @@ export interface articleInfo {
   id: number
   content: string
   roads: {
-    placeName: string
-    addressName: string
-    x: number
-    y: number
-    imageSrc: string
+    placeName: string,
+    addressName: string,
+    x: number,
+    y: number,
+    imageSrc: string,
     order: number
-  }[]
-  thumbnail: string
-  tags?: string[] | undefined | any
-  totalLike: number
-  totalComment: number
-  likedOrNot: boolean
-  createdAt: Date | null
+  }[];
+  thumbnail: string;
+  tags?: string[] | undefined | any;
+  totalLike: number;
+  totalComment: number;
+  likedOrNot: boolean;
+  createdAt: Date | null;
 }
 
 export interface articleDetails {

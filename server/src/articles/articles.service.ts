@@ -130,6 +130,7 @@ export class ArticlesService {
     // }
     // const afterTagCount = await this.articleToTagRepository.countTag(articleId);
     try {
+      console.log(`findOrCreateTags, user ===${user}, articleId === ${articleId}, tag === ${tag}`)
       return await Promise.all(
         tag.map(async (eachTag) => {
           const { tagName, order } = eachTag;
