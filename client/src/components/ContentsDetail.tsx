@@ -1,7 +1,7 @@
 import { faCommentDots, faHeart as solidHeart, faPencil } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan, faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,7 +13,7 @@ import { articleDeleteModal } from '../store/ModalSlice';
 import { likeUnlike } from '../store/ArticleDetailSlice';
 import ArticleDeleteModal from './Modals/articleDeleteCheck';
 import { setTag } from '../store/ArticleSlice';
-import { addComment, getComments, removeComment } from '../store/CommentsSlice';
+import { addComment, addNextPageComment, getComments, removeComment } from '../store/CommentsSlice';
 
 
 function ContentsDetail() {
@@ -30,6 +30,9 @@ function ContentsDetail() {
   const [ isUpdatable, setIsUpdatable ] = useState(false);
   const [ targetCommentId, setTargetCommentId ] = useState(0);
   const [ targetComment, setTargetComment ] = useState('');
+
+  const [page,setPage]=useState(2);
+  const [endScroll,setEndScroll]=useState(false);
 
   // 수정 버튼 클릭 후 편집 모드 이동, 게시물 저장 시 실행하는 핸들러. 여기 아님
   const updateArticle = async () => {
@@ -167,6 +170,37 @@ function ContentsDetail() {
       navigate(`/postdetails?id=${articleInfo.id}`);
     })
   }
+
+  const nextPageComments=async()=>{
+    try{
+      const res=await axios.get(`${process.env.REACT_APP_API_URL}/comments?id=${articleInfo.id}&page=${page}`);
+      dispatch(addNextPageComment(res.data.data));
+    } catch{
+      setEndScroll(true);
+    }
+  }
+
+  const handleScroll = useCallback((): void => {
+    const { clientHeight } = document.getElementsByClassName('detail-infinite-scroll')[0];// 팔로우 모달창 높이
+    const { scrollHeight } = document.getElementsByClassName('detail-infinite-scroll')[0];// 총 스크롤 길이
+    const { scrollTop } = document.getElementsByClassName('detail-infinite-scroll')[0];// 스크롤 현 위치
+    // 팔로우 모달창 길이와 스크롤 현위치를 더해서 총 스크롤 길이가 되면 다음 데이터 호출
+    if (Math.round(scrollTop + clientHeight) >= scrollHeight) {
+      nextPageComments();
+      setPage(page + 1);
+    }
+  }, [page]);
+
+  useEffect(() => {
+    if (!endScroll) {
+      window.addEventListener('scroll', handleScroll, true);
+    }
+    return () => {
+      window.removeEventListener('scroll', handleScroll, true);
+    }
+  }, [handleScroll])
+  
+  console.log(page,endScroll)
 
   return (
     <div className="detail-container">

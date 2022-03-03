@@ -5,6 +5,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export interface articles {
   mainArticles: {
     id: number,
+    userId:number,
     thumbnail?: string,
     profileImage?: string,
     nickname?: string,

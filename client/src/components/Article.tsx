@@ -10,6 +10,7 @@ import { detailInfo } from '../store/ArticleDetailSlice'
 import { resetCreatePost } from '../store/createPostSlice'
 import { resetKaKao } from '../store/LocationListSlice'
 import { resetRouteList } from '../store/RouteListSlice'
+import { resetUserInfo, update } from '../store/UserInfoSlice'
 
 function Article() {
   const dispatch = useDispatch()
@@ -33,6 +34,11 @@ function Article() {
   const updateTargetId = async (id: number) => {
     dispatch(detailInfo({ targetId: id, userInfo: {}, articleInfo: {} }))
     navigate(`/postdetails?id=${id}`)
+  }
+
+  const moveToUserInfo=(id:number)=>{
+    dispatch(update({ targetId: id, userInfo: {}, articles: [] }));
+    navigate(`/userinfo?id=${id}`)
   }
 
   return (
@@ -61,12 +67,18 @@ function Article() {
                 })}
             </div>
             <div className="communityBox">
-              <img
-                className="profileImage"
-                alt="profileImage"
-                src="https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2F20150809_137%2Fx_o97_1439095643355YwvXT_JPEG%2FNa1439095638572.jpg&type=sc960_832"
-              />
-              <div className="nickname">{article.nickname}</div>
+              <label htmlFor={`moveToUserInfo${article.id}`}>
+                <img
+                  className="profileImage"
+                  alt="profileImage"
+                  src={`${article.profileImage}`}
+                />
+                <div className="nickname">{article.nickname}</div>
+              </label>
+              <button id={`moveToUserInfo${article.id}`} type='button' className='hidden' onClick={() => {
+                console.log(article);
+                moveToUserInfo(article.userId);
+                }}>21231</button>
               <div className="iconBox">
                 <FontAwesomeIcon className="mainIcon_heart" icon={faHeart} />
                 <div className="like">관심 {article.totalLike}</div>

@@ -101,24 +101,35 @@
       justify-content: center;
       align-items: center;
       width: 100%;
-
-      .profileImage {
-        // border: 1px solid green;
-        border-radius: 10rem;
+      label{
+        display:flex;
+        justify-content: center;
+        align-items: center;
         @include mobile-only {
-          width: 6%;
-          height: 6%;
           margin-left: 6%;
         }
         @include md {
-          width: 8%;
-          height: 8%;
-          margin-left: 5%;
+          margin-left: 1%;
         }
         @include lg {
-          width: 7%;
-          height: 7%;
           margin-left: 1rem;
+        }
+      }
+
+      .profileImage {
+        // border: 1px solid green;
+        border-radius: 100%;
+        @include mobile-only {
+          width: 2.3rem;
+          height: 2.3rem;
+        }
+        @include md {
+          width: 3rem;
+          height: 3rem;
+        }
+        @include lg {
+          width: 3.5rem;
+          height: 3.5rem;
         }
       }
 
@@ -230,6 +241,10 @@
   // border: 3px solid blue;
   background-color: rgb(249, 249, 250);
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   @include mobile-only {
     padding-top: 5rem;
   }
@@ -240,5 +255,43 @@
     padding-top: 12rem;
     padding-left: 4%;
     padding-right: 4%;
+  }
+}
+.main_buttons{
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 0 0 3%;
+  width:100%;
+  button{
+    border:none;
+    background-color: rgb(249, 249, 250);
+    padding:1%;
+    border-radius: 4px;
+    @include mobile-only{
+      height:40px;
+      width:80px;
+      font-size: 16px;
+    }
+    @include md{
+      height:50px;
+      width:100px;
+      font-size: 20px;
+    }
+    @include lg{
+      height: 50px;
+      width: 100px;
+      font-size: 20px;
+    }
+  }
+  .button_selected{
+    background-color: #f2f4f6;
+  }
+  .button_unSelected{
+    &:hover{
+      cursor: pointer;
+      background-color: #f2f4f6;
+    }
   }
 }
