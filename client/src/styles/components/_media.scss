@@ -1,12 +1,13 @@
 .slider {
-  // display: flex;
-  width: 44rem;
-  height: 35rem;
+  display: flex;
+  // width: 100%;
+  // height: 100%;
   // flex-direction: column;
-  // justify-content: flex-start;
+  justify-content: center;
   // border: 1px solid white;
   position: relative;
-  margin: 0 auto;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
   background-color: white;
   border-radius: 20px;
@@ -25,8 +26,13 @@
 }
 
 .image {
-  width: 44rem;
-  height: 35rem;
+  width: 100%;
+  height: 100%;
+  // margin: 0;
+  // padding: 0;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
 }
 
 .angleLeft {
@@ -34,30 +40,33 @@
   transition: 0.6s;
   left: 2rem;
   top: 40%;
-  color: gray;
-  opacity: 0.3;
+  color: black;
+  opacity: 0.5;
   height: 5rem;
   z-index: 10;
+  width: 4rem;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
-.angleLeft:hover {
-  opacity: 1;
-}
 
 .angleRight {
   position: absolute;
   transition: 0.6s;
   right: 2rem;
-  color: gray;
-  opacity: 0.3;
+  color: black;
+  opacity: 0.5;
   height: 5rem;
   top: 40%;
   z-index: 10;
+  width: 4rem;
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
-.angleRight:hover {
-  opacity: 1;
-}
 
 .slide {
   opacity: 0;
@@ -78,23 +87,73 @@
 }
 
 .dot-active {
-  opacity: 1;
-  color: gray;
+  opacity: 0.9;
+  color: white;
   z-index: 10;
   height: 1.5rem;
   margin: 0.4rem;
   transition: 0.4s;
+  border-radius: 50%;
+  box-shadow: 2px 2px rgb(177, 176, 176);
 }
 
 .dot {
-  opacity: 0.7;
+  opacity: 0.5;
   color: gray;
   z-index: 10;
   height: 1.5rem;
   margin: 0.4rem;
   transition: 0.4s;
+  border-radius: 50%;
+  box-shadow: 2px 2px rgb(73, 73, 73);
 }
 
 .dot:hover {
   opacity: 1;
 }
+
+#staticMap {
+  width: 100%;
+  height: 100%;
+}
+
+.view_selectbox {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: absolute;
+  top: 5%;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid lightgray;
+  opacity: 1;
+  height: 5rem;
+  z-index: 12;
+  width: 35%;
+  height: 10%;
+  border-radius: 1rem;
+  margin: 0;
+  padding: 0;
+
+  .view_span {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: black;
+    z-index: 10;
+    &:hover {
+      cursor: pointer;
+    }
+    list-style: none;
+  }
+  
+  .view_span_select {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #4680ff;
+    z-index: 10;
+    list-style: none;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
