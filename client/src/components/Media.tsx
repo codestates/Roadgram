@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import '../styles/components/_media.scss'
 import { useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft, faAngleRight, faCircle } from '@fortawesome/free-solid-svg-icons'
