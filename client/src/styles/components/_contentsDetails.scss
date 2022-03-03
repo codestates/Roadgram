@@ -297,8 +297,12 @@
   list-style: none;
   display: flex;
   justify-content: flex-start;
-  margin-top: 2rem;
+  margin-top: 1rem;
+  padding: 1rem;
   align-items: flex-start;
+  &:hover {
+    background-color: rgb(241, 238, 238);
+  }
 }
 
 .comment_info {
