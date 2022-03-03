@@ -23,10 +23,14 @@
     visibility: visible;
     position: absolute;
     z-index: 10;
+    border:1px solid #e5e8eb;
     background-color: white;
     font-weight: bold;
     transition: all 0.2s;
     border-radius: 0rem 0rem 0rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     @include mobile-only {
       width: 8rem;
       height: 4.5rem;
@@ -49,19 +53,31 @@
       right: 0rem;
       top: 10rem;
     }
-
-    .mypageMenu {
-      @include mobile-only {
-        margin: 0.8rem;
-      }
-      @include md {
-        margin: 0.8rem;
-      }
-
-      @include lg {
-        margin: 1rem;
+    a{
+      display: flex;
+      height: 50%;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      &:hover{
+        cursor: pointer;
+        background-color: #F2f4f6;
+        border-radius: 0rem 0rem 0rem 1rem;
       }
     }
+
+    // .mypageMenu {
+    //   @include mobile-only {
+    //     margin: 0.8rem;
+    //   }
+    //   @include md {
+    //     margin: 0.8rem;
+    //   }
+
+    //   @include lg {
+    //     margin: 1rem;
+    //   }
+    // }
   }
 
   .hiddenMenu {
