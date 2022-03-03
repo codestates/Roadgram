@@ -4,18 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleLeft, faChevronCircleRight, faCircle } from '@fortawesome/free-solid-svg-icons'
 import { RootState } from '..'
 
-declare global {
-  interface Window {
-    kakao: any
-  }
-}
-
 function Media() {
-
   const { articleInfo } = useSelector((state: RootState) => state.articleDetails)
   const [current, setCurrent] = useState(0)
   const [isStaticMap, setIsStaticMap] = useState(true)
   const [imageLength, setImageLength] = useState(0)
+  const [isMap, setIsMap] = useState(false)
 
 
   useEffect(() => {
