@@ -5,7 +5,6 @@ import { RootState } from '..'
 import ContentsDetail from '../components/ContentsDetail'
 import Media from '../components/Media'
 import Track from '../components/Track'
-import Map from '../components/Map'
 import { detailInfo } from '../store/ArticleDetailSlice'
 import { getComments } from '../store/CommentsSlice'
 
@@ -14,7 +13,7 @@ function PostDetailsPage() {
   // article detail 상태 정보 갖고 오기
   const { userInfo, accessToken } = useSelector((state: RootState) => state.auth)
   const { targetId, writerInfo, articleInfo } = useSelector((state: RootState) => state.articleDetails)
-
+  
   useEffect(() => {
     const url = new URL(window.location.href)
     const id: string | null = url.searchParams.get('id')
@@ -31,7 +30,7 @@ function PostDetailsPage() {
   const getArticleComments = async (id: number) => {
     await axios.get(`${process.env.REACT_APP_API_URL}/comments?id=${id}&page=${1}`).then(res => {
       dispatch(getComments(res.data.data))
-    }).catch(()=>{
+    }).catch(err => {
       dispatch(getComments([]))
     })
   }
@@ -40,7 +39,6 @@ function PostDetailsPage() {
     <div className="total-container">
       <div className="media-track-box">
         <Media />
-        {/* <Map /> */}
         <Track />
       </div>
       <div className="contents-detail-box">

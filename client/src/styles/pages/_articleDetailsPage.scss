@@ -7,10 +7,10 @@
   width: 100%;
   @include mobile-only {
     margin-top: 5%;
-    padding-top: 4%;
-    padding-bottom: 4%;
+    padding-top: 2%;
+    padding-bottom: 2%;
     flex-direction: column;
-    height: 170%;
+    height: 160%;
   }
   @include md {
     margin-top: 7%;

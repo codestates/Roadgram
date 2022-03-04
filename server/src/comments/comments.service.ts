@@ -61,7 +61,7 @@ export class CommentsService {
     let limit: number = 10;
     let offset: number = (page - 1) * 10;
     const comments = await this.commentRepository.getComments(articleId, limit, offset);
-    if(!comments.length) throw new NotFoundException('cannot find comments');
+    if (!comments.length) throw new NotFoundException('cannot find comments');
     const commentsList = await Promise.all(
       comments.map(async (comment) => {
         const commentUserInfo = await this.userRepository.getUserInfo(
@@ -77,13 +77,9 @@ export class CommentsService {
         };
       })
     )
-    if (commentsList.length === 0) {
-      return { message: 'No comments' }
-    } else {
-      return {
-        data: commentsList,
-        message: 'ok'
-      };
-    }
+    return {
+      data: commentsList,
+      message: 'ok'
+    };
   }
 }
