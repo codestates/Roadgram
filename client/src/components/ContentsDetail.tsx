@@ -33,6 +33,11 @@ function ContentsDetail() {
   const [page,setPage]=useState(2);
   const [endScroll,setEndScroll]=useState(false);
   
+  // 스크롤 초기화
+  useEffect(()=>{
+    document.documentElement.scrollTop=0;
+  },[]);
+  
   const deleteArticle = async () => {
     dispatch(articleDeleteModal(!isArticleDeleteModal));
   }
@@ -88,6 +93,8 @@ function ContentsDetail() {
         .then(res => {
           dispatch(getComments(res.data.data));
       })
+      setEndScroll(false);
+      setPage(2);
     } else if (isLogin && !comment) {
       alert("내용을 입력해주세요.")
     } else {
@@ -132,6 +139,8 @@ function ContentsDetail() {
       .then(res => {
         dispatch(getComments(res.data.data));
     })
+    setPage(2);
+    setEndScroll(false);
   }
 
   const deleteComment = async (id: number) => {
@@ -151,6 +160,8 @@ function ContentsDetail() {
       .then(res => {
         dispatch(getComments(res.data.data));
     })
+    setEndScroll(false);
+    setPage(2);
   }
 
   const nextPageComments=async()=>{
@@ -181,6 +192,7 @@ function ContentsDetail() {
       window.removeEventListener('scroll', handleScroll, true);
     }
   }, [handleScroll])
+
   
   console.log(page,endScroll)
 

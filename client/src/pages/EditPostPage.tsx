@@ -18,7 +18,7 @@ import UploadHold from '../components/CreatePostPage/UploadHold';
 function EditPostPage() {
   const state = useSelector((state: RootState) => state);
   const postInfo = useSelector((state: RootState) => state.createPost);
-  const {userInfo, accessToken} = useSelector((state: RootState) => state.auth)
+  const {isLogin,userInfo, accessToken} = useSelector((state: RootState) => state.auth)
   const {articleInfo, writerInfo} = useSelector((state: RootState) => state.articleDetails)
   const { routeList } = useSelector((state:RootState) => state.routes);
   const {content, tagsInfo, thumbnail} = postInfo;
@@ -26,13 +26,18 @@ function EditPostPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    document.documentElement.scrollTop=0; // 스크롤 초기화
     // createpost slice 값 세팅
     setEditPage();
     // url에서 id값 추출
     const url = new URL(window.location.href);
     const id: string | null = url.searchParams.get('id');
     // 첫 렌더링 시 유저 일치 여부 and 게시물 일치 여부 확인(state와 비교)
-    if(userInfo.id !== writerInfo.id ||Number(id) !== articleInfo.id ) {
+    if(!isLogin){
+      alert('로그인이 필요한 서비스입니다.');
+      navigate('/logins');
+    }
+    else if(userInfo.id !== writerInfo.id ||Number(id) !== articleInfo.id ) {
       alert("접근할 수 없는 경로입니다.")
       navigate('/main')
     }
