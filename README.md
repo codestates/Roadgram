@@ -1,6 +1,6 @@
 
 ## LOGO
-![Free_Sample_By_Wix_복사본-removebg-preview](https://user-images.githubusercontent.com/91880235/153423554-dede6f01-78c0-43a7-8527-18fbb69f4929.png)
+![Free_Sample_By_Wix_복사본-removebg-preview](https://user-images.githubusercontent.com/91672778/156760980-3cb0ac2b-e71c-4b8c-b759-8148e60501c6.png)
 <br>
 <br>
 <br>
