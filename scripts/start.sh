@@ -14,5 +14,4 @@ export TYPEORM_SEEDING_FACTORIES=$(aws ssm get-parameters --region ap-northeast-
 export TYPEORM_SEEDING_SEEDS=$(aws ssm get-parameters --region ap-northeast-2 --names TYPEORM_SEEDING_SEEDS --query Parameters[0].Value | sed 's/"//g')
 npm run schema:drop
 npm run schema:sync
-npm run seed:run
 pm2 start dist/src/main.js
