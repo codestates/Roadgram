@@ -40,26 +40,31 @@ function EditPostPage() {
   
   const setEditPage = () => {
     
-    // 태그 재저장
-    const newTags: { order: number; tagName: string; }[] = []
-    articleInfo.tags.forEach((tag: string, idx: number) => {
-      const newObj = {
-        order: idx + 1,
-        tagName: tag
-      }
-      newTags.push(newObj);
-    })
-    dispatch(setTagsInfo(newTags));
-   
-    // 썸네일 재저장
-    dispatch(setThumbnail(articleInfo.thumbnail)); 
-    // content 재저장
-    dispatch(setContent(articleInfo.content));
-    // roads 재저장
-    articleInfo.roads.forEach((road) => {
-      dispatch(addRouteList(road));
-    })
+    // 기존 포스트정보가 initialState 상태일때만 실행
+    // 기존 정보가 있으면 editPage state를 다시 실행하지 않음
+    if(postInfo.content === "" && postInfo.thumbnail=== "" && tagsInfo.length === 0) {
+      // 태그 재저장
+      const newTags: { order: number; tagName: string; }[] = []
+      articleInfo.tags.forEach((tag: string, idx: number) => {
+        const newObj = {
+          order: idx + 1,
+          tagName: tag
+        }
+        newTags.push(newObj);
+      })
+      dispatch(setTagsInfo(newTags));
+    
+      // 썸네일 재저장
+      dispatch(setThumbnail(articleInfo.thumbnail)); 
+      // content 재저장
+      dispatch(setContent(articleInfo.content));
+      // roads 재저장
+      articleInfo.roads.forEach((road) => {
+        dispatch(addRouteList(road));
+      })
+    }
   }
+
   const posting = () => {
     if(content === "") {
       alert("본문은 필수 입력 정보입니다.");
@@ -136,7 +141,7 @@ function EditPostPage() {
       <TextArea/>
     </section>
     <section className='createpost_upload_section'>
-      <span className='createpost_upload_title'>* 이미지 업로드 (수정 불가)</span>
+      <span className='createpost_upload_title'>* 이미지 업로드</span>
       <UploadHold/>
     </section>
     <div className='createpost_submit_button_div'>

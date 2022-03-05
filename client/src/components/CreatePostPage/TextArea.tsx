@@ -12,15 +12,15 @@ function TextArea() {
 
   useEffect(() => {
     // content 업데이트 시 textarea에 추가
-    setTextArea(content);
+    setTextArea(content.replaceAll("<br>", "\r\n"));
   }, [content]);
 
   const changeContent = (event: any) => {
     setTextArea(event.target.value);
-  
   }
   const insertContent = () => {
     dispatch(setContent(textArea));
+
   }
   
   return (

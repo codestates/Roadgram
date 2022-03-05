@@ -29,7 +29,6 @@ function ContentsDetail() {
   const [ isUpdatable, setIsUpdatable ] = useState(false);
   const [ targetCommentId, setTargetCommentId ] = useState(0);
   const [ targetComment, setTargetComment ] = useState('');
-
   const [page,setPage]=useState(2);
   const [endScroll,setEndScroll]=useState(false);
   
@@ -205,7 +204,7 @@ function ContentsDetail() {
           }
         </div>
         <div className="detail-infinite-scroll">
-          <div className="post-text">{articleInfo.content}</div>
+          <div dangerouslySetInnerHTML={{__html: articleInfo.content}}className="post-text"/>
           <div className="post-tags"> 
             {articleInfo.tags
             ? articleInfo.tags.map((tag: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined) => {
