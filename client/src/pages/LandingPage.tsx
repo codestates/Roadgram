@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Footer from '../components/Footer'
 import landimg from '../images/landimage.png'
 import map from '../images/map.png'
@@ -8,6 +8,11 @@ import community from '../images/community.png'
 import onroad from '../images/onroad.png'
 
 function LandingPage() {
+  // 스크롤 초기화
+  useEffect(()=>{
+    document.documentElement.scrollTop=0;
+  },[]);
+
   return (
     <div id="landingContainer">
       <div className="introBox">

@@ -34,6 +34,11 @@ function SettingRoutePage() {
   const dispatch = useDispatch()
   const navigate = useNavigate();
 
+  // 스크롤 초기화
+  useEffect(()=>{
+    document.documentElement.scrollTop=0;
+  },[])
+
   // 지도의 범위를 설정하는 함수를 불러온다
   const bounds = new window.kakao.maps.LatLngBounds()
   // 루트설정 마커 이미지의 주소

@@ -158,6 +158,7 @@ function SignupPage() {
   
   // 이미 로그인 상태 시 메인페이지로 이동
   useEffect(()=>{
+    document.documentElement.scrollTop=0;// 스크롤 초기화
     if(isLogin){
       alert('잘못된 접근입니다.');
       navigate('/main');
