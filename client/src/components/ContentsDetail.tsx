@@ -228,7 +228,7 @@ function ContentsDetail() {
             }) : null}
           </div>
           <div className="post-comments">
-            {commentInfo
+            {commentInfo.length !==0
             ? commentInfo.map(each => {
               return (
                 <li
@@ -287,7 +287,11 @@ function ContentsDetail() {
           {
             !isUpdatable
             ? <div className="comment-writing-box">
-                <input className="writing-box" type="text" value={comment} onChange={newComment}/>
+                <input className="writing-box" type="text" value={comment} onChange={newComment}
+                onKeyPress={e => {
+                  if (e.key === 'Enter') {
+                    createComment()
+                  }}}/>
                 <button type="submit" className="comment-submit" onClick={createComment}>작성</button>
               </div>
             : <div className="comment-writing-box">

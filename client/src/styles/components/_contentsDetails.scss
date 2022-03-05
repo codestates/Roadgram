@@ -1,6 +1,5 @@
 .detail-container {
   display: flex;
-  height: 100%;
   flex-direction: column;
   justify-content: space-between;
   border: 1px solid white;
@@ -10,13 +9,16 @@
   @include mobile-only {
     margin-top: 1rem;
     padding: 0.5rem;
+    height: 60rem;
   }
   @include md {
     padding: 1rem;
+    height: 100%;
   }
   @include lg {
     margin-left: 1rem;
     padding: 2rem;
+    height: 100%;
   }
 }
 
@@ -134,15 +136,17 @@
 .detail-infinite-scroll {
   overflow-x: hidden;
   overflow-y: auto;
-  margin-top: 2rem;
   @include mobile-only {
-    height: 50rem;
+    height: 100%;
+    margin-top: 1rem;
   }
   @include md {
     height: 40rem;
+    margin-top: 2rem;
   }
   @include lg {
     height: 48rem;
+    margin-top: 2rem;
   }
 }
 
@@ -321,11 +325,18 @@
   list-style: none;
   display: flex;
   justify-content: flex-start;
-  // margin-top: 1rem;
-  padding: 1rem;
   align-items: flex-start;
   &:hover {
     background-color: rgb(241, 238, 238);
+  }
+  @include mobile-only {
+    padding: 0.5rem;
+  }
+  @include md {
+    padding: 1rem;
+  }
+  @include lg {
+    padding: 1rem;
   }
 }
 
@@ -335,13 +346,27 @@
 }
 
 .comment-writer_profile_image {
-  width: 3.5rem;
-  height: 3.5rem;
-  min-width: 3.5rem;
-  min-height: 3.5rem;
   border-radius: 50%;
   justify-content: center;
   cursor: pointer;
+  @include mobile-only {
+    width: 3rem;
+    height: 3rem;
+    min-width: 3rem;
+    min-height: 3rem;
+  }
+  @include md {
+    width: 3.5rem;
+    height: 3.5rem;
+    min-width: 3.5rem;
+    min-height: 3.5rem;
+  }
+  @include lg {
+    width: 3.5rem;
+    height: 3.5rem;
+    min-width: 3.5rem;
+    min-height: 3.5rem;
+  }
 }
 
 .writer-nickname-time-delete-box {
@@ -379,16 +404,33 @@
 }
 
 .comment-text {
-  margin-top: 0.5rem;
   margin-left: 1rem;
   font-size: 1.2rem;
   display: flex;
   justify-content: flex-start;
   text-align: left;
   align-items: flex-start;
+  @include mobile-only {
+    margin-top: 0.1rem;
+  }
+  @include md {
+    margin-top: 0.5rem;
+  }
+  @include lg {
+    margin-top: 0.5rem;
+  }
 }
 
 .no-comments-msg {
-  margin-top: 15rem;
-  font-size: 1.4rem;
+  @include mobile-only {
+    margin-top: 10rem;
+  }
+  @include md {
+    margin-top: 16rem;
+    font-size: 1.4rem;
+  }
+  @include lg {
+    margin-top: 16rem;
+    font-size: 1.4rem;
+  }
 }
