@@ -1,0 +1,65 @@
+.withdrawal-center-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height:100%;
+  width: 100%;
+  z-index: 10;
+  background-color:rgba(255, 255, 255, 0.5);
+}
+
+.withdrawal-background {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.withdrawal-box {
+  position: relative;
+  background-color: #ffffff;
+  width: 300px;
+  height: 175px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #e5e8eb;
+}
+
+.withdrawal-msg {
+  overflow: hidden;
+  display: flex;
+  font-size: 14px;
+  width:100%;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.withdrawal-button-box{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  padding:0 25px;
+}
+
+.yesorno {
+  width: 80px;
+  line-height: 25px;
+  padding:5px 10px;
+  color: black;
+  font-size: 14px;
+  display: inline-block;
+  text-align: center;
+  border-radius: 4px;
+  border:none;
+  &:hover{
+    cursor:pointer;
+    color:#ffffff;
+    background-color: #4680ff;
+  }
+}

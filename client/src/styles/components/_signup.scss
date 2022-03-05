@@ -1,0 +1,266 @@
+.signup_whole_div{ 
+  width: 100%;
+  height: 100%;
+  display: flex;
+  // position: fixed;
+  flex-direction: column;
+  align-items: center;
+  background-color: (249, 249, 250);
+  
+  @include mobile-only {
+    padding-top: 2rem;
+  }
+  @include md {
+    padding-top: 7rem;
+  }
+  @include lg {
+    padding-top: 10rem;
+  }
+
+  span {
+    font-size: 1.5rem;
+    color: red;
+  }
+
+  h3 {
+    align-self: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #5f6776;
+  }
+
+  input {
+    border-radius: 0.5rem;
+    border: none;
+    padding-left: 1rem;
+  }
+
+  .signup_main_div{ 
+    // width: 100%;
+    // height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 5rem;
+    // background-color: #3270f7;
+
+    @include mobile-only {
+      width: 50%;
+    }
+    @include md {
+      width: 40%;
+    }
+    @include lg {
+      width: 25%;
+    }
+  }
+
+  .signup_title_div {
+    display: flex;
+    flex-direction: row;
+    align-self: flex-start;
+    width: 100%;
+    .signup_title {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      margin-left: 1rem;
+    }
+  
+    .arrow_icon_div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #e1dddd;
+      width: 3rem;
+      height: 3rem;
+      // margin-left: 2.5rem;
+      
+      .arrow_icon {
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        text-decoration: none; color: black;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+
+
+
+.signup_logo_img{ 
+  width: 20rem;
+  height: 10rem;
+}
+
+.signup_nickname_div{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  margin-top: 4.5rem;
+  .nickname_div {
+    display: flex;
+  }
+  
+  .signup_nickname_title {
+    align-self: flex-start;
+  }
+
+  .signup_nickname_input{ 
+    width: calc(100% - 120px);
+    height: 5rem;
+    
+    @include mobile-only {
+      width: calc(100% - 8rem);
+    }
+  }
+
+  .signup_nickname_span {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    display: flex;
+    align-self: flex-start;
+  }
+
+  .signup_nickname_button{ 
+    width: 120px;
+    height: 5rem;
+    color:black;
+    background: #F1F5FA;
+    border: 1px solid #dfecfc;
+    border-radius: 4px;
+    
+    @include mobile-only {
+      width: 8rem;
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color:#4680ff;
+      color:#ffffff;
+    }
+  }
+
+}
+
+.signup_email_div{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 4.5rem;
+
+  .signup_email_title {
+    align-self: flex-start;
+  }
+  .signup_email_input{ 
+    width: calc(100% - 120px);
+    height: 5rem;
+    @include mobile-only {
+      width: calc(100% - 8rem);
+    }
+  }
+  .signup_email_button{ 
+    width: 12rem;
+    height: 5rem;
+    background-color:#4680ff;
+    background: #F1F5FA;
+    border: 1px solid #dfecfc;
+    border-radius: 4px;
+    &:hover {
+      cursor: pointer;
+      background-color:#4680ff;
+      color:#ffffff;
+    }
+
+    @include mobile-only {
+      width: 8rem;
+    }
+  }
+
+  
+
+  .signup_email_span {
+    margin-left: 1rem;
+    margin-top: 1rem;
+    display: flex;
+    align-self: flex-start;
+  }
+}
+
+.signup_password_div{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 4.5rem;
+
+  .signup_password_title {
+    align-self: flex-start;
+  }
+
+  .signup_password_input{ 
+    width: 100%;
+    height: 5rem;
+  }
+
+  .signup_password_span {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    display: flex;
+    align-self: flex-start;
+  }
+}
+
+.signup_passwordcheck_div{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 4.5rem;
+
+  .signup_passwordcheck_title {
+    align-self: flex-start;
+  }
+
+  .signup_passwordcheck_input{ 
+    width: 100%;
+    height: 5rem;
+  }
+
+  .signup_passwordcheck_span {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    display: flex;
+    align-self: flex-start;
+  }
+}
+
+
+.signup_signup_button{ 
+  border: 1px solid #dfecfc;
+  background-color:#4680ff;
+  color: white;
+  border-radius: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  width: 100%;
+  height: 6rem;
+  margin-top: 4.5rem;
+  &:hover {
+    background-color:#4680ff;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+
+// button {
+//   font-size: 16px;
+//   background-color: #BCE8EE;
+//   border: 1px solid #80effe;
+// }

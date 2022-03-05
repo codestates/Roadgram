@@ -1,0 +1,226 @@
+.createpost_container {
+  width: 100%;
+  height: auto;
+  background-color: $container-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.createpost_whole_div {
+  // border: 1px solid green;
+  display: flex;
+  flex-direction: column;
+
+  @include mobile-only {
+    padding-top: 6rem;
+    width: 100%;
+  }
+  @include md {
+    padding-top: 10rem;
+    width: 60rem;
+  }
+  @include lg {
+    padding-top: 12rem;
+    width: 70rem;
+  }
+
+  // @include mobile-only {
+  // }
+  // @include md {
+  // }
+  // @include lg {
+  // }
+
+  h1 {
+    @include mobile-only {
+      font-size: 1.5rem;
+      margin-left: 1rem;
+    }
+    @include md {
+      font-size: 2rem;
+      margin-left: 1rem;
+    }
+    @include lg {
+      font-size: 2rem;
+      margin-left: 1rem;
+    }
+  }
+  h3 {
+    font-size: 1.5rem;
+    margin-left: 3rem;
+    color: #6d7176;
+  }
+
+  span {
+    font-size: 1.5rem;
+    margin-left: 2.5rem;
+  }
+}
+
+.createpost_title_div {
+  // border: 1px solid green;
+  display: flex;
+  align-items: center;
+  margin: 1rem 0 2rem 0;
+
+  .arrow_icon_div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+    background-color: #e1dddd;
+    border-radius: 1rem;
+    width: 32px;
+    height: 32px;
+    margin-left: 0.7rem;
+
+    .arrow_icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      text-decoration: none;
+      color: black;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+  .arrow_icon_div:hover {
+    background-color: rgb(211, 192, 192);
+  }
+}
+.createpost_route_section {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .createpost_route_title {
+    display: flex;
+    justify-self: center;
+  }
+}
+
+.createpost_tag_section {
+  // border: 1px solid green;
+  width: 100%;
+  height: minmax(12rem, 20rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.createpost_tag_title {
+  // border: 1px solid green;
+  margin: 0 0 0 1rem;
+  font-size: 1.5rem;
+}
+
+.createpost_content_section {
+  // border: 1px solid green;
+  .createpost_content_title {
+    // border: 1px solid green;
+    margin: 0 0 0 1rem;
+    font-size: 1.5rem;
+  }
+}
+
+.createpost_upload_section {
+  // border: 1px solid green;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  .createpost_upload_title {
+    // border: 1px solid green;
+    margin: 1rem 0 0 1rem;
+    font-size: 1.5rem;
+  }
+}
+
+.createpost_submit_button {
+  width: 45%;
+  height: 55px;
+  font-size: 1.8rem;
+  background-color: $button-color;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin: 0 2rem;
+  transition: 0.4s;
+
+  @include mobile-only {
+    width: 22rem;
+    height: 4rem;
+    font-size: 2.5vmin;
+  }
+  @include md {
+    width: 25rem;
+    height: 5rem;
+  }
+  @include lg {
+    width: 25rem;
+    height: 5rem;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: $button-hover-color;
+  }
+}
+.convex {
+  box-shadow: 1px 1px 3px 1px #dadce0 inset;
+}
+
+.createpost_cancel_button {
+  width: 45%;
+  height: 55px;
+  font-size: 1.8rem;
+  background-color: white;
+  color: #4680ff;
+  border: 1px solid lightgray;
+  border-radius: 8px;
+  margin: 0 2rem;
+  transition: 0.4s;
+
+  @include mobile-only {
+    width: 22rem;
+    height: 4rem;
+    font-size: 2.5vmin;
+  }
+  @include md {
+    width: 25rem;
+    height: 5rem;
+  }
+  @include lg {
+    width: 25rem;
+    height: 5rem;
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(211, 209, 209);
+  }
+}
+
+.createpost_submit_button_div {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: auto;
+  @include mobile-only {
+    height: 14rem;
+    justify-content: center;
+  }
+  @include md {
+    height: 10rem;
+    justify-content: center;
+  }
+  @include lg {
+    height: 10rem;
+    justify-content: center;
+  }
+}

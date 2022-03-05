@@ -1,0 +1,234 @@
+#navigator-container {
+  background-color: white;
+  box-shadow: 1px 1px 5px 1px rgb(212, 212, 212);
+  // border: 1pt solid green;
+  display: flex;
+  position: fixed;
+  z-index: 11;
+  // top: 0;
+  // left: 0;
+  // right: 0;
+  width: 100%;
+  @include mobile-only() {
+    height: 4rem;
+  }
+  @include md {
+    height: 8rem;
+  }
+  @include lg {
+    height: 10rem;
+  }
+
+  .openMenu {
+    visibility: visible;
+    position: absolute;
+    z-index: 10;
+    border:1px solid #e5e8eb;
+    background-color: white;
+    font-weight: bold;
+    transition: all 0.2s;
+    border-radius: 0rem 0rem 0rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    @include mobile-only {
+      width: 8rem;
+      height: 4.5rem;
+      font-size: 1rem;
+      right: 0rem;
+      top: 4rem;
+    }
+    @include md {
+      width: 10rem;
+      height: 6rem;
+      font-size: 1.5rem;
+      right: 0rem;
+      top: 8rem;
+    }
+
+    @include lg {
+      width: 14rem;
+      height: 8rem;
+      font-size: 2rem;
+      right: 0rem;
+      top: 10rem;
+    }
+    a{
+      display: flex;
+      height: 50%;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      &:hover{
+        cursor: pointer;
+        background-color: #F2f4f6;
+        border-radius: 0rem 0rem 0rem 1rem;
+      }
+    }
+
+    // .mypageMenu {
+    //   @include mobile-only {
+    //     margin: 0.8rem;
+    //   }
+    //   @include md {
+    //     margin: 0.8rem;
+    //   }
+
+    //   @include lg {
+    //     margin: 1rem;
+    //   }
+    // }
+  }
+
+  .hiddenMenu {
+    // border: 1px solid green;
+    visibility: hidden;
+    position: absolute;
+    z-index: 1100;
+    right: 0rem;
+    top: 10rem;
+  }
+
+  .structure {
+    // border: 1px solid red;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    .logo {
+      // border: 1px solid purple;
+      display: flex;
+      @include mobile-only {
+        margin-left: 1rem;
+        width: 10rem;
+        height: 2.2rem;
+      }
+      @include md {
+        margin-left: 4rem;
+        width: 20rem;
+        height: 4rem;
+      }
+      @include lg {
+        margin-left: 5rem;
+        width: 24rem;
+        height: 5rem;
+      }
+    }
+  }
+
+  .sideMenu {
+    // border: 1px solid red;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .inputDiv {
+      // border: 1px solid green;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .searchBar {
+      border: 0;
+      background-color: rgb(246, 247, 249);
+      @include mobile-only {
+        width: 9rem;
+        height: 2rem;
+        margin-right: 1rem;
+        border-radius: 1rem;
+        padding-left: 1rem;
+      }
+      @include md {
+        width: 20rem;
+        height: 3rem;
+        margin-right: 3rem;
+        border-radius: 1rem;
+        padding-left: 2rem;
+      }
+      @include lg {
+        width: 35rem;
+        height: 4.5rem;
+        margin-right: 4rem;
+        border-radius: 1rem;
+        padding-left: 2rem;
+      }
+    }
+
+    .searchBar::placeholder {
+      @include mobile-only() {
+        font-size: 0rem;
+      }
+      @include md {
+        font-size: 1.5rem;
+      }
+      @include lg {
+        font-size: 1.6rem;
+      }
+    }
+
+    .searchIcon {
+      position: absolute;
+      cursor: pointer;
+      @include mobile-only {
+        height: 1rem;
+        left: 7.3rem;
+        top: 0.5rem;
+      }
+      @include md {
+        height: 2rem;
+        left: 17rem;
+        top: 0.5rem;
+      }
+      @include lg {
+        height: 2rem;
+        left: 31.5rem;
+        top: 1.2rem;
+      }
+    }
+
+    .login-button {
+      // border: 1px solid green;
+      color: black;
+      cursor: pointer;
+      @include mobile-only {
+        font-size: 1rem;
+        margin-right: 1rem;
+      }
+      @include md {
+        font-size: 1.5rem;
+        margin-right: 3rem;
+      }
+      @include lg {
+        font-size: 2rem;
+        margin-right: 4rem;
+      }
+    }
+
+    .pencilIcon {
+      // border: 1px solid green;
+      color: rgb(80, 78, 78);
+      height: 3vmin;
+      margin-right: 4vmin;
+      transition: 0.2s;
+    }
+    .pencilIcon:hover {
+      color: gray;
+    }
+
+    .userIcon {
+      // border: 1px solid green;
+      height: 3vmin;
+      color: rgb(80, 78, 78);
+      cursor: pointer;
+      margin-right: 4vmin;
+      transition: 0.2s;
+    }
+    .userIcon:hover {
+      color: gray;
+    }
+  }
+}

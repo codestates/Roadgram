@@ -1,0 +1,436 @@
+.detail-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid white;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 3px 3px 6px 3px rgb(212, 212, 212);
+  @include mobile-only {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    height: 60rem;
+  }
+  @include md {
+    padding: 1rem;
+    height: 100%;
+  }
+  @include lg {
+    margin-left: 1rem;
+    padding: 2rem;
+    height: 100%;
+  }
+}
+
+.detail-body {
+  height: 100%;
+}
+
+.detail-nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+
+.writer-info {
+  display: flex;
+  align-items: center;
+}
+
+.writer_profile_image {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.nickname_time-box {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+}
+
+.writer_nickname {
+  display: flex;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  @include mobile-only {
+    font-size: 1.4rem;
+  }
+  @include md {
+    font-size: 1.6rem;
+  }
+  @include lg {
+    font-size: 1.6rem;
+  }
+}
+
+.written_time {
+  display: flex;
+  width: 9rem;
+  margin-top: 0.3rem;
+}
+
+.article-buttons {
+  display: flex;
+  width: 45rem;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-right: 1rem;
+}
+
+.post-delete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 0.2rem;
+  background-color: white;
+  color: #ee6d6d;
+  border: 1px solid #ee6d6d;
+  border-radius: 4px;
+  cursor: pointer;
+  @include mobile-only {
+    width: 2.5rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+  @include md {
+    width: 4rem;
+    height: 3rem;
+  }
+  @include lg {
+    width: 4rem;
+    height: 3rem;
+  }
+}
+
+.post-modify {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(49, 48, 48);
+  color: #f2f2f2;
+  border: 1px solid rgb(49, 48, 48);
+  border-radius: 4px;
+  cursor: pointer;
+  @include mobile-only {
+    width: 2.5rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+  @include md {
+    width: 4rem;
+    height: 3rem;
+  }
+  @include lg {
+    width: 4rem;
+    height: 3rem;
+  }
+}
+
+.detail-infinite-scroll {
+  overflow-x: hidden;
+  overflow-y: auto;
+  @include mobile-only {
+    height: 100%;
+    margin-top: 1rem;
+  }
+  @include md {
+    height: 40rem;
+    margin-top: 2rem;
+  }
+  @include lg {
+    height: 48rem;
+    margin-top: 2rem;
+  }
+}
+
+.detail-infinite-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.post-text {
+  display: flex;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  text-align: left;
+  @include mobile-only {
+    font-size: 1.1rem;
+  }
+  @include md {
+    font-size: 1.4rem;
+  }
+  @include lg {
+    font-size: 1.4rem;
+  }
+}
+
+.post-tags {
+  margin-top: 0.5rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  justify-content: flex-start;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.each-tags {
+  display: flex;
+  box-sizing: border-box;
+  border: 1px solid #4f4f4f;
+  border-radius: 10px;
+  color: #4f4f4f;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.5rem;
+  margin-right: 0.4em;
+  padding: 0.5rem;
+  cursor: pointer;
+  @include mobile-only {
+    font-size: 1rem;
+  }
+  @include md {
+    font-size: 1.1rem;
+  }
+  @include lg {
+    font-size: 1.1rem;
+  }
+}
+
+.detail-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.iconBox {
+  display: flex;
+  flex-direction: row;
+  margin-left: 0.2rem;
+  margin-top: 1rem;
+  align-items: center;
+}
+
+.likeUnlikeIcon {
+  margin-left: 1rem;
+  margin-right: 0.5rem;
+  width: 1.7rem;
+  height: 1.7rem;
+  cursor: pointer;
+  color: red;
+}
+
+.commentIcon {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+.totallikes {
+  display: flex;
+  margin-right: 0.3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  align-items: flex-end;
+}
+
+.totalcomments {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.comment-writing {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.comment-writing-title {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 1.3rem;
+  margin-top: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.comment-writing-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  font-size: 2rem;
+  height: 3rem;
+}
+
+.writing-box {
+  display: flex;
+  justify-content: flex-start;
+  width: 90%;
+  border: 1px solid;
+  border-radius: 4px;
+  padding-left: 0.3rem;
+}
+
+.comment-submit {
+  display: flex;
+  width: 6rem;
+  margin-left: 0.2rem;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  background-color: #4680ff;
+  color: white;
+  border: 1px solid #4680ff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.comment-update {
+  display: flex;
+  width: 6rem;
+  margin-left: 0.2rem;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  background-color: #28dd64;
+  color: white;
+  border: 1px solid #28dd64;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.post-comments {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.comment_list {
+  list-style: none;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  &:hover {
+    background-color: rgb(241, 238, 238);
+  }
+  @include mobile-only {
+    padding: 0.5rem;
+  }
+  @include md {
+    padding: 1rem;
+  }
+  @include lg {
+    padding: 1rem;
+  }
+}
+
+.comment_info {
+  display: flex;
+  align-items: center;
+}
+
+.comment-writer_profile_image {
+  border-radius: 50%;
+  justify-content: center;
+  cursor: pointer;
+  @include mobile-only {
+    width: 3rem;
+    height: 3rem;
+    min-width: 3rem;
+    min-height: 3rem;
+  }
+  @include md {
+    width: 3.5rem;
+    height: 3.5rem;
+    min-width: 3.5rem;
+    min-height: 3.5rem;
+  }
+  @include lg {
+    width: 3.5rem;
+    height: 3.5rem;
+    min-width: 3.5rem;
+    min-height: 3.5rem;
+  }
+}
+
+.writer-nickname-time-delete-box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  min-width: 10rem;
+  margin-left: 1rem;
+}
+
+.comment-writer-nickname {
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.comment-written-time {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  font-size: 0.8rem;
+  color: rgb(64, 64, 64);
+}
+
+.comment-modify {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+.comment-delete {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+.comment-text {
+  margin-left: 1rem;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
+  align-items: flex-start;
+  @include mobile-only {
+    margin-top: 0.1rem;
+  }
+  @include md {
+    margin-top: 0.5rem;
+  }
+  @include lg {
+    margin-top: 0.5rem;
+  }
+}
+
+.no-comments-msg {
+  @include mobile-only {
+    margin-top: 10rem;
+  }
+  @include md {
+    margin-top: 16rem;
+    font-size: 1.4rem;
+  }
+  @include lg {
+    margin-top: 16rem;
+    font-size: 1.4rem;
+  }
+}

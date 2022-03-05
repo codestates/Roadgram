@@ -1,0 +1,107 @@
+.createpost_uploadhold_div {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  @include mobile-only {
+    height: 40vw;
+  }
+  @include md {
+    height: 40rem;
+  }
+  @include lg {
+    height: 60rem;
+  }
+
+}
+
+.createpost_uploadhold_route_div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.5rem;
+  width: 29%;
+  // background-color: #4680FF;
+
+  @include mobile-only {
+    height: 45vw;
+  }
+  @include md {
+    height: 27rem;
+  }
+  @include lg {
+    height: 25rem;
+  }
+}
+
+.createpost_uploadhold_route_label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.createpost_uploadhold_route_img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid lightgray;
+  background-color: #F2F2F2;
+  border-radius: 2rem;
+
+  @include mobile-only {
+    width: 28vw;
+    height: 28vw;
+  }
+  @include md {
+    width: 20vw;
+    height: 18rem;
+  }
+  @include lg {
+    width: 11vw;
+    height: 18rem;
+  }
+}
+
+.createpost_plusicon {
+  color: #4680FF;
+  width: 3.5rem;
+  height: 3.5rem;
+  
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.createpost_uploadhold_image_img {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  // width: 200px;
+  // height: 200px;
+  z-index: 0; 
+  border-radius: 2rem;
+
+  @include mobile-only {
+    width: 28vw;
+    height: 28vw;
+  }
+  @include md {
+    width: 20vw;
+    height: 18rem;
+  }
+  @include lg {
+    width: 11vw;
+    height: 18rem;
+  }
+}
+
+.createpost_uploadhold_route_span {
+  display: flex;
+  // justify-content: center;
+  margin: 10px 5px;
+  font-size: 1.5rem;
+  @include mobile-only {
+    font-size: 2.5vmin;
+  }
+}

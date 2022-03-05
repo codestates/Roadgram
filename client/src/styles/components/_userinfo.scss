@@ -1,0 +1,245 @@
+.userInfo_div {
+  display: flex;
+  width: 100%;
+  height: auto;
+  justify-content: flex-start;
+  background-color:rgb(249,249,250);
+  @include mobile-only{
+    flex-direction: column;
+    align-items: center;
+  }
+  @include md{
+    flex-direction: column;
+    align-items: center;
+  }
+  @include lg{
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+.userinfo_container{
+  display:flex;
+  @include mobile-only{
+    margin-top: 50px;
+    width:100%;
+    padding: 0% 6%;
+  }
+  @include md{
+    margin-top: 90px;
+    width:100%;
+    padding:1% 3%;
+  }
+  @include lg{
+    margin-top: 120px;
+    padding-top: 1%;
+    padding-left: 5%;
+    width:25%;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+.userinfo_article_div{
+  display: flex;
+  justify-content: center;
+  @include lg{
+    justify-content: flex-start;
+    margin-top: 125px;
+    width:100%;  
+  }
+}
+.userinfo_whole_div {
+  display: flex;
+  border: 1px solid #e5e8eb;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+  border-radius: 12px;
+  @include mobile-only{
+    padding-top: 20px;
+    height: 380px;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+  @include md{
+    height: 290px;
+    padding-top:30px;
+    width: 100%;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  @include lg{
+    height:487px;
+    width: 262px;
+    margin: 0px;
+    padding-top: 45px;
+    // position:fixed;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+.sibalsibal{
+  @include mobile-only{
+    height:260px;
+    width:100%;
+  }
+  @include md{
+    height:260px;
+    width:262px;
+  }
+}
+.userinfo_image_div {
+  width:100%;
+  height:96px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img{
+    width: 96px;
+    height: 96px;
+    border-radius: 100%;
+    border: 1px solid lightgray;
+  }
+}
+
+.userinfo_profile_div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  button:hover {
+    cursor: pointer;
+  }
+}
+
+.userinfo_nickname_div {
+  margin-top:14px;
+  height: 24px;
+  span {
+    display: inline-block;
+    font-size: 16px;
+    line-height: 24px;
+    font-style: normal;
+    font-weight: bold;
+    font-family: SpoqaHanSans;
+  }
+}
+.userinfo_inform_div {
+  display: flex;
+  margin-top:25px;
+  justify-content: center;
+  flex-direction: row;
+  margin-bottom: 35px;
+  align-items: center;
+  .owner {
+    &:hover{
+      cursor: pointer;
+      background-color: #f2f4f6;
+    }
+  }
+}
+
+.userinfo_inform_list{
+  display:flex;
+  flex-direction: column;
+  font-size: 13px;
+  line-height: 19.24px;
+  padding:0 17px;
+}
+
+.userinfo_inform_divider{
+  height:30px;
+  width:1px;
+  background: #EDEDED;
+}
+.userinfo_inform_title{
+  font-weight: 400;
+}
+.userinfo_inform_value{
+  font-weight: 700;
+}
+.userinfo_status_div {
+  margin-top: 2px;
+  height: 24px;
+  span{
+    font-size: 14px;
+    font-family: SpoqaHanSans;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 24px;
+    color:#888e95;
+  }
+}
+
+.userinfo_edit_button{
+  label{
+    width:100%;
+    height:55px;
+    background:#f2f4f6;
+    padding:14px 24px;
+    display:flex;
+    align-items: center;
+    flex-direction: row;
+    @include mobile-only{
+      height: 45px;
+      padding: 12px 20px;
+    }
+  }
+  div{
+    font-size: 17px;
+    font-weight: normal;
+    line-height: 160%;
+    font-family: Pretendard;
+    @include mobile-only{
+      font-size:14px;
+    }
+  }
+}
+
+.userinfo_fake{
+  @include mobile-only{
+    width: 100%;
+  }
+  @include md{
+    width: 260px;
+  }
+  label{
+    background:#FFFFFF;
+    
+    display:flex;
+    align-items: center;
+    flex-direction: row;
+    @include mobile-only{
+      width:100%;
+      height: 45px;
+      padding: 12px 20px;
+    }
+    @include md{
+      width:262px;
+      height:55px;
+      padding:14px 24px;
+    }
+    @include lg{
+      width: 260px;
+      height:55px;
+      padding:14px 24px;
+    }
+    &:hover{
+      cursor: pointer;
+      background:#f2f4f6;
+    }
+  }
+  .abcd{
+    background-color: #f2f4f6;
+  }
+  div{
+    font-size: 17px;
+    font-weight: normal;
+    line-height: 160%;
+    font-family: Pretendard;
+    @include mobile-only{
+      font-size:14px;
+    }
+  }
+}

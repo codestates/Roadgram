@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/logo.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
+    <title>Roadgram</title>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+      Kakao.init("7f2bd1e7743322d2fdd2e6ea42053a4a");
+      console.log(Kakao.isInitialized())
+    </script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%REACT_APP_KAKAO_JAVASCRIPT_KEY%&libraries=services"></script>
+  </body>
+</html>

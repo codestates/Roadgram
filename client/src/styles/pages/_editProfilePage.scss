@@ -1,0 +1,323 @@
+.editProfile_whole_div{ 
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding-bottom: 10vh;
+  background-color: #ffffff;
+  @include mobile-only{
+    padding-top:40px;
+  }
+  @include md{
+    padding-top:80px;
+  }
+  @include lg{
+    padding-top:100px;
+  }
+    span {
+        width: 100%;
+        color: red;
+        text-align: left;
+        font-size: 10px;
+        height:10px;
+    }
+  
+    h3 {
+      text-align: left;
+      font-size: 16px;
+      color: #5f6776;
+      margin: 20px 0px 8px 0px;
+      width:450px;
+      font-weight: 500;
+      @include mobile-only{
+        font-size: 12px;
+        width:250px;
+      }
+    }
+    input{
+      border-radius: 4px;
+      @include mobile-only{
+        height:40px;
+        padding:10px 10px;
+      }
+    }
+  }
+  
+  .editProfile_main_div{ 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: row;
+    border: none;
+    width: 450px;
+    padding-top: 10px;
+    @include mobile-only{
+      width:250px;
+    }
+  }
+  .editProfile_title_box{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 28px 0 50px 0;
+    @include mobile-only{
+      margin:20px 0 30px 0;
+    }
+    .editProfile_arrow_box{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f3f3f3;
+      width: 32px;
+      height: 32px;
+      @include mobile-only{
+        width:24px;
+        height:24px;
+      }
+      .editProfile_arrow_icon{
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        text-decoration: none;
+        color: black;
+        @include mobile-only{
+          width: 16px;
+          height: 16px;
+        }
+      }
+      &:hover{
+        background-color: #4680ff;
+        .editProfile_arrow_icon{
+          color:#ffffff;
+        }
+      }
+    }
+    h1{
+      font-family: Spoqa Han Sans Neo;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 160%;
+      margin-left: 14px;
+      @include mobile-only{
+        font-size: 16px;
+        margin-left: 11px;
+      }
+    }
+  }
+  
+  .hidden{
+    display: none;
+  }
+
+  .editProfile_image_section{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .editProfile_icon_section{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height:100%;
+  }
+
+  .editProfile_image_img{
+    width: 150px;
+    height: 150px;
+    border-radius: 100%;
+    border:1px solid lightgray;
+  }
+
+  .editProfile_imageBox_div{
+      display:flex;
+      flex-direction:column;
+      align-items: center;
+      margin-bottom: 20px;
+  }
+
+  .cameraIcon{
+      height:2rem;
+      position:absolute;
+  }
+
+  .editProfile_box_div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    div{
+        text-align: left;
+    }
+  }
+  
+  .editProfile_image_label{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top:5px;
+      width:150px;
+      height: 150px;
+      &:hover{
+        cursor: pointer;
+        img{
+          border:2px solid lightgray;
+        }
+      }
+  }
+  
+  .editProfile_email_div{
+      width: 100%;
+      border-radius: 4px;
+      height: 50px;
+      font-size: 14px;
+      padding:15px 16px;
+      line-height: 20px;
+      font-family: SpoqaHanSans;
+      font-style: normal;
+      font-weight: normal;
+      border: 1px solid #EAECEF;
+      background-color: #ffffff;
+      @include mobile-only{
+        font-size: 11px;
+        height:40px;
+        padding:10px 10px;
+      }
+  }
+  
+  .editProfile_password_input{
+      width: 100%;
+      height: 50px;
+      font-size: 14px;
+      padding:15px 16px;
+      line-height: 20px;
+      font-family: SpoqaHanSans;
+      font-style: normal;
+      font-weight: normal;
+      border: 1px solid #EAECEF;
+      @include mobile-only{
+        font-size: 11px;
+      }
+  }
+
+  .editProfile_message_input{
+      width: 100%;
+      height: 50px;
+      font-size: 14px;
+      padding:15px 16px;
+      line-height: 20px;
+      font-family: SpoqaHanSans;
+      font-style: normal;
+      font-weight: normal;
+      border: 1px solid #EAECEF;
+      @include mobile-only{
+        font-size: 11px;
+      }
+  }
+
+  .editProfile_nickname_box{
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    input{
+      font-size: 14px;
+      padding:15px 16px;
+      line-height: 20px;
+      font-family: SpoqaHanSans;
+      font-style: normal;
+      font-weight: normal;
+      border: 1px solid #EAECEF;
+      @include mobile-only{
+        font-size: 11px;
+        padding:10px 10px;
+      }
+      @include md{
+        width:330px;
+      }
+      @include lg{
+        width:330px;
+      }
+    }
+    button{
+      border-radius: 4px;
+      margin-left:9px;
+      height:50px;
+      width: 110px;
+      font-family: SpoqaHanSans;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px; 
+      padding:12px 16px;
+      color:black;
+      background: #F1F5FA;
+      border:none;
+
+      &:hover{
+        cursor: pointer;
+        background-color:#4680ff;
+        color:#ffffff;
+      }
+      @include mobile-only{
+        font-size: 12px;
+        line-height: 14px;
+        height:40px;
+      }
+    }
+  }
+
+  .editProfile_submit_div{
+      display: flex;
+      justify-content: space-between;
+  }
+
+  .editProfile_submit_button{
+    background-color: #ffffff;
+    color: #4680ff;
+    font-size: 16px;
+    font-weight: 400;
+    width: 220px;
+    height: 50px;
+    border:1px solid #EAECEF;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover{
+      cursor: pointer;
+      background-color: #4680ff;
+      color:#ffffff;
+      border:none;
+    }
+    @include mobile-only{
+      font-size: 16px;
+      width:120px;
+      height:40px;
+    }
+  }
+
+  .editProfile_submit_button1{
+    background-color: #4680ff;
+    color: white;
+    border: none;
+    font-size: 16px;
+    font-weight: 400;
+    width: 220px;
+    height: 50px;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover{
+      cursor: pointer;
+      background-color: #93b1f3;
+    }
+    @include mobile-only{
+      font-size: 16px;
+      width:120px;
+      height:40px;
+    }
+  }

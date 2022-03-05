@@ -1,0 +1,43 @@
+@charset "UTF-8";
+/* css 변수 선언 */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: auto;
+}
+
+html {
+  font-size: 10px;
+}
+
+$container-color: rgb(247, 248, 249);
+$button-color: rgb(61, 117, 255);
+$button-hover-color: #93b1f3;
+
+/* 종범 */
+@import './styles/Mixins/responsive';
+@import './styles/components/footer';
+@import './styles/components/navigator';
+@import './styles/pages/landingPage';
+@import './styles/pages/mainPage';
+@import './styles/pages/settingRoutePage';
+@import './styles/components/map';
+/* 주형 */
+@import './styles/components/loginpage';
+@import './styles/components/signup';
+@import './styles/components/userinfo';
+@import './styles/components/tag';
+@import './styles/components/textArea';
+@import './styles/components/upload';
+@import './styles/components/uploadhold';
+@import './styles/pages/createPostPage';
+/* 권진 */
+@import './styles/pages/editProfilePage';
+@import './styles/components/modals/withdrawalModal';
+/* 민기 */
+@import './styles/pages/articleDetailsPage';
+@import './styles/components/contentsDetails';
+@import './styles//components/media';
+@import './styles/components/track';
