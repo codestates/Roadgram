@@ -60,7 +60,7 @@ function LandingPage() {
           <p>Roadgram에서</p>
           <p>나만의 여정을 기록하고 공유해요!</p>
         </div>
-        <Link to="/logins" style={{ textDecoration: 'none' }} className="startButton">
+        <Link to="/settingroute" style={{ textDecoration: 'none' }} className="startButton">
           <div>시작하기</div>
         </Link>
       </div>
