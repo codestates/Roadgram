@@ -36,8 +36,8 @@ function Article() {
     navigate(`/postdetails?id=${id}`)
   }
 
-  const moveToUserInfo=(id:number)=>{
-    dispatch(update({ targetId: id, userInfo: {}, articles: [] }));
+  const moveToUserInfo = (id: number) => {
+    dispatch(update({ targetId: id, userInfo: {}, articles: [] }))
     navigate(`/userinfo?id=${id}`)
   }
 
@@ -68,22 +68,25 @@ function Article() {
             </div>
             <div className="communityBox">
               <label htmlFor={`moveToUserInfo${article.id}`}>
-                <img
-                  className="profileImage"
-                  alt="profileImage"
-                  src={`${article.profileImage}`}
-                />
+                <img className="profileImage" alt="profileImage" src={`${article.profileImage}`} />
                 <div className="nickname">{article.nickname}</div>
               </label>
-              <button id={`moveToUserInfo${article.id}`} type='button' className='hidden' onClick={() => {
-                console.log(article);
-                moveToUserInfo(article.userId);
-                }}>21231</button>
+              <button
+                id={`moveToUserInfo${article.id}`}
+                type="button"
+                className="hidden"
+                onClick={() => {
+                  console.log(article)
+                  moveToUserInfo(article.userId)
+                }}
+              >
+                21231
+              </button>
               <div className="iconBox">
                 <FontAwesomeIcon className="mainIcon_heart" icon={faHeart} />
-                <div className="like">관심 {article.totalLike}</div>
+                <div className="like">{article.totalLike}</div>
                 <FontAwesomeIcon className="mainIcon_comment" icon={faCommentDots} />
-                <div className="reply">댓글 {article.totalComment}</div>
+                <div className="reply">{article.totalComment}</div>
               </div>
             </div>
             <div />
