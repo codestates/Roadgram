@@ -17,7 +17,7 @@
   display: flex;
   flex-wrap: wrap;
 
-  justify-content: center;
+  justify-content: flex-start;
 
   .postBox {
     // border: 1px solid green;
@@ -39,7 +39,7 @@
 
     .mainImage {
       cursor: pointer;
-      &:hover{
+      &:hover {
         opacity: 0.9;
       }
       @include mobile-only {
@@ -87,9 +87,9 @@
         box-sizing: border-box;
         border-radius: 1rem;
         font-weight: bold;
-        &:hover{
+        &:hover {
           cursor: pointer;
-          color:purple;
+          color: purple;
         }
         @include mobile-only {
           padding: 0 2% 0 2%;
@@ -126,13 +126,13 @@
         @include lg {
           margin: 0 0 1rem 1rem;
         }
-        &:hover{
+        &:hover {
           cursor: pointer;
-          .nickname{
+          .nickname {
             color: purple;
           }
-          .profileImage{
-            border:1px solid #f2f4f6;
+          .profileImage {
+            border: 1px solid #f2f4f6;
           }
         }
       }
@@ -167,12 +167,12 @@
         @include md {
           font-size: 150%;
           padding-left: 3%;
-          width: 7rem;
+          width: 90%;
         }
         @include lg {
           font-size: 160%;
           padding-left: 0.5rem;
-          width: 8rem;
+          width: 70%;
         }
       }
 
