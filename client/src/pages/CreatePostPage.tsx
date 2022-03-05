@@ -21,6 +21,12 @@ function CreatePostPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+
+  // 스크롤 초기화
+  useEffect(()=>{
+    document.documentElement.scrollTop=0;
+  },[]);
+
   useEffect(() => {
     console.log('전체 state ==', state)
     console.log('post 입력 정보 ==', postInfo)

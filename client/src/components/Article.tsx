@@ -41,6 +41,10 @@ function Article() {
     navigate(`/userinfo?id=${id}`)
   }
 
+  const moveToSearch=(tag:string)=>{
+    navigate(`/search?tag=${tag}`);
+  }
+
   return (
     <div id="mainContainer">
       {mainArticles.map(article => {
@@ -60,7 +64,7 @@ function Article() {
                 })
                 .map((ele: any) => {
                   return (
-                    <div className="tag" key={ele.id}>
+                    <div className="tag" key={ele.id} role='contentinfo' onClick={()=>moveToSearch(ele.tag)} onKeyDown={()=>null}>
                       #{ele.tag}
                     </div>
                   )
