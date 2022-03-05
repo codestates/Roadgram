@@ -2,18 +2,19 @@
   width: 100%;
   height: 100%;
   display: flex;
-  position: fixed;
+  // position: fixed;
   flex-direction: column;
   align-items: center;
+  background-color: (249, 249, 250);
   
   @include mobile-only {
-    padding-top: 12rem;
+    padding-top: 2rem;
   }
   @include md {
-    padding-top: 12rem;
+    padding-top: 7rem;
   }
   @include lg {
-    padding-top: 15rem;
+    padding-top: 10rem;
   }
 
   span {
@@ -35,7 +36,8 @@
   }
 
   .signup_main_div{ 
-    height: 70rem;
+    // width: 100%;
+    // height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -59,7 +61,6 @@
     flex-direction: row;
     align-self: flex-start;
     width: 100%;
-    
     .signup_title {
       display: flex;
       justify-content: center;
@@ -103,7 +104,7 @@
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-
+  margin-top: 4.5rem;
   .nickname_div {
     display: flex;
   }
@@ -119,6 +120,13 @@
     @include mobile-only {
       width: calc(100% - 8rem);
     }
+  }
+
+  .signup_nickname_span {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    display: flex;
+    align-self: flex-start;
   }
 
   .signup_nickname_button{ 
@@ -146,6 +154,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  margin-top: 4.5rem;
 
   .signup_email_title {
     align-self: flex-start;
@@ -160,6 +169,7 @@
   .signup_email_button{ 
     width: 12rem;
     height: 5rem;
+    background-color:#4680ff;
     background: #F1F5FA;
     border: 1px solid #dfecfc;
     border-radius: 4px;
@@ -173,13 +183,23 @@
       width: 8rem;
     }
   }
+
+  
+
+  .signup_email_span {
+    margin-left: 1rem;
+    margin-top: 1rem;
+    display: flex;
+    align-self: flex-start;
+  }
 }
 
 .signup_password_div{
   width: 100%;
   display: flex;
   flex-direction: column;
-  
+  margin-top: 4.5rem;
+
   .signup_password_title {
     align-self: flex-start;
   }
@@ -188,12 +208,20 @@
     width: 100%;
     height: 5rem;
   }
+
+  .signup_password_span {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    display: flex;
+    align-self: flex-start;
+  }
 }
 
 .signup_passwordcheck_div{
   width: 100%;
   display: flex;
   flex-direction: column;
+  margin-top: 4.5rem;
 
   .signup_passwordcheck_title {
     align-self: flex-start;
@@ -203,17 +231,31 @@
     width: 100%;
     height: 5rem;
   }
+
+  .signup_passwordcheck_span {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    display: flex;
+    align-self: flex-start;
+  }
 }
 
 
 .signup_signup_button{ 
-  background-color: #4680ff;
-  border: 1px solid #3270f7;
+  border: 1px solid #dfecfc;
+  background-color:#4680ff;
+  color: white;
   border-radius: 1rem;
   font-size: 1.5rem;
-  color: white;
-  width: 60%;
+  font-weight: 600;
+  width: 100%;
   height: 6rem;
+  margin-top: 4.5rem;
+  &:hover {
+    background-color:#4680ff;
+    color: white;
+    cursor: pointer;
+  }
 }
 
 

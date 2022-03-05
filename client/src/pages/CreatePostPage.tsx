@@ -27,11 +27,6 @@ function CreatePostPage() {
     document.documentElement.scrollTop=0;
   },[]);
 
-  useEffect(() => {
-    console.log('전체 state ==', state)
-    console.log('post 입력 정보 ==', postInfo)
-  }, [state, postInfo])
-
   const posting = () => {
     if (content === '') {
       alert('본문은 필수 입력 정보입니다.')

@@ -80,10 +80,6 @@ function LoginPage() {
     console.log("?")
   }
 
-  function redirectToFindPassword() {
-    alert("비밀번호찾기 서비스 준비 중");
-  }
-
   // 이미 로그인시 메인페이지로 이동
   useEffect(()=>{
     if(isLogin){

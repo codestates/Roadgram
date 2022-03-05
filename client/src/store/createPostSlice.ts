@@ -30,7 +30,8 @@ const createPostSlice = createSlice({
       state.thumbnail = payload;
     },
     setContent: (state: createPost, { payload }: PayloadAction<any>) => {
-      state.content = payload;
+      const contents = payload.replaceAll(/(\n|\r\n)/g, "<br>");
+      state.content = contents;
     },
     removeLastTag: (state: createPost) => {
       state.tagsInfo.pop();

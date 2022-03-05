@@ -61,6 +61,7 @@ const articleDetailSlice = createSlice({
     detailInfo: (state: articleDetails, { payload }: PayloadAction<any>) => {
       state.targetId = payload.targetId
       state.writerInfo = payload.userInfo
+      console.log("받은 payload 값", payload.articleInfo)
       state.articleInfo = payload.articleInfo
     },
     likeUnlike: (state: articleDetails, { payload }: PayloadAction<any>) => {

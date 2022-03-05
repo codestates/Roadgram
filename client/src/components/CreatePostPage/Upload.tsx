@@ -37,8 +37,8 @@ function Upload() {
     console.log('index 값은 ===', idx, '받은 사진정보 ==', routeImage)
     if (!routeImage) {
       // 이미지가 없으면 공백값 넣어줌
-      dispatch(setImages({ idx, src: '' }))
-    } else {
+      // dispatch(setImages({idx, src: ""}));
+    } else {       
       const upload = new S3.ManagedUpload({
         params: {
           Bucket: 'ootd13image',

@@ -201,9 +201,13 @@
         width: 7rem;
         height: 2.5rem;
         margin: 0 0 1rem 1rem;
+        &:hover {
+          background-color: #add2ff;
+          color: white;
+        }
       }
       .addButton:hover {
-        background-color: #1c487d;
+        background-color: #93b1f3;
       }
     }
     .locationBox:hover {
@@ -375,16 +379,16 @@
       }
 
       &:hover {
-        background-color: #392ffcc6;
+        background-color: #93b1f3;
       }
     }
 
     .cancelButton {
       border-radius: 1rem;
       background-color: white;
-      color: #4680ff;
-      border: 1px solid lightgray;
-      font-weight: bold;
+      color: rgb(255, 115, 115);
+      border: 1px solid rgb(255, 115, 115);
+      // font-weight: bold;
       transition: 0.2s;
       @include mobile-only {
         margin: 2rem;
@@ -406,8 +410,8 @@
       }
       cursor: pointer;
       &:hover {
-        background-color: rgb(229, 229, 230);
-        color: rgb(66, 90, 119);
+        background-color: rgb(255, 237, 237);
+        color: rgb(255, 0, 0);
       }
     }
   }
