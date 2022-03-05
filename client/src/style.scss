@@ -12,10 +12,9 @@ html {
   font-size: 10px;
 }
 
-$navigator-color: rgb(188, 232, 238);
-$main-color: rgb(240, 249, 251);
-$startmenu-color: rgb(143, 151, 238);
-$footer-color: rgb(188, 232, 238);
+$container-color: rgb(247, 248, 249);
+$button-color: rgb(61, 117, 255);
+$button-hover-color: #93b1f3;
 
 /* 종범 */
 @import './styles/Mixins/responsive';

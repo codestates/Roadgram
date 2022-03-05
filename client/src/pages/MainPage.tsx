@@ -24,7 +24,7 @@ function MainPage() {
 
 //   console.log(commentInfo)
   // dispatch(resetComments())
-  const [page, setPage] = useState(2); // 페이지 정보
+  const [page, setPage] = useState(3); // 페이지 정보
   const [end, setEnd] = useState(false); // 추가로 받아올 데이터 없을 시 더 이상 무한 스크롤 작동안하게 하는 상태값
 
   const [isRecent,setIsRecenst]=useState(true);
@@ -40,7 +40,7 @@ function MainPage() {
   const addRecentArticle = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/articles/recent?page=${page}`)
-      dispatch(addMainArticles(response.data.data.articles))
+      dispatch(addMainArticles(response.data.data.articles));
     } catch {
       setEnd(true);
     }
@@ -125,6 +125,12 @@ function MainPage() {
     } catch {
       dispatch(getMainArticles([]));
     }
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/articles/recent?page=2`)
+      dispatch(addMainArticles(response.data.data.articles));
+    } catch {
+      dispatch(addMainArticles([]));
+    }
   }
   // 팔로워들 게시물 받아와서 mainArticles 초기화
   const getFollowArticleHandler = async () => {
@@ -157,6 +163,36 @@ function MainPage() {
         dispatch(getMainArticles([]));
       }
     }
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/articles?user=${userInfo.id}&loginMethod=${userInfo.loginMethod}&page=2`,
+        { headers: { authorization: `${accessToken}` } }
+      );
+      dispatch(addMainArticles(response.data.data.articles));
+    } catch (err: any) {
+      if (err.response.data.statusCode === 401) {
+        // 액세스토큰 재발급 요청
+        try {
+          await accessTokenRequest();
+        } catch {
+          dispatch(logout());
+          alert('다시 로그인해 주세요');
+          navigate('/logins');
+        }
+        // 이전 요청 한번 더
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/articles?user=${userInfo.id}&loginMethod=${userInfo.loginMethod}&page=${page}`,
+            { headers: { authorization: `${accessToken}` } }
+          );
+          dispatch(addMainArticles(response.data.data.articles));
+        } catch {
+          dispatch(addMainArticles([]));
+        }
+      }
+      // 에러 시 더 이상 추가 랜더링 안되게
+      else {
+        dispatch(addMainArticles([]));
+      }
+    }
   }
 
   // 카카오 accessToken 받아오기
@@ -183,29 +219,32 @@ function MainPage() {
       navigate('/logins');
     }
   }
-
-  console.log(page,end,isRecent)
+  
+  // 스크롤 초기화
+  useEffect(()=>{
+    document.documentElement.scrollTop=0;
+  },[]);
 
   useEffect(()=>{
+    dispatch(getMainArticles([]));
     if (!isRecent) {
-      getFollowArticleHandler()
+      getFollowArticleHandler();
     } else {
-      getRecentArticleHandler()
+      getRecentArticleHandler();
     }
-    setPage(2);
     setEnd(false);
+    setPage(3);
   },[isRecent,isLogin])
 
   return (
-    mainArticles.length === 0 || !mainArticles
+    <div className='main_whole_div'>
+      <div className='main_buttons'>
+        <button type='button' className={isRecent?'button_selected':'button_unSelected'} onClick={recentButtonHandler}>최신순</button>
+        <button type='button' className={isRecent?'button_unSelected':'button_selected'} onClick={followButtonHandler}>팔로우</button>
+      </div>
+      {mainArticles.length === 0 || !mainArticles
       ? <div className="no_following_post">팔로우 하는 사람 혹은 작성하신 게시물이 없습니다.</div>
-      :(<div className='main_whole_div'>
-        <div className='main_buttons'>
-          <button type='button' className={isRecent?'button_selected':'button_unSelected'} onClick={recentButtonHandler}>최신순</button>
-          <button type='button' className={isRecent?'button_unSelected':'button_selected'} onClick={followButtonHandler}>팔로우</button>
-        </div>
-        <Article />
-      </div>) 
-  )
+      :<Article />}
+    </div>) 
 }
 export default MainPage;

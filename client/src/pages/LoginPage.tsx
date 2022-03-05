@@ -24,6 +24,10 @@ function LoginPage() {
   // SDK는 한 번만 초기화해야 한다.
   // 중복되는 초기화를 막기 위해 isInitialized()로 SDK 초기화 여부를 판단한다.
 
+  // 스크롤 초기화
+  useEffect(()=>{
+    document.documentElement.scrollTop=0;
+  },[]);
 
 
   /* input 태그 change 핸들러 */
@@ -74,10 +78,6 @@ function LoginPage() {
 
   function handleKeyDown () {
     console.log("?")
-  }
-
-  function redirectToFindPassword() {
-    alert("비밀번호찾기 서비스 준비 중");
   }
 
   // 이미 로그인시 메인페이지로 이동

@@ -13,6 +13,11 @@ function PostDetailsPage() {
   // article detail 상태 정보 갖고 오기
   const { userInfo, accessToken } = useSelector((state: RootState) => state.auth)
   const { targetId, writerInfo, articleInfo } = useSelector((state: RootState) => state.articleDetails)
+
+  // 스크롤 초기화
+  useEffect(()=>{
+    document.documentElement.scrollTop=0;
+  },[]);
   
   useEffect(() => {
     const url = new URL(window.location.href)

@@ -16,13 +16,21 @@ function SearchPage() {
   const { mainArticles, tag } = useSelector((state: RootState) => state.articles);
   const isInitialMount = useRef(true)
   const [word, setWord] = useState("");
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(3);
   const [end, setEnd] = useState(false); // 없으면 요청 더이상 안보내게 판단하는 상태
+
+  // 스크롤 초기화
+  useEffect(()=>{
+    document.documentElement.scrollTop=0;
+  },[]);
 
 
   useEffect(() => {
     const url = new URL(window.location.href);
     const keyword = url.searchParams.get('tag');
+    dispatch(getMainArticles([]));
+    setPage(3);
+    setEnd(false);
     if (keyword) {
       searching(keyword);
       setWord(keyword)
@@ -32,8 +40,6 @@ function SearchPage() {
       searching('');
       setWord('')
     }
-    setPage(2);
-    setEnd(false);
   }, [tag])
 
   // 게시물 추가로 받아오는 함수
@@ -73,6 +79,12 @@ function SearchPage() {
       } catch {
         dispatch(getMainArticles([]));
       }
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/articles/recent?page=2`);
+        dispatch(addMainArticles(res.data.data.articles));
+      } catch {
+        setEnd(true); // 게시물 더이상 없으면 종료
+      }
       // word가 있을 때
     } else {
       try {
@@ -80,6 +92,12 @@ function SearchPage() {
         dispatch(getMainArticles(res.data.data.articles));
       } catch {
         dispatch(getMainArticles([]));
+      }
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/search?tag=${word}&page=2`);
+        dispatch(addMainArticles(res.data.data.articles));
+      } catch {
+        setEnd(true); // 게시물 더이상 없으면 종료
       }
     }
   }

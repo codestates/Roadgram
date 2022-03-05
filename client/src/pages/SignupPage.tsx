@@ -25,7 +25,6 @@ function SignupPage() {
   const [isSamePassword, setIsSamePassword] = useState(true);
 
   useEffect(() => {
-    console.log("sign up")
     if (isInitialMount.current) {
       isInitialMount.current = false;
     } else {
@@ -33,10 +32,16 @@ function SignupPage() {
       checkPasswordSameness()
       checkEmailValidity()
     }
-  }, [
-    signupInform.password, 
-    signupInform.passwordCheck,
-    signupInform.email])
+  }, [signupInform.password, signupInform.passwordCheck])
+
+  
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      checkEmailValidity()
+    }
+  }, [signupInform.email])
   
   function handleInputValue(e: any, key: string) {
     setSignupInform({ ...signupInform, [key]: e.target.value })
@@ -153,6 +158,7 @@ function SignupPage() {
   
   // 이미 로그인 상태 시 메인페이지로 이동
   useEffect(()=>{
+    document.documentElement.scrollTop=0;// 스크롤 초기화
     if(isLogin){
       alert('잘못된 접근입니다.');
       navigate('/main');
