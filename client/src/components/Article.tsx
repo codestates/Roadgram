@@ -41,6 +41,10 @@ function Article() {
     navigate(`/userinfo?id=${id}`)
   }
 
+  const moveToSearch=(tag:string)=>{
+    navigate(`/search?tag=${tag}`);
+  }
+
   return (
     <div id="mainContainer">
       {mainArticles.map(article => {
@@ -60,7 +64,7 @@ function Article() {
                 })
                 .map((ele: any) => {
                   return (
-                    <div className="tag" key={ele.id}>
+                    <div className="tag" key={ele.id} role='contentinfo' onClick={()=>moveToSearch(ele.tag)} onKeyDown={()=>null}>
                       #{ele.tag}
                     </div>
                   )
@@ -81,9 +85,9 @@ function Article() {
                 }}>21231</button>
               <div className="iconBox">
                 <FontAwesomeIcon className="mainIcon_heart" icon={faHeart} />
-                <div className="like">관심 {article.totalLike}</div>
+                <div className="like">{article.totalLike}</div>
                 <FontAwesomeIcon className="mainIcon_comment" icon={faCommentDots} />
-                <div className="reply">댓글 {article.totalComment}</div>
+                <div className="reply">{article.totalComment}</div>
               </div>
             </div>
             <div />

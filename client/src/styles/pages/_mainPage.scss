@@ -14,29 +14,39 @@
 #mainContainer {
   // border: 1px solid green;
   background-color: rgb(249, 249, 250);
-  width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
- 
+  justify-content: flex-start;
+  @include mobile-only{
+    width: 100%;
+  }
+  @include md{
+    width:96%;
+  }
+  @include lg{
+    width:96%;
+  }
 
   .postBox {
     // border: 1px solid green;
     @include mobile-only {
-      margin: 5% 1% 1% 1%;
+      margin: 10% 1% 1% 1%;
       width: 100%;
     }
     @include md {
       margin: 1%;
-      width: 30%;
+      width: 31.333333333333%;
     }
     @include lg {
       margin: 1%;
-      width: 30%;
+      width: 31.333333333333%;
     }
 
     .mainImage {
       cursor: pointer;
+      &:hover{
+        opacity: 0.9;
+      }
       @include mobile-only {
         border-radius: 1rem;
         width: 90%;
@@ -57,16 +67,21 @@
       // border: 1px solid green;
       display: flex;
       flex-wrap: wrap;
+      overflow-y: hidden;
       @include mobile-only {
         width: 100%;
-        margin: 2% 0 2% 3%;
+        padding-left:4%;
+         margin: 1.5% 0%;
+        height: 2.2rem;
       }
       @include md {
         width: 100%;
         margin: 2% 0 2% 0;
+        height: 2.4rem;
       }
       @include lg {
         width: 100%;
+        height: 2.6rem;
       }
 
       .tag {
@@ -77,19 +92,23 @@
         box-sizing: border-box;
         border-radius: 1rem;
         font-weight: bold;
+        &:hover{
+          cursor: pointer;
+          color:purple;
+        }
         @include mobile-only {
           margin: 0.2rem;
-          padding: 0 2% 0 2%;
+          padding: 0 1%;
           font-size: 140%;
         }
         @include md {
           margin: 0.2rem;
-          padding: 0 2% 0 2%;
+          padding: 0 1%;
           font-size: 150%;
         }
         @include lg {
           margin: 0.2rem;
-          padding: 0 1.3% 0 1.3%;
+          padding: 0 1.3%;
           font-size: 160%;
         }
       }
@@ -114,6 +133,15 @@
         @include lg {
           margin-left: 0;
         }
+        &:hover{
+          cursor: pointer;
+          .nickname{
+            color: purple;
+          }
+          .profileImage{
+            border:1px solid #f2f4f6;
+          }
+        }
       }
 
       .profileImage {
@@ -135,7 +163,6 @@
 
       .nickname {
         // border: 1px solid green;
-        cursor: pointer;
         transition: 0.4s;
         text-align: left;
         @include mobile-only {
@@ -145,17 +172,13 @@
         @include md {
           font-size: 150%;
           padding-left: 3%;
-          width:7rem;
+          width:14rem;
         }
         @include lg {
           font-size: 160%;
           padding-left: 0.5rem;
-          width:8rem;
+          width:20rem;
         }
-      }
-
-      .nickname:hover {
-        color: purple;
       }
 
       .iconBox {
@@ -264,8 +287,16 @@
   justify-content: flex-start;
   flex-direction: row;
   align-items: center;
-  padding: 0 0 0 3%;
   width:100%;
+  @include mobile-only{
+    padding: 0 0 0 6%;
+  }
+  @include md{
+    padding: 0 0 1% 3%;
+  }
+  @include lg{
+    padding: 0 0 1% 3%;
+  }
   button{
     border:none;
     background-color: rgb(249, 249, 250);
@@ -283,7 +314,7 @@
     }
     @include lg{
       height: 50px;
-      width: 100px;
+      width: 120px;
       font-size: 20px;
     }
   }

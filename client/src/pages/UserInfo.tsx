@@ -27,18 +27,24 @@ function UserInfo() {
   const [totalFollower, setTotalFollower] = useState(0);
   const [totalFollowing, setTotalFollowing] = useState(0);
 
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(3);
   const [endScroll, setEndScroll] = useState(false);
 
+  // 스크롤 초기화
+  useEffect(()=>{
+    document.documentElement.scrollTop=0;
+  },[]);
+  
   // 팔로잉, 팔로워 모달 on/off
   const { isFollowingModal, isFollowerModal } = useSelector((state: RootState) => state.modal);
   // 최초 렌더링 시 getMypageInfo 실행 effect
   useEffect(() => {
     const url = new URL(window.location.href);
     const id: string | null = url.searchParams.get('id');
+    dispatch(getMainArticles([]));
     getMyPageInfo(Number(id));
     setEndScroll(false);
-    setPage(2); // 새로 렌더링 시 페이지와 스크롤 상태 초기화
+    setPage(3); // 새로 렌더링 시 페이지와 스크롤 상태 초기화
   }, [targetId])
 
   // isFollow 변경 시 값 확인 렌더링
@@ -77,6 +83,11 @@ function UserInfo() {
     // follow 여부 update
     setIsFollow(res.data.data.userInfo.followedOrNot);
     if (!res.data.data.articles.length) {
+      setEndScroll(true);
+    }
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=2&other=${targetId}`);
+    dispatch(addMainArticles(response.data.data.articles));// 게시물만 추가
+    if (!response.data.data.articles.length) {
       setEndScroll(true);
     }
   }

@@ -16,7 +16,7 @@ export class ArticleRepository extends Repository<Article> {
   async getArticleInfo(ids: number[] | any | void, limit: number, offset: number): Promise<any> {
     if (ids.length === 0) {
       const articles = await this.createQueryBuilder("article")
-        .orderBy("created_at")
+        .orderBy("created_at",'DESC')
         .take(limit)
         .skip(offset)
         .getMany();
@@ -24,7 +24,7 @@ export class ArticleRepository extends Repository<Article> {
     } else if (typeof ids === 'number') {
       const article = await this.createQueryBuilder("article")
         .where("user_id = :ids", { ids })
-        .orderBy("created_at")
+        .orderBy("created_at",'DESC')
         .take(limit)
         .skip(offset)
         .getMany();
@@ -33,7 +33,7 @@ export class ArticleRepository extends Repository<Article> {
     else {
       const articles = await this.createQueryBuilder("article")
         .where("user_id IN (:...ids)", { ids })
-        .orderBy("created_at")
+        .orderBy("created_at",'DESC')
         .take(limit)
         .skip(offset)
         .getMany();
@@ -47,7 +47,7 @@ export class ArticleRepository extends Repository<Article> {
 
     const articles = await this.createQueryBuilder("article")
       .leftJoinAndSelect("article.tags", "tags")
-      .orderBy("article.created_at")
+      .orderBy("article.created_at",'DESC')
       .take(limit) // limit 
       .skip(offset) // offset
       .getMany();
@@ -145,7 +145,7 @@ export class ArticleRepository extends Repository<Article> {
   // }
 
   async searchArticle(articleIds: number[], limit: number, offset: number): Promise<Article | any> {
-    const result = await this.findByIds(articleIds, { order: { createdAt: "ASC" }, take: limit, skip: offset });
+    const result = await this.findByIds(articleIds, { order: { createdAt: "DESC" }, take: limit, skip: offset });
     return result
   }
 }
