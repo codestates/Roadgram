@@ -16,6 +16,7 @@ function CreatePostPage() {
   const state = useSelector((state: RootState) => state)
   const postInfo = useSelector((state: RootState) => state.createPost)
   const { userInfo, accessToken } = useSelector((state: RootState) => state.auth)
+  const { isLogin } = useSelector((state: RootState) => state.auth)
   const { routeList } = useSelector((state: RootState) => state.routes)
   const { content, tagsInfo, thumbnail } = postInfo
   const navigate = useNavigate()
@@ -44,35 +45,40 @@ function CreatePostPage() {
     }
 
     if (!thumbnail || thumbnail === '') {
-      alert('썸네일을 선택 해주시기 바랍니다.')
+      alert('썸네일을 선택해주시기 바랍니다.')
       return
     }
 
-    axios
-      .post(
-        `${process.env.REACT_APP_API_URL}/articles`,
-        {
-          user: userInfo.id,
-          content,
-          road: routeList,
-          tag: tagsInfo,
-          thumbnail,
-          loginMethod: userInfo.loginMethod,
-        },
-        {
-          headers: {
-            authorization: `${accessToken}`,
+    if (!isLogin && window.confirm('게시물을 공유하기 위해서는 로그인을 해주세요. 이동하시겠습니까?')) {
+      navigate('/logins')
+      resetPostInfo()
+    } else {
+      axios
+        .post(
+          `${process.env.REACT_APP_API_URL}/articles`,
+          {
+            user: userInfo.id,
+            content,
+            road: routeList,
+            tag: tagsInfo,
+            thumbnail,
+            loginMethod: userInfo.loginMethod,
           },
-        },
-      )
-      .then(res => {
-        alert('작성이 완료되었습니다.')
-        navigate(`/postdetails?id=${res.data.data.articleInfo.id}`)
-        resetPostInfo()
-      })
-      .catch(err => {
-        console.log('err!', err)
-      })
+          {
+            headers: {
+              authorization: `${accessToken}`,
+            },
+          },
+        )
+        .then(res => {
+          alert('작성이 완료되었습니다.')
+          navigate(`/postdetails?id=${res.data.data.articleInfo.id}`)
+          resetPostInfo()
+        })
+        .catch(err => {
+          console.log('err!', err)
+        })
+    }
   }
   const resetPostInfo = () => {
     dispatch(resetCreatePost())
