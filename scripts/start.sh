@@ -12,6 +12,4 @@ export JWT_SECRET=$(aws ssm get-parameters --region ap-northeast-2 --names JWT_S
 export REDIRECT_URI=$(aws ssm get-parameters --region ap-northeast-2 --names REDIRECT_URI --query Parameters[0].Value | sed 's/"//g')
 export TYPEORM_SEEDING_FACTORIES=$(aws ssm get-parameters --region ap-northeast-2 --names TYPEORM_SEEDING_FACTORIES --query Parameters[0].Value | sed 's/"//g')
 export TYPEORM_SEEDING_SEEDS=$(aws ssm get-parameters --region ap-northeast-2 --names TYPEORM_SEEDING_SEEDS --query Parameters[0].Value | sed 's/"//g')
-npm run schema:drop
-npm run schema:sync
 pm2 start dist/src/main.js
