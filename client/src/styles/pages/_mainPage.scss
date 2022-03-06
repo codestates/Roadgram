@@ -23,9 +23,11 @@
   }
   @include md {
     justify-content: flex-start;
+    width: 95vw;
   }
   @include lg {
     justify-content: flex-start;
+    width: 100%;
   }
 
   .postBox {
