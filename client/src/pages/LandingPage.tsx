@@ -9,9 +9,9 @@ import onroad from '../images/onroad.png'
 
 function LandingPage() {
   // 스크롤 초기화
-  useEffect(()=>{
-    document.documentElement.scrollTop=0;
-  },[]);
+  useEffect(() => {
+    document.documentElement.scrollTop = 0
+  }, [])
 
   return (
     <div id="landingContainer">
@@ -36,21 +36,27 @@ function LandingPage() {
         <div className="serviceBox">
           <div className="serviceInfoBox">
             <img className="serviceImage" src={map} alt="routeimg" />
-            <p className="subtitle">나만의 루트 작성</p>
-            <p className="subContent">지도에서 나만의 루트를 작성하고,</p>
-            <p className="subContent">사진과 함께 기록해 보세요.</p>
+            <div className="subBox">
+              <p className="subtitle">나만의 루트 작성</p>
+              <p className="subContent">지도에서 나만의 루트를 작성하고,</p>
+              <p className="subContent">사진과 함께 기록해 보세요.</p>
+            </div>
           </div>
           <div className="serviceInfoBox">
             <img className="serviceImage" src={check} alt="routeimg" />
-            <p className="subtitle">정보 확인</p>
-            <p className="subContent">다른 사람들이 추천하는 루트 정보를</p>
-            <p className="subContent">한 눈에 볼 수 있어요!</p>
+            <div className="subBox">
+              <p className="subtitle">정보 확인</p>
+              <p className="subContent">다른 사람들이 추천하는 루트 정보를</p>
+              <p className="subContent">한 눈에 볼 수 있어요!</p>
+            </div>
           </div>
           <div className="serviceInfoBox">
             <img className="serviceImage" src={community} alt="routeimg" />
-            <p className="subtitle">소통</p>
-            <p className="subContent">SNS 기능으로 루트를</p>
-            <p className="subContent">공유하고 소통할 수 있어요.</p>
+            <div className="subBox">
+              <p className="subtitle">소통</p>
+              <p className="subContent">SNS 기능으로 루트를</p>
+              <p className="subContent">공유하고 소통할 수 있어요.</p>
+            </div>
           </div>
         </div>
       </div>
