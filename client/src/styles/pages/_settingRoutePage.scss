@@ -104,12 +104,12 @@
       @include md {
         width: 80%;
         height: 160%;
-        font-size: 160%;
+        font-size: 120%;
       }
       @include lg {
         width: 80%;
         height: 160%;
-        font-size: 160%;
+        font-size: 140%;
       }
     }
 
@@ -124,9 +124,9 @@
         top: 50%;
       }
       @include md {
-        height: 100%;
+        height: 80%;
         right: 14%;
-        top: 25%;
+        top: 40%;
       }
       @include lg {
         height: 100%;
@@ -173,8 +173,16 @@
       }
       .locationDiv {
         display: flex;
-        justify-content: flex-end;
         width: 100%;
+        @include mobile-only {
+          justify-content: center;
+        }
+        @include md {
+          justify-content: center;
+        }
+        @include lg {
+          justify-content: flex-end;
+        }
       }
 
       .addButton {
@@ -185,9 +193,23 @@
         color: white;
         background-color: rgb(90, 165, 254);
         font-weight: bold;
-        width: 7rem;
-        height: 2.5rem;
-        margin: 0 1rem;
+        @include mobile-only {
+          width: 7rem;
+          height: 2.5rem;
+          margin: 0 1rem;
+        }
+        @include md {
+          width: 6rem;
+          height: 2.5rem;
+          margin: 0 1rem;
+          font-size: 1rem;
+        }
+        @include lg {
+          width: 7rem;
+          height: 2.5rem;
+          margin: 0 1rem;
+          font-size: 1.2rem;
+        }
       }
 
       .detailButton {
@@ -198,9 +220,23 @@
         color: #5aa5fe;
         background-color: white;
         font-weight: bold;
-        width: 7rem;
-        height: 2.5rem;
-        margin: 0 0 1rem 1rem;
+        @include mobile-only {
+          width: 7rem;
+          height: 2.5rem;
+          margin: 0 0 1rem 1rem;
+        }
+        @include md {
+          width: 6rem;
+          height: 2.5rem;
+          margin: 0 0 1rem 1rem;
+          font-size: 1rem;
+        }
+        @include lg {
+          width: 7rem;
+          height: 2.5rem;
+          margin: 0 0 1rem 1rem;
+          font-size: 1.2rem;
+        }
         &:hover {
           background-color: #add2ff;
           color: white;
@@ -245,45 +281,84 @@
     }
 
     .selectedRouteBox {
-      width: 40%;
-      border: 2px solid rgb(28, 71, 125);
       border-radius: 2rem;
       background-color: white;
       position: absolute;
       z-index: 20;
-      box-sizing: border-box;
-      padding: 0.5rem;
-      height: 10%;
-      left: 35%;
-      right: 35%;
-      top: 1%;
+      border: 2px solid rgb(28, 71, 125);
       display: flex;
       justify-content: center;
       align-items: center;
-      .markerBox {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      box-sizing: border-box;
+
+      @include mobile-only {
+        width: 98%;
+        padding: 1rem;
+        height: 20%;
+        left: 1%;
+        right: 1%;
+        top: 3%;
       }
+      @include md {
+        width: 96%;
+        padding: 0.5rem;
+        height: 10%;
+        left: 2%;
+        right: 2%;
+        top: 1%;
+      }
+      @include lg {
+        width: 90%;
+        padding: 0.5rem;
+        height: 10%;
+        left: 5%;
+        right: 5%;
+        top: 1%;
+      }
+
       .marker_div {
-        width: 10rem;
-        height: 10rem;
+        // border: 1px solid red;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        // justify-content: center;
+        width: 100%;
+        height: 100%;
+        margin-top: 4%;
+        @include lg {
+          margin-top: 0;
+        }
       }
       .marker_img_div {
+        // border: 1px solid blue;
         // width: 100%;
         display: flex;
-        margin: 1rem;
+        @include mobile-only {
+          margin: 0.1rem;
+        }
+        @include md {
+          margin: 0.3rem;
+        }
+        @include lg {
+          margin: 0.5rem;
+        }
       }
       .markerImg {
         position: relative;
         color: #4680ff;
-        height: 4rem;
-        width: 4rem;
-        left: 1rem;
+        @include mobile-only {
+          height: 2.5rem;
+          width: 2.5rem;
+        }
+        @include md {
+          height: 2.5rem;
+          width: 2.5rem;
+        }
+        @include lg {
+          height: 4rem;
+          width: 4rem;
+        }
+
         &:hover {
           cursor: pointer;
         }
@@ -294,22 +369,49 @@
       .cancelImg {
         position: relative;
         color: black;
-        height: 1.5rem;
-        width: 1.5rem;
-        margin: 0;
-        padding: 0;
-        left: 0.5rem;
         display: none;
+        @include mobile-only {
+          height: 1rem;
+          width: 1rem;
+          margin: 0;
+          padding: 0;
+          left: 0.1rem;
+        }
+        @include md {
+          height: 1rem;
+          width: 1rem;
+          margin: 0;
+          padding: 0;
+          left: 0.1rem;
+        }
+        @include lg {
+          height: 1.5rem;
+          width: 1.5rem;
+          margin: 0;
+          padding: 0;
+          left: 0.5rem;
+        }
+
         // background-color: #4680ff;
         &:hover {
           cursor: pointer;
         }
       }
       .marker_span {
+        // border: 1px solid purple;
         position: relative;
-        font-size: 1.2rem;
         display: block;
-        left: 1rem;
+        @include mobile-only {
+          position: absolute;
+          font-size: 0.5rem;
+          top: 70%;
+        }
+        @include md {
+          font-size: 1rem;
+        }
+        @include lg {
+          font-size: 1.2rem;
+        }
       }
       .line {
         height: 3rem;
@@ -319,14 +421,27 @@
   }
 
   .footstep_div {
+    // border: 1px solid orange;
     display: flex;
   }
 
   .footstep {
     color: rgb(28, 71, 125);
-    width: 25px;
-    height: 25px;
-    margin: 0 0.2rem;
+    @include mobile-only {
+      width: 1rem;
+      height: 1rem;
+      margin: 0 0.2rem;
+    }
+    @include md {
+      width: 2rem;
+      height: 2rem;
+      margin: 0 0.2rem;
+    }
+    @include lg {
+      width: 25px;
+      height: 25px;
+      margin: 0 0.2rem;
+    }
   }
 
   .buttonDiv {

@@ -1,9 +1,9 @@
 #landingContainer {
   background-color: #f8f9fa;
   width: 100%;
-  height: 100%;
+  height: auto;
   @include mobile-only {
-    padding-top: 2rem;
+    padding: 3rem 0 0 0;
   }
   @include md {
     padding-top: 5rem;
@@ -20,7 +20,8 @@
     justify-content: center;
     width: 100%;
     @include mobile-only {
-      height: 25rem;
+      flex-direction: column-reverse;
+      height: 35rem;
     }
     @include md {
       height: 50rem;
@@ -31,6 +32,10 @@
     .introTextBox {
       // border: 1px solid green;
       text-align: left;
+      @include mobile-only {
+        width: 80%;
+        height: auto;
+      }
       .line1 {
         color: #4b5057;
         font-weight: 600;
@@ -66,7 +71,7 @@
         font-weight: bold;
         @include mobile-only {
           font-size: 1rem;
-          padding-bottom: 1rem;
+          padding-bottom: 0.5rem;
         }
         @include md {
           font-size: 2.8rem;
@@ -101,8 +106,8 @@
         cursor: pointer;
         @include mobile-only {
           margin-top: 0.5rem;
-          width: 4.5rem;
-          height: 1.5rem;
+          width: 5rem;
+          height: 2rem;
           font-size: 0.8rem;
         }
         @include md {
@@ -125,10 +130,16 @@
 
     .landimgBox {
       // border: 1px solid green;
+      @include mobile-only {
+        width: 80%;
+        height: 19rem;
+        margin-bottom: 2rem;
+      }
       .landimg {
         @include mobile-only {
-          width: 12rem;
-          height: 14rem;
+          width: 80%;
+          height: 100%;
+          margin: 0 1rem 0 0;
         }
         @include md {
           width: 40rem;
@@ -152,7 +163,7 @@
     text-align: center;
     padding: 2.5rem 0rem 2.5rem 0rem;
     @include mobile-only {
-      height: 25rem;
+      height: 45rem;
     }
     @include md {
       height: 40rem;
@@ -165,6 +176,7 @@
       font-weight: bold;
       @include mobile-only {
         font-size: 2rem;
+        margin-bottom: 3rem;
       }
       @include md {
         font-size: 3rem;
@@ -178,10 +190,17 @@
       width: 100%;
       display: flex;
       justify-content: center;
+      @include mobile-only {
+        flex-direction: column;
+        justify-content: center;
+        width: 80%;
+      }
       .serviceInfoBox {
         // border: 1px solid green;
         @include mobile-only {
-          margin: 2rem 1rem 2rem 1rem;
+          margin: 1rem 0rem 3rem 0rem;
+          display: flex;
+          align-items: center;
         }
         @include md {
           margin: 5rem 5rem 5rem 5rem;
@@ -189,10 +208,17 @@
         @include lg {
           margin: 5rem 10rem 5rem 10rem;
         }
-
-        .serviceImage {
+        .subBox {
+          // border: 1px solid purple;
           @include mobile-only {
-            height: 4rem;
+            margin-left: 1.5rem;
+            text-align: left;
+          }
+        }
+        .serviceImage {
+          // border: 1px solid red;
+          @include mobile-only {
+            height: 6rem;
           }
           @include md {
             height: 10rem;
@@ -254,12 +280,12 @@
     }
     .onroadimage {
       @include mobile-only {
-        width: 80%;
-        height: 10rem;
+        width: 95%;
+        height: 16rem;
       }
       @include md {
-        width: 80%;
-        height: 30rem;
+        width: 95%;
+        height: 34rem;
       }
       @include lg {
         width: 70%;
