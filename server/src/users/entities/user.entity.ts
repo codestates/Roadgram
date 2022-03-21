@@ -5,6 +5,7 @@ import { Comments } from '../../comments/entities/comments.entity';
 import * as bcrypt from 'bcrypt';
 import {
   BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -30,7 +31,7 @@ export class User {
   @Column({ default: '', name: "status_message" })
   statusMessage: string;
 
-  @Column({ default: 'https://ootd13image.s3.ap-northeast-2.amazonaws.com/%E1%84%91%E1%85%B5%E1%84%8C%E1%85%A9%E1%86%AB%E1%84%90%E1%85%AE.jpeg', name: 'profile_image' })
+  @Column({ default: 'https://ootd13image.s3.ap-northeast-2.amazonaws.com/emptyprofile.png', name: 'profile_image' })
   profileImage: string;
 
   @Column({ default: 0, name: 'total_following' })
@@ -69,6 +70,7 @@ export class User {
   comments?: Comment[];
 
   @BeforeInsert()
+  @BeforeUpdate()
   async hashPassword(password: string) {
     if(this.loginMethod===0){
       const salt = await bcrypt.genSalt();

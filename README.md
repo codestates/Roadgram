@@ -36,6 +36,7 @@
 <br>
 
 ## Architecture
-![Roadgram](https://user-images.githubusercontent.com/91672778/156204706-a604120a-3a0b-413f-95c2-cbaf4d890775.png)
+![Roadgram (2)](https://user-images.githubusercontent.com/91672778/156910543-c8ed6b25-2c2d-48f0-b173-fb41ba007fc8.png)
+
 
 
