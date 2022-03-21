@@ -9,7 +9,7 @@ assignees: ''
 
 > ### ISSUE
 > * Group:  `client`, `server`, `sr`
-> * Type: `bug`, `feature`, `delete`
+> * Type: `bug`, `feature`, `delete`, `refactoring`
 > * Detail: fix actions from client redux
 > 
 > ### TODO
