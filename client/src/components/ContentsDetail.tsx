@@ -45,19 +45,25 @@ function ContentsDetail() {
   }
 
   const likeUnlikeHandler = async () => {
-    await axios.post(
-      `${process.env.REACT_APP_API_URL}/likes`,
-      {
-        user: userInfo.id,
-        articleId: articleInfo.id,
-        loginMethod: userInfo.loginMethod
-      },
-      {
-        headers: { authorization: `${accessToken}` }
-      }
-    ).then((res) => {
-      dispatch(likeUnlike(res.data.data.totalLikes));
-    })
+    if (isLogin) {
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/likes`,
+        {
+          user: userInfo.id,
+          articleId: articleInfo.id,
+          loginMethod: userInfo.loginMethod
+        },
+        {
+          headers: { authorization: `${accessToken}` }
+        }
+      ).then((res) => {
+        dispatch(likeUnlike(res.data.data.totalLikes));
+      })
+    } else {
+      alert("로그인이 필요한 서비스입니다.");
+      navigate('/logins');
+    }
+
   }
 
   const newComment = (e: any) => {
