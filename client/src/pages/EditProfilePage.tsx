@@ -245,7 +245,7 @@ function EditProfilePage(): any {
         </div>
         <div className='editProfile_box_div'>
           <h3 className='editProfile_title'>이메일</h3>
-          <div className='editProfile_email_div'>{auth.userInfo.email ? auth.userInfo.email : `kimcoding@gmail.com`}</div>
+          <div className='editProfile_email_div'>{userInfo.email}</div>
         </div>
         <div className='editProfile_box_div'>
           <h3 className='editProfile_title'>패스워드</h3>
