@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import '../style.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass, faUser, faPencil } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faUser, faPencil, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
@@ -86,6 +86,7 @@ function Navigator() {
         </Link>
       </div>
       <div className="structure sideMenu">
+        <FontAwesomeIcon icon={faCircleInfo} className="infoIcon" onClick={() => navigate('/')} />
         <div className="inputDiv">
           <input
             className="searchBar"

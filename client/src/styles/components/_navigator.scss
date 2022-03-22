@@ -23,7 +23,7 @@
     visibility: visible;
     position: absolute;
     z-index: 10;
-    border:1px solid #e5e8eb;
+    border: 1px solid #e5e8eb;
     background-color: white;
     font-weight: bold;
     transition: all 0.2s;
@@ -53,15 +53,15 @@
       right: 0rem;
       top: 10rem;
     }
-    a{
+    a {
       display: flex;
       height: 50%;
       width: 100%;
       justify-content: center;
       align-items: center;
-      &:hover{
+      &:hover {
         cursor: pointer;
-        background-color: #F2f4f6;
+        background-color: #f2f4f6;
         border-radius: 0rem 0rem 0rem 1rem;
       }
     }
@@ -123,6 +123,17 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+
+    .infoIcon {
+      height: 3vmin;
+      color: rgb(80, 78, 78);
+      cursor: pointer;
+      margin-right: 2vmin;
+      transition: 0.2s;
+    }
+    .infoIcon:hover {
+      color: gray;
+    }
 
     .inputDiv {
       // border: 1px solid green;
