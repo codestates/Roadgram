@@ -261,8 +261,12 @@ export class UsersService {
             // // 각 게시물에 태그 이름(배열) 추가
             let newArticles = [];
             for (const article of articles) {
-                const tagIds: object = await this.articleToTagRepository.getTagIds(article.id);
-                const tagNames: string[] = await this.tagRepository.getTagNameWithIds(tagIds);
+                const tagIds: number[] = await this.articleToTagRepository.getTagIds(article.id);
+                let tagNames: string[] = [];
+                tagIds.forEach(async (tagId) => {
+                    const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
+                    tagNames.push(tagName);
+                })
                 article.tags = tagNames;
 
                 interface articleObject {

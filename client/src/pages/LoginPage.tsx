@@ -74,8 +74,8 @@ function LoginPage() {
   const kakaoHandler = async () => {
     kakao.Auth.authorize({
       // 로컬에서 테스트 시 "http://localhost:3000/main"로 변경 필요
-      // redirectUri: "http://localhost:3000/main"
-      redirectUri: "https://roadgram.net/main"
+      redirectUri: "http://localhost:3000/main"
+      // redirectUri: "https://roadgram.net/main"
     });
   }
 
