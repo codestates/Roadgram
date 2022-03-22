@@ -14,14 +14,15 @@ import WithdrawalModal from '../components/Modals/WithdrawalModal';
 
 function EditProfilePage(): any {
   const auth = useSelector((state: RootState) => state.auth);
+  const userInfo = useSelector((state: RootState) => state.userInfo.userInfo)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isInitialMount = useRef(true);
 
   const [editInform, setEditInform] = useState({
-    nickname: '',
-    statusMessage: '',
-    profileImage: '',
+    nickname: userInfo.nickname,
+    statusMessage: userInfo.statusMessage,
+    profileImage: userInfo.profileImage,
     password: '',
     passwordCheck: ''
   })
@@ -29,11 +30,11 @@ function EditProfilePage(): any {
   const [passwordAvailability, setPasswordAvailability] = useState(true);
   const [isPasswordSame, setIsPasswordSame] = useState(true);
 
-  const [scroll,setScroll] =useState(0); // 스크롤 방지 기능을 위해 현재 스크롤 위치 저장
+  const [scroll, setScroll] = useState(0); // 스크롤 방지 기능을 위해 현재 스크롤 위치 저장
 
   /* 로그인 안된 상태에서 접근 차단 */
   useEffect(() => {
-    document.documentElement.scrollTop=0;
+    document.documentElement.scrollTop = 0;
     if (!auth.isLogin) {
       alert('로그인이 필요합니다');
       navigate('/logins');
@@ -144,12 +145,12 @@ function EditProfilePage(): any {
       width:100%;
       `;
     }
-    else{
-      document.documentElement.scrollTop=scroll; // 저장해둔 스크롤 위치로 이동
+    else {
+      document.documentElement.scrollTop = scroll; // 저장해둔 스크롤 위치로 이동
       setScroll(0);// 스크롤 위치 상태 초기화 
     }
     return () => {
-      document.documentElement.style.cssText ='';
+      document.documentElement.style.cssText = '';
     }
   }, [isWithdrawalModal])
 
@@ -157,7 +158,7 @@ function EditProfilePage(): any {
     const body: any = {};
     if (editInform.profileImage) body.profileImage = editInform.profileImage;
     body.statusMessage = editInform.statusMessage;
-    if (editInform.nickname) {
+    if (editInform.nickname&&editInform.nickname!==userInfo.nickname) {
       if (editInform.nickname.length === 1 || editInform.nickname.length > 15) return alert("닉네임은 2~15자 이내로 입력바랍니다.");
       if (!nicknameAvailability) return alert("닉네임 중복 여부를 확인 해 주시기 바랍니다.");
       body.nickname = editInform.nickname;
@@ -165,13 +166,13 @@ function EditProfilePage(): any {
     if (editInform.password) {
       if (!passwordAvailability) return alert("비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.");
       if (editInform.password !== editInform.passwordCheck) return alert('비밀번호가 일치하지 않습니다.');
-      body.password=editInform.password;
+      body.password = editInform.password;
     }
     /* api 요청 시작 */
     try {
       const response = await axios.patch(`${process.env.REACT_APP_API_URL}/users/profile`,
         { user: auth.userInfo.id, loginMethod: auth.userInfo.loginMethod, ...body },
-        { headers: { authorization: `${auth.accessToken}`} }
+        { headers: { authorization: `${auth.accessToken}` } }
       );
       dispatch(updateUserInfo(response.data.data));
       return navigate(`/userinfo?id=${auth.userInfo.id}`);
@@ -190,7 +191,7 @@ function EditProfilePage(): any {
         try {
           const response = await axios.patch(`${process.env.REACT_APP_API_URL}/users/profile`,
             { user: auth.userInfo.id, loginMethod: auth.userInfo.loginMethod, ...body },
-            { headers: { authorization: `${auth.accessToken}`} }
+            { headers: { authorization: `${auth.accessToken}` } }
           );
           dispatch(updateUserInfo(response.data.data));
           return navigate(`/userinfo?id=${auth.userInfo.id}`);
@@ -214,7 +215,7 @@ function EditProfilePage(): any {
         <div className='editProfile_title_box'>
           <Link to={`/userinfo?id=${auth.userInfo.id}`}>
             <div className='editProfile_arrow_box'>
-              <FontAwesomeIcon className='editProfile_arrow_icon' icon={faArrowLeft}/>
+              <FontAwesomeIcon className='editProfile_arrow_icon' icon={faArrowLeft} />
             </div>
           </Link>
           <h1>내 정보 수정</h1>
@@ -223,9 +224,7 @@ function EditProfilePage(): any {
           <h3 className='editProfile_title'>프로필 사진</h3>
           <label className='editProfile_image_label' htmlFor='editProfile_image_label'>
             <div className='editProfile_image_section'>
-              {editInform.profileImage ?
-                <img className='editProfile_image_img' src={editInform.profileImage} alt="" />
-                : <img className='editProfile_image_img' src={auth.userInfo.profileImage || 'https://ootd13image.s3.ap-northeast-2.amazonaws.com/%E1%84%91%E1%85%B5%E1%84%8C%E1%85%A9%E1%86%AB%E1%84%90%E1%85%AE.jpeg'} alt='' />}
+              <img className='editProfile_image_img' src={editInform.profileImage} alt="" />               
             </div>
             <div className='editProfile_icon_section'>
               <FontAwesomeIcon icon={faCamera} className='cameraIcon' />
@@ -235,18 +234,18 @@ function EditProfilePage(): any {
         </div>
         <div className='editProfile_box_div'>
           <h3 className='editProfile_title'>상태메세지</h3>
-          <input className='editProfile_message_input' type='text' placeholder='상태메세지' onChange={(e) => inputValueHandler(e, 'statusMessage')} />
+          <input className='editProfile_message_input' type='text' placeholder='상태메세지' onChange={(e) => inputValueHandler(e, 'statusMessage')} defaultValue={editInform.statusMessage}/>
         </div>
         <div className='editProfile_box_div'>
           <h3 className='editProfile_title'>닉네임</h3>
           <div className='editProfile_nickname_box'>
-            <input className='editProfile_password_input' type='text' placeholder='닉네임' onChange={(e) => inputValueHandler(e, 'nickname')} />
+            <input className='editProfile_password_input' type='text' placeholder='닉네임' onChange={(e) => inputValueHandler(e, 'nickname')} defaultValue={editInform.nickname}/>
             <button type='submit' className='editProfile_nickname_button' onClick={nicknameCheck}>중복체크</button>
           </div>
         </div>
         <div className='editProfile_box_div'>
           <h3 className='editProfile_title'>이메일</h3>
-          <div className='editProfile_email_div'>{auth.userInfo.email?auth.userInfo.email:`kimcoding@gmail.com`}</div>
+          <div className='editProfile_email_div'>{auth.userInfo.email ? auth.userInfo.email : `kimcoding@gmail.com`}</div>
         </div>
         <div className='editProfile_box_div'>
           <h3 className='editProfile_title'>패스워드</h3>
@@ -258,7 +257,7 @@ function EditProfilePage(): any {
           <input className='editProfile_password_input' type='password' placeholder='비밀번호 확인' onChange={(e) => inputValueHandler(e, 'passwordCheck')} />
           {!isPasswordSame ? <span className='editProfile_passwordCheck_span'>비밀번호가 일치하지 않습니다.</span> : <span> </span>}
         </div>
-        <div className='editProfile_submit_div'> 
+        <div className='editProfile_submit_div'>
           <button className='editProfile_submit_button' type='button' onClick={openWithdrawalModal}>회원탈퇴</button>
           <button className='editProfile_submit_button1' type='button' onClick={submitHandler}>수정완료</button>
         </div>
