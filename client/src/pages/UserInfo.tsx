@@ -155,6 +155,7 @@ function UserInfo() {
         })
       setTotalFollower(res.data.data.totalFollower);
       setIsFollow(!isFollow);
+      toast.success(isFollow?'언팔로우 되었습니다.':'팔로우 되었습니다.');
     } catch {
       try {
         await accessTokenRequest();
@@ -173,6 +174,7 @@ function UserInfo() {
           })
         setTotalFollower(res.data.data.totalFollower);
         setIsFollow(!isFollow);
+        toast.success(isFollow?'언팔로우 되었습니다.':'팔로우 되었습니다.');
       } catch {
         toast.error('잘못된 요청입니다.')
         dispatch(logout());
@@ -181,8 +183,6 @@ function UserInfo() {
     }
 
   }
-
-  console.log(`useEffect밖:::::isFollow는 ${isFollow}입니다.`);
   return (
     <div className="userInfo_div">
       <div className='userinfo_container'>

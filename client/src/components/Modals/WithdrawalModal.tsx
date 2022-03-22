@@ -37,6 +37,7 @@ function WithdrawalModal() {
       closeModal();
       dispatch(logout());
       dispatch(resetUserInfo());
+      toast.success('탈퇴되었습니다.');
       navigate('/'); // 성공 시 랜딩페이지로 이동
     } catch {
       // 실패시 새로 액세스토큰 발급 요청
@@ -59,11 +60,13 @@ function WithdrawalModal() {
           })
         closeModal();
         dispatch(logout());
+        dispatch(resetUserInfo());
+        toast.success('탈퇴되었습니다.');
         navigate('/');
-      } catch (err: any) {
+      } catch {
         closeModal();
         dispatch(logout());// 다시 해도 실패 시 그냥 로그아웃 처리만
-        console.log(err);
+        toast.error('다시 로그인해 주세요.');
       }
     }
   };

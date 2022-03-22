@@ -26,6 +26,7 @@ function PostDeleteCheckModal() {
         `${process.env.REACT_APP_API_URL}/articles?id=${articleInfo.id}&user=${userInfo.id}&loginMethod=${userInfo.loginMethod}`,
         { headers: { authorization: `${accessToken}` } });
       closeModal();
+      toast.success('삭제되었습니다.');
       navigate(`/userinfo?id=${userInfo.id}`);
     } catch {
       try {
@@ -41,6 +42,7 @@ function PostDeleteCheckModal() {
           `${process.env.REACT_APP_API_URL}/articles?id=${articleInfo.id}&user=${userInfo.id}&loginMethod=${userInfo.loginMethod}`,
           { headers: { authorization: `${accessToken}` } });
         closeModal();
+        toast.success('삭제되었습니다.');
         navigate(`/userinfo?id=${userInfo.id}`);
       } catch (err: any) {
         closeModal();
