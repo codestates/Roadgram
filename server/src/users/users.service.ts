@@ -39,7 +39,7 @@ export class UsersService {
 
     async checkEmail({ email }: EmailDto) {
         const isValid = await this.userRepository.findOne({ email });
-        if (isValid) {
+        if (isValid&&isValid.email===email) {
             throw new ConflictException('not available')
         }
         else return { message: 'available' }
@@ -47,7 +47,7 @@ export class UsersService {
 
     async checkNickname({ nickname }: NicknameDto) {
         const isValid = await this.userRepository.findOne({ nickname });
-        if (isValid) {
+        if (isValid&&isValid.nickname===nickname) {
             throw new ConflictException('not available')
         }
         else return { message: 'available' }
