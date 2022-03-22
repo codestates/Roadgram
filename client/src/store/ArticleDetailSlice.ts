@@ -23,7 +23,7 @@ export interface articleInfo {
   tags?: string[] | undefined | any;
   totalLike: number;
   totalComment: number;
-  likedOrNot: boolean;
+  likedOrNot: boolean | null;
   createdAt: Date | null;
 }
 
@@ -48,7 +48,7 @@ const initialState: articleDetails = {
     tags: [],
     totalLike: 0,
     totalComment: 0,
-    likedOrNot: false,
+    likedOrNot: null,
     createdAt: null,
   },
 }
