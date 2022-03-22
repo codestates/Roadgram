@@ -2,6 +2,10 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 
+/* Popup import */
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 /* CSS import */
 import './App.css'
 
@@ -40,6 +44,17 @@ function App() {
           <Route path="/signup/*" element={<SignupPage />} />
           <Route path="/search/*" element={<SearchPage />} />
         </Routes>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={1500}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable
+          pauseOnHover={false}
+          />
       </BrowserRouter>
     </div>
   )

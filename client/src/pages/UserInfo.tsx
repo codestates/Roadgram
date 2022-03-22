@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from '..';
 import Article from '../components/Article';
@@ -159,7 +160,7 @@ function UserInfo() {
         await accessTokenRequest();
       } catch {
         dispatch(logout());
-        alert('다시 로그인해 주세요');
+        toast.error('다시 로그인해 주세요');
         navigate('/logins');
       }
       try {
@@ -173,7 +174,7 @@ function UserInfo() {
         setTotalFollower(res.data.data.totalFollower);
         setIsFollow(!isFollow);
       } catch {
-        alert('잘못된 요청입니다.')
+        toast.error('잘못된 요청입니다.')
         dispatch(logout());
         navigate('/main');
       }

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify';
 import axios from 'axios'
 import { RootState } from '..'
 import Tag from '../components/CreatePostPage/Tag'
@@ -30,7 +31,7 @@ function CreatePostPage() {
 
   const posting = () => {
     if (content === '') {
-      alert('본문은 필수 입력 정보입니다.')
+      toast.error('본문은 필수 입력 정보입니다.')
       return
     }
 
@@ -40,12 +41,12 @@ function CreatePostPage() {
     })
 
     if (!isImageNull) {
-      alert(`모든 경로의 이미지를 업로드 해 주시기 바랍니다.`)
+      toast.error(`모든 경로의 이미지를 업로드 해 주시기 바랍니다.`)
       return
     }
 
     if (!thumbnail || thumbnail === '') {
-      alert('썸네일을 선택해주시기 바랍니다.')
+      toast.error('썸네일을 선택해주시기 바랍니다.')
       return
     }
 
@@ -71,7 +72,7 @@ function CreatePostPage() {
           },
         )
         .then(res => {
-          alert('작성이 완료되었습니다.')
+          toast.success('작성이 완료되었습니다.')
           navigate(`/postdetails?id=${res.data.data.articleInfo.id}`)
           resetPostInfo()
         })

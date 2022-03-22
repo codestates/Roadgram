@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import AWS, { S3 } from 'aws-sdk';
 import axios from 'axios';
@@ -35,7 +36,7 @@ function EditProfilePage(): any {
   useEffect(() => {
     document.documentElement.scrollTop=0;
     if (!auth.isLogin) {
-      alert('로그인이 필요합니다');
+      toast.error('로그인이 필요합니다.');
       navigate('/logins');
     }
   }, []);
@@ -96,15 +97,15 @@ function EditProfilePage(): any {
 
   const nicknameCheck = async () => {
     if (!editInform.nickname) {
-      return alert('닉네임을 입력하세요.')
+      return toast.error('닉네임을 입력하세요.');
     }
     try {
       await axios.post(`${process.env.REACT_APP_API_URL}/users/nicknamecheck`, { nickname: editInform.nickname });
       setNicknameAvailability(true);
-      return alert('사용가능한 닉네임입니다.');
+      return toast.success('사용가능한 닉네임입니다.');
     } catch {
       setNicknameAvailability(false);
-      return alert('중복된 닉네임입니다');
+      return toast.error('중복된 닉네임입니다.');
     }
   }
 
@@ -158,13 +159,13 @@ function EditProfilePage(): any {
     if (editInform.profileImage) body.profileImage = editInform.profileImage;
     body.statusMessage = editInform.statusMessage;
     if (editInform.nickname) {
-      if (editInform.nickname.length === 1 || editInform.nickname.length > 15) return alert("닉네임은 2~15자 이내로 입력바랍니다.");
-      if (!nicknameAvailability) return alert("닉네임 중복 여부를 확인 해 주시기 바랍니다.");
+      if (editInform.nickname.length === 1 || editInform.nickname.length > 15) return toast.error("닉네임은 2~15자 이내로 입력바랍니다.");
+      if (!nicknameAvailability) return toast.error('닉네임 중복체크를 해주세요.');
       body.nickname = editInform.nickname;
     }
     if (editInform.password) {
-      if (!passwordAvailability) return alert("비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.");
-      if (editInform.password !== editInform.passwordCheck) return alert('비밀번호가 일치하지 않습니다.');
+      if (!passwordAvailability) return toast.error("비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.");
+      if (editInform.password !== editInform.passwordCheck) return toast.error("비밀번호가 일치하지 않습니다.");
       body.password=editInform.password;
     }
     /* api 요청 시작 */
@@ -174,6 +175,7 @@ function EditProfilePage(): any {
         { headers: { authorization: `${auth.accessToken}`} }
       );
       dispatch(updateUserInfo(response.data.data));
+      toast.success('회원정보가 수정되었습니다.');
       return navigate(`/userinfo?id=${auth.userInfo.id}`);
     } catch (err: any) {
       /* 401에러는 개발 완료되면 제외되도 되는 경우의 수라 나중에 개발 후에 제거해도 됨 */
@@ -183,7 +185,7 @@ function EditProfilePage(): any {
           await accessTokenRequest();
         } catch {
           dispatch(logout());
-          alert('다시 로그인해 주세요.')
+          toast.error("다시 로그인해 주세요.");
           return navigate('/logins')
         }
         /* 이전 요청 한번 더 */
@@ -193,15 +195,16 @@ function EditProfilePage(): any {
             { headers: { authorization: `${auth.accessToken}`} }
           );
           dispatch(updateUserInfo(response.data.data));
+          toast.success('회원정보가 수정되었습니다.');
           return navigate(`/userinfo?id=${auth.userInfo.id}`);
         } catch {
           dispatch(logout());
-          alert('잘못된 시도입니다.');
+          toast.error("잘못된 시도입니다.");
           return navigate('/main')
         }
       }
       else {
-        alert('잘못된 시도입니다.');
+        toast.error("잘못된 시도입니다.");
         dispatch(logout());
         return navigate('/main')
       }

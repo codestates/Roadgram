@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { RootState } from '../..';
 import { logout, newAccessToken } from '../../store/AuthSlice';
 import { articleDeleteModal } from '../../store/ModalSlice';
@@ -32,7 +33,7 @@ function PostDeleteCheckModal() {
       } catch {
         closeModal();
         dispatch(logout());
-        alert('다시 로그인해 주세요.');
+        toast.error('다시 로그인해 주세요.');
         navigate('/logins');
       }
       try {

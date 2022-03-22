@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify';
 import axios from 'axios'
 import { RootState } from '..'
 import Tag from '../components/CreatePostPage/Tag'
@@ -33,11 +34,11 @@ function EditPostPage() {
     // 첫 렌더링 시 유저 일치 여부 and 게시물 일치 여부 확인(state와 비교)
 
     if(!isLogin){
-      alert('로그인이 필요한 서비스입니다.');
+      toast.error('로그인이 필요한 서비스입니다.');
       navigate('/logins');
     }
     else if(userInfo.id !== writerInfo.id ||Number(id) !== articleInfo.id ) {
-      alert("접근할 수 없는 경로입니다.")
+      toast.error("접근할 수 없는 경로입니다.")
       navigate('/main')
     }
   }, [])
@@ -71,7 +72,7 @@ function EditPostPage() {
 
   const posting = () => {
     if (content === '') {
-      alert('본문은 필수 입력 정보입니다.')
+      toast.error('본문은 필수 입력 정보입니다.')
       return
     }
 
@@ -81,12 +82,12 @@ function EditPostPage() {
     })
 
     if (!isImageNull) {
-      alert(`모든 경로의 이미지를 업로드 해 주시기 바랍니다.`)
+      toast.error(`모든 경로의 이미지를 업로드 해 주시기 바랍니다.`)
       return
     }
 
     if (!thumbnail || thumbnail === '') {
-      alert('썸네일을 선택 해주시기 바랍니다.')
+      toast.error('썸네일을 선택 해주시기 바랍니다.')
       return
     }
 
@@ -107,12 +108,12 @@ function EditPostPage() {
         },
       )
       .then(res => {
-        alert('수정이 완료되었습니다.')
+        toast.success('수정이 완료되었습니다.')
         navigate(`/postdetails?id=${res.data.data.articleInfo.id}`)
         resetPostInfo()
       })
       .catch(err => {
-        alert('수정에 실패했습니다.')
+        toast.error('수정에 실패했습니다.')
         console.log('err!', err)
       })
   }

@@ -1,6 +1,7 @@
 /* Library import */
 import React, { createRef, useEffect, useRef, useState } from 'react'
 import axios from 'axios'
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import logo from '../images/logo.png'
@@ -42,9 +43,9 @@ function LoginPage() {
     const { email, password } = loginInfo
     console.log("email ===", email, "password", password);
       if (!email) {
-        alert("이메일을 입력 해 주세요");
+        toast.error("이메일을 입력 해 주세요");
       } else if (!password) {
-        alert("패스워드를 입력 해 주세요");
+        toast.error("패스워드를 입력 해 주세요");
       } else {
         /* reponse 변수에 /users/login 서버 응답결과를 담는다 */
         axios
@@ -60,7 +61,7 @@ function LoginPage() {
         })
         .catch((err) => {
           console.log(err)
-          alert("아이디 혹은 비밀번호를 확인 해 주세요.")
+          toast.error("아이디 혹은 비밀번호를 확인 해 주세요.")
         })
       } 
   }
@@ -83,7 +84,7 @@ function LoginPage() {
   // 이미 로그인시 메인페이지로 이동
   useEffect(()=>{
     if(isLogin){
-      alert('잘못된 접근입니다.');
+      toast.error('잘못된 접근입니다.');
       navigate('/main');
     }
   },[])
@@ -98,8 +99,8 @@ function LoginPage() {
         <input className="login_password_input" type="password" placeholder="비밀번호를 입력해주세요" onChange={handleInputValue('password')} />
         <li 
           className="login_findpassword_button" 
-          onClick={()=>alert("비밀번호 찾기 서비스는 준비 중입니다.")}
-          onKeyDown={()=>alert("비밀번호 찾기 서비스는 준비 중입니다.")}
+          onClick={()=>toast("비밀번호 찾기 서비스는 준비 중입니다.")}
+          onKeyDown={()=>toast("비밀번호 찾기 서비스는 준비 중입니다.")}
           >비밀번호 찾기</li>
         <div className="button_div">
           <button className="login_login_button" type="button" onClick={loginHandler}>로그인</button>

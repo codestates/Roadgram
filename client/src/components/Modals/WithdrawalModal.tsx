@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { RootState } from '../..';
 import { logout, newAccessToken } from '../../store/AuthSlice';
 import { withdrawalModal } from '../../store/ModalSlice';
@@ -42,7 +43,7 @@ function WithdrawalModal() {
       try {
         accessTokenRequest();
       } catch {
-        alert('다시 로그인해 주세요.');
+        toast.error('다시 로그인해 주세요.');
         closeModal();
         dispatch(logout());
         navigate('/logins');// 리프레시 토큰도 만료 시 로그인 페이지로 연결

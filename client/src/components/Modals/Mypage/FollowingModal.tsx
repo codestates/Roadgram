@@ -3,6 +3,7 @@ import e from 'express'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify';
 import { RootState } from '../../..'
 import { getMainArticles } from '../../../store/ArticleSlice'
 import { logout, newAccessToken } from '../../../store/AuthSlice'
@@ -41,7 +42,7 @@ function FollowingModal() {
         } catch {
           // 실패시 로그아웃 처리 & 모달창 닫기 & 로그인 페이지로 연결
           dispatch(followingModal(!isFollowingModal))
-          alert('다시 로그인해주세요');
+          toast.error('다시 로그인해주세요');
           dispatch(logout());
           navigate('/logins');
         }
@@ -77,7 +78,7 @@ function FollowingModal() {
           // 실패시 로그아웃 처리
           setEnd(true)
           dispatch(followingModal(!isFollowingModal))
-          alert('다시 로그인해주세요');
+          toast.error('다시 로그인해주세요');
           dispatch(logout());
           navigate('/logins');
         }
