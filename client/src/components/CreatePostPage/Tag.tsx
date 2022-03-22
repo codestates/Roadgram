@@ -14,11 +14,6 @@ function Tag() {
   const [removeMode, setRemoveMode] = useState(false);
   const dispatch = useDispatch();
 
-
-  useEffect(() => {
-    console.log(tagsInfo);
-  }, [tagsInfo])
-
   const removeTags = (indexToRemove: number) => {
     const organized = tagsInfo
     .filter((_, index) => index !== indexToRemove)
