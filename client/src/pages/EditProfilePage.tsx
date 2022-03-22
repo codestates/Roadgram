@@ -248,16 +248,18 @@ function EditProfilePage(): any {
           <h3 className='editProfile_title'>이메일</h3>
           <div className='editProfile_email_div'>{auth.userInfo.email?auth.userInfo.email:`kimcoding@gmail.com`}</div>
         </div>
-        <div className='editProfile_box_div'>
-          <h3 className='editProfile_title'>패스워드</h3>
-          <input className='editProfile_password_input' type='password' placeholder='비밀번호' onChange={(e) => inputValueHandler(e, 'password')} />
-          {!passwordAvailability ? <span className='editProfile_password_span'>비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.</span> : <span> </span>}
-        </div>
-        <div className='editProfile_box_div'>
-          <h3 className='editProfile_title'>패스워드 확인</h3>
-          <input className='editProfile_password_input' type='password' placeholder='비밀번호 확인' onChange={(e) => inputValueHandler(e, 'passwordCheck')} />
-          {!isPasswordSame ? <span className='editProfile_passwordCheck_span'>비밀번호가 일치하지 않습니다.</span> : <span> </span>}
-        </div>
+        {auth.userInfo.loginMethod===0?
+          <div className='editProfile_box_div'>
+            <h3 className='editProfile_title'>패스워드</h3>
+            <input className='editProfile_password_input' type='password' placeholder='비밀번호' onChange={(e) => inputValueHandler(e, 'password')} />
+            {!passwordAvailability ? <span className='editProfile_password_span'>비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.</span> : <span> </span>}
+          </div>:null}
+        {auth.userInfo.loginMethod===0?
+          <div className='editProfile_box_div'>
+            <h3 className='editProfile_title'>패스워드 확인</h3>
+            <input className='editProfile_password_input' type='password' placeholder='비밀번호 확인' onChange={(e) => inputValueHandler(e, 'passwordCheck')} />
+            {!isPasswordSame ? <span className='editProfile_passwordCheck_span'>비밀번호가 일치하지 않습니다.</span> : <span> </span>}
+          </div>:null}
         <div className='editProfile_submit_div'> 
           <button className='editProfile_submit_button' type='button' onClick={openWithdrawalModal}>회원탈퇴</button>
           <button className='editProfile_submit_button1' type='button' onClick={submitHandler}>수정완료</button>
