@@ -67,6 +67,7 @@ function Navigator() {
   const convertToTag = (e: any) => {
     dispatch(setTag(word))
     setWord('')
+    navigate(`/search?tag=${word}`)
   }
 
   const changeWordOfState = (e: any) => {
@@ -91,6 +92,11 @@ function Navigator() {
             className="searchBar"
             type="text"
             placeholder="검색어를 입력하세요."
+            onKeyPress={e => {
+              if (e.key === 'Enter') {
+                convertToTag(e)
+              }
+            }}
             onChange={changeWordOfState}
             value={word}
           />
