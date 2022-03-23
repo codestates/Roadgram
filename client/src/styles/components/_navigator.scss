@@ -5,18 +5,15 @@
   display: flex;
   position: fixed;
   z-index: 11;
-  // top: 0;
-  // left: 0;
-  // right: 0;
   width: 100%;
   @include mobile-only() {
     height: 4rem;
   }
   @include md {
-    height: 8rem;
+    height: 6rem;
   }
   @include lg {
-    height: 10rem;
+    height: 8rem;
   }
 
   .openMenu {
@@ -111,7 +108,7 @@
         height: 4rem;
       }
       @include lg {
-        margin-left: 5rem;
+        margin-left: 10rem;
         width: 24rem;
         height: 5rem;
       }
@@ -222,24 +219,45 @@
     .pencilIcon {
       // border: 1px solid green;
       color: rgb(80, 78, 78);
-      height: 3vmin;
-      margin-right: 4vmin;
       transition: 0.2s;
-    }
-    .pencilIcon:hover {
-      color: gray;
+      cursor: pointer;
+      @include mobile-only {
+        height: 1rem;
+        margin-right: 1rem;
+      }
+      @include md {
+        height: 2.4rem;
+        margin-right: 3.8rem;
+      }
+      @include lg {
+        height: 2.8rem;
+        margin-right: 3.8rem;
+      }
+      &:hover {
+        color: gray;
+      }
     }
 
     .userIcon {
       // border: 1px solid green;
-      height: 3vmin;
       color: rgb(80, 78, 78);
       cursor: pointer;
-      margin-right: 4vmin;
       transition: 0.2s;
-    }
-    .userIcon:hover {
-      color: gray;
+      @include mobile-only {
+        height: 1rem;
+        margin-right: 1rem;
+      }
+      @include md {
+        height: 2.4rem;
+        margin-right: 3.8rem;
+      }
+      @include lg {
+        height: 2.8rem;
+        margin-right: 10rem;
+      }
+      &:hover {
+        color: gray;
+      }
     }
   }
 }
