@@ -4,6 +4,7 @@ import { User } from "../entities/user.entity";
 import { NotFoundException } from "@nestjs/common";
 import { UpdateUserDto } from "../dto/updateUser.dto";
 import { FollowDto } from 'src/follow/dto/follow.dto';
+import * as bcrypt from 'bcrypt';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -28,7 +29,10 @@ export class UserRepository extends Repository<User> {
         if (!user) {
             throw new NotFoundException('cannot find user by id');
         };
-        if (userData.password) user.password = userData.password;
+        if (userData.password) {
+            const salt = await bcrypt.genSalt();
+            user.password = await bcrypt.hash(userData.password, salt);
+        }
         if (userData.nickname) user.nickname = userData.nickname;
         if (userData.profileImage) user.profileImage = userData.profileImage;
         user.statusMessage = userData.statusMessage;
@@ -72,7 +76,7 @@ export class UserRepository extends Repository<User> {
     };
 
     async getProfileList(userIds: number[], limit: number, offset: number): Promise<object[]> {
-        const profileList = await this.findByIds(userIds, { select: ["id", "nickname", "profileImage"],  order: { nickname: "ASC" }, take: limit, skip: offset });
+        const profileList = await this.findByIds(userIds, { select: ["id", "nickname", "profileImage"], order: { nickname: "ASC" }, take: limit, skip: offset });
         return profileList;
     };
 
