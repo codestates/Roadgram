@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
 import axios from 'axios'
+import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from 'react-redux'
@@ -50,7 +51,7 @@ function SignupPage() {
   useEffect(()=>{
     document.documentElement.scrollTop=0;// 스크롤 초기화
     if(isLogin){
-      alert('이미 로그인된 상태입니다.');
+      toast.error('이미 로그인된 상태입니다.');
       navigate('/main');
     }
   },[])
@@ -84,17 +85,17 @@ function SignupPage() {
     const {nickname} = signupInform;
 
     if(nickname.length < 2 || nickname.length > 15) {
-      alert("별명은 2~15자 이내로 입력바랍니다.");
+      toast.error("별명은 2~15자 이내로 입력바랍니다.");
     } else {
       await axios
       .post(`${process.env.REACT_APP_API_URL}/users/nicknamecheck`, {nickname})
       .then((res) => {
         setNicknameValidity(true);
-        alert("사용 가능한 별명입니다.");
+        toast.success("사용 가능한 별명입니다.");
       })
       .catch((err) => {
         setNicknameValidity(false);
-        alert("이미 사용 중인 별명입니다.")
+        toast.error("이미 사용 중인 별명입니다.")
       }); 
     }
   }
@@ -114,16 +115,16 @@ function SignupPage() {
     const {email} = signupInform;
 
     if(!emailValidity) {
-      alert("이메일 형식이 올바르지 않습니다.");
+      toast.error('이메일의 형식이 올바르지 않습니다.');
     } else {
       await axios
       .post(`${process.env.REACT_APP_API_URL}/users/emailcheck`, {email})
       .then((res) => {
         setEmailValidity(true);
-        alert("사용 가능한 이메일입니다.")
+        toast.success('사용가능한 이메일입니다.');
       })
       .catch((err) => {
-        alert("이미 사용 중인 이메일입니다.")
+        toast.error("이미 사용 중인 이메일입니다.")
       });
     }
   }
@@ -134,24 +135,24 @@ function SignupPage() {
     const {email, password, nickname} = signupInform;
 
     if(nickname.length === 1 || nickname.length > 15) {
-      alert("닉네임은 2~15자 이내로 입력바랍니다.");
+      toast.error('닉네임은 2~15자 이내로 입력하시기 바랍니다.');
     } else if(!nicknameValidity) {
-      alert("닉네임 중복 여부를 확인 해 주시기 바랍니다.");
+      toast.error('닉네임 중복 여부를 확인 해 주시기 바랍니다.');
     } else if(!emailValidity) {
-      alert("이메일 형식이 올바르지 않습니다.");
+      toast.error('이메일 형식이 올바르지 않습니다.');
     } else if(!passwordValidity) {
-      alert("비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.");
+      toast.error("비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.");
     } else if(!isSamePassword) {
-      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+      toast.error("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
     } else {
       await axios
       .post(`${process.env.REACT_APP_API_URL}/users/signup`, {email, password, nickname})
       .then((res) => {
-        alert("회원가입에 성공했습니다.");
+        toast.success("회원가입에 성공했습니다.");
         navigate("/");
       })
       .catch((err) => {
-        alert("회원가입에 실패했습니다.")
+        toast.error("회원가입에 실패했습니다.")
       })
     }
   }

@@ -1,5 +1,6 @@
 import { faCommentDots, faHeart as solidHeart, faPencil } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan, faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
+import { ToastContainer, toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
@@ -91,6 +92,7 @@ function ContentsDetail() {
         dispatch(updateTotalComments(res.data.data.totalComments));
         setComment('');
       })
+      toast.success('댓글이 작성되었습니다.');
       await axios.get(
         `${process.env.REACT_APP_API_URL}/comments?id=${articleInfo.id}&page=${1}`)
         .then(res => {
@@ -99,9 +101,9 @@ function ContentsDetail() {
       setEndScroll(false);
       setPage(2);
     } else if (isLogin && !comment) {
-      alert("내용을 입력해주세요.")
+      toast.error("내용을 입력해주세요.")
     } else {
-      alert("로그인이 필요한 서비스입니다.");
+      toast.error("로그인이 필요한 서비스입니다.");
       navigate('/logins');
     }
   }
@@ -158,6 +160,8 @@ function ContentsDetail() {
       dispatch(removeComment(id));
       dispatch(updateTotalComments(res.data.data.totalComments));
     })
+    toast.success('댓글이 삭제되었습니다.');
+
     await axios.get(
       `${process.env.REACT_APP_API_URL}/comments?id=${articleInfo.id}&page=${1}`)
       .then(res => {

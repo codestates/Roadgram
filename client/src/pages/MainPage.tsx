@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
+import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart, faCommentDots } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
@@ -59,7 +60,7 @@ function MainPage() {
           await accessTokenRequest();
         } catch {
           dispatch(logout());
-          alert('다시 로그인해 주세요');
+          toast.error('다시 로그인해 주세요');
           navigate('/logins');
         }
         // 이전 요청 한번 더
@@ -146,7 +147,7 @@ function MainPage() {
           await accessTokenRequest();
         } catch {
           dispatch(logout());
-          alert('다시 로그인해 주세요');
+          toast.error('다시 로그인해 주세요');
           navigate('/logins');
         }
         // 재발급받은 토큰으로 다시 요청
@@ -175,7 +176,7 @@ function MainPage() {
           await accessTokenRequest();
         } catch {
           dispatch(logout());
-          alert('다시 로그인해 주세요');
+          toast.error('다시 로그인해 주세요');
           navigate('/logins');
         }
         // 이전 요청 한번 더
@@ -215,7 +216,7 @@ function MainPage() {
       setIsRecenst(false);
     }
     else{
-      alert('로그인이 필요합니다');
+      toast.error('로그인이 필요합니다');
       navigate('/logins');
     }
   }

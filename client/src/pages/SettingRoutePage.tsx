@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { toast } from 'react-toastify';
 import { faLocationDot, faMagnifyingGlass, faMinusCircle, faShoePrints } from '@fortawesome/free-solid-svg-icons'
 import { } from '@fortawesome/free-regular-svg-icons'
 import axios from 'axios'
@@ -265,7 +266,7 @@ function SettingRoutePage() {
     if(routeList.length > 0) {
       navigate('/createpost');
     } else {
-      alert("경로를 하나 이상 추가 해주시기 바랍니다.");
+      toast.error("경로를 하나 이상 추가 해주시기 바랍니다.");
     }
   }
 

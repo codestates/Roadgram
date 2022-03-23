@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from '..';
 import Article from '../components/Article';
@@ -154,12 +155,13 @@ function UserInfo() {
         })
       setTotalFollower(res.data.data.totalFollower);
       setIsFollow(!isFollow);
+      toast.success(isFollow?'언팔로우 되었습니다.':'팔로우 되었습니다.');
     } catch {
       try {
         await accessTokenRequest();
       } catch {
         dispatch(logout());
-        alert('로그인이 필요한 서비스입니다');
+        toast.error('로그인이 필요한 서비스입니다');
         navigate('/logins');
       }
       // try {
@@ -179,8 +181,6 @@ function UserInfo() {
       // }
     }
   }
-
-  console.log(`useEffect밖:::::isFollow는 ${isFollow}입니다.`);
   return (
     <div className="userInfo_div">
       <div className='userinfo_container'>

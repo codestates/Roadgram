@@ -4,6 +4,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { RootState } from '..';
 import { addComment, getComments, removeComment, resetComments } from '../store/CommentsSlice';
 import { updateTotalComments } from '../store/ArticleDetailSlice';
@@ -48,9 +49,9 @@ function Comments() {
           dispatch(getComments(res.data.data));
       })
     } else if (isLogin && !comment) {
-      alert("내용을 입력해주세요.")
+      toast.error("내용을 입력해주세요.")
     } else {
-      alert("로그인이 필요한 서비스입니다.");
+      toast.error("로그인이 필요한 서비스입니다.");
       navigate('/logins');
     }
   }

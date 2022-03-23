@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { RootState } from '../..';
 import { logout, newAccessToken } from '../../store/AuthSlice';
 import { articleDeleteModal } from '../../store/ModalSlice';
@@ -25,6 +26,7 @@ function PostDeleteCheckModal() {
         `${process.env.REACT_APP_API_URL}/articles?id=${articleInfo.id}&user=${userInfo.id}&loginMethod=${userInfo.loginMethod}`,
         { headers: { authorization: `${accessToken}` } });
       closeModal();
+      toast.success('삭제되었습니다.');
       navigate(`/userinfo?id=${userInfo.id}`);
     } catch {
       try {
@@ -32,7 +34,7 @@ function PostDeleteCheckModal() {
       } catch {
         closeModal();
         dispatch(logout());
-        alert('다시 로그인해 주세요.');
+        toast.error('다시 로그인해 주세요.');
         navigate('/logins');
       }
       try {
@@ -40,6 +42,7 @@ function PostDeleteCheckModal() {
           `${process.env.REACT_APP_API_URL}/articles?id=${articleInfo.id}&user=${userInfo.id}&loginMethod=${userInfo.loginMethod}`,
           { headers: { authorization: `${accessToken}` } });
         closeModal();
+        toast.success('삭제되었습니다.');
         navigate(`/userinfo?id=${userInfo.id}`);
       } catch (err: any) {
         closeModal();

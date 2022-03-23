@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useState } from "react";
+import { toast } from 'react-toastify';
+import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from 'react-redux';
@@ -43,11 +45,11 @@ function Tag() {
     const { value } = event.target;
     if(value === "") return;
     if(value.length > 8) {
-      alert("태그는 최대 8글자까지 작성 가능합니다.");
+      toast.error("태그는 최대 8글자까지 작성 가능합니다.");
       return;
     }
     if(tagsInfo.length >= 5) {
-      alert("태그는 최대 5개까지 등록 가능합니다.");
+      toast.error("태그는 최대 5개까지 등록 가능합니다.");
       return;
     }
 
@@ -59,7 +61,7 @@ function Tag() {
     })
 
     if(isTagExist) {
-      alert("이미 등록된 태그입니다.");
+      toast.error("이미 등록된 태그입니다.");
       return;
     }
 

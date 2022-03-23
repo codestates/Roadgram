@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faCircleDot } from '@fortawesome/free-solid-svg-icons'
 import { faCircle } from '@fortawesome/free-regular-svg-icons'
 import AWS, { S3 } from 'aws-sdk'
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../..'
 import { setImages } from '../../store/RouteListSlice'
@@ -17,7 +18,7 @@ function Upload() {
   const selectThumbnail = (index: number) => {
     const { imageSrc } = routeList[index]
     if (imageSrc === '' || !imageSrc) {
-      alert('이미지가 업로드 된 항목만 지정 가능합니다.')
+      toast.error('이미지가 업로드 된 항목만 지정 가능합니다.')
       return
     }
 
