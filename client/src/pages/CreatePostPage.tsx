@@ -29,6 +29,12 @@ function CreatePostPage() {
   },[]);
 
   const posting = () => {
+    
+    if (tagsInfo.length === 0) {
+      alert('게시물과 관련된 태그를 1개 이상 등록 해 주시기 바랍니다.')
+      return
+    }
+
     if (content === '') {
       alert('본문은 필수 입력 정보입니다.')
       return
@@ -105,11 +111,11 @@ function CreatePostPage() {
           <h1>게시글 작성</h1>
         </div>
         <div className="createpost_tag_section">
-          <div className="createpost_tag_title">* 태그</div>
+          <div className="createpost_tag_title">* 태그 입력</div>
           <Tag />
         </div>
         <div className="createpost_content_section">
-          <div className="createpost_content_title">* 본문</div>
+          <div className="createpost_content_title">* 본문 입력</div>
           <TextArea />
         </div>
         <div className="createpost_upload_section">

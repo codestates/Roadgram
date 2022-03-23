@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faImage, faPlus, faCircleDot } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faCircleDot } from '@fortawesome/free-solid-svg-icons'
 import { faCircle } from '@fortawesome/free-regular-svg-icons'
 import AWS, { S3 } from 'aws-sdk'
 import { useDispatch, useSelector } from 'react-redux'
@@ -22,7 +22,9 @@ function Upload() {
     }
 
     // thumbnail state에 이미지 저장
-    dispatch(setThumbnail(imageSrc))
+    dispatch(setThumbnail(imageSrc));
+    // thumnail index 저장
+    setSelectedIndex(index);
   }
 
   /* s3 버킷 설정 */
@@ -34,7 +36,6 @@ function Upload() {
   /* s3 버킷 업로드 합수 */
   const imageHandler = (idx: number, e: any) => {
     const routeImage = e.target.files[0]
-    console.log('index 값은 ===', idx, '받은 사진정보 ==', routeImage)
     if (!routeImage) {
       // 이미지가 없으면 공백값 넣어줌
       // dispatch(setImages({idx, src: ""}));
@@ -81,7 +82,7 @@ function Upload() {
                 />
               </label>
               <div className="createpost_upload_route_thumbnail_div">
-                {route.imageSrc === thumbnail && thumbnail !== '' ? (
+                {selectedIndex === idx ? (
                   <>
                     <div className="selectBox">
                       <FontAwesomeIcon

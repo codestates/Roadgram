@@ -138,11 +138,11 @@ function EditPostPage() {
           <span className="inform_span">※ 게시물 수정은 태그와 본문 수정만 가능합니다.</span>
         </div>
         <section className="createpost_tag_section">
-          <span className="createpost_tag_title">* 태그</span>
+          <div className="createpost_tag_title">* 태그 입력</div>
           <Tag />
         </section>
         <section className="createpost_content_section">
-          <span className="createpost_content_title">* 본문</span>
+          <div className="createpost_content_title">* 본문 입력</div>
           <TextArea />
         </section>
         <section className="createpost_upload_section">

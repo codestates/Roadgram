@@ -60,7 +60,6 @@ export class ArticlesService {
       );
       if(!articles.length) throw new NotFoundException();
 
-      console.log(`가져온 게시물 정보는 ${articles}입니다.`);
       // 각 게시물에 태그 이름(배열) 추가
       for (const article of articles) {
         const userId: number = await this.articleRepository.getUserId(
@@ -68,12 +67,15 @@ export class ArticlesService {
         );
         const writer: string = await this.userRepository.getUsername(userId);
         const profileImage: string = await this.userRepository.getProfileImage(userId);
-        const tagIds: object = await this.articleToTagRepository.getTagIds(
+        const tagIds: number[] = await this.articleToTagRepository.getTagIds(
           article.id,
         );
-        const tagNames: string[] = await this.tagRepository.getTagNameWithIds(
-          tagIds,
-        );
+        let tagNames: string[] = [];
+
+        tagIds.forEach(async (tagId) => {
+          const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
+          tagNames.push(tagName);
+        })
         article.tags = tagNames;
 
         // API 문서에 양식에 맞게 네이밍
@@ -132,7 +134,6 @@ export class ArticlesService {
     // }
     // const afterTagCount = await this.articleToTagRepository.countTag(articleId);
     try {
-      console.log(`findOrCreateTags, user ===${user}, articleId === ${articleId}, tag === ${tag}`)
       return await Promise.all(
         tag.map(async (eachTag) => {
           const { tagName, order } = eachTag;
@@ -156,77 +157,6 @@ export class ArticlesService {
     }
   }
 
-  // async getResponseData(userId, articleId): Promise<object> {
-  //   try {
-  //     const userInfo = await this.userRepository.getUserInfo(userId);
-  //     console.log("userInfo", userInfo);
-  //     const articleInfo = await this.articleRepository.getArticleUsingId(articleId);
-  //     console.log("articleInfo", articleInfo);
-  //     const tagIds = await this.articleToTagRepository.getTagIds(articleInfo.id);
-  //     console.log("tagIds", tagIds);
-  //     const tagNames = await this.tagRepository.getTagNameWithIds(tagIds);
-  //     console.log("tagNames", tagNames);
-  //     const comments = await this.commentRepository.getComments(articleInfo.id);
-  //     console.log("comments", comments);
-  //     const roads = await this.trackRepository.getRoads(articleInfo.id);
-  //     console.log("roads", roads);
-  //     let article: {}
-
-  //     if (!comments || Object.keys(comments).length === 0) {
-  //       article = {
-  //         id: articleInfo.id,
-  //         thumbnail: articleInfo.thumbnail,
-  //         nickname: userInfo.nickname,
-  //         content: articleInfo.content,
-  //         totalLike: articleInfo.totalLike,
-  //         totalComment: articleInfo.totalComment,
-  //         tags: tagNames,
-  //         roads,
-  //         comments: []
-  //       }
-  //     } else {
-  //       const commentsList = await Promise.all(
-  //         comments.map(async (comment) => {
-  //           const commentUserInfo = await this.userRepository.getUserInfo(comment.userId);
-  //           return {
-  //             id: comment.id,
-  //             userId: comment.userId,
-  //             profileImage: commentUserInfo.profileImage,
-  //             nickname: commentUserInfo.nickname,
-  //             comment: comment.comment,
-  //             createdAt: comment.createdAt
-  //           }
-  //         })
-  //       )
-  //       article = {
-  //         id: articleInfo.id,
-  //         thumbnail: articleInfo.thumbnail,
-  //         nickname: userInfo.nickname,
-  //         content: articleInfo.content,
-  //         totalLike: articleInfo.totalLike,
-  //         totalComment: articleInfo.totalComment,
-  //         tags: tagNames,
-  //         roads,
-  //         comments: commentsList
-  //       }
-  //     }
-  //     return {
-  //       data: {
-  //         userInfo: {
-  //           id: userInfo.id,
-  //           nickname: userInfo.nickname,
-  //           profileImage: userInfo.profileImage
-  //         },
-  //         articleInfo: article
-  //       },
-  //       message: 'ok'
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     throw new UnauthorizedException('permisson denied');
-  //   }
-  // }
-
   async getRecent(page: number): Promise<object> {
     let limit: number = 9;
     let offset: number = (page - 1) * 9;
@@ -235,7 +165,6 @@ export class ArticlesService {
       limit,
       offset,
     );
-    console.log(articles)
     if(!articles.length){
       throw new NotFoundException('cannot find articles')
     }
@@ -245,12 +174,15 @@ export class ArticlesService {
       const userId: number = await this.articleRepository.getUserId(article.id);
       const writer: string = await this.userRepository.getUsername(userId);
       const profileImage: string = await this.userRepository.getProfileImage(userId);
-      const tagIds: object = await this.articleToTagRepository.getTagIds(
+      const tagIds: number[] = await this.articleToTagRepository.getTagIds(
         article.id,
       );
-      const tagNames: string[] = await this.tagRepository.getTagNameWithIds(
-        tagIds,
-      );
+      let tagNames: string[] = [];
+
+        tagIds.forEach(async (tagId) => {
+          const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
+          tagNames.push(tagName);
+        })
       article.tags = tagNames;
 
       interface articleObject {
@@ -333,7 +265,12 @@ export class ArticlesService {
       const tagIds = await this.articleToTagRepository.getTagIds(
         articleInfo.id,
       );
-      const tagNames = await this.tagRepository.getTagNameWithIds(tagIds);
+      let tagNames = [];
+      for(let tagId of tagIds) {
+        const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
+        tagNames.push(tagName)
+      }
+      // const tagNames = await this.tagRepository.getTagNameWithIds(tagIds);
       // const comments = await this.commentRepository.getComments(articleInfo.id);
       const roads = await this.trackRepository.getRoads(articleInfo.id);
       let article = {};
