@@ -39,7 +39,7 @@ export class UsersService {
 
     async checkEmail({ email }: EmailDto) {
         const isValid = await this.userRepository.findOne({ email });
-        if (isValid) {
+        if (isValid&&isValid.email===email) {
             throw new ConflictException('not available')
         }
         else return { message: 'available' }
@@ -47,7 +47,7 @@ export class UsersService {
 
     async checkNickname({ nickname }: NicknameDto) {
         const isValid = await this.userRepository.findOne({ nickname });
-        if (isValid) {
+        if (isValid&&isValid.nickname===nickname) {
             throw new ConflictException('not available')
         }
         else return { message: 'available' }
@@ -250,19 +250,23 @@ export class UsersService {
         }
     }
 
-    async getMypage(user: number, page: number, other?: number): Promise<object> {
+    async getMypage(page: number, user?: number, other?: number): Promise<object> {
         try {
             let limit: number = 9;
             let offset: number = (page - 1) * 9;
             const userInfo = await this.userRepository.getUserInfo(other || user);
-            const followedOrNot = await this.followRepository.followedOrNot(user, other || user);
+            const followedOrNot = await this.followRepository.followedOrNot(user || undefined, other || user);
             const articles = await this.articleRepository.getArticleInfo(other || user, limit, offset);
 
             // // 각 게시물에 태그 이름(배열) 추가
             let newArticles = [];
             for (const article of articles) {
-                const tagIds: object = await this.articleToTagRepository.getTagIds(article.id);
-                const tagNames: string[] = await this.tagRepository.getTagNameWithIds(tagIds);
+                const tagIds: number[] = await this.articleToTagRepository.getTagIds(article.id);
+                let tagNames: string[] = [];
+                tagIds.forEach(async (tagId) => {
+                    const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
+                    tagNames.push(tagName);
+                })
                 article.tags = tagNames;
 
                 interface articleObject {
@@ -277,12 +281,12 @@ export class UsersService {
                 }
                 let creation: articleObject = {
                     id: article.id,
-                    userId:other||user,
+                    userId: other||user,
                     thumbnail: article.thumbnail,
                     nickname: userInfo.nickname,
                     totalLike: article.totalLike,
                     totalComment: article.totalComment,
-                    profileImage:userInfo.profileImage,
+                    profileImage: userInfo.profileImage,
                     tags: article.tags
                 };
                 newArticles.push(creation);

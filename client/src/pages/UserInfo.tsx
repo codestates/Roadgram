@@ -143,7 +143,7 @@ function UserInfo() {
     dispatch(newAccessToken(response.data.data));
   }
 
-  const followingOrCacnel = async () => {
+  const followingOrCancel = async () => {
     // 서버 요청
     try {
       const res = await axios.post(`${process.env.REACT_APP_API_URL}/follow`,
@@ -161,27 +161,25 @@ function UserInfo() {
         await accessTokenRequest();
       } catch {
         dispatch(logout());
-        toast.error('다시 로그인해 주세요');
+        toast.error('로그인이 필요한 서비스입니다');
         navigate('/logins');
       }
-      try {
-        const res = await axios.post(`${process.env.REACT_APP_API_URL}/follow`,
-          {
-            user: id, followingUserId: userInfo.id, loginMethod
-          },
-          {
-            headers: { authorization: `${accessToken}` }
-          })
-        setTotalFollower(res.data.data.totalFollower);
-        setIsFollow(!isFollow);
-        toast.success(isFollow?'언팔로우 되었습니다.':'팔로우 되었습니다.');
-      } catch {
-        toast.error('잘못된 요청입니다.')
-        dispatch(logout());
-        navigate('/main');
-      }
+      // try {
+      //   const res = await axios.post(`${process.env.REACT_APP_API_URL}/follow`,
+      //     {
+      //       user: id, followingUserId: userInfo.id, loginMethod
+      //     },
+      //     {
+      //       headers: { authorization: `${accessToken}` }
+      //     })
+      //   setTotalFollower(res.data.data.totalFollower);
+      //   setIsFollow(!isFollow);
+      // } catch {
+      //   alert('잘못된 요청입니다.')
+      //   dispatch(logout());
+      //   navigate('/main');
+      // }
     }
-
   }
   return (
     <div className="userInfo_div">
@@ -249,7 +247,7 @@ function UserInfo() {
             </label>
           </div>
           <div className='hidden' id='abcd'>asdfa</div>
-          <button id='followgogo' className='hidden' type="button" onClick={followingOrCacnel} >sdfs</button>
+          <button id='followgogo' className='hidden' type="button" onClick={followingOrCancel} >sdfs</button>
           <button id='editgogo' className='hidden' type="button" onClick={moveToEditProfile}>프로필수정</button>
           {isFollowingModal ? <FollowingModal /> : null}
           {isFollowerModal ? <FollowerModal /> : null}

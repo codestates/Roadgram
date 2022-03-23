@@ -26,13 +26,12 @@ function ContentsDetail() {
   const { commentInfo } = useSelector((state: RootState) => state.comments);
   const [ comment, setComment ] = useState('');
   const [ otherComment, setOtherComment ] = useState('');
-  const [ likedOrNot, setLikedOrNot ] = useState(articleInfo.likedOrNot);
   const [ isUpdatable, setIsUpdatable ] = useState(false);
   const [ targetCommentId, setTargetCommentId ] = useState(0);
   const [ targetComment, setTargetComment ] = useState('');
   const [page,setPage]=useState(2);
   const [endScroll,setEndScroll]=useState(false);
-  
+ 
   // 스크롤 초기화
   useEffect(()=>{
     document.documentElement.scrollTop=0;
@@ -47,20 +46,25 @@ function ContentsDetail() {
   }
 
   const likeUnlikeHandler = async () => {
-    await axios.post(
-      `${process.env.REACT_APP_API_URL}/likes`,
-      {
-        user: userInfo.id,
-        articleId: articleInfo.id,
-        loginMethod: userInfo.loginMethod
-      },
-      {
-        headers: { authorization: `${accessToken}` }
-      }
-    ).then((res) => {
-      dispatch(likeUnlike(res.data.data.totalLikes));
-      setLikedOrNot(!likedOrNot);
-    })
+    if (isLogin) {
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/likes`,
+        {
+          user: userInfo.id,
+          articleId: articleInfo.id,
+          loginMethod: userInfo.loginMethod
+        },
+        {
+          headers: { authorization: `${accessToken}` }
+        }
+      ).then((res) => {
+        dispatch(likeUnlike(res.data.data.totalLikes));
+      })
+    } else {
+      alert("로그인이 필요한 서비스입니다.");
+      navigate('/logins');
+    }
+
   }
 
   const newComment = (e: any) => {
@@ -278,7 +282,7 @@ function ContentsDetail() {
       <div className="detail-footer">
         <div className="iconBox">
           {
-            likedOrNot
+            articleInfo.likedOrNot
             ? <FontAwesomeIcon className="likeUnlikeIcon" icon={solidHeart} onClick={likeUnlikeHandler} onKeyDown={likeUnlikeHandler} />
             : <FontAwesomeIcon className="likeUnlikeIcon" icon={regularHeart} onClick={likeUnlikeHandler} onKeyDown={likeUnlikeHandler} /> 
           }

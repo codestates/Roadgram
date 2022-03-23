@@ -13,10 +13,9 @@ export class TagRepository extends Repository<Tag>{
     return result;
   }
 
-  async getTagNameWithIds(tagIds: object|any){
-    const tagNames = await this.findByIds(tagIds, { select: ["tagName"]})
-    const result = tagNames.map((each) => each.tagName);
-    return result;
+  async getTagNameWithIds(tagId: number): Promise<string|any>{
+    const tagName = await this.findOne(tagId, { select: ["tagName"]});
+    return tagName.tagName;
   }
 
   async getTagId(tagName: string): Promise<number> {

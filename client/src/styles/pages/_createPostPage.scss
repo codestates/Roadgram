@@ -104,7 +104,6 @@
 }
 
 .createpost_tag_section {
-  // border: 1px solid green;
   width: 100%;
   height: minmax(12rem, 20rem);
   display: flex;
@@ -115,7 +114,6 @@
 }
 
 .createpost_tag_title {
-  // border: 1px solid green;
   margin: 0 0 0 1rem;
   font-size: 1.5rem;
 }
@@ -201,7 +199,8 @@
   }
   &:hover {
     cursor: pointer;
-    background-color: rgb(211, 209, 209);
+    background-color: #ecf2ff;
+    // color: white;
   }
 }
 

@@ -81,6 +81,7 @@
   width: 45rem;
   flex-direction: row;
   justify-content: flex-end;
+  align-items: center;
   margin-right: 1rem;
 }
 
@@ -136,6 +137,8 @@
 .detail-infinite-scroll {
   overflow-x: hidden;
   overflow-y: auto;
+  border-top: 1px solid rgb(226, 226, 226);
+  border-bottom: 1px solid rgb(226, 226, 226);
   @include mobile-only {
     height: 100%;
     margin-top: 1rem;
@@ -146,7 +149,7 @@
   }
   @include lg {
     height: 48rem;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
   }
 }
 

@@ -52,7 +52,7 @@ export class UsersController {
         @Query('page') page: number,
         @Query('other') other?: number
     ): Promise<object> {
-        return this.usersService.getMypage(user, page, other);
+        return this.usersService.getMypage(page, user, other);
     }
 
     @Patch('/profile')

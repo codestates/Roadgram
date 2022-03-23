@@ -5,7 +5,6 @@ import { Comments } from '../../comments/entities/comments.entity';
 import * as bcrypt from 'bcrypt';
 import {
   BeforeInsert,
-  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -70,7 +69,6 @@ export class User {
   comments?: Comment[];
 
   @BeforeInsert()
-  @BeforeUpdate()
   async hashPassword(password: string) {
     if(this.loginMethod===0){
       const salt = await bcrypt.genSalt();

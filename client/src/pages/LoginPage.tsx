@@ -30,7 +30,14 @@ function LoginPage() {
     document.documentElement.scrollTop=0;
   },[]);
 
-
+  // 이미 로그인시 메인페이지로 이동
+  useEffect(()=>{
+    if(isLogin){
+      toast.error('이미 로그인된 상태입니다.');
+      navigate('/main');
+    }
+  },[])
+  
   /* input 태그 change 핸들러 */
   function handleInputValue(key: string) {
     return (e: { target: { value: string} } ) => {
@@ -39,9 +46,9 @@ function LoginPage() {
   }
 
   /* login 핸들러 */
-  const loginHandler = () => {
+  const loginHandler = (event:any) => {
+    event.preventDefault();
     const { email, password } = loginInfo
-    console.log("email ===", email, "password", password);
       if (!email) {
         toast.error("이메일을 입력 해 주세요");
       } else if (!password) {
@@ -60,7 +67,6 @@ function LoginPage() {
           navigate('/main') // 메인페이지로 이동!
         })
         .catch((err) => {
-          console.log(err)
           toast.error("아이디 혹은 비밀번호를 확인 해 주세요.")
         })
       } 
@@ -69,7 +75,8 @@ function LoginPage() {
   const kakaoHandler = async () => {
     kakao.Auth.authorize({
       // 로컬에서 테스트 시 "http://localhost:3000/main"로 변경 필요
-      redirectUri: "https://roadgram.net/main"
+      redirectUri: "http://localhost:3000/main"
+      // redirectUri: "https://roadgram.net/main"
     });
   }
 
@@ -77,21 +84,9 @@ function LoginPage() {
     navigate('/signup')
   }
 
-  function handleKeyDown () {
-    console.log("?")
-  }
-
-  // 이미 로그인시 메인페이지로 이동
-  useEffect(()=>{
-    if(isLogin){
-      toast.error('잘못된 접근입니다.');
-      navigate('/main');
-    }
-  },[])
-
   return (
     <div className="login_whole_div">
-      <form className="login_main_div" >
+      <form className="login_main_div">
         <h1 className="login_logo_title">로그인</h1>
         <h3>이메일</h3>
         <input className="login_email_input" type="text" placeholder="이메일을 입력해주세요" onChange={handleInputValue('email')} />
@@ -103,9 +98,9 @@ function LoginPage() {
           onKeyDown={()=>toast("비밀번호 찾기 서비스는 준비 중입니다.")}
           >비밀번호 찾기</li>
         <div className="button_div">
-          <button className="login_login_button" type="button" onClick={loginHandler}>로그인</button>
+          <button className="login_login_button" type="submit" onClick={(event) => loginHandler(event)}>로그인</button>
           <button className="login_signup_button" type="button" onClick={redirectToSignup}>회원가입</button>
-          <img className="login_kakao_button" alt="kakaologin" src={kakaoLogin} onClick={kakaoHandler} onKeyDown={handleKeyDown}/>
+          <img className="login_kakao_button" alt="kakaologin" src={kakaoLogin} onClick={kakaoHandler} onKeyDown={kakaoHandler}/>
         </div>
       </form>
     </div>
