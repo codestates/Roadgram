@@ -21,7 +21,6 @@ export class SearchService {
   
   async searchArticle(tag: string, page: number): Promise<Article|any> {
     try {
-      console.log(`tag ===${tag} page ===${page}`);
       let limit: number = 9;
       let offset: number = (page - 1) * 9;
       const tagId = await this.tagRepository.getTagId(tag);
@@ -36,7 +35,6 @@ export class SearchService {
       }
 
       const articles = await this.articleRepository.searchArticle(articleIds, limit, offset);
-      console.log(`받아온 게시물 갯수는 ${articles.length}개 입니다.`);
       if(!articles.length) throw new NotFoundException('cannot find articles')
       // // 각 게시물에 태그 이름(배열) 추가
       let newArticles = [];
@@ -44,8 +42,12 @@ export class SearchService {
           const userId: number = await this.articleRepository.getUserId(article.id);
           const writer: string = await this.userRepository.getUsername(userId);
           const profileImage: string = await this.userRepository.getProfileImage(userId);
-          const tagIds: object = await this.articleToTagRepository.getTagIds(article.id);
-          const tagNames: string[] = await this.tagRepository.getTagNameWithIds(tagIds);
+          const tagIds: number[] = await this.articleToTagRepository.getTagIds(article.id);
+          let tagNames: string[] = [];
+          tagIds.forEach(async (tagId) => {
+            const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
+            tagNames.push(tagName);
+          })
           article.tags = tagNames;
   
           interface articleObject {

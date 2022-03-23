@@ -1,7 +1,6 @@
 .tag_input {
   margin: 1rem;
   display: flex;
-  align-items: flex-start;
   flex-wrap: wrap;
   width: 90%;
   min-height: 60px;
@@ -18,16 +17,14 @@
 
     .tag {
       width: auto;
+      box-sizing: border-box;
+      border: 1px solid #4f4f4f;
+      border-radius: 10px;
       height: 32px;
+      color: #4f4f4f;
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 0 0.2rem;
-      font-size: 1.5rem;
-      list-style: none;
-      border-radius: 15px;
       margin: 0 8px 8px 0;
-      border: 1px solid lightgray;
 
       @include mobile-only {
         font-size: 2.5vmin;
@@ -40,16 +37,22 @@
       }
       .tag-close-icon {
         display: block;
-        width: 16px;
-        height: 16px;
+        width: 13px;
+        height: 13px;
         line-height: 16px;
         text-align: center;
         font-size: 14px;
-        margin-left: 8px;
-        color: black;
+        margin: 0 2px 0 3px;
+        color: #4f4f4f;
         border-radius: 50%;
         background: #fff;
         cursor: pointer;
+      }
+
+      .tag-title {
+        display: inline-block;
+        margin-left: 1rem;
+        // justify-content: flex-start;
       }
     }
   }
@@ -59,7 +62,7 @@
     flex: 1;
     border: none;
     height: 46px;
-    font-size: 1.5rem;
+    font-size: 1.5rem; 
     padding: 4px 0 0 0;
     &:focus {
       outline: transparent;

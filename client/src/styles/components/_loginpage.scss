@@ -136,11 +136,11 @@
   width: 450px;
   height: 60px;
   font-size: 20px;
+  font-weight: 600;
   background-color: #F1F5FA;
   border: 1px solid #d5e3f4;
   border-radius: 1rem;
   color: #4680FF;
-  font-weight: 600;
   @include mobile-only {
     width: 80vw;
     height: 5rem;
@@ -157,5 +157,8 @@
   display: flex;
   border: none;
   background-color: rgb(246, 247, 248);
-  color: #333333
+  color: #333333;
+    &:hover {
+      cursor: pointer;
+    }
 }

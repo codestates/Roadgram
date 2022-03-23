@@ -1,17 +1,20 @@
 .createpost_uploadhold_div {
   display: flex;
   flex-wrap: wrap;
-  margin: 0;
-  padding: 0;
-  @include mobile-only {
-    height: 40vw;
-  }
-  @include md {
-    height: 40rem;
-  }
-  @include lg {
-    height: 60rem;
-  }
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin: 1rem 0 0 1rem;
+  height: auto;
+  width: 100%;
+  // @include mobile-only {
+  //   height: 40vw;
+  // }
+  // @include md {
+  //   height: 40rem;
+  // }
+  // @include lg {
+  //   height: 60rem;
+  // }
 
 }
 
@@ -20,16 +23,18 @@
   flex-direction: column;
   align-items: center;
   margin: 0.5rem;
-  width: 29%;
   // background-color: #4680FF;
 
   @include mobile-only {
-    height: 45vw;
+    width: 29%;
+    height: auto;
   }
   @include md {
-    height: 27rem;
+    width: 29%;
+    height: 22rem;
   }
   @include lg {
+    width: 29%;
     height: 25rem;
   }
 }
@@ -38,6 +43,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .createpost_uploadhold_route_img {
@@ -53,11 +59,11 @@
     height: 28vw;
   }
   @include md {
-    width: 20vw;
-    height: 18rem;
+    width: 16rem;
+    height: 16rem;
   }
   @include lg {
-    width: 11vw;
+    width: 18rem;
     height: 18rem;
   }
 }
@@ -77,9 +83,8 @@
   position: relative;
   justify-content: center;
   align-items: center;
-  // width: 200px;
-  // height: 200px;
   z-index: 0; 
+  border: 1px solid lightgray;
   border-radius: 2rem;
 
   @include mobile-only {
@@ -87,11 +92,11 @@
     height: 28vw;
   }
   @include md {
-    width: 20vw;
-    height: 18rem;
+    width: 16.5rem;
+    height: 16.5rem;
   }
   @include lg {
-    width: 11vw;
+    width: 18rem;
     height: 18rem;
   }
 }
