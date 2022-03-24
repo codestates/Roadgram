@@ -9,7 +9,7 @@ export class ArticleToTagRepository extends Repository<ArticleToTag>{
   }
 
   async deleteTags(articleId: number) {
-    const result = await this.delete({ articleId });
+    await this.delete({ articleId });
   }
 
   async countTag(articleId: number) {
@@ -20,7 +20,7 @@ export class ArticleToTagRepository extends Repository<ArticleToTag>{
   async getTagIds(articleId: number): Promise<number[]> {
     const tagIds = await this.find({ where: { articleId }, select: ["tagId"], order: { order: "ASC" } });
     const result = tagIds.map((tag) => tag.tagId);
-    return result
+    return result;
   }
 
   async getArticleIds(tagId: number) {
@@ -28,11 +28,11 @@ export class ArticleToTagRepository extends Repository<ArticleToTag>{
       .where({ tagId })
       .getMany();
 
-    if(!result || result.length === 0) {
-      return undefined
+    if (!result || result.length === 0) {
+      return undefined;
     } else {
       const articleIds = result.map((each) => each.articleId);
-      return articleIds
+      return articleIds;
     }
   }
 }

@@ -17,7 +17,7 @@ export class CommentsService {
   ) {}
 
   async createComment(createCommentDto: CreateCommentDto): Promise<object> {
-    const { user, articleId, comment } = createCommentDto;
+    const { user, articleId } = createCommentDto;
     const commentInfo = await this.commentRepository.createComment(createCommentDto);
     const totalComments = await this.articleRepository.commentIncrement(articleId);
     const writerInfo = await this.userRepository.getCommentWriterInfo(user);
@@ -36,7 +36,8 @@ export class CommentsService {
   async modifyComment(modifyCommentDto: ModifyCommentDto): Promise<object> {
     const { commentId, comment } = modifyCommentDto;
     await this.commentRepository.update({ id: commentId }, { comment });
-    const updatedComment = await this.commentRepository.findOne(commentId, { select: ["id", "userId", "comment", "createdAt", "updatedAt" ] });
+    const updatedComment = await this.commentRepository.findOne(commentId, { select: ["id", "userId", "comment", "createdAt", "updatedAt"] });
+  
     return {
       data: updatedComment,
       message: 'comment modified'
@@ -47,7 +48,7 @@ export class CommentsService {
     const result = await this.commentRepository.delete(commentId);
 
     if (result.affected === 0) {
-      throw new NotFoundException(`permission denied`);
+      throw new NotFoundException(`non existent comment`);
     } else {
       const totalComments = await this.articleRepository.commentDecrement(articleId);
       return {
@@ -61,12 +62,12 @@ export class CommentsService {
     let limit: number = 10;
     let offset: number = (page - 1) * 10;
     const comments = await this.commentRepository.getComments(articleId, limit, offset);
-    if (!comments.length) throw new NotFoundException('cannot find comments');
+
+    if (!comments.length) throw new NotFoundException('no comments yet');
+
     const commentsList = await Promise.all(
       comments.map(async (comment) => {
-        const commentUserInfo = await this.userRepository.getUserInfo(
-          comment.userId,
-        );
+        const commentUserInfo = await this.userRepository.getUserInfo(comment.userId);
         return {
           id: comment.id,
           userId: comment.userId,
@@ -77,6 +78,7 @@ export class CommentsService {
         };
       })
     )
+
     return {
       data: commentsList,
       message: 'ok'

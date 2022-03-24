@@ -20,8 +20,7 @@ export class FollowController {
   @UseGuards(AuthGuard)
   @HttpCode(200)
   getFollowerList( 
-    @Query('loginMethod') loginMethod: number,
-    @Query('user') user: number,
+    @Query('user', ParseIntPipe) user: number,
     @Query('page', ParseIntPipe) page: number
   ): Promise<object> {
     return this.followService.getFollowerList(user, page);
@@ -31,7 +30,6 @@ export class FollowController {
   @UseGuards(AuthGuard)
   @HttpCode(200)
   getFollowingList(
-    @Query('loginMethod', ParseIntPipe) loginMethod: number,
     @Query('user', ParseIntPipe) user: number,
     @Query('page', ParseIntPipe) page: number
   ): Promise<object> {

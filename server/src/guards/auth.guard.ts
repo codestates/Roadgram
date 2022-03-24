@@ -18,7 +18,8 @@ export class AuthGuard implements CanActivate {
     const id: number = +(req.body.user || req.query.user);
     const loginMethod: number = req.body.loginMethod === 0 || req.body.loginMethod ? +req.body.loginMethod : +req.query.loginMethod;
     const authDto: AuthDto = { id, loginMethod, accessToken };
-    if(!id||(!loginMethod&&loginMethod!==0)||!accessToken) throw new BadRequestException("bad request")
+
+    if (!id || (!loginMethod && loginMethod !== 0) || !accessToken) throw new BadRequestException("bad request");
     return this.usersService.validateToken(authDto);
   }
 }

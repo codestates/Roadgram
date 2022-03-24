@@ -7,7 +7,7 @@ export class FollowRepository extends Repository<Follow> {
   async followedOrNot(user, followingUserId) {
     if (user === followingUserId) {
       return `login user`;
-    } else if ((user !== followingUserId)) {
+    } else if (user !== followingUserId) {
       const result = await this.findOne({
         followerId: user,
         followingId: followingUserId
