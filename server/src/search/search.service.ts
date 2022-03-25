@@ -24,7 +24,6 @@ export class SearchService {
       let limit: number = 9;
       let offset: number = (page - 1) * 9;
       const tagId = await this.tagRepository.getTagId(tag);
-
       if(!tagId) {
         throw new NotFoundException('cannot find articles');
       }
@@ -43,11 +42,12 @@ export class SearchService {
           const writer: string = await this.userRepository.getUsername(userId);
           const profileImage: string = await this.userRepository.getProfileImage(userId);
           const tagIds: number[] = await this.articleToTagRepository.getTagIds(article.id);
+          console.log("tagIds:::", tagIds);
           let tagNames: string[] = [];
-          tagIds.forEach(async (tagId) => {
+          for(const tagId of tagIds) {
             const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
             tagNames.push(tagName);
-          })
+          }
           article.tags = tagNames;
   
           interface articleObject {
@@ -71,7 +71,9 @@ export class SearchService {
               tags: article.tags
           };
           newArticles.push(creation);
+          console.log(creation);
       }
+
       return {
           data: {
               articles: newArticles

@@ -20,7 +20,6 @@ function Article() {
   const { targetId, writerInfo, articleInfo } = useSelector((state: RootState) => state.articleDetails)
 
   useEffect(() => {
-    console.log('Article 작동!!')
     // main이 불러와지면 post 작성정보를 초기화시켜준다.
     resetPostInfo()
   }, [])
