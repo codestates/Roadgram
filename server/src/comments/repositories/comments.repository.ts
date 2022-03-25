@@ -15,7 +15,6 @@ export class CommentRepository extends Repository<Comments> {
     await this.save(newComment);
 
     const commentInfo = await this.findOne(newComment.id, { select: ["id", "comment", "createdAt", "updatedAt"] });
-
     return commentInfo;
   }
 
@@ -25,7 +24,7 @@ export class CommentRepository extends Repository<Comments> {
   }
 
   async getCommentsByUserId(id:number){
-    const comments=await this.find({userId:id});
-    return comments.map((comment)=>comment.articleId);
+    const comments = await this.find({ userId: id });
+    return comments.map((comment) => comment.articleId);
   }
 }

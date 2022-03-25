@@ -35,8 +35,8 @@ export class LikesRepository extends Repository<Likes> {
       return 'unlike this post';
     };
 
-    async articleIdsByUserId(id:number){
-      const articles=await this.find({userId:id});
-      return articles.map(article=>article.articleId);
+    async articleIdsByUserId(id: number) {
+      const articles = await this.find({ userId: id });
+      return articles.map(article => article.articleId);
     }
 }

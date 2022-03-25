@@ -27,10 +27,8 @@ export class CommentsController {
   @UseGuards(AuthGuard)
   @HttpCode(200)
   deleteComment(
-    @Query('loginMethod', ParseIntPipe) loginMethod: number,
     @Query('commentId', ParseIntPipe) commentId: number,
-    @Query('articleId', ParseIntPipe) articleId: number,
-    @Query('user', ParseIntPipe) user: number
+    @Query('articleId', ParseIntPipe) articleId: number
   ): Promise<object> {
     return this.commentsService.deleteComment(commentId, articleId);
   }

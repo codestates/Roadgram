@@ -1,5 +1,4 @@
 import { NotFoundException } from "@nestjs/common";
-import { Follow } from "src/follow/entities/follow.entity";
 import { EntityRepository, Repository } from "typeorm";
 import { UpdateArticleDto } from "../dto/updateArticle.dto";
 import { Article } from "../entities/article.entity";
@@ -10,7 +9,7 @@ export class ArticleRepository extends Repository<Article> {
 
   async getUserId(articleId: number): Promise<number> {
     const result = await this.find({ where: { id: articleId }, select: ["userId"] });
-    return result[0].userId
+    return result[0].userId;
   }
 
   async getArticleInfo(ids: number[] | any | void, limit: number, offset: number): Promise<any> {
@@ -20,7 +19,7 @@ export class ArticleRepository extends Repository<Article> {
         .take(limit)
         .skip(offset)
         .getMany();
-      return articles
+      return articles;
     } else if (typeof ids === 'number') {
       const article = await this.createQueryBuilder("article")
         .where("user_id = :ids", { ids })
@@ -29,15 +28,14 @@ export class ArticleRepository extends Repository<Article> {
         .skip(offset)
         .getMany();
       return article;
-    }
-    else {
+    } else {
       const articles = await this.createQueryBuilder("article")
         .where("user_id IN (:...ids)", { ids })
         .orderBy("created_at",'DESC')
         .take(limit)
         .skip(offset)
         .getMany();
-      return articles
+      return articles;
     }
   }
 
@@ -47,9 +45,9 @@ export class ArticleRepository extends Repository<Article> {
 
     const articles = await this.createQueryBuilder("article")
       .leftJoinAndSelect("article.tags", "tags")
-      .orderBy("article.created_at",'DESC')
-      .take(limit) // limit 
-      .skip(offset) // offset
+      .orderBy("article.created_at", 'DESC')
+      .take(limit)
+      .skip(offset)
       .getMany();
 
     return articles;
@@ -62,7 +60,7 @@ export class ArticleRepository extends Repository<Article> {
 
   async createArticle(userId: number, content: string, thumbnail: string) {
     const result = await this.save({ userId, content, thumbnail });
-    return result
+    return result;
   }
 
   async getArticleUsingUser(user: number) {
@@ -77,25 +75,25 @@ export class ArticleRepository extends Repository<Article> {
 
   async updateContent(updateArticleDto: UpdateArticleDto) {
     const { articleId, user, content } = updateArticleDto;
-    const result = await this.update(articleId, { content })
+    const result = await this.update(articleId, { content });
     if (result.affected === 0) {
-      throw new NotFoundException("Not Found Article you wanted to delete")
+      throw new NotFoundException("Not Found Article you wanted to delete");
     }
-    return true
+    return true;
   }
 
   async isOwner(user, id) {
     const isOwner = await this.find({ where: { userId: user, id } });
     if (!isOwner || isOwner.length === 0) {
-      throw new NotFoundException("Not Found Article you wanted to use")
+      throw new NotFoundException("Not Found Article you wanted to use");
     }
-    return true
+    return true;
   }
 
   async deleteArticle(id: number): Promise<object> {
     const result = await this.delete(id);
     if (result.affected === 0) {
-      throw new NotFoundException("Not Found Article you wanted to delete")
+      throw new NotFoundException("Not Found Article you wanted to delete");
     } else {
       return {
         message: 'article deleted'
@@ -132,20 +130,8 @@ export class ArticleRepository extends Repository<Article> {
     return mypageArticle;
   }
 
-  // async searchArticle(tag: string, limit: number, offset: number): Promise<Article|any> {
-  //   const articles = await this.createQueryBuilder("article")
-  //   .leftJoinAndSelect("article.tags", "tags")
-  //   .leftJoinAndSelect("tags.tag", "tag")
-  //   .where("article.id IN (Select article_id from article_tag left join tag on article_tag.tag_id = tag.id where tag_name = :tag)", {tag})
-  //   .orderBy("article.created_at")
-  //   .printSql()
-  //   .getMany();
-  //   console.log("articles", articles);
-  //   return articles;
-  // }
-
   async searchArticle(articleIds: number[], limit: number, offset: number): Promise<Article | any> {
     const result = await this.findByIds(articleIds, { order: { createdAt: "DESC" }, take: limit, skip: offset });
-    return result
+    return result;
   }
 }

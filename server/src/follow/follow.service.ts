@@ -36,13 +36,15 @@ export class FollowService {
 
   async getFollowerList(user: number, page: number): Promise<object> {
     const followerIds = await this.followRepository.getFollowedIds(user);
-    if (!followerIds||!followerIds.length) {
-      throw new NotFoundException('cannot find followers')
+
+    if (!followerIds || !followerIds.length) {
+      throw new NotFoundException('cannot find followers');
     } else {
       let limit: number = 10;
       let offset: number = (page - 1) * 10;
       const followers = await this.userRepository.getProfileList(followerIds, limit, offset);
-      if(!followers.length) throw new NotFoundException('cannot find followers');
+      if (!followers.length) throw new NotFoundException('cannot find followers');
+
       return {
         data: followers,
         message: "follower list"
@@ -52,13 +54,15 @@ export class FollowService {
 
   async getFollowingList(user: number, page: number): Promise<object> {
     const followingIds = await this.followRepository.getFollowingIds(user);
-    if (!followingIds||!followingIds.length) {
-      throw new NotFoundException('cannot find following users')
+    
+    if (!followingIds || !followingIds.length) {
+      throw new NotFoundException('cannot find following users');
     } else {
       let limit: number = 10;
       let offset: number = (page - 1) * 10;
       const followings = await this.userRepository.getProfileList(followingIds, limit, offset);
       if(!followings.length) throw new NotFoundException('cannot find following users');
+
       return {
         data: followings,
         message: "following list"
