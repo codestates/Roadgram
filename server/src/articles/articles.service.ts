@@ -70,10 +70,10 @@ export class ArticlesService {
         const tagIds: number[] = await this.articleToTagRepository.getTagIds(article.id);
         let tagNames: string[] = [];
 
-        tagIds.forEach(async (tagId) => {
+        for (const tagId of tagIds) {
           const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
           tagNames.push(tagName);
-        })
+        }
         article.tags = tagNames;
 
         interface articleObject {
@@ -159,10 +159,10 @@ export class ArticlesService {
       const tagIds: number[] = await this.articleToTagRepository.getTagIds(article.id);
       let tagNames: string[] = [];
 
-      tagIds.forEach(async (tagId) => {
+      for (const tagId of tagIds) {
         const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
         tagNames.push(tagName);
-      })
+      }
       article.tags = tagNames;
 
       interface articleObject {
