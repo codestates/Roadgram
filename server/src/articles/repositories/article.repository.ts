@@ -39,20 +39,6 @@ export class ArticleRepository extends Repository<Article> {
     }
   }
 
-  async getRecent(page, pageSize): Promise<object> {
-    let limit: number = pageSize;
-    let offset: number = (page - 1) * pageSize;
-
-    const articles = await this.createQueryBuilder("article")
-      .leftJoinAndSelect("article.tags", "tags")
-      .orderBy("article.created_at", 'DESC')
-      .take(limit)
-      .skip(offset)
-      .getMany();
-
-    return articles;
-  }
-
   async getArticleDetail(id: number): Promise<Article> {
     const result = await this.find({ id });
     return result[0];
@@ -61,33 +47,6 @@ export class ArticleRepository extends Repository<Article> {
   async createArticle(userId: number, content: string, thumbnail: string) {
     const result = await this.save({ userId, content, thumbnail });
     return result;
-  }
-
-  async getArticleUsingUser(user: number) {
-    const articleInfo = await this.find({ userId: user });
-    return articleInfo[0];
-  }
-
-  async getArticleUsingId(articleId: number) {
-    const articleInfo = await this.find({ where: { id: articleId } });
-    return articleInfo[0];
-  }
-
-  async updateContent(updateArticleDto: UpdateArticleDto) {
-    const { articleId, user, content } = updateArticleDto;
-    const result = await this.update(articleId, { content });
-    if (result.affected === 0) {
-      throw new NotFoundException("Not Found Article you wanted to delete");
-    }
-    return true;
-  }
-
-  async isOwner(user, id) {
-    const isOwner = await this.find({ where: { userId: user, id } });
-    if (!isOwner || isOwner.length === 0) {
-      throw new NotFoundException("Not Found Article you wanted to use");
-    }
-    return true;
   }
 
   async deleteArticle(id: number): Promise<object> {
@@ -123,11 +82,6 @@ export class ArticleRepository extends Repository<Article> {
     await this.decrement({ id: articleId }, "totalComment", 1);
     const articleInfo = await this.findOne(articleId, { select: ["totalComment"] });
     return articleInfo.totalComment;
-  }
-
-  async getMypageArticle(id: number): Promise<object | []> {
-    const mypageArticle = await this.find({ where: { userId: id }, relations: ["tags"] });
-    return mypageArticle;
   }
 
   async searchArticle(articleIds: number[], limit: number, offset: number): Promise<Article | any> {
