@@ -1,0 +1,42 @@
+// variables
+$size: 100px !default;
+$thickness: 6px !default;
+$base-color: #fff !default;
+$wheel-color: rgb(14, 162, 254) !default;
+$speed: 800ms !default;
+
+// styles
+
+.loader {
+  border: $thickness solid $base-color;
+  border: {
+    right-color: $wheel-color;
+    top-color: $wheel-color;
+    radius: 100%;
+  }
+  animation: spin $speed infinite linear;
+  @include mobile-only {
+    margin: 50% auto;
+    height: 50px;
+    width: 50px;
+  }
+  @include md {
+    margin: 30% auto;
+    height: $size;
+    width: $size;
+  }
+  @include lg {
+    margin: 20% auto;
+    height: $size;
+    width: $size;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
