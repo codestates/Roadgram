@@ -7,11 +7,11 @@ export class CreateArticleDto {
 
   @IsNotEmpty()
   @IsArray()
-  road: [];
+  road: Object[];
 
   @IsNotEmpty()
   @IsArray()
-  tag?: [];
+  tag?: Object[];
 
   @IsNotEmpty()
   @IsString()

@@ -3,7 +3,7 @@ import { Track } from "../entities/track.entity";
 
 @EntityRepository(Track)
 export class TrackRepository extends Repository<Track>{
-  async createTrack(road: [], articleId: number) {
+  async createTrack(road: any[], articleId: number) {
     return await Promise.all(road.map(async (each) => {
       const { order, imageSrc, placeName, addressName, x, y } = each;
       const track = await this.save({ order, imageSrc, placeName, addressName, x, y, articleId });

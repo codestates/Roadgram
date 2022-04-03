@@ -44,7 +44,6 @@ export class ArticlesService {
 
   async getMain(user: number, page: number): Promise<object> {
     const getFollowing = await this.followRepository.getFollowingIds(user);
-
     if (!getFollowing) {
       throw new UnauthorizedException('permisson denied');
     } else if (getFollowing.length === 0) {
@@ -110,34 +109,6 @@ export class ArticlesService {
     }
   }
 
-  async findOrCreateTags(user: number, articleId: number, tag: [] | object[]): Promise<string[]> {
-    try {
-      return await Promise.all(
-        tag.map(async (eachTag) => {
-          const { tagName, order } = eachTag;
-          let tagInfo = await this.tagRepository.findOne({ tagName });
-
-          if (!tagInfo) {
-            const newTag: Tag = this.tagRepository.create({ tagName });
-            tagInfo = await this.tagRepository.save(newTag);
-          }
-
-          const newArticleTag: ArticleToTag =
-            this.articleToTagRepository.create({
-              tagId: tagInfo.id,
-              order,
-              articleId,
-            });
-
-          await this.articleToTagRepository.save(newArticleTag);
-          return tagInfo.tagName;
-        })
-      );
-    } catch {
-      throw new BadGatewayException();
-    }
-  }
-
   async getRecent(page: number): Promise<object> {
     let limit: number = 9;
     let offset: number = (page - 1) * 9;
@@ -200,6 +171,35 @@ export class ArticlesService {
   catch (err) {
     console.log(err);
     throw new InternalServerErrorException('err');
+  }
+
+  async findOrCreateTags(user: number, articleId: number, tag: [] | object[]): Promise<string[]> {
+    try {
+      return await Promise.all(
+        tag.map(async (eachTag) => {
+          const { tagName, order } = eachTag;
+          let tagInfo = await this.tagRepository.findOne({ tagName });
+
+          if (!tagInfo) {
+            const newTag: Tag = this.tagRepository.create({ tagName });
+            tagInfo = await this.tagRepository.save(newTag);
+          }
+
+          const newArticleTag: ArticleToTag =
+            this.articleToTagRepository.create({
+              tagId: tagInfo.id,
+              order,
+              articleId,
+            });
+
+          await this.articleToTagRepository.save(newArticleTag);
+          return tagInfo.tagName;
+        })
+      )
+
+    } catch (err) {
+      throw new InternalServerErrorException('err');
+    }
   }
 
   async createArticle(createArticleDto: CreateArticleDto): Promise<any> {
