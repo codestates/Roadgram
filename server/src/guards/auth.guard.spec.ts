@@ -4,7 +4,7 @@ import { AuthGuard } from './auth.guard';
 describe('AuthGuard', () => {
   let usersService:UsersService;
   let authGuard=new AuthGuard(usersService);
-  it('',()=>{
+  it('1. AuthGuard가 존재해야 합니다.',()=>{
     expect(authGuard).toBeDefined();
     expect(authGuard.canActivate).toBeDefined();
   })
