@@ -169,7 +169,7 @@ describe('UsersService', () => {
     })
   })
 
-  describe('5. 닉네임 중복 테스트', () => {
+  describe('5. checkNickname 테스트', () => {
     beforeEach(() => {
       userRepository.findOne.mockResolvedValue({ nickname: 'kimcoding' });
     })
@@ -190,7 +190,7 @@ describe('UsersService', () => {
     })
   })
 
-  describe('6. 카카오 로그인 테스트', () => {
+  describe('6. getTokenKakao 테스트', () => {
     it('ERROR: 잘못된 코드를 받으면 401에러', async () => {
       try {
         const response = await service.getTokenKakao({ code: '' });
@@ -202,7 +202,7 @@ describe('UsersService', () => {
     })
   })
 
-  describe('7. 회원정보 수정 테스트', () => {
+  describe('7. modifyUser 테스트', () => {
     beforeEach(() => {
       userRepository.updateUser.mockResolvedValue({
         statusMessage: 'Hi there',
@@ -230,7 +230,7 @@ describe('UsersService', () => {
     })
   })
 
-  describe('8. 회원탈퇴 테스트', () => {
+  describe('8. deleteUser 테스트', () => {
     beforeEach(() => {
       likesRepository.articleIdsByUserId.mockResolvedValue([1, 2, 3]);
       followRepository.getFollowedIds.mockResolvedValue([1, 2, 3]);
@@ -261,7 +261,7 @@ describe('UsersService', () => {
     })
   })
 
-  describe('9. 토큰 검증 테스트', () => {
+  describe('9. validateToken 테스트', () => {
     beforeEach(() => {
       jwtService.verifyAsync.mockResolvedValue({ email: 'parkhacker@gmail.com' });
       userRepository.findOne.mockResolvedValue({ email: 'kimcoding@gmail.com', loginMethod: 0 });
@@ -306,7 +306,7 @@ describe('UsersService', () => {
     })
   })
 
-  describe('10. 토큰 연장 테스트', () => {
+  describe('10. resfreshAccessToken 테스트', () => {
     beforeEach(() => {
       userRepository.findOne.mockResolvedValue({ id: 1, email: 'kimcoding@gmail.com', refreshToken: 'refreshToken' });
       jwtService.sign.mockReturnValue('newAccessToken');
@@ -351,7 +351,7 @@ describe('UsersService', () => {
     })
   })
   
-  describe('11. 마이페이지 테스트', () => {
+  describe('11. getMypage 테스트', () => {
     beforeEach(() => {
       userRepository.getUserInfo.mockResolvedValue({
         nickname: 'kimcoding',
