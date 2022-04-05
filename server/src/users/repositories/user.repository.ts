@@ -17,7 +17,7 @@ export class UserRepository extends Repository<User> {
     async createUser({ email, password, nickname }: CreateUserDto) {
         const user = this.create({ email, password, nickname, loginMethod: 0 });
         await this.save(user);
-        return { message: "signup succeed" };
+        return user;
     }
 
     deleteUser(id: number) {
@@ -38,14 +38,9 @@ export class UserRepository extends Repository<User> {
         user.statusMessage = userData.statusMessage;
         this.save(user);
         return {
-            data: {
-                userInfo: {
-                    statusMessage: user.statusMessage,
-                    profileImage: user.profileImage,
-                    nickname: user.nickname
-                }
-            },
-            message: 'change succeed'
+            statusMessage: user.statusMessage,
+            profileImage: user.profileImage,
+            nickname: user.nickname
         };
     };
 
