@@ -60,7 +60,10 @@ export class ArticlesService {
         offset,
       );
 
-      if (!articles.length) throw new NotFoundException();
+      if (!articles || articles.length === 0) {
+        const error = new NotFoundException('cannot find articles')
+        return error;
+      }
 
       for (const article of articles) {
         const userId: number = await this.articleRepository.getUserId(article.id);
@@ -110,68 +113,69 @@ export class ArticlesService {
   }
 
   async getRecent(page: number): Promise<object> {
-    let limit: number = 9;
-    let offset: number = (page - 1) * 9;
-    const articles = await this.articleRepository.getArticleInfo(
-      [],
-      limit,
-      offset,
-    );
+    try {
+      let limit: number = 9;
+      let offset: number = (page - 1) * 9;
+      const articles = await this.articleRepository.getArticleInfo(
+        [],
+        limit,
+        offset,
+      );
 
-    if (!articles.length) {
-      throw new NotFoundException('cannot find articles')
-    }
-
-    let newArticles = [];
-    for (const article of articles) {
-      const userId: number = await this.articleRepository.getUserId(article.id);
-      const writer: string = await this.userRepository.getUsername(userId);
-      const profileImage: string = await this.userRepository.getProfileImage(userId);
-      const tagIds: number[] = await this.articleToTagRepository.getTagIds(article.id);
-      let tagNames: string[] = [];
-
-      for (const tagId of tagIds) {
-        const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
-        tagNames.push(tagName);
-      }
-      article.tags = tagNames;
-
-      interface articleObject {
-        id: string;
-        userId:number;
-        thumbnail: string;
-        nickname: string;
-        profileImage: string;
-        totalLike: number;
-        totalComment: number;
-        tags: string[];
+      if (!articles || articles.length === 0) {
+        const error = new NotFoundException('cannot find articles')
+        return error;
       }
 
-      let creation: articleObject = {
-        id: article.id,
-        userId:userId,
-        thumbnail: article.thumbnail,
-        nickname: writer,
-        profileImage,
-        totalLike: article.totalLike,
-        totalComment: article.totalComment,
-        tags: article.tags,
+      let newArticles = [];
+      for (const article of articles) {
+        const userId: number = await this.articleRepository.getUserId(article.id);
+        const writer: string = await this.userRepository.getUsername(userId);
+        const profileImage: string = await this.userRepository.getProfileImage(userId);
+        const tagIds: number[] = await this.articleToTagRepository.getTagIds(article.id);
+        let tagNames: string[] = [];
+
+        for (const tagId of tagIds) {
+          const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
+          tagNames.push(tagName);
+        }
+        article.tags = tagNames;
+
+        interface articleObject {
+          id: string;
+          userId:number;
+          thumbnail: string;
+          nickname: string;
+          profileImage: string;
+          totalLike: number;
+          totalComment: number;
+          tags: string[];
+        }
+
+        let creation: articleObject = {
+          id: article.id,
+          userId:userId,
+          thumbnail: article.thumbnail,
+          nickname: writer,
+          profileImage,
+          totalLike: article.totalLike,
+          totalComment: article.totalComment,
+          tags: article.tags,
+        };
+        newArticles.push(creation);
+      }
+
+      return {
+        data: {
+          articles: newArticles,
+        },
+        message: 'ok',
       };
-      newArticles.push(creation);
+    } catch (err) {
+      throw new InternalServerErrorException('err');
     }
-
-    return {
-      data: {
-        articles: newArticles,
-      },
-      message: 'ok',
-    };
   }
 
-  catch (err) {
-    console.log(err);
-    throw new InternalServerErrorException('err');
-  }
 
   async findOrCreateTags(user: number, articleId: number, tag: [] | object[]): Promise<string[]> {
     try {
@@ -321,6 +325,12 @@ export class ArticlesService {
 
   async deleteArticle(id: number) {
     const result = await this.articleRepository.deleteArticle(id);
-    return result;
+    if (!result) {
+      throw new NotFoundException("Not Found Article you wanted to delete");
+    } else {
+      return {
+        message: 'article deleted'
+      }
+    }
   }
 }

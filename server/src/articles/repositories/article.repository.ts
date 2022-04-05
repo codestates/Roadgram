@@ -51,13 +51,7 @@ export class ArticleRepository extends Repository<Article> {
 
   async deleteArticle(id: number): Promise<object> {
     const result = await this.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException("Not Found Article you wanted to delete");
-    } else {
-      return {
-        message: 'article deleted'
-      }
-    }
+    return result
   }
 
   async likeIncrement(articleId: number): Promise<number> {

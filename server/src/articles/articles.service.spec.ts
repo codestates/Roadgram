@@ -1,4 +1,4 @@
-import { BadRequestException, ForbiddenException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
@@ -69,9 +69,9 @@ const mockLikesRepository = () => ({
   likeOrNot: jest.fn()
 })
 
-const userId = 31;
+const userId = 1;
 const articleId = 5;
-const page = 9;
+const page = 1;
 const articles = 
 {          
   id: 5,
@@ -195,58 +195,51 @@ const updateArticleDto: UpdateArticleDto = {
   content: "테스트 본문입니다.",
 }
 
-type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
+type MockRepository<T = any> = Partial<Record<keyof T, jest.Mock>>;
 
 describe('Articles Service', () => {
   let service: ArticlesService;
-  let articleRepository: MockRepository<Article>;
-  let followRepository: MockRepository<Follow>;
-  let userRepository: MockRepository<User>;
-  let tagRepository: MockRepository<Tag>;
-  let articleToTagRepository: MockRepository<ArticleToTag>
-  let trackRepository: MockRepository<Track>;
-  let likesRepository: MockRepository<Likes>;
+  let articleRepository: MockRepository<ArticleRepository>;
+  let followRepository: MockRepository<FollowRepository>;
+  let userRepository: MockRepository<UserRepository>;
+  let tagRepository: MockRepository<TagRepository>;
+  let articleToTagRepository: MockRepository<ArticleToTagRepository>
+  let trackRepository: MockRepository<TrackRepository>;
+  let likesRepository: MockRepository<LikesRepository>;
 
   beforeEach(async () => {
     const module:  TestingModule = await Test.createTestingModule({
       controllers: [ArticlesController],
       providers: [
         ArticlesService,
-        ArticleRepository,
-        TrackRepository,
-        TagRepository,
-        ArticleToTagRepository,
-        UserRepository,
-        FollowRepository,
-        CommentRepository,
-        LikesRepository,
         UsersService,
+        CommentRepository,
         {
-          provide: getRepositoryToken(Article), 
+          provide: getRepositoryToken(ArticleRepository), 
           useValue: mockArticleRepository()
         },
         {
-          provide: getRepositoryToken(Follow), 
+          provide: getRepositoryToken(FollowRepository), 
           useValue: mockFollowRepository()
         },
         {
-          provide: getRepositoryToken(User), 
+          provide: getRepositoryToken(UserRepository), 
           useValue: mockUserRepository()
         },
         {
-          provide: getRepositoryToken(ArticleToTag), 
+          provide: getRepositoryToken(ArticleToTagRepository), 
           useValue: mockArticleToTagRepository()
         },
         {
-          provide: getRepositoryToken(Tag), 
+          provide: getRepositoryToken(TagRepository), 
           useValue: mockTagRepository()
         },
         {
-          provide: getRepositoryToken(Track), 
+          provide: getRepositoryToken(TrackRepository), 
           useValue: mockTrackRepository()
         },
         {
-          provide: getRepositoryToken(Likes), 
+          provide: getRepositoryToken(LikesRepository), 
           useValue: mockLikesRepository()
         },
       ],
@@ -256,38 +249,128 @@ describe('Articles Service', () => {
     }).compile();
 
     service = module.get<ArticlesService>(ArticlesService);
-    articleRepository = module.get<MockRepository<Article>>(getRepositoryToken(Article));
-    followRepository = module.get(getRepositoryToken(Follow));
-    userRepository = module.get<MockRepository<User>>(getRepositoryToken(User));
-    tagRepository = module.get<MockRepository<Tag>>(getRepositoryToken(Tag));
-    articleToTagRepository = module.get<MockRepository<ArticleToTag>>(getRepositoryToken(ArticleToTag));
-    trackRepository = module.get<MockRepository<Track>>(getRepositoryToken(Track));
-    likesRepository = module.get<MockRepository<Likes>>(getRepositoryToken(Likes));
+    articleRepository = module.get(getRepositoryToken(ArticleRepository));
+    followRepository = module.get(getRepositoryToken(FollowRepository));
+    userRepository = module.get(getRepositoryToken(UserRepository));
+    tagRepository = module.get(getRepositoryToken(TagRepository));
+    articleToTagRepository = module.get(getRepositoryToken(ArticleToTagRepository));
+    trackRepository = module.get(getRepositoryToken(TrackRepository));
+    likesRepository = module.get(getRepositoryToken(LikesRepository));
   });
 
-  describe("메인페이지 조회 기능 TEST", () => {
+  describe("1. getMain 테스트", () => {
+    beforeEach(async () => {
+      const followingIds = [2, 3];
+      const articles = [
+        {
+          id: 5,
+          userId: 2,
+          thumbnail: 'thumbnail1.jpg',
+          nickname: "test1",
+          profileImage: "profile1.jpg",
+          totalLike: 0,
+          totalComment: 0,
+          tags: ["테스트", "엽기"]
+        },
+        {
+          id: 6,
+          userId: 3,
+          thumbnail: 'thumbnail2.jpg',
+          nickname: "test2",
+          profileImage: "profile2.jpg",
+          totalLike: 0,
+          totalComment: 0,
+          tags: ["부산", "해운대"]
+        }
+      ];
+      const tagIds = [34, 35];
+      followRepository.getFollowingIds.mockResolvedValue(followingIds);
+      articleRepository.getArticleInfo.mockResolvedValue(articles);
+      articleRepository.getUserId.mockResolvedValue(articles[0].userId);
+      userRepository.getUsername.mockRejectedValue(articles[0].nickname);
+      userRepository.getProfileImage.mockResolvedValue(articles[0].profileImage);
+      articleToTagRepository.getTagIds.mockResolvedValue(tagIds);
+      tagRepository.getTagNameWithIds.mockRejectedValue(articles[0].tags[0])
+    }) 
     it('SUCCESS: 메인페이지가 정상 조회됨', async () => {
-      jest.spyOn(service, 'getMain').mockResolvedValue(articles);
       const result = await service.getMain(userId, page);
-      expect(result).toStrictEqual(articles);
+      expect(followRepository.getFollowingIds).toHaveBeenCalledTimes(1);
+      expect(followRepository.getFollowingIds).toHaveBeenCalledWith(userId);
+      // expect(followRepository.getFollowingIds).toEqual(followingIds);
+        
     })
     it('ERROR: 메인 페이지 비정상 조회 시 서버 오류 반환', async () => {
       jest.spyOn(service, 'getMain').mockRejectedValueOnce(new InternalServerErrorException('err'));
       expect(service.getMain).rejects.toThrowError(new InternalServerErrorException('err'));
     })
 
-    it('ERROR: 팔로잉이 없을 경우 Not Found Exception 반환', () => {
-      jest.spyOn(service, 'getMain').mockRejectedValueOnce(new NotFoundException());
-      expect(service.getMain).rejects.toThrowError(new NotFoundException());
+    it('ERROR: 팔로잉을 찾을 수 없을 경우 Unauthorized Exception 반환', async () => {
+      try {
+        followRepository.getFollowingIds.mockResolvedValue(undefined);
+        const result = await service.getMain(userId, page);
+        expect(result).toBeDefined();
+      } catch (err) {
+        expect(err.status).toBe(401);
+        expect(err.response.message).toBe('permisson denied');
+      }      
     })
 
-    it('ERROR: 게시물이 없을 경우 Not Found Exception 반환', () => {
-      jest.spyOn(service, 'getMain').mockRejectedValueOnce(new NotFoundException());
-      expect(service.getMain).rejects.toThrowError(new NotFoundException());
+    it('ERROR: 팔로잉이 0명일 경우 Not Found Exception 반환', async () => {
+      try {
+        followRepository.getFollowingIds.mockResolvedValue([]);
+        const result = await service.getMain(userId, page);
+        expect(result).toBeDefined();
+      } catch (err) {
+        expect(err.status).toBe(404);
+        expect(err.response.message).toBe('cannot find articles');
+      }      
+    })
+
+    it('ERROR: 팔로워의 게시물이 0개일 경우 Not Found Exception 반환', async () => {
+      try {
+        articleRepository.getArticleInfo.mockResolvedValue([]);
+        const result = await service.getMain(userId, page);
+        expect(result).toBeDefined();
+      } catch(err) {
+        console.log(err);
+        expect(err.status).toBe(404);
+        expect(err.response.message).toBe('');
+      }      
     })
   })
 
-  describe('메인페이지 최신순 조회 기능 TEST', () => {
+  describe('2. getRecent 테스트', () => {
+    beforeEach(async () => {
+      const articles = [
+        {
+          id: 5,
+          userId: 2,
+          thumbnail: 'thumbnail1.jpg',
+          nickname: "test1",
+          profileImage: "profile1.jpg",
+          totalLike: 0,
+          totalComment: 0,
+          tags: ["테스트", "엽기"]
+        },
+        {
+          id: 6,
+          userId: 3,
+          thumbnail: 'thumbnail2.jpg',
+          nickname: "test2",
+          profileImage: "profile2.jpg",
+          totalLike: 0,
+          totalComment: 0,
+          tags: ["부산", "해운대"]
+        }
+      ];
+      const tagIds = [34, 35];
+      articleRepository.getArticleInfo.mockResolvedValue(articles);
+      articleRepository.getUserId.mockResolvedValue(articles[0].userId);
+      userRepository.getUsername.mockRejectedValue(articles[0].nickname);
+      userRepository.getProfileImage.mockResolvedValue(articles[0].profileImage);
+      articleToTagRepository.getTagIds.mockResolvedValue(tagIds);
+      tagRepository.getTagNameWithIds.mockRejectedValue(articles[0].tags[0])
+    })
     it('SUCCESS: 메인페이지가 최신순으로 정상 조회됨', async () => {
       jest.spyOn(service, 'getRecent').mockResolvedValue(articles);
       const result = await service.getRecent(page);
@@ -295,13 +378,26 @@ describe('Articles Service', () => {
     })
 
     it('ERROR: 게시물이 없을 경우 Not Found Exception 반환', async () => {
-      jest.spyOn(service, 'getRecent').mockRejectedValueOnce(new NotFoundException('cannot find articles'));
-      expect(service.getRecent).rejects.toThrowError(new NotFoundException('cannot find articles'));
+      try {
+        articleRepository.getArticleInfo.mockResolvedValue(undefined);
+        const result = await service.getRecent(page);
+        expect(result).toBeDefined()
+      } catch(err) {
+        expect(err.status).toBe(404);
+        expect(err.response.message).toBe('cannot find articless');
+      }
     })
 
     it('ERROR: 메인 페이지 비정상 조회 시 서버 오류 반환', async () => {
-      jest.spyOn(service, 'getRecent').mockRejectedValueOnce(new InternalServerErrorException('err'));
-      expect(service.getRecent).rejects.toThrowError(new InternalServerErrorException('err'));
+      try {
+        const weirdPage = 999;
+        const result = await service.getRecent(weirdPage);
+        expect(result).toBeDefined();
+      } catch(err) {
+        expect(err.status).toBe(500);
+        expect(err.response.message).toBe('err');
+      }
+      
     })
     
   })
@@ -324,9 +420,8 @@ describe('Articles Service', () => {
           tagId: 2,
           tagName: "엽기"
         },
-      ]
+      ];
       jest.spyOn(articleToTagRepository, 'save').mockResolvedValueOnce(newTags.map(tag => tag.tagName));
-      // articleToTagRepository.save = jest.fn();
       const result = await articleToTagRepository.save(newTags);
       expect(result).toEqual(newTags.map(tag => tag.tagName));
     })
@@ -433,14 +528,23 @@ describe('Articles Service', () => {
   describe('게시물 삭제 TEST', () => {
     it('SUCCESS: 게시물 삭제가 정상적으로 완료됨', async () => {
       const successMessage = {message: 'article deleted'};
-      jest.spyOn(service, "deleteArticle").mockResolvedValue(successMessage)
+      articleRepository.deleteArticle.mockResolvedValue('success');
       const result = await service.deleteArticle(articleId);
+      expect(articleRepository.deleteArticle).toHaveBeenCalledTimes(1)
+      expect(articleRepository.deleteArticle).toHaveBeenCalledWith(articleId);
       expect(result).toEqual(successMessage)
     })
 
     it('ERROR: 삭제할 게시물을 찾지 못하면 Not Found Exception 반환', async () => {
-      jest.spyOn(service, "deleteArticle").mockRejectedValue(new NotFoundException('Not Found Article you wanted to delete'));
-      expect(service.deleteArticle).rejects.toThrowError(new NotFoundException('Not Found Article you wanted to delete'));
+      try {
+        const unknownUserId = 105;
+        articleRepository.deleteArticle.mockResolvedValue(null);
+        const result = await service.deleteArticle(unknownUserId);
+        expect(result).toBeDefined();
+      } catch (err) {
+        expect(err.status).toBe(404);
+      }
+      
     })
   })
 })
