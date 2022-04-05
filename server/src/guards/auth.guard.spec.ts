@@ -4,7 +4,8 @@ import { AuthGuard } from './auth.guard';
 describe('AuthGuard', () => {
   let usersService:UsersService;
   let authGuard=new AuthGuard(usersService);
-  it('should be defined', () => {
+  it('',()=>{
     expect(authGuard).toBeDefined();
-  });
+    expect(authGuard.canActivate).toBeDefined();
+  })
 });
