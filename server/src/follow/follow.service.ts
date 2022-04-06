@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotAcceptableException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from 'src/users/repositories/user.repository';
 import { FollowDto } from './dto/follow.dto';
@@ -13,13 +13,16 @@ export class FollowService {
     private userRepository: UserRepository
   ) {}
 
-  async followUnfollow(followDto: FollowDto): Promise<object> {
+  async followUnfollow(followDto: FollowDto): Promise<any> {
     const { user, followingUserId } = followDto;
     const followedOrNot = await this.followRepository.followedOrNot(user, followingUserId);
 
-    if (!followedOrNot) {
+    if (followedOrNot === undefined) {
+      throw new NotFoundException(`no user with ID ${followingUserId}`);
+    } else if (!followedOrNot) {
       const result = await this.followRepository.follow(followDto);
       const followResult = await this.userRepository.followIncrement(followDto);
+
       return {
         data: followResult,
         message: result
@@ -27,6 +30,7 @@ export class FollowService {
     } else {
       const result = await this.followRepository.unfollow(followDto);
       const unfollowResult = await this.userRepository.followDecrement(followDto);
+
       return {
         data: unfollowResult,
         message: result
@@ -34,17 +38,20 @@ export class FollowService {
     };
   };
 
-  async getFollowerList(user: number, page: number): Promise<object> {
+  async getFollowerList(user: number, page: number): Promise<any> {
     const followerIds = await this.followRepository.getFollowedIds(user);
 
-    if (!followerIds || !followerIds.length) {
-      throw new NotFoundException('cannot find followers');
+    if (page <= 0) {
+      throw new NotAcceptableException('unavailable page query');
+    } else if (!followerIds.length) {
+      throw new NotFoundException('cannot find the user or followers');
     } else {
       let limit: number = 10;
       let offset: number = (page - 1) * 10;
       const followers = await this.userRepository.getProfileList(followerIds, limit, offset);
-      if (!followers.length) throw new NotFoundException('cannot find followers');
-
+      
+      if (followers.length > 10) throw new NotAcceptableException('list more than 10 users');
+      else if (!followers.length) throw new NotFoundException('cannot find followers');
       return {
         data: followers,
         message: "follower list"
@@ -52,17 +59,20 @@ export class FollowService {
     };
   };
 
-  async getFollowingList(user: number, page: number): Promise<object> {
+  async getFollowingList(user: number, page: number): Promise<any> {
     const followingIds = await this.followRepository.getFollowingIds(user);
-    
-    if (!followingIds || !followingIds.length) {
-      throw new NotFoundException('cannot find following users');
+
+    if (page <= 0) {
+      throw new NotAcceptableException('unavailable page query');
+    } else if (!followingIds.length) {
+      throw new NotFoundException('cannot find the user or followings');
     } else {
       let limit: number = 10;
       let offset: number = (page - 1) * 10;
       const followings = await this.userRepository.getProfileList(followingIds, limit, offset);
-      if(!followings.length) throw new NotFoundException('cannot find following users');
-
+      
+      if (followings.length > 10) throw new NotAcceptableException('list more than 10 users');
+      else if(!followings.length) throw new NotFoundException('cannot find followings');
       return {
         data: followings,
         message: "following list"
