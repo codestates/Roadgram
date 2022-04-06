@@ -3,7 +3,7 @@ import { Tag } from "../entities/tag.entity";
 
 @EntityRepository(Tag)
 export class TagRepository extends Repository<Tag>{
-  async findTagName(tagName) {
+  async findTagName(tagName: string) {
     const result = await this.find({tagName});
     return result;
   }

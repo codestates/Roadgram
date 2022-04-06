@@ -1,5 +1,4 @@
 import {
-  BadGatewayException,
   BadRequestException,
   ForbiddenException,
   Injectable,
@@ -8,7 +7,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CommentRepository } from 'src/comments/repositories/comments.repository';
 import { FollowRepository } from 'src/follow/repositories/follow.repository';
 import { LikesRepository } from 'src/likes/repositories/likes.repository';
 import { UserRepository } from 'src/users/repositories/user.repository';
@@ -36,15 +34,12 @@ export class ArticlesService {
     private userRepository: UserRepository,
     @InjectRepository(FollowRepository)
     private followRepository: FollowRepository,
-    @InjectRepository(CommentRepository)
-    private commentRepository: CommentRepository,
     @InjectRepository(LikesRepository)
     private likesRepository: LikesRepository  
   ) {}
 
   async getMain(user: number, page: number): Promise<object> {
     const getFollowing = await this.followRepository.getFollowingIds(user);
-
     if (!getFollowing) {
       throw new UnauthorizedException('permisson denied');
     } else if (getFollowing.length === 0) {
@@ -61,7 +56,10 @@ export class ArticlesService {
         offset,
       );
 
-      if (!articles.length) throw new NotFoundException();
+      if (!articles || articles.length === 0) {
+        const error = new NotFoundException('cannot find articles')
+        return error;
+      }
 
       for (const article of articles) {
         const userId: number = await this.articleRepository.getUserId(article.id);
@@ -110,6 +108,71 @@ export class ArticlesService {
     }
   }
 
+  async getRecent(page: number): Promise<object> {
+    try {
+      let limit: number = 9;
+      let offset: number = (page - 1) * 9;
+      const articles = await this.articleRepository.getArticleInfo(
+        [],
+        limit,
+        offset,
+      );
+
+      if (!articles || articles.length === 0) {
+        const error = new NotFoundException('cannot find articles')
+        return error;
+      }
+
+      let newArticles = [];
+      for (const article of articles) {
+        const userId: number = await this.articleRepository.getUserId(article.id);
+        const writer: string = await this.userRepository.getUsername(userId);
+        const profileImage: string = await this.userRepository.getProfileImage(userId);
+        const tagIds: number[] = await this.articleToTagRepository.getTagIds(article.id);
+        let tagNames: string[] = [];
+
+        for (const tagId of tagIds) {
+          const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
+          tagNames.push(tagName);
+        }
+        article.tags = tagNames;
+
+        interface articleObject {
+          id: string;
+          userId:number;
+          thumbnail: string;
+          nickname: string;
+          profileImage: string;
+          totalLike: number;
+          totalComment: number;
+          tags: string[];
+        }
+
+        let creation: articleObject = {
+          id: article.id,
+          userId:userId,
+          thumbnail: article.thumbnail,
+          nickname: writer,
+          profileImage,
+          totalLike: article.totalLike,
+          totalComment: article.totalComment,
+          tags: article.tags,
+        };
+        newArticles.push(creation);
+      }
+
+      return {
+        data: {
+          articles: newArticles,
+        },
+        message: 'ok',
+      };
+    } catch (err) {
+      throw new InternalServerErrorException('err');
+    }
+  }
+
+
   async findOrCreateTags(user: number, articleId: number, tag: [] | object[]): Promise<string[]> {
     try {
       return await Promise.all(
@@ -132,74 +195,11 @@ export class ArticlesService {
           await this.articleToTagRepository.save(newArticleTag);
           return tagInfo.tagName;
         })
-      );
-    } catch {
-      throw new BadGatewayException();
+      )
+
+    } catch (err) {
+      throw new InternalServerErrorException('err');
     }
-  }
-
-  async getRecent(page: number): Promise<object> {
-    let limit: number = 9;
-    let offset: number = (page - 1) * 9;
-    const articles = await this.articleRepository.getArticleInfo(
-      [],
-      limit,
-      offset,
-    );
-
-    if (!articles.length) {
-      throw new NotFoundException('cannot find articles')
-    }
-
-    let newArticles = [];
-    for (const article of articles) {
-      const userId: number = await this.articleRepository.getUserId(article.id);
-      const writer: string = await this.userRepository.getUsername(userId);
-      const profileImage: string = await this.userRepository.getProfileImage(userId);
-      const tagIds: number[] = await this.articleToTagRepository.getTagIds(article.id);
-      let tagNames: string[] = [];
-
-      for (const tagId of tagIds) {
-        const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
-        tagNames.push(tagName);
-      }
-      article.tags = tagNames;
-
-      interface articleObject {
-        id: string;
-        userId:number;
-        thumbnail: string;
-        nickname: string;
-        profileImage: string;
-        totalLike: number;
-        totalComment: number;
-        tags: string[];
-      }
-
-      let creation: articleObject = {
-        id: article.id,
-        userId:userId,
-        thumbnail: article.thumbnail,
-        nickname: writer,
-        profileImage,
-        totalLike: article.totalLike,
-        totalComment: article.totalComment,
-        tags: article.tags,
-      };
-      newArticles.push(creation);
-    }
-
-    return {
-      data: {
-        articles: newArticles,
-      },
-      message: 'ok',
-    };
-  }
-
-  catch (err) {
-    console.log(err);
-    throw new InternalServerErrorException('err');
   }
 
   async createArticle(createArticleDto: CreateArticleDto): Promise<any> {
@@ -288,7 +288,7 @@ export class ArticlesService {
     const articleInfo = await this.articleRepository.findOne({ where: { id: articleId }, select: ['id', 'content', 'totalComment', 'totalLike', 'userId'] });
     if (!articleInfo) throw new NotFoundException('cannot find article');
     if (user !== articleInfo.userId) throw new ForbiddenException('permission denied');
-    if (content) this.articleRepository.update({ id: articleId }, { content });
+    if (articleInfo.content !== content) this.articleRepository.update({ id: articleId }, { content });
 
     const userInfo = await this.userRepository.findOne({ where: { id: user }, select: ['id', 'nickname', 'profileImage'] });
     const lastTags: Array<any> = await this.articleToTagRepository.find({ where: { articleId }, select: ['tagId', 'order'] });
@@ -304,7 +304,6 @@ export class ArticlesService {
           articleInfo: {
             ...articleInfo,
             roads,
-            tags
           },
         },
         message: 'article modified',
@@ -321,6 +320,12 @@ export class ArticlesService {
 
   async deleteArticle(id: number) {
     const result = await this.articleRepository.deleteArticle(id);
-    return result;
+    if (!result) {
+      throw new NotFoundException("Not Found Article you wanted to delete");
+    } else {
+      return {
+        message: 'article deleted'
+      }
+    }
   }
 }
