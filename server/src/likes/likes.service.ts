@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleRepository } from 'src/articles/repositories/article.repository';
 import { LikesDto } from './dto/likes.dto';
@@ -13,13 +13,16 @@ export class LikesService {
     private articleRepository: ArticleRepository,
   ) {}
 
-  async likeUnlike(likesDto: LikesDto): Promise<object> {
+  async likeUnlike(likesDto: LikesDto): Promise<any> {
     const { user, articleId } = likesDto;
     const likeOrNot = await this.likesRepository.likeOrNot(user, articleId);
 
-    if (!likeOrNot) {
+    if (likeOrNot === undefined) {
+      throw new NotFoundException(`no article with ID ${articleId}`);
+    } else if (!likeOrNot) {
       const result = await this.likesRepository.likeArticle(likesDto);
       const total_likes = await this.articleRepository.likeIncrement(articleId);
+
       return {
         data: {
           articleId: articleId,
@@ -30,6 +33,7 @@ export class LikesService {
     } else {
       const result = await this.likesRepository.unlikeArticle(likesDto);
       const total_likes = await this.articleRepository.likeDecrement(articleId);
+      
       return {
         data: {
           articleId: articleId,
