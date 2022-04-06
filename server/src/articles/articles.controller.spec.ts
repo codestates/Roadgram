@@ -56,7 +56,7 @@ describe('Articles Controller', () => {
     service = module.get<ArticlesService>(ArticlesService);
   });
 
-  it('1. controller.getMain 연결 테스트', async () => {
+  it('1. controller.getMain 테스트', async () => {
     const user = 3;
     const page = 1;
     controller.getMain(user, page);
