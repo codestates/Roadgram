@@ -221,7 +221,7 @@ describe('CommentsService', () => {
       expect(result.message).toEqual(expectedResult.message);
     });
 
-    it('ERROR: 삭제하고자 하는 댓글이 존재하지 않을 경우 에러 반환', async () => {
+    it('ERROR: 삭제하고자 하는 댓글의 게시물이 존재하지 않을 경우 에러 반환', async () => {
       const commentId = 5;
       const articleId = 2;
 
@@ -238,7 +238,7 @@ describe('CommentsService', () => {
       }
     });
 
-    it('ERROR: 삭제하고자 하는 댓글의 게시물이 존재하지 않을 경우 에러 반환', async () => {
+    it('ERROR: 삭제하고자 하는 댓글이 존재하지 않을 경우 에러 반환', async () => {
       const commentId = 1;
       const articleId = 6;
 
