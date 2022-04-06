@@ -1,5 +1,4 @@
 import {
-  BadGatewayException,
   BadRequestException,
   ForbiddenException,
   Injectable,
@@ -8,7 +7,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CommentRepository } from 'src/comments/repositories/comments.repository';
 import { FollowRepository } from 'src/follow/repositories/follow.repository';
 import { LikesRepository } from 'src/likes/repositories/likes.repository';
 import { UserRepository } from 'src/users/repositories/user.repository';
@@ -36,8 +34,6 @@ export class ArticlesService {
     private userRepository: UserRepository,
     @InjectRepository(FollowRepository)
     private followRepository: FollowRepository,
-    @InjectRepository(CommentRepository)
-    private commentRepository: CommentRepository,
     @InjectRepository(LikesRepository)
     private likesRepository: LikesRepository  
   ) {}
@@ -292,7 +288,7 @@ export class ArticlesService {
     const articleInfo = await this.articleRepository.findOne({ where: { id: articleId }, select: ['id', 'content', 'totalComment', 'totalLike', 'userId'] });
     if (!articleInfo) throw new NotFoundException('cannot find article');
     if (user !== articleInfo.userId) throw new ForbiddenException('permission denied');
-    if (content) this.articleRepository.update({ id: articleId }, { content });
+    if (articleInfo.content !== content) this.articleRepository.update({ id: articleId }, { content });
 
     const userInfo = await this.userRepository.findOne({ where: { id: user }, select: ['id', 'nickname', 'profileImage'] });
     const lastTags: Array<any> = await this.articleToTagRepository.find({ where: { articleId }, select: ['tagId', 'order'] });
@@ -308,7 +304,6 @@ export class ArticlesService {
           articleInfo: {
             ...articleInfo,
             roads,
-            tags
           },
         },
         message: 'article modified',

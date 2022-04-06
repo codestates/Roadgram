@@ -1,5 +1,4 @@
 import { Body, Controller, Delete, Get, HttpCode, ParseIntPipe, Patch, Post, Query, UseGuards, ValidationPipe } from '@nestjs/common';
-import { ValidationTypes } from 'class-validator';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/createArticle.dto';
@@ -9,7 +8,7 @@ import { UpdateArticleDto } from './dto/updateArticle.dto';
 export class ArticlesController {
   constructor(
     private articlesService: ArticlesService,
-  ) { }
+  ) {}
 
   @Get()
   @UseGuards(AuthGuard)
@@ -42,8 +41,7 @@ export class ArticlesController {
   @UseGuards(AuthGuard)
   @HttpCode(201)
   createArticle(@Body() createArticleDto: CreateArticleDto): Promise<object> {
-    const result = this.articlesService.createArticle(createArticleDto);
-    return result
+    return this.articlesService.createArticle(createArticleDto);
   }
 
   @Patch()
