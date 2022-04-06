@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommentRepository } from './repositories/comments.repository';
 import { CreateCommentDto, ModifyCommentDto } from './dto/comments.dto';
@@ -16,20 +16,26 @@ export class CommentsService {
     private userRepository: UserRepository,
   ) {}
 
-  async createComment(createCommentDto: CreateCommentDto): Promise<object> {
+  async createComment(createCommentDto: CreateCommentDto): Promise<any> {
     const { user, articleId } = createCommentDto;
     const commentInfo = await this.commentRepository.createComment(createCommentDto);
     const totalComments = await this.articleRepository.commentIncrement(articleId);
     const writerInfo = await this.userRepository.getCommentWriterInfo(user);
 
-    return {
-      data: { 
-        commentInfo, 
-        totalComments: totalComments,
-        writerInfo
-      },
-      message: 'comment created'
-    };
+    if (totalComments === undefined) {
+      throw new NotFoundException('the article does not exist');
+    } else if (writerInfo === undefined) {
+      throw new NotFoundException('the writer does not exist');
+    } else {
+      return {
+        data: { 
+          commentInfo,
+          totalComments,
+          writerInfo
+        },
+        message: 'comment created'
+      };
+    }
   }
 
   // Nightmare
@@ -44,13 +50,15 @@ export class CommentsService {
     }
   }
 
-  async deleteComment(commentId: number, articleId: number): Promise<object> {
+  async deleteComment(commentId: number, articleId: number): Promise<any> {
     const result = await this.commentRepository.delete(commentId);
-
+    const totalComments = await this.articleRepository.commentDecrement(articleId);
+  
     if (result.affected === 0) {
-      throw new NotFoundException(`non existent comment`);
+      throw new NotFoundException('the commment did not exist')
+    } else if (totalComments === undefined) {
+      throw new NotFoundException('the article does not exist')
     } else {
-      const totalComments = await this.articleRepository.commentDecrement(articleId);
       return {
         data: { totalComments: totalComments },
         message: 'comment deleted'
@@ -58,16 +66,19 @@ export class CommentsService {
     }
   }
 
-  async getComments(articleId: number, page: number): Promise<object> {
+  async getComments(articleId: number, page: number): Promise<any> {
     let limit: number = 10;
     let offset: number = (page - 1) * 10;
     const comments = await this.commentRepository.getComments(articleId, limit, offset);
 
+    if (page <= 0) throw new NotAcceptableException('unavailable page query');
     if (!comments.length) throw new NotFoundException('no comments yet');
+    if (comments.length > 10) throw new NotAcceptableException('got more than 10 comments');
 
     const commentsList = await Promise.all(
       comments.map(async (comment) => {
         const commentUserInfo = await this.userRepository.getUserInfo(comment.userId);
+        
         return {
           id: comment.id,
           userId: comment.userId,
@@ -81,7 +92,7 @@ export class CommentsService {
 
     return {
       data: commentsList,
-      message: 'ok'
+      message: `all comments of article Id: ${articleId}`
     };
   }
 }
