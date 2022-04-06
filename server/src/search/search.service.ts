@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Article } from 'src/articles/entities/article.entity';
 import { ArticleRepository } from 'src/articles/repositories/article.repository';
@@ -25,24 +25,24 @@ export class SearchService {
       let offset: number = (page - 1) * 9;
       const tagId = await this.tagRepository.getTagId(tag);
       if(!tagId) {
-        throw new NotFoundException('cannot find articles');
+        const error = new NotFoundException('cannot find tag');
+        return error;
       }
       const articleIds = await this.articleToTagRepository.getArticleIds(tagId);
 
-      if(!articleIds.length) {
-        throw new NotFoundException('cannot find articles');
+      if(!articleIds || articleIds.length === 0) {
+        const error = new NotFoundException('cannot find articles');
+        return error;
       }
 
       const articles = await this.articleRepository.searchArticle(articleIds, limit, offset);
-      if(!articles.length) throw new NotFoundException('cannot find articles')
-      // // 각 게시물에 태그 이름(배열) 추가
+      // 각 게시물에 태그 이름(배열) 추가
       let newArticles = [];
       for(const article of articles) {
           const userId: number = await this.articleRepository.getUserId(article.id);
           const writer: string = await this.userRepository.getUsername(userId);
           const profileImage: string = await this.userRepository.getProfileImage(userId);
           const tagIds: number[] = await this.articleToTagRepository.getTagIds(article.id);
-          console.log("tagIds:::", tagIds);
           let tagNames: string[] = [];
           for(const tagId of tagIds) {
             const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
@@ -71,7 +71,6 @@ export class SearchService {
               tags: article.tags
           };
           newArticles.push(creation);
-          console.log(creation);
       }
 
       return {
@@ -81,7 +80,7 @@ export class SearchService {
           message: "ok"
       }
   } catch (err) {
-      throw new NotFoundException("No Content")
+      throw new InternalServerErrorException('server error')
   }
   }
 }
