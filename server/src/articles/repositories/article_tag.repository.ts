@@ -1,14 +1,14 @@
-import { EntityRepository, Repository } from "typeorm";
-import { ArticleToTag } from "../entities/article_tag.entity";
+import { EntityRepository, Repository } from 'typeorm';
+import { ArticleToTag } from '../entities/article_tag.entity';
 
 @EntityRepository(ArticleToTag)
-export class ArticleToTagRepository extends Repository<ArticleToTag>{
+export class ArticleToTagRepository extends Repository<ArticleToTag> {
   async connectArticleTag(articleId: number, tagId: number, order: number) {
     const result = await this.save({ articleId, tagId, order });
     return result;
   }
 
-  async deleteTags(articleId: number) {
+  async deleteTags(articleId: number): Promise<any> {
     await this.delete({ articleId });
   }
 
@@ -18,13 +18,17 @@ export class ArticleToTagRepository extends Repository<ArticleToTag>{
   }
 
   async getTagIds(articleId: number): Promise<number[]> {
-    const tagIds = await this.find({ where: { articleId }, select: ["tagId"], order: { order: "ASC" } });
+    const tagIds = await this.find({
+      where: { articleId },
+      select: ['tagId'],
+      order: { order: 'ASC' },
+    });
     const result = tagIds.map((tag) => tag.tagId);
     return result;
   }
 
   async getArticleIds(tagId: number) {
-    const result = await this.createQueryBuilder("tag")
+    const result = await this.createQueryBuilder('tag')
       .where({ tagId })
       .getMany();
 
