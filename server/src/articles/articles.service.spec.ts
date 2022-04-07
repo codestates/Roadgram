@@ -1,31 +1,14 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  InternalServerErrorException,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
-import { create } from 'domain';
+import { getRepositoryToken} from '@nestjs/typeorm';
 import { CommentRepository } from 'src/comments/repositories/comments.repository';
-import { Follow } from 'src/follow/entities/follow.entity';
 import { FollowRepository } from 'src/follow/repositories/follow.repository';
-import { Likes } from 'src/likes/entities/likes.entity';
 import { LikesRepository } from 'src/likes/repositories/likes.repository';
-import { User } from 'src/users/entities/user.entity';
 import { UserRepository } from 'src/users/repositories/user.repository';
 import { UsersService } from 'src/users/users.service';
-import { getRepository, Repository } from 'typeorm';
 import { ArticlesController } from './articles.controller';
 import { ArticlesService } from './articles.service';
-import { CreateArticleDto } from './dto/createArticle.dto';
 import { UpdateArticleDto } from './dto/updateArticle.dto';
-import { Article } from './entities/article.entity';
-import { ArticleToTag } from './entities/article_tag.entity';
-import { Tag } from './entities/tag.entity';
-import { Track } from './entities/track.entity';
 import { ArticleRepository } from './repositories/article.repository';
 import { ArticleToTagRepository } from './repositories/article_tag.repository';
 import { TagRepository } from './repositories/tag.repository';
@@ -664,9 +647,11 @@ describe('Articles Service', () => {
         content: 'Test 본문입니다.',
       });
       userRepository.findOne.mockResolvedValue(userInfo);
-      articleToTagRepository.find.mockResolvedValue(lastTags);
+      articleToTagRepository.find.mockReturnValue(lastTags);
       trackRepository.getRoads.mockResolvedValue(roads);
       articleToTagRepository.deleteTags.mockResolvedValue('deleted');
+      const findOrCreateTagsSpy = jest.spyOn(service, "findOrCreateTags")
+      findOrCreateTagsSpy.mockResolvedValue(["테스트", "엽기"]);
     });
 
     it('SUCCESS: 게시물 내용이 정상적으로 수정이 된다.', async () => {
@@ -719,7 +704,7 @@ describe('Articles Service', () => {
         articleId: 6,
       };
       try {
-        articleRepository.findOne.mockResolvedValue(articleInfo);
+        userRepository.findOne.mockResolvedValue(undefined);
         const result = await service.updateArticle(dto);
         expect(result).toBeDefined();
       } catch (err) {
@@ -763,7 +748,7 @@ describe('Articles Service', () => {
     });
 
     it('ERROR: 기존 태그 삭제가 비정상적으로 종료될 경우 기존 작업 취소 및 Bad Request Exception 반환', async () => {
-      const errorMessage = 'bad request';
+      const errorMessage = 'Bad Request, A Task was cancelled';
       const dto = {
         ...updateArticleDto,
         user: 5,
@@ -775,6 +760,27 @@ describe('Articles Service', () => {
         expect(result).toBeDefined();
       } catch (err) {
         expect(articleRepository.update).toBeCalledTimes(2);
+        expect(articleToTagRepository.deleteTags).toBeCalledTimes(2);
+        expect(err.status).toBe(400);
+        expect(err.response.message).toBe(errorMessage);
+      }
+    });
+
+    it('ERROR: 신규 태그 생성 작업이 비정상적으로 종료될 경우 기존 작업 취소 및 Bad Request Exception 반환', async () => {
+      const errorMessage = 'Bad Request, A Task was cancelled';
+      const dto = {
+        ...updateArticleDto,
+        user: 5,
+        articleId: 6,
+      };
+      try {
+        const findOrCreateTagsSpy = jest.spyOn(service, "findOrCreateTags")
+        findOrCreateTagsSpy.mockResolvedValue(undefined);
+        const result = await service.updateArticle(dto);
+        expect(result).toBeDefined();
+      } catch (err) {
+        expect(articleRepository.update).toBeCalledTimes(2);
+        expect(articleToTagRepository.deleteTags).toBeCalledTimes(2);
         expect(err.status).toBe(400);
         expect(err.response.message).toBe(errorMessage);
       }
@@ -786,12 +792,13 @@ describe('Articles Service', () => {
       const successMessage = { message: 'article deleted' };
       articleRepository.deleteArticle.mockResolvedValue('success');
       const result = await service.deleteArticle(articleId);
-      expect(articleRepository.deleteArticle).toHaveBeenCalledTimes(1);
-      expect(articleRepository.deleteArticle).toHaveBeenCalledWith(articleId);
+      expect(articleRepository.deleteArticle).toBeCalledTimes(1);
+      expect(articleRepository.deleteArticle).toBeCalledWith(articleId);
       expect(result).toEqual(successMessage);
     });
 
     it('ERROR: 삭제할 게시물을 찾지 못하면 Not Found Exception 반환', async () => {
+      const errorMessage = 'Not Found Article you wanted to delete';
       try {
         const unknownUserId = 105;
         articleRepository.deleteArticle.mockResolvedValue(null);
@@ -799,6 +806,7 @@ describe('Articles Service', () => {
         expect(result).toBeDefined();
       } catch (err) {
         expect(err.status).toBe(404);
+        expect(err.response.message).toBe(errorMessage);
       }
     });
   });

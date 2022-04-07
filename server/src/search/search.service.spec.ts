@@ -4,7 +4,6 @@ import { ArticleRepository } from 'src/articles/repositories/article.repository'
 import { ArticleToTagRepository } from 'src/articles/repositories/article_tag.repository';
 import { TagRepository } from 'src/articles/repositories/tag.repository';
 import { UserRepository } from 'src/users/repositories/user.repository';
-import { getRepository } from 'typeorm';
 import { SearchController } from './search.controller';
 import { SearchService } from './search.service';
 
@@ -126,7 +125,7 @@ describe('Search Service', () => {
       });
     });
 
-    it('ERROR: 검색할 태그가 존재하지 않으면 Not Found Exception을 반환.', async () => {
+    it('ERROR: 검색할 태그가 존재하지 않으면 Not Found Exception 반환.', async () => {
       const errorMessage = 'cannot find tag';
       try {
         tagRepository.getTagId.mockResolvedValueOnce(undefined);
@@ -138,7 +137,7 @@ describe('Search Service', () => {
       }
     });
 
-    it('ERROR: 해당 태그를 가진 게시물이 존재하지 않으면 Not Found Exception을 반환.', async () => {
+    it('ERROR: 해당 태그를 가진 게시물이 존재하지 않으면 Not Found Exception 반환.', async () => {
       const errorMessage = 'cannot find articles';
       try {
         articleToTagRepository.getArticleIds.mockResolvedValueOnce(undefined);
@@ -150,7 +149,7 @@ describe('Search Service', () => {
       }
     });
 
-    it('ERROR: 게시물에 대한 정보 조회 중 비정상 종료 시 Not Found Exception을 반환.', async () => {
+    it('ERROR: 게시물에 대한 정보 조회 중 비정상 종료 시 Not Found Exception 반환.', async () => {
       const errorMessage = 'Not Found Articles Contents';
       try {
         articleRepository.getUserId.mockRejectedValue(undefined);

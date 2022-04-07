@@ -2,8 +2,6 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
-  InternalServerErrorException,
-  NotAcceptableException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -330,9 +328,7 @@ export class ArticlesService {
       select: ['id', 'nickname', 'profileImage'],
     });
     if (!userInfo) {
-      this.articleRepository.update(articleId, {
-        content: articleInfo.content,
-      });
+      this.articleRepository.update(articleId, {content: articleInfo.content});
       throw new NotFoundException('Not Found User Information');
     }
 
@@ -349,31 +345,29 @@ export class ArticlesService {
 
     const roads = await this.trackRepository.getRoads(articleId);
     if (!roads || roads.length === 0) {
-      this.articleRepository.update(articleId, {
-        content: articleInfo.content,
-      });
+      this.articleRepository.update(articleId, {content: articleInfo.content});
       throw new NotFoundException(`Not Found Article's Roads`);
     }
 
-    const deletionResult = await this.articleToTagRepository.deleteTags(
-      articleId,
-    );
-    if (!deletionResult) {
-      this.articleRepository.update(articleId, {
-        content: articleInfo.content,
-      });
-
-      this.articleToTagRepository.deleteTags(articleId);
-
+    const deleteTagsResult = await this.articleToTagRepository.deleteTags(articleId);
+    if(!deleteTagsResult) {
+      this.articleToTagRepository.deleteTags(articleId)
+      this.articleRepository.update(articleId, {content: articleInfo.content});
       lastTags.forEach(({ tagId, order }) => {
         this.articleToTagRepository.save({ tagId, articleId, order });
       });
-      throw new BadRequestException('bad request');
+      throw new BadRequestException('Bad Request, A Task was cancelled');
     }
-    const tags = await this.findOrCreateTags(articleId, tag);
-    // tags.forEach(({ tagId, order }) => {
-    //   this.articleToTagRepository.save({ tagId, articleId, order });
-    // });
+    
+    const findOrCreateTagsResult = await this.findOrCreateTags(articleId, tag);
+    if(!findOrCreateTagsResult) {
+      this.articleToTagRepository.deleteTags(articleId)
+      this.articleRepository.update(articleId, {content: articleInfo.content});
+      lastTags.forEach(({ tagId, order }) => {
+        this.articleToTagRepository.save({ tagId, articleId, order });
+      });
+      throw new BadRequestException('Bad Request, A Task was cancelled');
+    }
     return {
       data: {
         userInfo,
@@ -383,7 +377,7 @@ export class ArticlesService {
         },
       },
       message: 'article modified',
-    };
+    }; 
   }
 
   async deleteArticle(id: number) {
