@@ -1,10 +1,12 @@
 import { Body, Controller, Delete, Get, Headers, HttpCode, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { CreateUserDto } from './dto/createUser.dto';
 import { EmailDto, IdDto, KakaoLoginDto, LoginDto, NicknameDto, QueryDto, TokenDto } from './dto/login.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UsersService } from './users.service';
 
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
     constructor(private usersService: UsersService) { }

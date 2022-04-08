@@ -42,7 +42,7 @@ export class ArticlesService {
     if (!getFollowing) {
       throw new UnauthorizedException('permisson denied');
     } else if (getFollowing.length === 0) {
-      throw new NotFoundException('cannot find articles');
+      throw new NotFoundException('not found following ids');
     }
 
     const newArticles = [];
@@ -55,8 +55,7 @@ export class ArticlesService {
     );
 
     if (!articles || articles.length === 0) {
-      const error = new NotFoundException('cannot find articles');
-      return error;
+      throw new NotFoundException('not found articles');
     }
 
     try {
@@ -111,7 +110,7 @@ export class ArticlesService {
         message: 'ok',
       };
     } catch (err) {
-      throw new NotFoundException('Not Found Articles Contents');
+      throw new NotFoundException('not found articles contents');
     }
   }
 
@@ -125,8 +124,7 @@ export class ArticlesService {
     );
 
     if (!articles || articles.length === 0) {
-      const error = new NotFoundException('cannot find articles');
-      return error;
+      throw new NotFoundException('not found articles');
     }
 
     let newArticles = [];
@@ -184,7 +182,7 @@ export class ArticlesService {
         message: 'ok',
       };
     } catch (err) {
-      throw new NotFoundException('Not Found Articles Contents');
+      throw new NotFoundException('not found articles contents');
     }
   }
 
@@ -215,7 +213,7 @@ export class ArticlesService {
         }),
       );
     } catch (err) {
-      throw new NotFoundException('Not Found Tags');
+      throw new NotFoundException('not found tags');
     }
   }
 
@@ -226,7 +224,10 @@ export class ArticlesService {
       select: ['id', 'nickname', 'profileImage'],
     });
 
-    if (!userInfo) throw new NotFoundException('cannot find user');
+    if (!userInfo) {
+      throw new NotFoundException(`not found user's information`);
+    }
+
     const articleResult = await this.articleRepository.createArticle(
       user,
       content,
@@ -259,10 +260,10 @@ export class ArticlesService {
   async getArticleDetail(id: number, user?: number): Promise<any> {
     const articleInfo = await this.articleRepository.getArticleDetail(id);
     if (!articleInfo)
-      throw new NotFoundException(`Not Found The Article's Contents`);
+      throw new NotFoundException(`not found the article's contents`);
 
     const userInfo = await this.userRepository.getUserInfo(articleInfo.userId);
-    if (!userInfo) throw new NotFoundException(`Not Found User's Information`);
+    if (!userInfo) throw new NotFoundException(`not found user's information`);
 
     const likedOrNot = await this.likesRepository.likeOrNot(
       user || undefined,
@@ -270,7 +271,7 @@ export class ArticlesService {
     );
     const tagIds = await this.articleToTagRepository.getTagIds(articleInfo.id);
     if (!tagIds || tagIds.length === 0)
-      throw new NotFoundException(`Not Found Tags`);
+      throw new NotFoundException(`not found tags`);
 
     let tagNames = [];
     for (let tagId of tagIds) {
@@ -280,7 +281,7 @@ export class ArticlesService {
 
     const roads = await this.trackRepository.getRoads(articleInfo.id);
     if (!roads || roads.length === 0)
-      throw new NotFoundException(`Not Found Article's Roads`);
+      throw new NotFoundException(`not found article's roads`);
     let article = {};
     article = {
       id: articleInfo.id,
@@ -315,7 +316,7 @@ export class ArticlesService {
       select: ['id', 'content', 'totalComment', 'totalLike', 'userId'],
     });
     if (!articleInfo)
-      throw new NotFoundException(`Not Found Article's Contents`);
+      throw new NotFoundException(`not found article's contents`);
 
     if (user !== articleInfo.userId)
       throw new ForbiddenException('permission denied');
@@ -329,7 +330,7 @@ export class ArticlesService {
     });
     if (!userInfo) {
       this.articleRepository.update(articleId, {content: articleInfo.content});
-      throw new NotFoundException('Not Found User Information');
+      throw new NotFoundException('not found user information');
     }
 
     const lastTags: Array<any> = await this.articleToTagRepository.find({
@@ -340,13 +341,13 @@ export class ArticlesService {
       this.articleRepository.update(articleId, {
         content: articleInfo.content,
       });
-      throw new NotFoundException('Not Found Tags');
+      throw new NotFoundException('not found tags');
     }
 
     const roads = await this.trackRepository.getRoads(articleId);
     if (!roads || roads.length === 0) {
       this.articleRepository.update(articleId, {content: articleInfo.content});
-      throw new NotFoundException(`Not Found Article's Roads`);
+      throw new NotFoundException(`not found article's roads`);
     }
 
     const deleteTagsResult = await this.articleToTagRepository.deleteTags(articleId);
@@ -356,7 +357,7 @@ export class ArticlesService {
       lastTags.forEach(({ tagId, order }) => {
         this.articleToTagRepository.save({ tagId, articleId, order });
       });
-      throw new BadRequestException('Bad Request, A Task was cancelled');
+      throw new BadRequestException('bad request, a task was cancelled');
     }
     
     const findOrCreateTagsResult = await this.findOrCreateTags(articleId, tag);
@@ -366,7 +367,7 @@ export class ArticlesService {
       lastTags.forEach(({ tagId, order }) => {
         this.articleToTagRepository.save({ tagId, articleId, order });
       });
-      throw new BadRequestException('Bad Request, A Task was cancelled');
+      throw new BadRequestException('bad request, a task was cancelled');
     }
     return {
       data: {
@@ -383,7 +384,7 @@ export class ArticlesService {
   async deleteArticle(id: number) {
     const result = await this.articleRepository.deleteArticle(id);
     if (!result) {
-      throw new NotFoundException('Not Found Article you wanted to delete');
+      throw new NotFoundException('not found article you wanted to delete');
     } else {
       return {
         message: 'article deleted',

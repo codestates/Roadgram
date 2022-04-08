@@ -282,8 +282,6 @@ describe('Articles Service', () => {
       const userId = articles[0].userId;
       const writer = articles[0].nickname;
       const profileImage = articles[0].profileImage;
-      const tagName = articles[0].tags[0];
-      const tagIds = [34];
       const successMessage = 'ok';
       const result = await service.getMain(userId, page);
       expect(followRepository.getFollowingIds).toBeCalledTimes(1);
@@ -312,7 +310,7 @@ describe('Articles Service', () => {
       });
     });
     it('ERROR: 게시물에 대한 정보 조회 중 비정상 종료 시 Not Found Exception 반환.', async () => {
-      const errorMessage = 'Not Found Articles Contents';
+      const errorMessage = 'not found articles contents';
       try {
         articleRepository.getUserId.mockRejectedValue(undefined);
         const result = await service.getMain(userId, page);
@@ -324,28 +322,31 @@ describe('Articles Service', () => {
     });
 
     it('ERROR: 팔로잉을 찾을 수 없을 경우 Unauthorized Exception 반환', async () => {
+      const errorMessage = 'permisson denied';
       try {
         followRepository.getFollowingIds.mockResolvedValue(undefined);
         const result = await service.getMain(userId, page);
         expect(result).toBeDefined();
       } catch (err) {
         expect(err.status).toBe(401);
-        expect(err.response.message).toBe('permisson denied');
+        expect(err.response.message).toBe(errorMessage);
       }
     });
 
     it('ERROR: 팔로잉이 0명일 경우 Not Found Exception 반환', async () => {
+      const errorMessage = 'not found following ids'
       try {
         followRepository.getFollowingIds.mockResolvedValue([]);
         const result = await service.getMain(userId, page);
         expect(result).toBeDefined();
       } catch (err) {
         expect(err.status).toBe(404);
-        expect(err.response.message).toBe('cannot find articles');
+        expect(err.response.message).toBe(errorMessage);
       }
     });
 
     it('ERROR: 팔로워의 게시물이 0개일 경우 Not Found Exception 반환', async () => {
+      const errorMessage = 'not found articles'
       try {
         articleRepository.getArticleInfo.mockResolvedValue([]);
         const result = await service.getMain(userId, page);
@@ -353,7 +354,7 @@ describe('Articles Service', () => {
       } catch (err) {
         console.log(err);
         expect(err.status).toBe(404);
-        expect(err.response.message).toBe('');
+        expect(err.response.message).toBe(errorMessage);
       }
     });
   });
@@ -399,18 +400,19 @@ describe('Articles Service', () => {
     });
 
     it('ERROR: 게시물이 없을 경우 Not Found Exception 반환', async () => {
+      const errorMessage = 'not found articles'
       try {
         articleRepository.getArticleInfo.mockResolvedValue(undefined);
         const result = await service.getRecent(page);
         expect(result).toBeDefined();
       } catch (err) {
         expect(err.status).toBe(404);
-        expect(err.response.message).toBe('cannot find articless');
+        expect(err.response.message).toBe(errorMessage);
       }
     });
 
     it('ERROR: 게시물에 대한 정보 조회 중 비정상 종료 시 Not Found Exception 반환.', async () => {
-      const errorMessage = 'Not Found Articles Contents';
+      const errorMessage = 'not found articles contents';
       try {
         articleRepository.getUserId.mockRejectedValue(undefined);
         const result = await service.getRecent(1);
@@ -488,7 +490,7 @@ describe('Articles Service', () => {
           order: 1,
         },
       ];
-      const errorMessage = 'Not Found Tags';
+      const errorMessage = 'not found tags';
       try {
         tagRepository.findOne.mockRejectedValue(undefined);
         const result = await service.findOrCreateTags(articleId, tag);
@@ -535,17 +537,19 @@ describe('Articles Service', () => {
     });
 
     it('ERROR: 유저 정보가 없을 경우 Not Found Exception 반환', async () => {
+      const errorMessage = `not found user's information`;
       try {
         userRepository.findOne.mockReturnValue(undefined);
         const result = await service.createArticle(createArticleDto);
         expect(result).toBeDefined();
       } catch (err) {
         expect(err.status).toBe(404);
-        expect(err.response.message).toBe('cannot find user');
+        expect(err.response.message).toBe(errorMessage);
       }
     });
 
     it('ERROR: 게시물 생성이 비정상적으로 종료될 경우 생성된 게시물 삭제 및 Bad Request Exception 반환', async () => {
+      const errorMessage = 'bad request'
       const userInfo = { id: 5, nickname: 'test', profileImage: 'profile.jpg' };
       const articleResult = createdArticle.data.articleInfo;
       try {
@@ -556,7 +560,7 @@ describe('Articles Service', () => {
         expect(result).toBeDefined();
       } catch (err) {
         expect(err.status).toBe(400);
-        expect(err.response.message).toBe('bad request');
+        expect(err.response.message).toBe(errorMessage);
         expect(articleRepository.deleteArticle).toBeCalledTimes(1);
         expect(articleRepository.deleteArticle).toBeCalledWith(
           articleResult.id,
@@ -584,7 +588,7 @@ describe('Articles Service', () => {
     });
 
     it('ERROR: 게시물 정보를 찾을 수 없을 경우 Not Found Exception 반환.', async () => {
-      const errorMessage = `Not Found The Article's Contents`;
+      const errorMessage = `not found the article's contents`;
       try {
         articleRepository.getArticleDetail.mockResolvedValue(undefined);
         const result = await service.getArticleDetail(articleId, userId);
@@ -596,7 +600,7 @@ describe('Articles Service', () => {
     });
 
     it('ERROR: 게시물에 대한 유저정보를 찾을 수 없을 경우 Not Found Exception 반환.', async () => {
-      const errorMessage = `Not Found User's Information`;
+      const errorMessage = `not found user's information`;
       try {
         userRepository.getUserInfo.mockResolvedValue(undefined);
         const result = await service.getArticleDetail(articleId, userId);
@@ -608,7 +612,7 @@ describe('Articles Service', () => {
     });
 
     it('ERROR: 게시물에 대한 태그 정보를 찾을 수 없을 경우 Not Found Exception 반환.', async () => {
-      const errorMessage = `Not Found Tags`;
+      const errorMessage = `not found tags`;
       try {
         articleToTagRepository.getTagIds.mockResolvedValue(undefined);
         const result = await service.getArticleDetail(articleId, userId);
@@ -620,7 +624,7 @@ describe('Articles Service', () => {
     });
 
     it('ERROR: 게시물에 대한 경로 정보를 찾을 수 없을 경우 Not Found Exception 반환.', async () => {
-      const errorMessage = `Not Found Article's Roads`;
+      const errorMessage = `not found article's roads`;
       try {
         trackRepository.getRoads.mockResolvedValue(undefined);
         const result = await service.getArticleDetail(articleId, userId);
@@ -673,7 +677,7 @@ describe('Articles Service', () => {
     });
 
     it('ERROR: 게시물 정보가 조회가 불가능 할 경우 Not Found Exception 반환', async () => {
-      const errorMessage = `Not Found Article's Contents`;
+      const errorMessage = `not found article's contents`;
       try {
         articleRepository.findOne.mockResolvedValue(undefined);
         const result = await service.updateArticle(updateArticleDto);
@@ -697,7 +701,7 @@ describe('Articles Service', () => {
     });
 
     it('ERROR: 게시물을 작성한 유저 정보를 찾을 수 없을 경우 Not Found Exception 반환', async () => {
-      const errorMessage = 'Not Found User Information';
+      const errorMessage = 'not found user information';
       const dto = {
         ...updateArticleDto,
         user: 5,
@@ -714,7 +718,7 @@ describe('Articles Service', () => {
     });
 
     it('ERROR: 기존 게시물에 대한 태그를 찾을 수 없을 경우 Not Found Exception 반환', async () => {
-      const errorMessage = 'Not Found Tags';
+      const errorMessage = 'not found tags';
       const dto = {
         ...updateArticleDto,
         user: 5,
@@ -731,7 +735,7 @@ describe('Articles Service', () => {
     });
 
     it('ERROR: 게시물에 대한 경로 정보를 찾을 수 없을 경우 Not Found Exception 반환', async () => {
-      const errorMessage = `Not Found Article's Roads`;
+      const errorMessage = `not found article's roads`;
       const dto = {
         ...updateArticleDto,
         user: 5,
@@ -748,7 +752,7 @@ describe('Articles Service', () => {
     });
 
     it('ERROR: 기존 태그 삭제가 비정상적으로 종료될 경우 기존 작업 취소 및 Bad Request Exception 반환', async () => {
-      const errorMessage = 'Bad Request, A Task was cancelled';
+      const errorMessage = 'bad request, a task was cancelled';
       const dto = {
         ...updateArticleDto,
         user: 5,
@@ -767,7 +771,7 @@ describe('Articles Service', () => {
     });
 
     it('ERROR: 신규 태그 생성 작업이 비정상적으로 종료될 경우 기존 작업 취소 및 Bad Request Exception 반환', async () => {
-      const errorMessage = 'Bad Request, A Task was cancelled';
+      const errorMessage = 'bad request, a task was cancelled';
       const dto = {
         ...updateArticleDto,
         user: 5,
@@ -789,16 +793,16 @@ describe('Articles Service', () => {
 
   describe('7. deleteArticle 테스트', () => {
     it('SUCCESS: 게시물 삭제가 정상적으로 완료됨', async () => {
-      const successMessage = { message: 'article deleted' };
+      const successMessage = 'article deleted';
       articleRepository.deleteArticle.mockResolvedValue('success');
       const result = await service.deleteArticle(articleId);
       expect(articleRepository.deleteArticle).toBeCalledTimes(1);
       expect(articleRepository.deleteArticle).toBeCalledWith(articleId);
-      expect(result).toEqual(successMessage);
+      expect(result.message).toEqual(successMessage);
     });
 
     it('ERROR: 삭제할 게시물을 찾지 못하면 Not Found Exception 반환', async () => {
-      const errorMessage = 'Not Found Article you wanted to delete';
+      const errorMessage = 'not found article you wanted to delete';
       try {
         const unknownUserId = 105;
         articleRepository.deleteArticle.mockResolvedValue(null);
