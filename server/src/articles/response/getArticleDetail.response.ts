@@ -48,13 +48,13 @@ export abstract class ArticleInfo {
 }
 
 export abstract class UserInfo {
-  @ApiProperty()
+  @ApiProperty({example: 5})
   id: number
 
-  @ApiProperty()
+  @ApiProperty({example: "테스트 계정"})
   nickname: string
 
-  @ApiProperty()
+  @ApiProperty({example: "profile.jpg"})
   profileImage: string
 }
 
