@@ -2,7 +2,9 @@ import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { LikesService } from './likes.service';
 import { LikesDto } from './dto/likes.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Likes')
 @Controller('likes')
 export class LikesController {
   constructor(private likesService: LikesService) {}

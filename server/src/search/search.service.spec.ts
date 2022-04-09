@@ -126,7 +126,7 @@ describe('Search Service', () => {
     });
 
     it('ERROR: 검색할 태그가 존재하지 않으면 Not Found Exception 반환.', async () => {
-      const errorMessage = 'cannot find tag';
+      const errorMessage = 'not found tag';
       try {
         tagRepository.getTagId.mockResolvedValueOnce(undefined);
         const result = await service.searchArticle(tag, page);
@@ -138,7 +138,7 @@ describe('Search Service', () => {
     });
 
     it('ERROR: 해당 태그를 가진 게시물이 존재하지 않으면 Not Found Exception 반환.', async () => {
-      const errorMessage = 'cannot find articles';
+      const errorMessage = 'not found articles';
       try {
         articleToTagRepository.getArticleIds.mockResolvedValueOnce(undefined);
         const result = await service.searchArticle(tag, page);
@@ -150,7 +150,7 @@ describe('Search Service', () => {
     });
 
     it('ERROR: 게시물에 대한 정보 조회 중 비정상 종료 시 Not Found Exception 반환.', async () => {
-      const errorMessage = 'Not Found Articles Contents';
+      const errorMessage = `not found article's contents`;
       try {
         articleRepository.getUserId.mockRejectedValue(undefined);
         const result = await service.searchArticle(tag, page);

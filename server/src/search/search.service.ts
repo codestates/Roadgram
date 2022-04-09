@@ -29,15 +29,13 @@ export class SearchService {
     const tagId = await this.tagRepository.getTagId(tag);
 
     if (!tagId) {
-      const error = new NotFoundException('cannot find tag');
-      return error;
+      throw new NotFoundException('not found tag');
     }
 
     const articleIds = await this.articleToTagRepository.getArticleIds(tagId);
 
     if (!articleIds || articleIds.length === 0) {
-      const error = new NotFoundException('cannot find articles');
-      return error;
+      throw new NotFoundException('not found articles');
     }
 
     const articles = await this.articleRepository.searchArticle(
@@ -97,7 +95,7 @@ export class SearchService {
         message: 'ok',
       };
     } catch (err) {
-      throw new NotFoundException('Not Found Articles Contents');
+      throw new NotFoundException(`not found article's contents`);
     }
   }
 }
