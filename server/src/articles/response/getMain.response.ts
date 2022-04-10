@@ -27,7 +27,7 @@ export abstract class ArticleObject {
 };
 
 export abstract class ArticlesData {
-  @ApiProperty()
+  @ApiProperty({isArray: true})
   articles: ArticleObject
 };
 
