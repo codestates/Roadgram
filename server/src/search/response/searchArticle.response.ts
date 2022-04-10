@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { ArticleObject } from "src/articles/response/getMain.response";
 
 export abstract class SearchArticleResponseData {
-  @ApiProperty()
+  @ApiProperty({isArray: true})
   articles: ArticleObject
 }
 
