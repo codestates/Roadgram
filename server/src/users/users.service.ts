@@ -37,7 +37,7 @@ export class UsersService {
         private jwtService: JwtService
     ) { }
 
-    async checkEmail({ email }: EmailDto) {
+    async checkEmail({ email }: EmailDto): Promise<object> {
         const isValid = await this.userRepository.findOne({ email });
         if (isValid && isValid.email === email) {
             throw new ConflictException('not available')
@@ -45,7 +45,7 @@ export class UsersService {
         else return { message: 'available' }
     }
 
-    async checkNickname({ nickname }: NicknameDto) {
+    async checkNickname({ nickname }: NicknameDto): Promise<object> {
         const isValid = await this.userRepository.findOne({ nickname });
         if (isValid && isValid.nickname === nickname) {
             throw new ConflictException('not available')
@@ -53,7 +53,7 @@ export class UsersService {
         else return { message: 'available' }
     }
 
-    async login(loginDto: LoginDto) {
+    async login(loginDto: LoginDto): Promise<any> {
         const userInfo = await this.userRepository.findOne({
             loginMethod: 0,
             email: loginDto.email
@@ -82,22 +82,16 @@ export class UsersService {
     }
 
     async logout(idDto: IdDto) {
-        const id = idDto.user;
-        try {
-            this.userRepository.deleteRefreshToken(id);
-            return { message: 'logout succeed' };
-        } catch {
-            throw new NotFoundException("cannot find user")
-        }
-
+        this.userRepository.deleteRefreshToken(idDto.user);
+        return { message: 'logout succeed' };
     }
 
-    async signup(createUserDto: CreateUserDto) {
-        const user = await this.userRepository.createUser(createUserDto);
+    async signup(createUserDto: CreateUserDto): Promise<object> {
+        await this.userRepository.createUser(createUserDto);
         return { message: "signup succeed" };
     }
 
-    async deleteUser(idDto: IdDto) {
+    async deleteUser(idDto: IdDto): Promise<object> {
         const id: number = idDto.user;
         this.userRepository.deleteUser(id);// 일단 유저 삭제
         const followers = await this.followRepository.getFollowingIds(id);// 팔로우 한 사람들 아이디
@@ -128,26 +122,26 @@ export class UsersService {
                 const article = await this.articleRepository.findOne({ id: articleId });
                 this.articleRepository.update({ id: articleId }, { totalComment: article.totalComment - 1 });
             })
-        ) 
+        )
         return { message: 'withdrawal succeed' };
     }
 
-    async modifyUser(userData: UpdateUserDto) {
+    async modifyUser(userData: UpdateUserDto): Promise<object> {
         if (userData.loginMethod !== 0 && userData.password) {
-            throw new BadRequestException('bad request');
+            throw new BadRequestException('social login user cannot change password');
         }
         else {
-            const userInfo= await this.userRepository.updateUser(userData);
+            const userInfo = await this.userRepository.updateUser(userData);
             return {
-                data:{
+                data: {
                     userInfo
                 },
-                message:'change succeed'
+                message: 'change succeed'
             }
         }
     }
 
-    async validateToken(authDto: AuthDto) {
+    async validateToken(authDto: AuthDto): Promise<any> {
         const { id, loginMethod, accessToken } = authDto;
         const userInfo = await this.userRepository.findOne({ id, loginMethod });
         if (!userInfo) throw new NotFoundException('cannot find user');
@@ -171,7 +165,7 @@ export class UsersService {
         }
     }
 
-    async refreshAccessToken({ id, loginMethod, refreshToken }: AuthDto) {
+    async refreshAccessToken({ id, loginMethod, refreshToken }: AuthDto): Promise<object> {
         const userInfo = await this.userRepository.findOne({ id, loginMethod });
         if (!userInfo) {
             throw new NotFoundException('cannot find user');
@@ -209,7 +203,7 @@ export class UsersService {
 
     }
 
-    async getTokenKakao({ code }: KakaoLoginDto) {
+    async getTokenKakao({ code }: KakaoLoginDto): Promise<object> {
         try {
             const tokenRequest = await axios.post(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}&code=${code}`,
                 { headers: { 'Content-Type': "application/x-www-form-urlencoded" } }
@@ -217,6 +211,7 @@ export class UsersService {
             const userInfoKakao = await axios.get('https://kapi.kakao.com/v2/user/me',
                 { headers: { 'Authorization': `Bearer ${tokenRequest.data.access_token}` } }
             );
+
             const userInfo = await this.userRepository.findOne({ email: userInfoKakao.data.kakao_account.email });
             if (!userInfo) {
                 const user: User = this.userRepository.create({
@@ -269,7 +264,7 @@ export class UsersService {
             const userInfo = await this.userRepository.getUserInfo(other || user);
             const followedOrNot = await this.followRepository.followedOrNot(user || undefined, other || user);
             const articles = await this.articleRepository.getArticleInfo(other || user, limit, offset);
-
+            if (!articles.length) throw Error;
             // // 각 게시물에 태그 이름(배열) 추가
             let newArticles = [];
             for (const article of articles) {
