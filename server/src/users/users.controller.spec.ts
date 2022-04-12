@@ -34,52 +34,52 @@ describe('UsersController', () => {
     service = module.get<UsersService>(UsersService)
   });
 
-  it('1. login 테스트', () => {
+  it('1. controller.login 테스트', () => {
     controller.login({ email: '', password: '' });
     expect(service.login).toBeCalledTimes(1);
   });
 
-  it('2. logout 테스트', () => {
+  it('2. controller.logout 테스트', () => {
     controller.logout({ loginMethod: 1, user: 1 });
     expect(service.logout).toBeCalledTimes(1);
   });
 
-  it('3. signup 테스트', () => {
+  it('3. controller.signup 테스트', () => {
     controller.signup({ email: '', password: '', nickname: '' })
     expect(service.signup).toBeCalledTimes(1);
   })
 
-  it('4. checkEmail 테스트', () => {
+  it('4. controller.checkEmail 테스트', () => {
     controller.checkEmail({ email: '' })
     expect(service.checkEmail).toBeCalledTimes(1);
   })
 
-  it('5. checkNickname 테스트', () => {
+  it('5. controller.checkNickname 테스트', () => {
     controller.checkNickname({ nickname: '' })
     expect(service.checkNickname).toBeCalledTimes(1);
   })
 
-  it('6. getToken 테스트', () => {
+  it('6. controller.getToken 테스트', () => {
     controller.getToken({ code: '' })
     expect(service.getTokenKakao).toBeCalledTimes(1);
   })
 
-  it('7. modifyProfile 테스트', () => {
+  it('7. controller.modifyProfile 테스트', () => {
     controller.modifyProfile({ user: 1, loginMethod: 1 })
     expect(service.modifyUser).toBeCalledTimes(1);
   })
 
-  it('8. deleteUser 테스트', () => {
+  it('8. controller.deleteUser 테스트', () => {
     controller.deleteUser({ user: 1, loginMethod: 1 })
     expect(service.deleteUser).toBeCalledTimes(1);
   })
 
-  it('9. getUserInfo 테스트', () => {
+  it('9. controller.getUserInfo 테스트', () => {
     controller.getUserInfo(1, 2)
     expect(service.getMypage).toBeCalledTimes(1);
   })
 
-  it('10. refreshAccessToken 테스트', () => {
+  it('10. controller.refreshAccessToken 테스트', () => {
     controller.refreshAccessToken({ user: 1, loginMethod: 1 }, { authorization: '' })
     expect(service.refreshAccessToken).toBeCalledTimes(1);
   })
