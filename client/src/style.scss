@@ -17,7 +17,7 @@ $button-color: rgb(61, 117, 255);
 $button-hover-color: #93b1f3;
 
 /* 종범 */
-@import './styles/Mixins/responsive';
+@import './styles/mixins/responsive';
 @import './styles/components/footer';
 @import './styles/components/navigator';
 @import './styles/pages/landingPage';
