@@ -12,6 +12,7 @@ import { UpdateArticleDto } from './dto/updateArticle.dto';
 import { ArticleRepository } from './repositories/article.repository';
 import { ArticleToTagRepository } from './repositories/article_tag.repository';
 import { TagRepository } from './repositories/tag.repository';
+import { TagHitsRepository } from './repositories/tagHits.repository';
 import { TrackRepository } from './repositories/track.repository';
 
 const mockArticleRepository = () => ({
@@ -22,6 +23,8 @@ const mockArticleRepository = () => ({
   getArticleDetail: jest.fn(),
   findOne: jest.fn(),
   update: jest.fn(),
+  addArticleHits: jest.fn(),
+  addTagHits: jest.fn()
 });
 
 const mockFollowRepository = () => ({
@@ -59,6 +62,12 @@ const mockTrackRepository = () => ({
 
 const mockLikesRepository = () => ({
   likeOrNot: jest.fn(),
+});
+
+const mockTagHitsRepository = () => ({
+  createTagHits: jest.fn(),
+  addTagHits: jest.fn(),
+  findOne: jest.fn()
 });
 
 const userId = 1;
@@ -180,6 +189,7 @@ describe('Articles Service', () => {
   let articleToTagRepository: MockRepository<ArticleToTagRepository>;
   let trackRepository: MockRepository<TrackRepository>;
   let likesRepository: MockRepository<LikesRepository>;
+  let tagHitsRepository: MockRepository<TagHitsRepository>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -216,6 +226,10 @@ describe('Articles Service', () => {
           provide: getRepositoryToken(LikesRepository),
           useValue: mockLikesRepository(),
         },
+        {
+          provide: getRepositoryToken(TagHitsRepository),
+          useValue: mockTagHitsRepository(),
+        },
       ],
       imports: [JwtModule.register({ secret: process.env.JWT_SECRET })],
     }).compile();
@@ -230,6 +244,7 @@ describe('Articles Service', () => {
     );
     trackRepository = module.get(getRepositoryToken(TrackRepository));
     likesRepository = module.get(getRepositoryToken(LikesRepository));
+    tagHitsRepository = module.get(getRepositoryToken(TagHitsRepository));
   });
 
   describe('1. getMain 테스트', () => {
@@ -352,7 +367,6 @@ describe('Articles Service', () => {
         const result = await service.getMain(userId, page);
         expect(result).toBeDefined();
       } catch (err) {
-        console.log(err);
         expect(err.status).toBe(404);
         expect(err.response.message).toBe(errorMessage);
       }
@@ -572,19 +586,33 @@ describe('Articles Service', () => {
   describe('5. getArticleDetail Test', () => {
     beforeEach(async () => {
       articleRepository.getArticleDetail.mockResolvedValue(articleInfo);
+      articleRepository.addArticleHits.mockResolvedValue(true);
       userRepository.getUserInfo.mockResolvedValue(userInfo);
       likesRepository.likeOrNot.mockResolvedValue(likedOrNot);
       articleToTagRepository.getTagIds.mockResolvedValue(tagIds);
       tagRepository.getTagNameWithIds.mockResolvedValue(tagName);
+      tagHitsRepository.addTagHits.mockResolvedValue(true);
       trackRepository.getRoads.mockResolvedValue(roads);
     });
     it('SUCCESS: 해당 게시물의 상세페이지를 정상적으로 조회한다.', async () => {
+      articleRepository.addArticleHits.mockResolvedValue(true);
+      tagHitsRepository.addTagHits.mockResolvedValue(true);
       const result = await service.getArticleDetail(articleId, userId);
       expect(result.data).toStrictEqual({
         userInfo,
         articleInfo: article,
       });
       expect(result.message).toBe('ok');
+    });
+
+    it('SUCCESS: 해당 게시물의 조회수를 1 추가한다.', async () => {
+      const result = await service.addArticleHits(articleId);
+      expect(result).toStrictEqual(true);
+    });
+
+    it('SUCCESS: 해당 게시물의 태그들의 조회수를 1 추가한다.', async () => {
+        const result = await service.addTagHits(tagIds[0], tagName);
+        expect(result).toStrictEqual(true);
     });
 
     it('ERROR: 게시물 정보를 찾을 수 없을 경우 Not Found Exception 반환.', async () => {

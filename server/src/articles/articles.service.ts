@@ -16,6 +16,7 @@ import { Tag } from './entities/tag.entity';
 import { ArticleRepository } from './repositories/article.repository';
 import { ArticleToTagRepository } from './repositories/article_tag.repository';
 import { TagRepository } from './repositories/tag.repository';
+import { TagHitsRepository } from './repositories/tagHits.repository';
 import { TrackRepository } from './repositories/track.repository';
 
 @Injectable()
@@ -35,6 +36,8 @@ export class ArticlesService {
     private followRepository: FollowRepository,
     @InjectRepository(LikesRepository)
     private likesRepository: LikesRepository,
+    @InjectRepository(TagHitsRepository)
+    private tagHitsRepository: TagHitsRepository,
   ) {}
 
   async getMain(user: number, page: number): Promise<object> {
@@ -262,6 +265,10 @@ export class ArticlesService {
     if (!articleInfo)
       throw new NotFoundException(`not found the article's contents`);
 
+    // 게시물 조회 수 증가
+    const resultOfAddArticleHits = await this.addArticleHits(id)
+    if(!resultOfAddArticleHits) throw new BadRequestException('bad request');
+
     const userInfo = await this.userRepository.getUserInfo(articleInfo.userId);
     if (!userInfo) throw new NotFoundException(`not found user's information`);
 
@@ -272,11 +279,13 @@ export class ArticlesService {
     const tagIds = await this.articleToTagRepository.getTagIds(articleInfo.id);
     if (!tagIds || tagIds.length === 0)
       throw new NotFoundException(`not found tags`);
-
-    let tagNames = [];
-    for (let tagId of tagIds) {
+      
+    let tagInfo = {};
+    for (const tagId of tagIds) {
       const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
-      tagNames.push(tagName);
+      tagInfo[tagId] = tagName;
+      const resultOfAddTagHits = await this.addTagHits(tagId, tagName);
+      if(!resultOfAddTagHits) throw new BadRequestException('bad request');
     }
 
     const roads = await this.trackRepository.getRoads(articleInfo.id);
@@ -291,7 +300,7 @@ export class ArticlesService {
       totalComment: articleInfo.totalComment,
       likedOrNot: likedOrNot,
       createdAt: articleInfo.createdAt,
-      tags: tagNames,
+      tags: Object.values(tagInfo),
       roads,
     };
 
@@ -389,6 +398,20 @@ export class ArticlesService {
       return {
         message: 'article deleted',
       };
+    }
+  }
+
+  async addArticleHits(id: number): Promise<boolean> {
+    return await this.articleRepository.addArticleHits(id)
+  }
+
+  async addTagHits(id: number, tagName: string) {
+    const tagHitsId = await this.tagHitsRepository.findOne({where: {tagId: id, createdAt: ""}, select: ['id']})
+    if(tagHitsId) {
+      return await this.tagHitsRepository.addTagHits(tagHitsId.id);
+    } else {
+      const createdId = await this.tagHitsRepository.createTagHits(id, tagName)
+      return await this.tagHitsRepository.addTagHits(createdId)
     }
   }
 }
