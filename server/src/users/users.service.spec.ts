@@ -91,7 +91,7 @@ describe('UsersService', () => {
     jwtService = module.get(JwtService);
   });
 
-  describe('1. login 테스트', () => {
+  describe('1. service.login 테스트', () => {
     beforeEach(() => {
       userRepository.findOne.mockResolvedValue({
         email: 'kimcoding@gmail.com',
@@ -131,29 +131,29 @@ describe('UsersService', () => {
     })
   })
 
-  describe('2. logout 테스트', () => {
+  describe('2. service.logout 테스트', () => {
     it('SUCCESS: deleteRefreshToken이 실행되어야합니다.', () => {
       service.logout({ user: 1, loginMethod: 0 });
       expect(userRepository.deleteRefreshToken).toBeCalledTimes(1);
     })
   })
 
-  describe('3. signup 테스트', () => {
+  describe('3. service.signup 테스트', () => {
     it('SUCCESS: 회원가입이 되어야합니다.', async () => {
       const response = await service.signup({ email: '', password: '', nickname: '' });
-      expect(response.message).toBe('signup succeed');
+      expect(response).toEqual({ message: 'signup succeed' });
       expect(userRepository.createUser).toBeCalledTimes(1);
     })
   })
 
-  describe('4. checkEmail 테스트', () => {
+  describe('4. service.checkEmail 테스트', () => {
     beforeEach(() => {
       userRepository.findOne.mockResolvedValue({ email: 'kimcoding@gmail.com' });
     })
 
     it('SUCCESS: 없는 이메일의 경우 사용가능하다는 응답이 와야합니다.', async () => {
       const response = await service.checkEmail({ email: '' });
-      expect(response.message).toBe('available');
+      expect(response).toEqual({ message: 'available' });
       expect(userRepository.findOne).toBeCalledTimes(1);
     })
 
@@ -169,13 +169,13 @@ describe('UsersService', () => {
     })
   })
 
-  describe('5. checkNickname 테스트', () => {
+  describe('5. service.checkNickname 테스트', () => {
     beforeEach(() => {
       userRepository.findOne.mockResolvedValue({ nickname: 'kimcoding' });
     })
     it('SUCCESS: 없는 닉네임 경우 사용가능하다는 응답이 와야합니다.', async () => {
       const response = await service.checkNickname({ nickname: 'parkhacker' });
-      expect(response.message).toBe('available');
+      expect(response).toEqual({ message: 'available' });
       expect(userRepository.findOne).toBeCalledTimes(1);
     })
     it('ERROR: 존재하는 닉네임을 받으면 409에러', async () => {
@@ -190,7 +190,7 @@ describe('UsersService', () => {
     })
   })
 
-  describe('6. getTokenKakao 테스트', () => {
+  describe('6. service.getTokenKakao 테스트', () => {
     it('ERROR: 잘못된 코드를 받으면 401에러', async () => {
       try {
         const response = await service.getTokenKakao({ code: '' });
@@ -216,21 +216,27 @@ describe('UsersService', () => {
         expect(response).toBeUndefined();
       } catch (err) {
         expect(err.status).toBe(400);
-        expect(err.response.message).toBe('bad request');
+        expect(err.response.message).toBe('social login user cannot change password');
       }
     })
     it('SUCCESS: 회원정보 변경 성공 시 정보를 리턴합니다', async () => {
       const response = await service.modifyUser({ loginMethod: 0, user: 1 });
-      expect(response.data.userInfo).toEqual({
-        statusMessage: 'Hi there',
-        profileImage: 'profileImage',
-        nickname: 'kimcoding'
-      })
-      expect(response.message).toBe('change succeed');
+      expect(response).toEqual({
+        data: {
+          userInfo: {
+            statusMessage: 'Hi there',
+            profileImage: 'profileImage',
+            nickname: 'kimcoding'
+          }
+        },
+        message: 'change succeed'
+      }
+
+      )
     })
   })
 
-  describe('8. deleteUser 테스트', () => {
+  describe('8. service.deleteUser 테스트', () => {
     beforeEach(() => {
       likesRepository.articleIdsByUserId.mockResolvedValue([1, 2, 3]);
       followRepository.getFollowedIds.mockResolvedValue([1, 2, 3]);
@@ -257,11 +263,11 @@ describe('UsersService', () => {
       expect(articleRepository.findOne).toBeCalledTimes(6);
       expect(articleRepository.update).toBeCalledTimes(6);
 
-      expect(response.message).toBe('withdrawal succeed');
+      expect(response).toEqual({ message: 'withdrawal succeed' });
     })
   })
 
-  describe('9. validateToken 테스트', () => {
+  describe('9. service.validateToken 테스트', () => {
     beforeEach(() => {
       jwtService.verifyAsync.mockResolvedValue({ email: 'parkhacker@gmail.com' });
       userRepository.findOne.mockResolvedValue({ email: 'kimcoding@gmail.com', loginMethod: 0 });
@@ -306,7 +312,7 @@ describe('UsersService', () => {
     })
   })
 
-  describe('10. resfreshAccessToken 테스트', () => {
+  describe('10. service.resfreshAccessToken 테스트', () => {
     beforeEach(() => {
       userRepository.findOne.mockResolvedValue({ id: 1, email: 'kimcoding@gmail.com', refreshToken: 'refreshToken' });
       jwtService.sign.mockReturnValue('newAccessToken');
@@ -350,8 +356,8 @@ describe('UsersService', () => {
       })
     })
   })
-  
-  describe('11. getMypage 테스트', () => {
+
+  describe('11. service.getMypage 테스트', () => {
     beforeEach(() => {
       userRepository.getUserInfo.mockResolvedValue({
         nickname: 'kimcoding',
@@ -416,7 +422,7 @@ describe('UsersService', () => {
     })
 
     it('ERROR: 해당 페이지의 게시물이 존재하지 않으면 404에러', async () => {
-      articleRepository.getArticleInfo.mockResolvedValueOnce(undefined);
+      articleRepository.getArticleInfo.mockResolvedValueOnce([]);
       try {
         const response = await service.getMypage(1, 1, 1);
         expect(response).toBeUndefined();

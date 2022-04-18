@@ -1,7 +1,6 @@
 import { EntityRepository, Repository } from "typeorm";
 import { CreateUserDto } from "../dto/createUser.dto";
 import { User } from "../entities/user.entity";
-import { NotFoundException } from "@nestjs/common";
 import { UpdateUserDto } from "../dto/updateUser.dto";
 import { FollowDto } from 'src/follow/dto/follow.dto';
 import * as bcrypt from 'bcrypt';
@@ -26,9 +25,6 @@ export class UserRepository extends Repository<User> {
 
     async updateUser(userData: UpdateUserDto): Promise<object> {
         const user: User = await this.findOne({ id: userData.user, loginMethod: userData.loginMethod });
-        if (!user) {
-            throw new NotFoundException('cannot find user by id');
-        };
         if (userData.password) {
             const salt = await bcrypt.genSalt();
             user.password = await bcrypt.hash(userData.password, salt);
