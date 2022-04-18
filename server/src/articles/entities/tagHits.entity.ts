@@ -19,15 +19,15 @@ export class TagHits {
   @JoinColumn({ name: 'tag_id' })
   tag: Tag;
   
-  @Column({name: "tag_name"})
-  tagName: String;
+  @Column({name: "tag_name", unique: true})
+  tagName: string;
 
-  @Column()
+  @Column({default: () => 0})
   hits: number;
 
-  @Column({name: 'created_at'})
+  @Column({type: "timestamp", name: 'created_at', default: () => "CURRENT_TIMESTAMP"})
   createdAt: Date;
 
-  @Column({name: 'ureated_at'})
+  @Column({type: "timestamp", name: 'updated_at', default: () => "CURRENT_TIMESTAMP"})
   updatedAt: Date;
 }

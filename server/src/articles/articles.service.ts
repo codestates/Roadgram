@@ -13,6 +13,7 @@ import { CreateArticleDto } from './dto/createArticle.dto';
 import { UpdateArticleDto } from './dto/updateArticle.dto';
 import { ArticleToTag } from './entities/article_tag.entity';
 import { Tag } from './entities/tag.entity';
+import { TagHits } from './entities/tagHits.entity';
 import { ArticleRepository } from './repositories/article.repository';
 import { ArticleToTagRepository } from './repositories/article_tag.repository';
 import { TagRepository } from './repositories/tag.repository';
@@ -284,6 +285,7 @@ export class ArticlesService {
     for (const tagId of tagIds) {
       const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
       tagInfo[tagId] = tagName;
+      // 태그 조회 수 증가
       const resultOfAddTagHits = await this.addTagHits(tagId, tagName);
       if(!resultOfAddTagHits) throw new BadRequestException('bad request');
     }
@@ -360,7 +362,7 @@ export class ArticlesService {
     }
 
     const deleteTagsResult = await this.articleToTagRepository.deleteTags(articleId);
-    if(!deleteTagsResult) {
+    if(!deleteTagsResult || deleteTagsResult.affected === 0) {
       this.articleToTagRepository.deleteTags(articleId)
       this.articleRepository.update(articleId, {content: articleInfo.content});
       lastTags.forEach(({ tagId, order }) => {
@@ -405,13 +407,36 @@ export class ArticlesService {
     return await this.articleRepository.addArticleHits(id)
   }
 
-  async addTagHits(id: number, tagName: string) {
-    const tagHitsId = await this.tagHitsRepository.findOne({where: {tagId: id, createdAt: ""}, select: ['id']})
+  async addTagHits(id: number, tagName: string): Promise<boolean> {
+    const tagHitsId = await this.tagHitsRepository.findOne({where: {tagId: id}, select: ['id']})
     if(tagHitsId) {
       return await this.tagHitsRepository.addTagHits(tagHitsId.id);
     } else {
-      const createdId = await this.tagHitsRepository.createTagHits(id, tagName)
-      return await this.tagHitsRepository.addTagHits(createdId)
+      const createdItem: TagHits = await this.tagHitsRepository.createTagHits(id, tagName)
+      return await this.tagHitsRepository.addTagHits(createdItem.id)
+    }
+  }
+  
+  async getPopularTag(): Promise<any> {
+    const limit = 3;
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth() + 1;
+    const date = new Date().getDate();
+    const today = `${year}/${month}/${date}`
+    const popularTags = await this.tagHitsRepository.getPopularTag(limit, today);
+
+    if(!popularTags) {
+      return {
+        data: null,
+        message: 'popular tags searching failed'
+      }
+    } else {
+      return {
+        data: {
+          popularTags
+        },
+        message: 'success'
+      }
     }
   }
 }

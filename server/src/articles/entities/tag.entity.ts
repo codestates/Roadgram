@@ -9,7 +9,7 @@ export class Tag {
     id: number;
 
     @IsNotEmpty()
-    @Column({unique: true, name: "tagName"})
+    @Column({unique: true, name: "tag_name"})
     tagName: string;
 
     @OneToMany(() => ArticleToTag, (articleToTag) => articleToTag.tagId, { cascade: true })

@@ -9,7 +9,8 @@ export class ArticleToTagRepository extends Repository<ArticleToTag> {
   }
 
   async deleteTags(articleId: number): Promise<any> {
-    await this.delete({ articleId });
+    const result = await this.delete({ articleId });
+    return result
   }
 
   async countTag(articleId: number) {

@@ -22,6 +22,7 @@ const mockArticlesService = () => ({
   getArticleDetail: jest.fn(),
   deleteArticle: jest.fn(),
   updateArticle: jest.fn(),
+  getPopularTag: jest.fn(),
 })
 
 describe('Articles Controller', () => {
@@ -127,5 +128,11 @@ describe('Articles Controller', () => {
     controller.deleteArticle(id);
     expect(service.deleteArticle).toBeDefined();
     expect(service.deleteArticle).toBeCalledTimes(1);
+  });
+
+  it('7. controller.getPopularTag 테스트', async () => {
+    controller.getPopularTag();
+    expect(service.getPopularTag).toBeDefined();
+    expect(service.getPopularTag).toBeCalledTimes(1);
   });
 });

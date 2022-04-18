@@ -67,7 +67,8 @@ const mockLikesRepository = () => ({
 const mockTagHitsRepository = () => ({
   createTagHits: jest.fn(),
   addTagHits: jest.fn(),
-  findOne: jest.fn()
+  findOne: jest.fn(),
+  getPopularTag: jest.fn()
 });
 
 const userId = 1;
@@ -585,6 +586,14 @@ describe('Articles Service', () => {
 
   describe('5. getArticleDetail Test', () => {
     beforeEach(async () => {
+      const createdTagInfo = {
+        tagId: 32,
+        tagName: '추가',
+        id: 10,
+        hits: 0,
+        createdAt: "2022-04-18T07:33:54.000Z",
+        updatedAt: "2022-04-18T07:33:54.000Z"
+      }
       articleRepository.getArticleDetail.mockResolvedValue(articleInfo);
       articleRepository.addArticleHits.mockResolvedValue(true);
       userRepository.getUserInfo.mockResolvedValue(userInfo);
@@ -592,6 +601,7 @@ describe('Articles Service', () => {
       articleToTagRepository.getTagIds.mockResolvedValue(tagIds);
       tagRepository.getTagNameWithIds.mockResolvedValue(tagName);
       tagHitsRepository.addTagHits.mockResolvedValue(true);
+      tagHitsRepository.createTagHits.mockResolvedValue(createdTagInfo)
       trackRepository.getRoads.mockResolvedValue(roads);
     });
     it('SUCCESS: 해당 게시물의 상세페이지를 정상적으로 조회한다.', async () => {
@@ -840,6 +850,44 @@ describe('Articles Service', () => {
         expect(err.status).toBe(404);
         expect(err.response.message).toBe(errorMessage);
       }
+    });
+  });
+
+  describe('8. getPopularTag 테스트', () => {
+    it('SUCCESS: 인기 태그가 정상적으로 조회 됨', async () => {
+      const successMessage = 'success';
+      const popularTags = [
+        {
+          tagId: 1,
+          tagName: "서울",
+          hits: 35
+        },
+        {
+          tagId: 2,
+          tagName: "부산",
+          hits: 24
+        },
+        {
+          tagId: 3,
+          tagName: "해운대",
+          hits: 22
+        },
+
+      ]
+      tagHitsRepository.getPopularTag.mockResolvedValue(popularTags);
+      const result = await service.getPopularTag();
+      expect(tagHitsRepository.getPopularTag).toBeCalledTimes(1);
+      expect(result.data.popularTags).toBe(popularTags);
+      expect(result.message).toEqual(successMessage);
+    });
+
+    it('ERROR: 인기 태그를 찾지 못하면 실패 메시지 반환', async () => {
+      const errorMessage = 'popular tags searching failed';
+      tagHitsRepository.getPopularTag.mockResolvedValue(undefined);
+      const result = await service.getPopularTag();
+      expect(tagHitsRepository.getPopularTag).toBeCalledTimes(1);
+      expect(result.data).toBe(null);
+      expect(result.message).toEqual(errorMessage);
     });
   });
 });
