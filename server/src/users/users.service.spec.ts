@@ -421,17 +421,6 @@ describe('UsersService', () => {
       }
     })
 
-    it('ERROR: 해당 페이지의 게시물이 존재하지 않으면 404에러', async () => {
-      articleRepository.getArticleInfo.mockResolvedValueOnce([]);
-      try {
-        const response = await service.getMypage(1, 1, 1);
-        expect(response).toBeUndefined();
-      } catch (err) {
-        expect(err.status).toBe(404);
-        expect(err.response.message).toBe('No Content');
-      }
-    })
-
     it('SUCCESS: 페이지에 해당하는 정보를 리턴', async () => {
       const response = await service.getMypage(1, 1, 1);
       expect(response).toEqual({
