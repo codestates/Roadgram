@@ -262,9 +262,9 @@ export class UsersService {
             let limit: number = 9;
             let offset: number = (page - 1) * 9;
             const userInfo = await this.userRepository.getUserInfo(other || user);
+            if(!userInfo) throw Error;
             const followedOrNot = await this.followRepository.followedOrNot(user || undefined, other || user);
             const articles = await this.articleRepository.getArticleInfo(other || user, limit, offset);
-            if (!articles.length) throw Error;
             // // 각 게시물에 태그 이름(배열) 추가
             let newArticles = [];
             for (const article of articles) {
