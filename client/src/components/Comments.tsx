@@ -1,21 +1,18 @@
-import { faCommentDots, faHeart } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { RootState } from '..';
-import { addComment, getComments, removeComment, resetComments } from '../store/CommentsSlice';
+import { addComment, getComments, removeComment } from '../store/CommentsSlice';
 import { updateTotalComments } from '../store/ArticleDetailSlice';
-import { update } from '../store/UserInfoSlice';
 import '../styles/components/_contentsDetails.scss';
 
 function Comments() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLogin, userInfo, accessToken } = useSelector((state: RootState) => state.auth);
-  const { targetId, writerInfo, articleInfo } = useSelector((state: RootState) => state.articleDetails);
+  const { articleInfo } = useSelector((state: RootState) => state.articleDetails);
   const { commentInfo } = useSelector((state: RootState) => state.comments);
   const [ comment, setComment ] = useState('');
 

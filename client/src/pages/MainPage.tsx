@@ -121,7 +121,6 @@ function MainPage() {
     }
   }, [isLogin])
 
-  console.log('state ==== ', state)
   // 최신순으로 데이터 받아와서 초기에 mainArticle 초기화
   const getRecentArticleHandler = async () => {
     try {

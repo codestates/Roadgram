@@ -1,20 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart, faCommentDots } from '@fortawesome/free-solid-svg-icons'
-import { useNavigate } from 'react-router-dom'
 import { RootState } from '..'
 import { addMainArticles, getMainArticles } from '../store/ArticleSlice'
-import { login } from '../store/AuthSlice'
 import Article from '../components/Article'
 
 function SearchPage() {
   const dispatch = useDispatch();
-  const state = useSelector(state => state);
-  const { isLogin, accessToken, userInfo } = useSelector((state: RootState) => state.auth);
   const { mainArticles, tag } = useSelector((state: RootState) => state.articles);
-  const isInitialMount = useRef(true)
   const [word, setWord] = useState("");
   const [page, setPage] = useState(3);
   const [end, setEnd] = useState(false); // 없으면 요청 더이상 안보내게 판단하는 상태
@@ -24,10 +17,10 @@ function SearchPage() {
     document.documentElement.scrollTop=0;
   },[]);
 
-
   useEffect(() => {
     const url = new URL(window.location.href);
     const keyword = url.searchParams.get('tag');
+    console.log(`url = ${url}, keyword = ${keyword}`)
     dispatch(getMainArticles([]));
     setPage(3);
     setEnd(false);
@@ -79,12 +72,15 @@ function SearchPage() {
       } catch {
         dispatch(getMainArticles([]));
       }
-      try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/articles/recent?page=2`);
-        dispatch(addMainArticles(res.data.data.articles));
-      } catch {
-        setEnd(true); // 게시물 더이상 없으면 종료
-      }
+      // 조회수가 2씩 증가되어 해당 부분 주석처리 (77 ~ 82, 92 ~ 97Line)
+
+      // try {
+      //   const res = await axios.get(`${process.env.REACT_APP_API_URL}/articles/recent?page=2`);
+      //   dispatch(addMainArticles(res.data.data.articles));
+      // } catch {
+      //   setEnd(true); // 게시물 더이상 없으면 종료
+      // }
+
       // word가 있을 때
     } else {
       try {
@@ -93,12 +89,12 @@ function SearchPage() {
       } catch {
         dispatch(getMainArticles([]));
       }
-      try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/search?tag=${word}&page=2`);
-        dispatch(addMainArticles(res.data.data.articles));
-      } catch {
-        setEnd(true); // 게시물 더이상 없으면 종료
-      }
+      // try {
+      //   const res = await axios.get(`${process.env.REACT_APP_API_URL}/search?tag=${word}&page=2`);
+      //   dispatch(addMainArticles(res.data.data.articles));
+      // } catch {
+      //   setEnd(true); // 게시물 더이상 없으면 종료
+      // }
     }
   }
 

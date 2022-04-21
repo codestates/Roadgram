@@ -408,9 +408,14 @@ export class ArticlesService {
   }
 
   async addTagHits(id: number, tagName: string): Promise<boolean> {
-    const tagHitsId = await this.tagHitsRepository.findOne({where: {tagId: id}, select: ['id']})
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth() + 1;
+    const date = new Date().getDate();
+    const today = `${year}/${month}/${date}`;
+
+    const tagHitsId = await this.tagHitsRepository.findId(id, today)
     if(tagHitsId) {
-      return await this.tagHitsRepository.addTagHits(tagHitsId.id);
+      return await this.tagHitsRepository.addTagHits(tagHitsId);
     } else {
       const createdItem: TagHits = await this.tagHitsRepository.createTagHits(id, tagName)
       return await this.tagHitsRepository.addTagHits(createdItem.id)
@@ -418,17 +423,37 @@ export class ArticlesService {
   }
   
   async getPopularTag(): Promise<any> {
-    const limit = 3;
+    const limit = 5;
     const year = new Date().getFullYear();
     const month = new Date().getMonth() + 1;
     const date = new Date().getDate();
     const today = `${year}/${month}/${date}`
     const popularTags = await this.tagHitsRepository.getPopularTag(limit, today);
+    const defaultTags = [
+      {
+        tagName: "서울"
+      },
+      {
+        tagName: "부산"
+      },
+      {
+        tagName: "제주도"
+      },
+      {
+        tagName: "나들이"
+      },
+      {
+        tagName: "산책로"
+      }
 
-    if(!popularTags) {
+    ]
+
+    if(!popularTags || popularTags.length === 0) {
       return {
-        data: null,
-        message: 'popular tags searching failed'
+        data: {
+          popularTags: defaultTags,
+        },
+        message: 'send default tags'
       }
     } else {
       return {

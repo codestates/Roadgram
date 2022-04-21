@@ -19,7 +19,7 @@ export class TagHits {
   @JoinColumn({ name: 'tag_id' })
   tag: Tag;
   
-  @Column({name: "tag_name", unique: true})
+  @Column({name: "tag_name"})
   tagName: string;
 
   @Column({default: () => 0})

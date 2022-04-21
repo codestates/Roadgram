@@ -67,7 +67,7 @@ const mockLikesRepository = () => ({
 const mockTagHitsRepository = () => ({
   createTagHits: jest.fn(),
   addTagHits: jest.fn(),
-  findOne: jest.fn(),
+  findId: jest.fn(),
   getPopularTag: jest.fn()
 });
 
@@ -586,7 +586,7 @@ describe('Articles Service', () => {
 
   describe('5. getArticleDetail Test', () => {
     beforeEach(async () => {
-      const createdTagInfo = {
+      const createdItem = {
         tagId: 32,
         tagName: '추가',
         id: 10,
@@ -601,7 +601,7 @@ describe('Articles Service', () => {
       articleToTagRepository.getTagIds.mockResolvedValue(tagIds);
       tagRepository.getTagNameWithIds.mockResolvedValue(tagName);
       tagHitsRepository.addTagHits.mockResolvedValue(true);
-      tagHitsRepository.createTagHits.mockResolvedValue(createdTagInfo)
+      tagHitsRepository.createTagHits.mockResolvedValue(createdItem)
       trackRepository.getRoads.mockResolvedValue(roads);
     });
     it('SUCCESS: 해당 게시물의 상세페이지를 정상적으로 조회한다.', async () => {
@@ -881,12 +881,19 @@ describe('Articles Service', () => {
       expect(result.message).toEqual(successMessage);
     });
 
-    it('ERROR: 인기 태그를 찾지 못하면 실패 메시지 반환', async () => {
-      const errorMessage = 'popular tags searching failed';
+    it('ERROR: 인기 태그를 찾지 못하면 기본 설정 태그 반환', async () => {
+      const errorMessage = 'send default tags';
+      const defaultTags = [
+        {tagName: "서울"},
+        {tagName: "부산"},
+        {tagName: "제주도"},
+        {tagName: "나들이"},
+        {tagName: "산책로"},
+      ]
       tagHitsRepository.getPopularTag.mockResolvedValue(undefined);
       const result = await service.getPopularTag();
       expect(tagHitsRepository.getPopularTag).toBeCalledTimes(1);
-      expect(result.data).toBe(null);
+      expect(result.data.popularTags).toStrictEqual(defaultTags);
       expect(result.message).toEqual(errorMessage);
     });
   });

@@ -25,6 +25,7 @@ $button-hover-color: #93b1f3;
 @import './styles/pages/settingRoutePage';
 @import './styles/components/map';
 @import './styles/components/loadingSpinner';
+
 /* 주형 */
 @import './styles/components/loginpage';
 @import './styles/components/signup';
@@ -34,6 +35,8 @@ $button-hover-color: #93b1f3;
 @import './styles/components/upload';
 @import './styles/components/uploadhold';
 @import './styles/pages/createPostPage';
+@import './styles/components/popularTag';
+
 /* 권진 */
 @import './styles/pages/editProfilePage';
 @import './styles/components/modals/withdrawalModal';

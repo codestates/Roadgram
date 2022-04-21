@@ -1,9 +1,10 @@
 import {
+  BadRequestException,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ArticlesService } from 'src/articles/articles.service';
 import { Article } from 'src/articles/entities/article.entity';
 import { ArticleRepository } from 'src/articles/repositories/article.repository';
 import { ArticleToTagRepository } from 'src/articles/repositories/article_tag.repository';
@@ -13,6 +14,7 @@ import { UserRepository } from 'src/users/repositories/user.repository';
 @Injectable()
 export class SearchService {
   constructor(
+    private articlesService: ArticlesService,
     @InjectRepository(ArticleRepository)
     private articleRepository: ArticleRepository,
     @InjectRepository(TagRepository)
@@ -30,8 +32,11 @@ export class SearchService {
 
     if (!tagId) {
       throw new NotFoundException('not found tag');
+    } else {
+      const resultOfAddTagHits = await this.articlesService.addTagHits(tagId, tag);
+      if(!resultOfAddTagHits) throw new BadRequestException('bad request');
     }
-
+    
     const articleIds = await this.articleToTagRepository.getArticleIds(tagId);
 
     if (!articleIds || articleIds.length === 0) {

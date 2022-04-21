@@ -16,6 +16,7 @@ import { resetArticleDetail } from '../store/ArticleDetailSlice'
 import { resetCreatePost } from '../store/createPostSlice'
 import { resetKaKao } from '../store/LocationListSlice'
 import { resetRouteList } from '../store/RouteListSlice'
+import PopularTag from './PopularTag'
 
 function Navigator() {
   const [usericonClick, setUsericonCLick] = useState(false)
@@ -87,6 +88,7 @@ function Navigator() {
         </Link>
       </div>
       <div className="structure sideMenu">
+        <PopularTag />
         <FontAwesomeIcon icon={faCircleInfo} className="infoIcon" onClick={() => navigate('/')} />
         <div className="inputDiv">
           <input
