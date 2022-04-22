@@ -25,6 +25,7 @@ import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import SearchPage from './pages/SearchPage'
 import EditPostPage from './pages/EditPostPage'
+import ChatRoomsPage from './pages/ChatRoomsPage'
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="/logins/*" element={<LoginPage />} />
           <Route path="/signup/*" element={<SignupPage />} />
           <Route path="/search/*" element={<SearchPage />} />
+          <Route path="/chat/*" element={<ChatRoomsPage />} />
         </Routes>
         <ToastContainer
           position="bottom-right"
