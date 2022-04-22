@@ -193,7 +193,22 @@
           padding-right: 1%;
           margin: 0 0 0.8rem 0;
         }
-
+        .mainIcon_eye {
+          color: gray;
+          transition: 0.2s;
+          @include mobile-only {
+            height: 1.6rem;
+            margin-right: 0.6rem;
+          }
+          @include md {
+            height: 1.8rem;
+            margin: 0 0.8rem 0 0;
+          }
+          @include lg {
+            height: 2rem;
+            margin-right: 1rem;
+          }
+        }
         .mainIcon_heart {
           color: gray;
           transition: 0.2s;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { faCommentDots, faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faCommentDots, faEye, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useDispatch, useSelector } from 'react-redux'
 import { getMainArticles } from '../store/ArticleSlice'
@@ -10,7 +10,7 @@ import { detailInfo } from '../store/ArticleDetailSlice'
 import { resetCreatePost } from '../store/createPostSlice'
 import { resetKaKao } from '../store/LocationListSlice'
 import { resetRouteList } from '../store/RouteListSlice'
-import { resetUserInfo, update } from '../store/UserInfoSlice'
+import { update } from '../store/UserInfoSlice'
 import LoadingSpinner from '../components/LoadingSpinner'
 
 function Article() {
@@ -54,7 +54,7 @@ function Article() {
       ) : (
         <div id="mainContainer">
           {mainArticles.map(article => {
-            return (
+          return (
               <div className="postBox" key={article.id}>
                 <img
                   src={article.thumbnail}
@@ -99,10 +99,12 @@ function Article() {
                     21231
                   </button>
                   <div className="iconBox">
+                    <FontAwesomeIcon className="mainIcon_eye" icon={faEye} />
+                    <div className="like">{article.hits || 0}</div>
                     <FontAwesomeIcon className="mainIcon_heart" icon={faHeart} />
-                    <div className="like">{article.totalLike}</div>
+                    <div className="like">{article.totalLike || 0}</div>
                     <FontAwesomeIcon className="mainIcon_comment" icon={faCommentDots} />
-                    <div className="reply">{article.totalComment}</div>
+                    <div className="reply">{article.totalComment || 0}</div>
                   </div>
                 </div>
                 <div />

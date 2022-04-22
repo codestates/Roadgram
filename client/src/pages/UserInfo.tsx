@@ -48,11 +48,6 @@ function UserInfo() {
     setPage(3); // 새로 렌더링 시 페이지와 스크롤 상태 초기화
   }, [targetId])
 
-  // isFollow 변경 시 값 확인 렌더링
-  useEffect(() => {
-    console.log(`isFollow는 ${isFollow}입니다.`);
-  }, [isFollow])
-
   // 모달창 띄울 시 주변 스크롤 방지
   useEffect(() => {
     if (isFollowerModal || isFollowingModal) {
@@ -71,35 +66,47 @@ function UserInfo() {
 
   const getMyPageInfo = async (targetId: number) => {
     // setUsericonCLick(!usericonClick)
-    console.log("getMyPageInfo 실행")
-    const res = await axios.get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=${1}&other=${targetId}`)
-    // userInfo 정보 update
-    dispatch(update(res.data.data));
-    // 뿌려줄 articles 정보 update
-    dispatch(getMainArticles(res.data.data.articles));
-    // totalFollwer state update
-    setTotalFollower(res.data.data.userInfo.totalFollower);
-    // totalFollwing state update
-    setTotalFollowing(res.data.data.userInfo.totalFollowing);
-    // follow 여부 update
-    setIsFollow(res.data.data.userInfo.followedOrNot);
-    if (!res.data.data.articles.length) {
-      setEndScroll(true);
-    }
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=2&other=${targetId}`);
-    dispatch(addMainArticles(response.data.data.articles));// 게시물만 추가
-    if (!response.data.data.articles.length) {
-      setEndScroll(true);
-    }
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=${1}&other=${targetId}`)
+      .then((res) => {
+        // userInfo 정보 update
+        dispatch(update(res.data.data));
+        // 뿌려줄 articles 정보 update
+        dispatch(getMainArticles(res.data.data.articles));
+        // totalFollwer state update
+        setTotalFollower(res.data.data.userInfo.totalFollower);
+        // totalFollwing state update
+        setTotalFollowing(res.data.data.userInfo.totalFollowing);
+        // follow 여부 update
+        setIsFollow(res.data.data.userInfo.followedOrNot);
+        if (!res.data.data.articles.length) {
+          setEndScroll(true);
+        }
+      })
+      .catch((err) => console.log(err))
+    
+      // 스크롤을 위한 2번째 page 추가 조회 및 dispatch
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=2&other=${targetId}`)
+      .then((res) => {
+        dispatch(addMainArticles(res.data.data.articles));
+        if (!res.data.data.articles.length) {
+          setEndScroll(true);
+        }
+      })
+      .catch((err) => console.log(err))
   }
 
   // 스크롤 시 게시물 서버에 요청하는 함수
   const addArticle = async () => {
-    const res = await axios.get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=${page}&other=${targetId}`);
-    dispatch(addMainArticles(res.data.data.articles));// 게시물만 추가
-    if (!res.data.data.articles.length) {
-      setEndScroll(true);
-    }
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/users/userinfo?user=${id}&page=${page}&other=${targetId}`)
+      .then((res) => {
+        dispatch(addMainArticles(res.data.data.articles));// 게시물만 추가
+        if (!res.data.data.articles.length) {
+          setEndScroll(true);
+        }})
+      .catch((err) => console.log(err))
   }
 
   // 스크롤 발생시 콜백함수
