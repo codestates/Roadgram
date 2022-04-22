@@ -8,6 +8,7 @@ import { LikesModule } from './likes/likes.module';
 import { FollowModule } from './follow/follow.module';
 import typeORMConfig from '../config/typeorm.config';
 import { AppController } from './app.controller';
+import { ChatGateway } from './chat/chat.gateway';
 
 @Module({
   imports: [
@@ -20,5 +21,6 @@ import { AppController } from './app.controller';
     FollowModule
   ],
   controllers: [AppController],
+  providers: [ChatGateway],
 })
 export class AppModule { }
