@@ -90,6 +90,7 @@ export class ArticlesService {
           thumbnail: string;
           nickname: string;
           profileImage: string;
+          hits: number;
           totalLike: number;
           totalComment: number;
           tags: string[];
@@ -101,6 +102,7 @@ export class ArticlesService {
           thumbnail: article.thumbnail,
           nickname: writer,
           profileImage,
+          hits: article.hits,
           totalLike: article.totalLike,
           totalComment: article.totalComment,
           tags: article.tags,
@@ -161,6 +163,7 @@ export class ArticlesService {
           thumbnail: string;
           nickname: string;
           profileImage: string;
+          hits: number;
           totalLike: number;
           totalComment: number;
           tags: string[];
@@ -172,6 +175,7 @@ export class ArticlesService {
           thumbnail: article.thumbnail,
           nickname: writer,
           profileImage,
+          hits: article.hits,
           totalLike: article.totalLike,
           totalComment: article.totalComment,
           tags: article.tags,
@@ -282,13 +286,17 @@ export class ArticlesService {
       throw new NotFoundException(`not found tags`);
       
     let tagInfo = {};
-    for (const tagId of tagIds) {
-      const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
-      tagInfo[tagId] = tagName;
-      // 태그 조회 수 증가
-      const resultOfAddTagHits = await this.addTagHits(tagId, tagName);
-      if(!resultOfAddTagHits) throw new BadRequestException('bad request');
-    }
+    Promise.all(
+      tagIds.map(async (tagId) => {
+        const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
+        tagInfo[tagId] = tagName;
+        await this.addTagHits(tagId, tagName);
+      })
+    ).catch((err) => {
+      console.log(err)
+      throw new BadRequestException('bad request');
+    })
+
 
     const roads = await this.trackRepository.getRoads(articleInfo.id);
     if (!roads || roads.length === 0)
