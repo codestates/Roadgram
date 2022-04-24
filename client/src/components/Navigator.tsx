@@ -82,11 +82,14 @@ function Navigator() {
 
   return (
     <div id="navigator-container">
-      <div className="structure">
+      {/* <div className="structure">
         <Link to="/main" style={{ textDecoration: 'none' }}>
           <img className="logo" alt="logoImg" src={logo} />
         </Link>
-      </div>
+      </div> */}
+        <Link to="/main" style={{ textDecoration: 'none' }}>
+          <img className="logo" alt="logoImg" src={logo} />
+        </Link>
       <div className="structure sideMenu">
         <PopularTag />
         <FontAwesomeIcon icon={faCircleInfo} className="infoIcon" onClick={() => navigate('/')} />
