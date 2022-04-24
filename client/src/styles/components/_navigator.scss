@@ -3,6 +3,7 @@
   box-shadow: 1px 1px 5px 1px rgb(212, 212, 212);
   // border: 1pt solid green;
   display: flex;
+  align-items: center;
   position: fixed;
   z-index: 11;
   width: 100%;
@@ -62,19 +63,6 @@
         border-radius: 0rem 0rem 0rem 1rem;
       }
     }
-
-    // .mypageMenu {
-    //   @include mobile-only {
-    //     margin: 0.8rem;
-    //   }
-    //   @include md {
-    //     margin: 0.8rem;
-    //   }
-
-    //   @include lg {
-    //     margin: 1rem;
-    //   }
-    // }
   }
 
   .hiddenMenu {
@@ -94,32 +82,56 @@
     width: 100%;
     height: 100%;
 
-    .logo {
+    // .logo {
+    //   // border: 1px solid purple;
+    //   display: flex;
+    //   @include mobile-only {
+    //     margin-left: 1rem;
+    //     width: 10rem;
+    //     height: 2.2rem;
+    //   }
+    //   @include md {
+    //     margin-left: 4rem;
+    //     width: 20rem;
+    //     height: 4rem;
+    //   }
+    //   @include lg {
+    //     margin-left: 10rem;
+    //     width: 24rem;
+    //     height: 5rem;
+    //   }
+    // }
+  }
+
+  .logo {
       // border: 1px solid purple;
       display: flex;
+      
       @include mobile-only {
         margin-left: 1rem;
         width: 10rem;
         height: 2.2rem;
       }
+      
       @include md {
         margin-left: 4rem;
-        width: 20rem;
+        width: 15rem;
         height: 4rem;
       }
+      
       @include lg {
         margin-left: 10rem;
         width: 24rem;
         height: 5rem;
       }
     }
-  }
 
   .sideMenu {
     // border: 1px solid red;
     display: flex;
     justify-content: flex-end;
     align-items: center;
+
 
     .infoIcon {
       height: 3vmin;
@@ -160,7 +172,7 @@
       @include lg {
         width: 35rem;
         height: 4.5rem;
-        margin-right: 4rem;
+        margin-right: 5rem;
         border-radius: 1rem;
         padding-left: 2rem;
       }
@@ -208,11 +220,11 @@
       }
       @include md {
         font-size: 1.5rem;
-        margin-right: 3rem;
+        margin-right: 2rem;
       }
       @include lg {
         font-size: 2rem;
-        margin-right: 4rem;
+        margin-right: 3rem;
       }
     }
 
@@ -227,11 +239,11 @@
       }
       @include md {
         height: 2.4rem;
-        margin-right: 3rem;
+        margin-right: 1rem;
       }
       @include lg {
         height: 2.8rem;
-        margin-right: 3rem;
+        margin-right: 2rem;
       }
       &:hover {
         color: gray;
