@@ -155,7 +155,7 @@ function UserInfo() {
         })
       setTotalFollower(res.data.data.totalFollower);
       setIsFollow(!isFollow);
-      toast.success(isFollow?'언팔로우 되었습니다.':'팔로우 되었습니다.');
+      toast.success(isFollow ? '팔로우를 취소했습니다.' : '팔로우 했습니다.');
     } catch {
       try {
         await accessTokenRequest();
@@ -235,10 +235,18 @@ function UserInfo() {
           </div>
           <div className='userinfo_fake'>
             {id !== userInfo.id
-              ? (<label htmlFor='followgogo'>
-                <div>{isFollow === true && isFollow ? "팔로우 해제" : "팔로우"}</div>
-              </label>)
-              : (<label htmlFor='editgogo'>
+              ? (
+              <div>
+              <label htmlFor='followgogo'>
+                <div>{isFollow === true && isFollow ? "팔로우 취소" : "팔로우"}</div>
+              </label>
+              {/* <label htmlFor='messagegogo'>
+                <div>메세지 보내기</div>
+              </label> */}
+              </div>
+              )
+              : (
+              <label htmlFor='editgogo'>
                 <div>내 정보 수정</div>
               </label>)
             }
@@ -248,6 +256,7 @@ function UserInfo() {
           </div>
           <div className='hidden' id='abcd'>asdfa</div>
           <button id='followgogo' className='hidden' type="button" onClick={followingOrCancel} >sdfs</button>
+          <button id='messagegogo' className='hidden' type="button" onClick={() => navigate('/chat')} >sdfs</button>
           <button id='editgogo' className='hidden' type="button" onClick={moveToEditProfile}>프로필수정</button>
           {isFollowingModal ? <FollowingModal /> : null}
           {isFollowerModal ? <FollowerModal /> : null}

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import '../style.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass, faUser, faPencil, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faUser, faPencil, faCircleInfo, faBell, faMessage } from '@fortawesome/free-solid-svg-icons'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
@@ -110,8 +110,10 @@ function Navigator() {
         {isLogin ? (
           <div>
             {/* <Link to="/settingroute" style={{ color: 'rgb(80, 78, 78)' }}> */}
+            <FontAwesomeIcon icon={faMessage} className="pencilIcon" onClick={() => navigate('/chat')} />
             <FontAwesomeIcon icon={faPencil} className="pencilIcon" onClick={() => navigate('/settingroute')} />
             {/* </Link> */}
+            <FontAwesomeIcon icon={faBell} className="pencilIcon" onClick={() => alert('알림 기능은 현재 준비 중입니다.')}/>
             <FontAwesomeIcon icon={faUser} className="userIcon" onClick={() => setUsericonCLick(!usericonClick)} />
           </div>
         ) : (
