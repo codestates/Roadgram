@@ -13,9 +13,6 @@ function PopularTag() {
   useEffect(() => {
     getPopularTags()
   }, [])
-  
-  useEffect(() => {
-  }, [popularTags])
 
   const getPopularTags = async () => {
     axios
@@ -37,7 +34,10 @@ function PopularTag() {
                   <Link to={`/search?tag=${tag.tagName}`} style={{ textDecoration: 'none', color: 'black'}}>
                   <div 
                     className="popluar-tag-list-box"
+                    role="button"
+                    tabIndex={0}
                     onClick={()=> dispatch(setTag(tag.tagName))}
+                    onKeyDown={()=> dispatch(setTag(tag.tagName))}
                   >
                     <span className="popular-tag-number">{`${idx+1}`}</span>
                     <span className="popular-tag">{`#${tag.tagName}`}</span>
