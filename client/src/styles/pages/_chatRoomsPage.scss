@@ -1,0 +1,102 @@
+.chat-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.chat-lists {
+  border: 1px solid red;
+  width: 20%;
+  max-width: 30rem;
+  min-width: 15rem;
+  height: 80%;
+  margin-top: 5rem;
+  margin-right: 0.5rem;
+}
+
+.each-room {
+  border: 1px solid green;
+  width: 50%;
+  max-width: 70rem;
+  height: 80%;
+  margin-top: 5rem;
+  margin-left: 0.5rem;
+  justify-content: center;
+
+  .chat-partner {
+    border: 1px solid green;
+    height: 5rem;
+    margin-top: 1.5rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+  }
+
+  .chat-body {
+    border: 1px solid green;
+    height: 80%;
+    margin-top: 1rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    overflow-x: auto;
+    overflow-y: scroll;
+
+    .chat-body::-webkit-scrollbar {
+      display: none;
+    }
+
+    .each-msg {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .msg-owner {
+      margin-top: 2rem;
+      font-size: 1.5rem;
+    }
+
+    .msg-text {
+      font-size: 2rem;
+    }
+
+    .msg-time {
+      font-size: 1rem;
+    }
+  }
+
+  .chat-box {
+    display: flex;
+    justify-content: center;
+    height: 6%;
+    margin-top: 1.5%;
+
+    .chat-input {
+      width: 84%;
+      font-size: 2rem;
+      border: 1px solid #4f4f4f;
+      border: 1px solid #4f4f4f;
+      border-radius: 10px;
+    }
+    
+    .chat-send {
+      width: 12%;
+      margin-left: 1%;
+      font-size: 1.7rem;
+      color: white;
+      background-color: #4680ff;
+      border: 1px solid #4680ff;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  }
+
+}
