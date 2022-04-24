@@ -283,6 +283,7 @@ export class UsersService {
                     nickname: string
                     totalLike: number,
                     totalComment: number,
+                    hits: number,
                     profileImage: string,
                     tags: string[]
                 }
@@ -293,6 +294,7 @@ export class UsersService {
                     nickname: userInfo.nickname,
                     totalLike: article.totalLike,
                     totalComment: article.totalComment,
+                    hits: article.hits,
                     profileImage: userInfo.profileImage,
                     tags: article.tags
                 };

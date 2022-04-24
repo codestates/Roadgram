@@ -69,6 +69,7 @@ export class SearchService {
           thumbnail: string;
           nickname: string;
           profileImage: string;
+          hits: number;
           totalLike: number;
           totalComment: number;
           tags: string[];
@@ -79,6 +80,7 @@ export class SearchService {
           thumbnail: article.thumbnail,
           nickname: writer,
           profileImage,
+          hits: article.hits,
           totalLike: article.totalLike,
           totalComment: article.totalComment,
           tags: article.tags,
