@@ -13,9 +13,11 @@ import { CreateArticleDto } from './dto/createArticle.dto';
 import { UpdateArticleDto } from './dto/updateArticle.dto';
 import { ArticleToTag } from './entities/article_tag.entity';
 import { Tag } from './entities/tag.entity';
+import { TagHits } from './entities/tagHits.entity';
 import { ArticleRepository } from './repositories/article.repository';
 import { ArticleToTagRepository } from './repositories/article_tag.repository';
 import { TagRepository } from './repositories/tag.repository';
+import { TagHitsRepository } from './repositories/tagHits.repository';
 import { TrackRepository } from './repositories/track.repository';
 
 @Injectable()
@@ -35,6 +37,8 @@ export class ArticlesService {
     private followRepository: FollowRepository,
     @InjectRepository(LikesRepository)
     private likesRepository: LikesRepository,
+    @InjectRepository(TagHitsRepository)
+    private tagHitsRepository: TagHitsRepository,
   ) {}
 
   async getMain(user: number, page: number): Promise<object> {
@@ -86,6 +90,7 @@ export class ArticlesService {
           thumbnail: string;
           nickname: string;
           profileImage: string;
+          hits: number;
           totalLike: number;
           totalComment: number;
           tags: string[];
@@ -97,6 +102,7 @@ export class ArticlesService {
           thumbnail: article.thumbnail,
           nickname: writer,
           profileImage,
+          hits: article.hits,
           totalLike: article.totalLike,
           totalComment: article.totalComment,
           tags: article.tags,
@@ -157,6 +163,7 @@ export class ArticlesService {
           thumbnail: string;
           nickname: string;
           profileImage: string;
+          hits: number;
           totalLike: number;
           totalComment: number;
           tags: string[];
@@ -168,6 +175,7 @@ export class ArticlesService {
           thumbnail: article.thumbnail,
           nickname: writer,
           profileImage,
+          hits: article.hits,
           totalLike: article.totalLike,
           totalComment: article.totalComment,
           tags: article.tags,
@@ -262,6 +270,10 @@ export class ArticlesService {
     if (!articleInfo)
       throw new NotFoundException(`not found the article's contents`);
 
+    // 게시물 조회 수 증가
+    const resultOfAddArticleHits = await this.addArticleHits(id)
+    if(!resultOfAddArticleHits) throw new BadRequestException('bad request');
+
     const userInfo = await this.userRepository.getUserInfo(articleInfo.userId);
     if (!userInfo) throw new NotFoundException(`not found user's information`);
 
@@ -272,12 +284,19 @@ export class ArticlesService {
     const tagIds = await this.articleToTagRepository.getTagIds(articleInfo.id);
     if (!tagIds || tagIds.length === 0)
       throw new NotFoundException(`not found tags`);
+      
+    let tagInfo = {};
+    Promise.all(
+      tagIds.map(async (tagId) => {
+        const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
+        tagInfo[tagId] = tagName;
+        await this.addTagHits(tagId, tagName);
+      })
+    ).catch((err) => {
+      console.log(err)
+      throw new BadRequestException('bad request');
+    })
 
-    let tagNames = [];
-    for (let tagId of tagIds) {
-      const tagName: string = await this.tagRepository.getTagNameWithIds(tagId);
-      tagNames.push(tagName);
-    }
 
     const roads = await this.trackRepository.getRoads(articleInfo.id);
     if (!roads || roads.length === 0)
@@ -291,7 +310,7 @@ export class ArticlesService {
       totalComment: articleInfo.totalComment,
       likedOrNot: likedOrNot,
       createdAt: articleInfo.createdAt,
-      tags: tagNames,
+      tags: Object.values(tagInfo),
       roads,
     };
 
@@ -351,7 +370,7 @@ export class ArticlesService {
     }
 
     const deleteTagsResult = await this.articleToTagRepository.deleteTags(articleId);
-    if(!deleteTagsResult) {
+    if(!deleteTagsResult || deleteTagsResult.affected === 0) {
       this.articleToTagRepository.deleteTags(articleId)
       this.articleRepository.update(articleId, {content: articleInfo.content});
       lastTags.forEach(({ tagId, order }) => {
@@ -389,6 +408,68 @@ export class ArticlesService {
       return {
         message: 'article deleted',
       };
+    }
+  }
+
+  async addArticleHits(id: number): Promise<boolean> {
+    return await this.articleRepository.addArticleHits(id)
+  }
+
+  async addTagHits(id: number, tagName: string): Promise<boolean> {
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth() + 1;
+    const date = new Date().getDate();
+    const today = `${year}/${month}/${date}`;
+
+    const tagHitsId = await this.tagHitsRepository.findId(id, today)
+    if(tagHitsId) {
+      return await this.tagHitsRepository.addTagHits(tagHitsId);
+    } else {
+      const createdItem: TagHits = await this.tagHitsRepository.createTagHits(id, tagName)
+      return await this.tagHitsRepository.addTagHits(createdItem.id)
+    }
+  }
+  
+  async getPopularTag(): Promise<any> {
+    const limit = 5;
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth() + 1;
+    const date = new Date().getDate();
+    const today = `${year}/${month}/${date}`
+    const popularTags = await this.tagHitsRepository.getPopularTag(limit, today);
+    const defaultTags = [
+      {
+        tagName: "서울"
+      },
+      {
+        tagName: "부산"
+      },
+      {
+        tagName: "제주도"
+      },
+      {
+        tagName: "나들이"
+      },
+      {
+        tagName: "산책로"
+      }
+
+    ]
+
+    if(!popularTags || popularTags.length === 0) {
+      return {
+        data: {
+          popularTags: defaultTags,
+        },
+        message: 'send default tags'
+      }
+    } else {
+      return {
+        data: {
+          popularTags
+        },
+        message: 'success'
+      }
     }
   }
 }

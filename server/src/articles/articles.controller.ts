@@ -43,6 +43,11 @@ export class ArticlesController {
     return this.articlesService.getRecent(page);
   }
 
+  @Get('/popular-tag')
+  getPopularTag(): Promise<any> {
+    return this.articlesService.getPopularTag()
+  }
+
   @Get('/detail')
   @ApiOperation({summary: "게시물 상세 조회", description: "특정 게시물의 정보를 상세 조회한다."})
   @ApiOkResponse({description: '게시물 상세정보를 정상적으로 조회함', type: GetArticleDetailResponse})

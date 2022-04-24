@@ -17,7 +17,7 @@ import { AppController } from './app.controller';
     SearchModule,
     CommentsModule,
     LikesModule,
-    FollowModule
+    FollowModule,
   ],
   controllers: [AppController],
 })

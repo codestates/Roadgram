@@ -11,7 +11,7 @@ export class ArticleRepository extends Repository<Article> {
     });
     return result[0].userId;
   }
-
+  
   async getArticleInfo(
     ids: number[] | any | void,
     limit: number,
@@ -106,5 +106,12 @@ export class ArticleRepository extends Repository<Article> {
   async updateContent(id: number, content: string): Promise<any> {
     const result = await this.update({ id }, { content });
     return result;
+  }
+
+  async addArticleHits(id: number): Promise<boolean> {
+    const beforeHits = await this.findOne(id, {select: ['hits']});
+    await this.increment({id}, 'hits', 1);
+    const afterHits = await this.findOne(id, {select: ['hits']});
+    return beforeHits.hits + 1 === afterHits.hits
   }
 }

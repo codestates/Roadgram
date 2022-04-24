@@ -26,6 +26,9 @@ export class Article {
     @Column({default: 0, name: "total_comment"})
     totalComment: number;
 
+    @Column({default: 0})
+    hits: number;
+
     @Column({default: ""})
     content: string;
 

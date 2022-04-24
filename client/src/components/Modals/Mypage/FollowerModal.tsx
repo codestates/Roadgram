@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import { RootState } from '../../..'
-import { getMainArticles } from '../../../store/ArticleSlice'
 import { logout, newAccessToken } from '../../../store/AuthSlice'
 import { addFollower, getFollower, resetFollow } from '../../../store/FollowSlice'
 import { followerModal } from '../../../store/ModalSlice'
@@ -159,7 +158,7 @@ function FollowerModal() {
           </div>
         </div>
         <div className="follows">
-          {followerList?.map((each) => {
+          {followerList.map((each) => {
             return (
               <li
                 className="follow_profile_list"

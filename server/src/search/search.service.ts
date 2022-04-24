@@ -1,6 +1,5 @@
 import {
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -28,10 +27,8 @@ export class SearchService {
     let offset: number = (page - 1) * 9;
     const tagId = await this.tagRepository.getTagId(tag);
 
-    if (!tagId) {
-      throw new NotFoundException('not found tag');
-    }
-
+    if (!tagId) throw new NotFoundException('not found tag');
+    
     const articleIds = await this.articleToTagRepository.getArticleIds(tagId);
 
     if (!articleIds || articleIds.length === 0) {
